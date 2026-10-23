@@ -1,0 +1,82 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4788,
+   "resetAt": "2026-10-23T08:09:07Z",
+   "cost": 1
+  },
+  "search": {
+   "issueCount": 21,
+   "pageInfo": {
+    "hasNextPage": false,
+    "endCursor": "Y3Vyc29yOjIx"
+   },
+   "nodes": [
+    {
+     "number": 54224,
+     "title": "[Bug]: linux-x64 main process dies with SIGTRAP via out-of-range std::string_view::substr (hardened libc++ \u2192 LogMessage::HandleFatal \u2192 IMMEDIATE_CRASH) \u2014 Electron 41.0.3",
+     "url": "https://github.com/electron/electron/issues/54224",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-23T03:01:58Z",
+     "closedAt": "2026-09-23T03:02:13Z",
+     "updatedAt": "2026-09-23T03:02:13Z",
+     "author": {
+      "login": "Dandroid-D",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "### Electron Version\n\n41.0.3 (linux-x64; stock release binary, GNU build ID `bb7c19abf4fef1dba088a8a3595b42c17e188af8`). Current 41.x line is 41.10.7 / Chromium 146.0.7680.216 \u2014 unknown whether this is already fixed there.\n\n### Operating System\n\nArch Linux (Omarchy), kernel 7.2.5 x64, Wayland (Hyprland), AMD Granite Ridge iGPU + mesa 26.2.2. Host: 30GiB RAM, no memory pressure at crash times.\n\n### Last Known Working Electron Version\n\nUnknown \u2014 crashes began with an app whose bundled runtime is 41.0.3; we could not A/B other Electron versions.\n\n### What happened\n\nA production Electron app's **main process dies instantly with SIGTRAP (`si_code=SI_KERNEL`)** \u2014 no dialog, no JS exception, nothing in the app log. Four occurrences in 5 days on one machine, always while the app was **idle** (internal telemetry seconds before each crash: 0 running tasks, 0 leases, 1 window). Two of the four crashes happened within 4 minutes of each other (relaunch \u2192 crash after 3m19s). Not correlated with memory (no OOM, 14GiB free), CPU, or user workload.\n\n### Analysis (symbolicated with the official `electron-v41.0.3-linux-x64-debug.zip`)\n\nAll crashes land on the **same instruction**, module-relative vaddr `0x6EDE0E4` of the `electron` binary (verified across two app releases that ship the identical runtime):\n\n```\naddr2line -e debug/electron.debug -f -C -i 0x6EDE0E4\n  \u2192 logging::LogMessage::HandleFatal(...)   ./../../base/immediate_crash.h:180\naddr2line -e debug/electron.debug -f -C -i 0x2ae9680\n  \u2192 std::__Cr::__throw_out_of_range(char const*)   ./../../third_party/libc++/src/include/stdexcept:249\n```\n\nThe trap block loads the rodata string `\"string_view::substr\"` and calls `__throw_out_of_range` with it before the `int3` (`IMMEDIATE_CRASH`). Chain: **`std::string_view::substr(pos, \u2026)` called with `pos > size()`** \u2192 hardened libc++ assertion (`string_view:470`) \u2192 with exceptions disabled, funneled to `logging::LogMessage::HandleFatal` (`base/logging.cc:1009`) \u2192 `IMMEDIATE_CRASH()` (`int3`) \u2192 SIGTRAP.\n\nI.e., a native `substr` bounds violation anywhere in the main process (Electron/Chromium/Node code or a native module) is fatal by design under Chromium's hardened libc++, and in this case it recurs on a ~daily cadence.\n\n### Timing hint (unconfirmed)\n\nThe app performs periodic `git.refresh`-style RPCs; one completed **4.8s** and another **0.24s** before the two most recent traps \u2014 a network/hostname-adjacent path is a plausible trigger. The exact caller could not be recovered: `systemd-coredump` stored cores are truncated (~22MB) and lack the crashing thread's stack.\n\n### What I'd like\n\n1. A check whether an out-of-range `string_view::substr` fix landed between Chromium 146.0.7680.**80** and **.216** (or in Electron's own code between 41.0.3 and 41.10.7).\n2. Pointers on which main-process subsystems call `string_view::substr` on network/hostname-derived data, if that rings a bell.\n\nHappy to provide: the four coredump records (PIDs, timestamps, truncated cores), app-log excerpts around each crash, trap-block disassembly, and the full symbolication transcript. A reproducible test case is not yet available (caller unidentified); I can re-run capture with a full-core setup if useful.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "needs-template"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-23T03:02:12Z",
+        "body": "<!-- issue-template-check -->\n\nHello @Dandroid-D. Thanks for taking the time to open an issue and helping to make Electron better!\n\nThis issue was automatically closed because its body does not follow any of this repository's issue templates. Maintainers rely on the sections in those templates to triage issues, and issues that are missing them usually cannot be acted upon.\n\nTo get this issue triaged, please either:\n\n* Edit the issue body above to include all of the sections from one of our [issue templates](https://github.com/electron/electron/tree/main/.github/ISSUE_TEMPLATE) - it will be reopened automatically once it does, or\n* File a new issue via https://github.com/electron/electron/issues/new/choose, which will fill in the correct template for you."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-23T03:02:13Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "needs-template"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-23T03:02:14Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

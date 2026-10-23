@@ -1,0 +1,2989 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4796,
+   "resetAt": "2026-10-23T08:09:07Z",
+   "cost": 1
+  },
+  "search": {
+   "issueCount": 12,
+   "pageInfo": {
+    "hasNextPage": false,
+    "endCursor": "Y3Vyc29yOjEy"
+   },
+   "nodes": [
+    {
+     "number": 52747,
+     "title": "Windows: dialog.showMessageBox auto-closes and returns a fabricated button index (420) for a button that was never created",
+     "url": "https://github.com/electron/electron/issues/52747",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-08-10T14:13:48Z",
+     "closedAt": "2026-08-24T17:08:22Z",
+     "updatedAt": "2026-08-24T17:08:22Z",
+     "author": {
+      "login": "itsjithinv",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.3.0 (Also verified on 42.8.1 and 36.9.1)\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 Pro 25H2 26200.8973, Windows 10 \n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nNone. The affected code is unchanged in v20.3.12, v25.9.8, v30.5.1, v36.9.1 and v43.3.0, so this appears to have been present since custom buttons were introduced.\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nWhen a message box is closed by a button id that Electron did not create, the\nreturned `response` should not be a valid-looking index into `buttons`. Returning\n`cancelId` (the existing fallback for unknown ids below `kIDStart`) would be\nconsistent and safe.\n\n### Actual Behavior\n\n> **Scope, up front:** the dialog is closed by comctl32 before\n> `TaskDialogIndirect` returns, so Electron cannot prevent the dismissal and this\n> issue does not ask it to. The bug being reported is the **`response` value**:\n> Electron fabricates a valid-looking button index from an id it never created,\n> which is what makes the failure silent and undiagnosable in application code.\n\n`showMessageBox` / `showMessageBoxSync` return `response: 420` for a message box\nthat has two buttons. Application code that branches on `response === 0` takes the\n\"no\" path with no indication that anything unusual happened, and nothing is logged.\n\nThe cause is an unbounded range check in\n[`shell/browser/ui/message_box_win.cc`](https://github.com/electron/electron/blob/v43.3.0/shell/browser/ui/message_box_win.cc#L259):\n\n```cpp\nint id = 0;\nBOOL verification_flag_checked = FALSE;\nTaskDialogIndirect(&config, &id, nullptr, &verification_flag_checked);\n\nint button_id;\nif (id_map.contains(id))  // common button.\n  button_id = id_map[id];\nelse if (id >= kIDStart)  // custom button.\n  button_id = id - kIDStart;      // <-- no upper bound\nelse\n  button_id = cancel_id;\n```\n\nAny `id >= kIDStart` (100) is treated as a custom button, so an id of 520 becomes\n`response: 420` even when only two buttons were configured. The check never\ncompares against `dialog_buttons.size()`.\n\n### Suggested fix\n\n```cpp\nelse if (id >= kIDStart && id - kIDStart < static_cast<int>(buttons.size()))\n  button_id = id - kIDStart;\nelse\n  button_id = cancel_id;\n```\n\n\n### Testcase Gist URL\n\nhttps://gist.github.com/itsjithinv/16e9fde9bb666a4d0e25244a5db52ca3\n\n### Additional Information\n\n### Why an id we never created arrives at all\n\n`0x0466` is `TDM_CLICK_BUTTON` for a TaskDialog and `CDM_GETFOLDERPATH` for a\ncommon file dialog \u2014 the same message number, and both dialog types use window\nclass `#32770`. Software that reads the current folder out of file dialogs (file\ndialog enhancers, DLP and endpoint agents) enumerates `#32770` windows and sends\n`0x0466` with `wParam` = buffer size and `lParam` = buffer pointer. On a file\ndialog that is a legitimate query and the dialog stays open. On an Electron\nmessage box, comctl32 interprets `wParam` as a button id and ends the dialog.\n\n`wParam` is typically `0x208` = 520 = `MAX_PATH` in bytes, which is why the\nfabricated index is consistently 420.\n\n### Scope of the request\n\ncomctl32 closes the dialog before `TaskDialogIndirect` returns, so Electron cannot\nprevent the dismissal \u2014 that part is not what this issue asks for. The request is\nonly that Electron not fabricate a plausible button index from an id it never\ncreated. With the fix, an app receives `cancelId` and behaves as though the user\ncancelled, instead of silently falling through every branch.\n\n### Real-world impact\n\nWe traced this in a production Electron app where a close-confirmation dialog\nappeared and vanished within ~250 ms for 100+ users. Because `response` was 420\nrather than any configured id, the app neither quit nor logged anything, and the\nissue was undiagnosable from telemetry for a long time. Spy++ captures show no\n`WM_COMMAND`, no `WM_CLOSE`, no keyboard or mouse input on the dialog \u2014 the last\nmessage before teardown is `0x0466 wParam:00000208`.\n\nVerified in a minimal app (below) with no application code involved: every native\nmessage box variant \u2014 with parent, without parent, one/two/three buttons, sync and\nasync \u2014 returns 420, while `showOpenDialog` on the same machine is unaffected.\n\n### Minimal reproduction\n\n`main.js`:\n\n```js\nconst { app, BrowserWindow, dialog } = require('electron');\n\napp.whenReady().then(async () => {\n  // A window is only needed to keep the app alive.\n  new BrowserWindow({ show: true, width: 400, height: 200 });\n\n  const { response } = await dialog.showMessageBox({\n    type: 'question',\n    buttons: ['Quit', 'Cancel'],   // valid responses are 0 and 1\n    cancelId: 1,\n    message: 'Are you sure you want to quit?'\n  });\n\n  console.log('response:', response);   // 420\n});\n```\n\nReproduce the foreign message deterministically \u2014 run this in 64-bit PowerShell\nwhile the message box is on screen, no third-party software required:\n\n```powershell\nAdd-Type -Namespace R -Name W -MemberDefinition @'\n  [DllImport(\"user32.dll\")]\n  public static extern IntPtr FindWindowExW(IntPtr p, IntPtr c, string cls, string title);\n  [DllImport(\"user32.dll\")]\n  public static extern IntPtr SendMessageW(IntPtr h, uint m, IntPtr w, IntPtr l);\n'@\n\n# First top-level #32770 window; narrow by title if other dialogs are open.\n$h = [R.W]::FindWindowExW([IntPtr]::Zero, [IntPtr]::Zero, '#32770', $null)\n$buf = [System.Runtime.InteropServices.Marshal]::AllocHGlobal(520)\n[void][R.W]::SendMessageW($h, 0x0466, [IntPtr]520, $buf)   # wParam 520 = MAX_PATH bytes\n[System.Runtime.InteropServices.Marshal]::FreeHGlobal($buf)\n```\n\nThe dialog closes and the app prints `response: 420`.\n\nhttps://github.com/user-attachments/assets/d76bedd8-c209-48be-a03c-ca3a9df77b0f\n\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "42-x-y"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "itsjithinv",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-10T14:17:52Z",
+        "body": "If anyone wants to check this issue, please use the following repo : https://github.com/itsjithinv/electron-test"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 14,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-10T14:13:49Z",
+        "actor": {
+         "login": "itsjithinv",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-10T14:13:49Z",
+        "actor": {
+         "login": "itsjithinv",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-10T14:14:04Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-10T14:14:04Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-10T14:14:04Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-10T14:14:04Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-10T14:16:31Z",
+        "actor": {
+         "login": "itsjithinv"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 52571,
+         "url": "https://github.com/electron/electron/issues/52571",
+         "createdAt": "2026-07-31T01:48:19Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-10T22:44:07Z",
+        "actor": {
+         "login": "dmitrivMS"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 329901,
+         "url": "https://github.com/microsoft/vscode/issues/329901",
+         "createdAt": "2026-08-10T07:39:59Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-10T22:51:31Z",
+        "actor": {
+         "login": "dmitrivMS"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 330128,
+         "url": "https://github.com/microsoft/vscode/pull/330128",
+         "createdAt": "2026-08-10T22:51:29Z"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-08-11T10:03:37Z",
+        "actor": {
+         "login": "deepak1556"
+        },
+        "assignee": {
+         "login": "deepak1556"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-13T07:21:34Z",
+        "actor": {
+         "login": "srikanthananthula63053"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 330602,
+         "url": "https://github.com/microsoft/vscode/pull/330602",
+         "createdAt": "2026-08-13T07:21:32Z"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-08-14T10:38:32Z",
+        "actor": {
+         "login": "deepak1556"
+        },
+        "assignee": {
+         "login": "deepak1556"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-14T13:04:59Z",
+        "actor": {
+         "login": "deepak1556"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52812,
+         "url": "https://github.com/electron/electron/pull/52812",
+         "createdAt": "2026-08-14T13:04:58Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-24T17:08:22Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 52812,
+         "url": "https://github.com/electron/electron/pull/52812"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52743,
+     "title": "Bluetooth: pairing handler isn't working as expected",
+     "url": "https://github.com/electron/electron/issues/52743",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-08-10T05:54:14Z",
+     "closedAt": null,
+     "updatedAt": "2026-08-18T05:41:31Z",
+     "author": {
+      "login": "wm-eisos",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.3.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 25H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nThat the pairing handler is called whenever i attempt to connect to a bluetooth device and try to access a characteristic that is protected.\n\n### Actual Behavior\n\nThe pairing handler is never called inside electron. However i get a native Windows pop up to pair.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nhttps://github.com/WurthElektronik/WE-Bluetooth-LE-Terminal/blob/release/electron/src/index.ts\n\nThis is the link to the code currently there is no bluetooth handler set up in this version of the code however internally thats the only modification i did to the code linked as well as updating the electron version.\n\n```\nimport {\n\tapp,\n\tBrowserWindow,\n\tipcMain,\n\tshell,\n\tnativeImage,\n\tprotocol,\n\tnet,\n\tBluetoothDevice,\n\tEvent,\n\tResponse,\n} from 'electron';\nimport path from 'node:path';\nimport { pathToFileURL } from 'node:url';\nimport { existsSync } from 'node:fs';\n\nconst electronIsDev = !app.isPackaged;\n\nconst MainWindowURL: string = 'app://localhost/';\n\nvar SelectBluetoothDeviceWindow: BrowserWindow;\nvar BluetoothPairWindow: BrowserWindow;\nvar MainWindow: BrowserWindow;\nvar BluetoothDeviceSelectCallback: ((deviceId: string) => void) | null = null;\nvar BluetoothPairingCallback: ((response: Response) => void) | null = null;\n\nconst createWindow = () => {\n\tconst icon = nativeImage.createFromPath(\n\t\tpath.join(\n\t\t\tapp.getAppPath(),\n\t\t\t'assets',\n\t\t\tprocess.platform === 'win32' ? 'appIcon.ico' : 'appIcon.png',\n\t\t),\n\t);\n\t// Create the browser window.\n\tMainWindow = new BrowserWindow({\n\t\tshow: false,\n\t\twidth: 1000,\n\t\theight: 800,\n\t\ticon: icon,\n\t\twebPreferences: {\n\t\t\tpreload: path.join(app.getAppPath(), 'build', 'preload.js'),\n\t\t},\n\t});\n\n\tconst bluetoothSubWindowOptions = {\n\t\tparent: MainWindow,\n\t\tshow: false,\n\t\tmodal: true,\n\t\tmaximizable: false,\n\t\tmaxHeight: 400,\n\t\tmaxWidth: 800,\n\t\theight: 400,\n\t\twidth: 800,\n\t\tmovable: false,\n\t\tresizable: false,\n\t\tminimizable: false,\n\t\ticon: icon,\n\t\twebPreferences: {\n\t\t\tnodeIntegration: true,\n\t\t\tbackgroundThrottling: false,\n\t\t},\n\t};\n\n\tSelectBluetoothDeviceWindow = new BrowserWindow({\n\t\t...bluetoothSubWindowOptions,\n\t\twebPreferences: {\n\t\t\t...bluetoothSubWindowOptions.webPreferences,\n\t\t\tpreload: path.join(\n\t\t\t\tapp.getAppPath(),\n\t\t\t\t'build',\n\t\t\t\t'SelectBluetoothDevice',\n\t\t\t\t'SelectBluetoothDevicePreload.js',\n\t\t\t),\n\t\t},\n\t});\n\n\tBluetoothPairWindow = new BrowserWindow({\n\t\t...bluetoothSubWindowOptions,\n\t\twebPreferences: {\n\t\t\t...bluetoothSubWindowOptions.webPreferences,\n\t\t\tpreload: path.join(\n\t\t\t\tapp.getAppPath(),\n\t\t\t\t'build',\n\t\t\t\t'BluetoothPair',\n\t\t\t\t'BluetoothPairPreload.js',\n\t\t\t),\n\t\t},\n\t});\n\n\tMainWindow.loadURL(MainWindowURL);\n\n\tSelectBluetoothDeviceWindow.loadFile(\n\t\tpath.join(app.getAppPath(), 'assets', 'SelectBluetoothDevice.html'),\n\t);\n};\n\napp.commandLine.appendSwitch('enable-web-bluetooth', 'true');\napp.commandLine.appendSwitch('enable-experimental-web-platform-features');\napp.commandLine.appendSwitch(\n\t'enable-features',\n\t'WebBluetoothConfirmPairingSupport',\n);\n\nprotocol.registerSchemesAsPrivileged([\n\t{\n\t\tscheme: 'app',\n\t\tprivileges: {\n\t\t\tstandard: true,\n\t\t\tsecure: true,\n\t\t\tsupportFetchAPI: true,\n\t\t\tcorsEnabled: true,\n\t\t\tstream: true,\n\t\t},\n\t},\n]);\n\n// This method will be called when Electron has finished\n// initialization and is ready to create browser windows.\n// Some APIs can only be used after this event occurs.\napp.whenReady().then(() => {\n\tprotocol.handle('app', async (request) => {\n\t\tconst url = new URL(request.url);\n\t\tlet filePath = url.pathname;\n\n\t\tif (filePath.startsWith('/')) {\n\t\t\tfilePath = filePath.slice(1);\n\t\t}\n\n\t\tif (!filePath) {\n\t\t\tfilePath = 'index.html';\n\t\t}\n\n\t\tconst fullPath = path.join(app.getAppPath(), 'app', filePath);\n\t\tconst exists = existsSync(fullPath);\n\n\t\tconst servePath = exists\n\t\t\t? fullPath\n\t\t\t: path.join(app.getAppPath(), 'app', 'index.html');\n\n\t\treturn net.fetch(pathToFileURL(servePath).toString());\n\t});\n\n\tcreateWindow();\n\n\t// On OS X it's common to re-create a window in the app when the\n\t// dock icon is clicked and there are no other windows open.\n\tapp.on('activate', () => {\n\t\tif (BrowserWindow.getAllWindows().length === 0) {\n\t\t\tcreateWindow();\n\t\t}\n\t});\n\n\tif (!electronIsDev) {\n\t\tMainWindow.setMenu(null);\n\t}\n\n\tMainWindow.webContents.on(\n\t\t'select-bluetooth-device',\n\t\t(\n\t\t\tevent: Event,\n\t\t\tdeviceList: BluetoothDevice[],\n\t\t\tcallback: (deviceId: string) => void,\n\t\t) => {\n\t\t\tevent.preventDefault();\n\t\t\tSelectBluetoothDeviceWindow.webContents.send(\n\t\t\t\t'device-scanned',\n\t\t\t\tdeviceList,\n\t\t\t);\n\t\t\tBluetoothDeviceSelectCallback = callback;\n\t\t},\n\t);\n\n\tMainWindow.webContents.session.setBluetoothPairingHandler(null);\n\n\tMainWindow.webContents.session.setBluetoothPairingHandler(\n\t\t(details, callback) => {\n\t\t\tconsole.log('Pairing handler called');\n\t\t\tBluetoothPairingCallback = callback;\n\n\t\t\tif (electronIsDev) {\n\t\t\t\tBluetoothPairWindow.webContents.openDevTools();\n\t\t\t}\n\n\t\t\tBluetoothPairWindow.webContents.send(\n\t\t\t\t'bluetooth-pairing-request',\n\t\t\t\tdetails,\n\t\t\t);\n\n\t\t\tBluetoothPairWindow.show();\n\t\t},\n\t);\n\n\tMainWindow.webContents.setWindowOpenHandler((details) => {\n\t\tshell.openExternal(details.url);\n\t\treturn { action: 'deny' };\n\t});\n\n\tMainWindow.webContents.on('will-navigate', (event, url) => {\n\t\tif (url.startsWith(MainWindowURL)) {\n\t\t\treturn;\n\t\t}\n\t\tevent.preventDefault();\n\t\tshell.openExternal(url);\n\t});\n\n\tSelectBluetoothDeviceWindow.on('close', (event) => {\n\t\tevent.preventDefault();\n\t\tSelectBluetoothDeviceWindow.hide();\n\t\tif (BluetoothDeviceSelectCallback) {\n\t\t\tBluetoothDeviceSelectCallback('');\n\t\t}\n\t\tBluetoothDeviceSelectCallback = null;\n\t\tMainWindow.webContents.send('scan-cancelled');\n\t});\n\n\tMainWindow.once('ready-to-show', () => {\n\t\tMainWindow.show();\n\t\tMainWindow.focus();\n\n\t\tif (electronIsDev) {\n\t\t\tMainWindow.webContents.openDevTools();\n\t\t}\n\t});\n\n\tconsole.log('Electron:', process.versions.electron);\n\tconsole.log('Chromium:', process.versions.chrome);\n});\n\n// Quit when all windows are closed, except on macOS. There, it's common\n// for applications and their menu bar to stay active until the user quits\n// explicitly with Cmd + Q.\napp.on('window-all-closed', () => {\n\tif (process.platform !== 'darwin') {\n\t\tapp.quit();\n\t}\n});\n\n// In this file you can include the rest of your app's specific main process\n// code. You can also put them in separate files and import them here.\nipcMain.on('device-selected', (event, id: string) => {\n\tSelectBluetoothDeviceWindow.hide();\n\tBluetoothDeviceSelectCallback?.(id);\n\tBluetoothDeviceSelectCallback = null;\n});\n\nipcMain.on('scan-start', (event) => {\n\tSelectBluetoothDeviceWindow.webContents.send('clear-scan');\n\tlet [mainWindowWidth, mainWindowHeight] = MainWindow.getContentSize();\n\tlet [mainWindowX, mainWindowY] = MainWindow.getPosition();\n\tlet [SelectBluetoothDeviceWidth, SelectBluetoothDeviceHeight] =\n\t\tSelectBluetoothDeviceWindow.getContentSize();\n\tSelectBluetoothDeviceWindow.setPosition(\n\t\tMath.round(\n\t\t\tmainWindowX + mainWindowWidth / 2 - SelectBluetoothDeviceWidth / 2,\n\t\t),\n\t\tMath.round(\n\t\t\tmainWindowY + mainWindowHeight / 2 - SelectBluetoothDeviceHeight / 2,\n\t\t),\n\t);\n\tif (electronIsDev) {\n\t\tSelectBluetoothDeviceWindow.webContents.openDevTools();\n\t}\n\tSelectBluetoothDeviceWindow.show();\n});\n\nipcMain.on('scan-stop', (event) => {\n\tSelectBluetoothDeviceWindow.hide();\n});\n```\n\nAdditionally i tested on mac OS which dosen't need the bluetooth pairing handler since this is handled natively, and there it works as expected.\n\nOn windows i get the native windows pop up but the device disconnects immediately. ",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "component/bluetooth"
+       },
+       {
+        "name": "has-repro-comment"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "harrydehix",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-17T13:10:44Z",
+        "body": "From your sample code one cannot see at what location you are actually subscribing to the protected characteristic.  Are you sure it is happening in the main window?"
+       },
+       {
+        "author": {
+         "login": "wm-eisos",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-18T05:41:31Z",
+        "body": "> From your sample code one cannot see at what location you are actually subscribing to the protected characteristic. Are you sure it is happening in the main window?\n\nIts a bit more complex since im using capacitor and electron and then loading the built web app into the main window.\n\nSo the actual connection code is \nhttps://github.com/WurthElektronik/WE-Bluetooth-LE-Terminal/blob/3ea52b113eda31e8fdc698b878a6b3bd38d40917/src/app/services/ble.service.ts#L146-L294\n\nIm also positive its happenning in the main window since the bluetooth device selection is also being registered on the main window and this works as expected\n```\nMainWindow.webContents.on( 'select-bluetooth-device',\n```\n\nYesterday i managed to get some blueooth logs from chromium and i got this\n\n```\n[31968:0817/153343.750:VERBOSE1:components\\device_event_log\\device_event_log_impl.cc:203] [15:33:43.751] Bluetooth: DEBUG: bluetooth_remote_gatt_characteristic_winrt.cc:578 Unexpected GattCommunicationStatus: 2\n[31968:0817/153343.751:VERBOSE1:components\\device_event_log\\device_event_log_impl.cc:203] [15:33:43.751] Bluetooth: DEBUG: bluetooth_device_winrt.cc:277 BluetoothDeviceWinrt::IsPaired(): False\n[31968:0817/153343.751:VERBOSE1:components\\device_event_log\\device_event_log_impl.cc:203] [15:33:43.751] Bluetooth: DEBUG: bluetooth_device_winrt.cc:336 BluetoothDeviceWinrt::Pair()\n[31968:0817/153343.797:VERBOSE1:content\\browser\\loader\\file_url_loader_factory.cc:470] FileURLLoader::Start: file:///C:/Projects/biz-eismart-Bluetooth-LE-Terminal/electron/app/2415.a9586382ed708529.js\n[31968:0817/153343.812:VERBOSE1:components\\device_event_log\\device_event_log_impl.cc:203] [15:33:43.813] Bluetooth: DEBUG: bluetooth_device_winrt.cc:727 OnConnectionStatusChanged() status=0\n```"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 7,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-10T05:54:16Z",
+        "actor": {
+         "login": "wm-eisos",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-10T05:54:16Z",
+        "actor": {
+         "login": "wm-eisos",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-10T05:54:31Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-10T05:54:31Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-12T16:57:49Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/bluetooth"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-17T11:42:24Z",
+        "actor": {
+         "login": "wm-eisos"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 52837,
+         "url": "https://github.com/electron/electron/issues/52837",
+         "createdAt": "2026-08-16T07:27:26Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-17T18:08:32Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-comment"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52741,
+     "title": "import fetch from 'node-fetch';  const SHOP = process.env.SHOPIFY_SHOP; // e.g. \"my-shop\" or \"my-shop.myshopify.com\" const ADMIN_TOKEN = process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN; // permanent",
+     "url": "https://github.com/electron/electron/issues/52741",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-08-09T19:03:57Z",
+     "closedAt": "2026-08-09T20:12:11Z",
+     "updatedAt": "2026-08-09T20:12:11Z",
+     "author": {
+      "login": "Alex787898",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n33,33\n\n### What operating system(s) are you using?\n\nOther Linux, Windows\n\n### Operating System Version\n\nimport fetch from 'node-fetch';  const SHOP = process.env.SHOPIFY_SHOP; // e.g. \"my-shop\" or \"my-shop.myshopify.com\" const ADMIN_TOKEN = process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN; // permanent token  if (!SHOP || !ADMIN_TOKEN) {   throw new Error('Set SHOPIFY_SHOP and SHOPIFY_ADMIN_API_ACCESS_TOKEN.'); }  function normalizeShop(shop) {   return shop.includes('.myshopify.com') ? shop : `${shop}.myshopify.com`; }  const shopDomain = normalizeShop(SHOP);  async function graphql(query, variables = {}) {   const res = await fetch(`https://${shopDomain}/admin/api/2025-01/graphql.json`, {     method: 'POST',     headers: {       'Content-Type': 'application/json',       'X-Shopify-Access-Token': ADMIN_TOKEN,     },     body: JSON.stringify({ query, variables }),   });   if (!res.ok) throw new Error(`GraphQL failed: ${res.status}`);   const payload = await res.json();   if (payload.errors?.length) throw new Error(`GraphQL errors: ${JSON.stringify(payload.errors)}`);   return payload.data; }  (async () => {   const query = '{ products(first: 3) { edges { node { id title handle } } } }';   const data = await graphql(query);   console.log(JSON.stringify(data, null, 2)); })();\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nimport fetch from 'node-fetch';\n\nconst SHOP = process.env.SHOPIFY_SHOP; // e.g. \"my-shop\" or \"my-shop.myshopify.com\"\nconst ADMIN_TOKEN = process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN; // permanent token\n\nif (!SHOP || !ADMIN_TOKEN) {\n  throw new Error('Set SHOPIFY_SHOP and SHOPIFY_ADMIN_API_ACCESS_TOKEN.');\n}\n\nfunction normalizeShop(shop) {\n  return shop.includes('.myshopify.com') ? shop : `${shop}.myshopify.com`;\n}\n\nconst shopDomain = normalizeShop(SHOP);\n\nasync function graphql(query, variables = {}) {\n  const res = await fetch(`https://${shopDomain}/admin/api/2025-01/graphql.json`, {\n    method: 'POST',\n    headers: {\n      'Content-Type': 'application/json',\n      'X-Shopify-Access-Token': ADMIN_TOKEN,\n    },\n    body: JSON.stringify({ query, variables }),\n  });\n  if (!res.ok) throw new Error(`GraphQL failed: ${res.status}`);\n  const payload = await res.json();\n  if (payload.errors?.length) throw new Error(`GraphQL errors: ${JSON.stringify(payload.errors)}`);\n  return payload.data;\n}\n\n(async () => {\n  const query = '{ products(first: 3) { edges { node { id title handle } } } }';\n  const data = await graphql(query);\n  console.log(JSON.stringify(data, null, 2));\n})();\u2078\n\n### Actual Behavior\n\n<img width=\"279\" height=\"429\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ef2b0946-7284-4caa-b309-7c713aadb66f\" />\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "blocked/need-info \u274c"
+       },
+       {
+        "name": "bug :beetle:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-09T19:04:14Z",
+        "body": "<!-- end-of-life -->\n\nHello @Alex787898. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://releases.electronjs.org/) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-09T19:03:57Z",
+        "actor": {
+         "login": "Alex787898",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-09T19:03:58Z",
+        "actor": {
+         "login": "Alex787898",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-09T19:04:13Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-09T19:04:13Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-09T19:04:13Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-09T20:12:11Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52738,
+     "title": "macOS: audio: 'loopbackWithMute' in setDisplayMediaRequestHandler never captures data with useSystemPicker: false",
+     "url": "https://github.com/electron/electron/issues/52738",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-08-09T16:47:59Z",
+     "closedAt": null,
+     "updatedAt": "2026-09-16T20:15:52Z",
+     "author": {
+      "login": "anildigital",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the Contributing Guidelines for this project.\n- [x] I agree to follow the Code of Conduct that this project adheres to.\n- [x] I have searched the issue tracker for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.3.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS Tahoe 26.5.2 (arm64 / Apple Silicon)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\nUnknown \u2014 have not found a version where this works via a custom picker.\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nWhen `session.setDisplayMediaRequestHandler` is used with `useSystemPicker: false` (i.e. the app supplies its own picker UI and resolves the callback with a `desktopCapturer` source plus `audio: 'loopback'` or `audio: 'loopbackWithMute'`), the resulting audio `MediaStreamTrack` should actually capture system audio, the same way it does when `useSystemPicker: true` is used instead.\n\n### Actual Behavior\n\nThe audio track is created (`kind: \"audio\"`, `label: \"System audio\"`), so the API call itself succeeds, but the track's `readyState` is `\"ended\"` from the very first observation, and no audio data is ever captured \u2014 an `AnalyserNode` attached to the track reports `peakAmplitude: 0` at every sample, forever. The video track from the same `getDisplayMedia()` call works fine (`readyState: \"live\"`, frames render normally) \u2014 only the audio side fails.\n\nSwapping the same request handler to `useSystemPicker: true` (letting Electron/macOS own the whole picker UI) makes system-audio capture work correctly and also correctly triggers the macOS \"would like to record system audio\" TCC permission prompt. With `useSystemPicker: false`, that TCC prompt never appears at all \u2014 which is consistent with the underlying native audio-capture session never actually starting, even though the JS-level API returns a track as if it had.\n\nThis makes `audio: 'loopback'`/`'loopbackWithMute'` unusable for any app that wants to keep its own custom screen-share picker UI while also offering a \"share system audio\" option \u2014 the only way to get working system audio is to hand the entire picker over to `useSystemPicker: true`, which replaces the app's own UI.\n\nReproduces identically on an ad-hoc `electron .` run and on a `Developer ID`-signed, hardened-runtime, notarization-skipped, `/Applications`-installed packaged build \u2014 so this isn't a code-signing or Gatekeeper/TCC-staleness issue.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/anildigital/9a195654a687524fb544db62894466fe\n\n### Additional Information\n\nSteps to reproduce with the gist:\n1. `npm install` in the gist's directory, then `npm start` (or `electron .`).\n2. The renderer calls `getDisplayMedia({ video: true, audio: true })`.\n3. Watch the on-screen log: the audio track appears with `readyState=ended` immediately, and the peak-amplitude readout stays at `0.0000` indefinitely, while the video track stays `live`.\n4. For comparison, change `useSystemPicker: false` to `useSystemPicker: true` in `main.js` and repeat \u2014 the native macOS picker appears, the TCC \"record your system audio\" prompt fires, and after granting it, real audio is captured (non-zero peak amplitude).\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nWe believe the root cause is that macOS's system-audio capture (the ScreenCaptureKit-backed Core Audio Tap, gated behind the separate \"System Audio Recording Only\" TCC permission introduced in newer macOS versions) is only ever started by Electron when Electron's own native picker (`useSystemPicker: true`) drives the capture end-to-end. When an app supplies its own `desktopCapturer`-selected source through a custom picker instead, the `'loopback'`/`'loopbackWithMute'` audio request appears to be accepted and a track handle is handed back, but the corresponding native capture session is never actually wired up \u2014 no TCC prompt is ever shown for the app through this path, and `getUserMedia`/`getDisplayMedia` never delivers audio samples.\n\nWe were unable to find any workaround from the app side (no combination of Chromium command-line switches changed the result), and confirmed the failure is independent of code signing, notarization, and running from `/Applications` vs. an ad-hoc build directory.\n\n</p>\n</details>\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "anildigital",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-09T16:53:31Z",
+        "body": "Follow-up after more digging: this is **not** a duplicate of #49607 (which is closed) \u2014 I confirmed our app's `Info.plist` already has `NSAudioCaptureUsageDescription` set (added by #49717, and present by default in Electron 43.3.0's own bundled `Info.plist` in `node_modules/electron/dist/Electron.app`). So the missing-plist-key issue from #49607 does not apply here and does not fix this.\n\nWith `enable-logging`/`v=1`, I see the exact same failure signature #49607 diagnosed:\n\n```\nCatapAudioInputStream::Open => deviceId: loopback\nCatapAudioInputStream::Open => Error when probing audio tap permissions.\n...\nUMP::OnTrackStarted({..., result=PERMISSION_DENIED_BY_SYSTEM})\nMSS::SetReadyState({id=loopback}, {ready_state=Ended})\n```\n\nThe difference: #49607's repro (and its fix) went through the case where the permission probe eventually succeeds once the plist key is present. In our case (`useSystemPicker: false`, app supplies its own `desktopCapturer`-selected source via a custom picker), the permission probe fails every time, with the plist key already present, and **no TCC prompt for \"System Audio Recording Only\" is ever shown to the user at all** \u2014 checked directly in System Settings \u2192 Privacy & Security, no entry appears for the app through this path. Switching the same code to `useSystemPicker: true` does trigger that TCC prompt and does work.\n\nSo this looks like a second, narrower gap: the CoreAudio Tap permission probe/prompt only ever gets triggered when Electron's own native picker owns the capture; it's never triggered for a developer-supplied source passed through a custom picker, independent of the `NSAudioCaptureUsageDescription` fix. Happy to pull more `v=1` logs or test other flag combinations if useful \u2014 also saw the `MacCatapLoopbackAudioForScreenShare` disable-features flag mentioned in the #49717 docs update and can test that combination too if helpful.\n\n(Also noting #51154 for anyone else who finds this thread \u2014 that was a different, unrelated proposal that was closed/rejected, not a fix for this.)"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 16,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-09T16:48:11Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-09T16:48:12Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-09T16:48:12Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-11T12:26:47Z",
+        "actor": {
+         "login": "FrancescoGalloR3"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 2812,
+         "url": "https://github.com/kirodotdev/KiroCrew/issues/2812",
+         "createdAt": "2026-08-11T12:26:46Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-11T12:30:57Z",
+        "actor": {
+         "login": "Frxnesvo"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 2814,
+         "url": "https://github.com/kirodotdev/KiroCrew/issues/2814",
+         "createdAt": "2026-08-11T12:30:56Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-07T02:15:02Z",
+        "actor": {
+         "login": "VerteDinde"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53646,
+         "url": "https://github.com/electron/electron/pull/53646",
+         "createdAt": "2026-09-07T02:15:01Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-07T02:15:08Z",
+        "actor": {
+         "login": "VerteDinde"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53647,
+         "url": "https://github.com/electron/electron/pull/53647",
+         "createdAt": "2026-09-07T02:15:06Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-08T14:58:38Z",
+        "actor": {
+         "login": "janlauber"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 296,
+         "url": "https://github.com/natrontech/wattroom/issues/296",
+         "createdAt": "2026-08-31T20:24:18Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-08T14:59:28Z",
+        "actor": {
+         "login": "janlauber"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1124,
+         "url": "https://github.com/natrontech/wattroom/issues/1124",
+         "createdAt": "2026-09-08T14:59:27Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-09T20:07:13Z",
+        "actor": {
+         "login": "janlauber"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 1700,
+         "url": "https://github.com/natrontech/wattroom/pull/1700",
+         "createdAt": "2026-09-09T19:55:16Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-16T20:15:51Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-16T20:15:53Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-25T21:48:42Z",
+        "actor": {
+         "login": "aasimsyed-ai"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 20,
+         "url": "https://github.com/aasimsyed-ai/meeting-bot/issues/20",
+         "createdAt": "2026-09-25T21:48:41Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-09T05:49:56Z",
+        "actor": {
+         "login": "ooboqoo"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 97,
+         "url": "https://github.com/ooboqoo/shiping/issues/97",
+         "createdAt": "2026-10-07T07:32:20Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-10T23:07:45Z",
+        "actor": {
+         "login": "junruxiong"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 293,
+         "url": "https://github.com/IncarnaMind/IncarnaMind/pull/293",
+         "createdAt": "2026-10-10T23:07:44Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-18T09:24:40Z",
+        "actor": {
+         "login": "BotCoder254"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 57,
+         "url": "https://github.com/shikki841/inaudio/issues/57",
+         "createdAt": "2026-10-18T09:24:39Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52715,
+     "title": "Add IPC security best practices guide for contextBridge",
+     "url": "https://github.com/electron/electron/issues/52715",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-08-08T14:45:12Z",
+     "closedAt": "2026-08-08T14:45:27Z",
+     "updatedAt": "2026-08-08T14:45:27Z",
+     "author": {
+      "login": "rexblade58",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "Document security best practices for IPC communication using contextBridge with proper input validation.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "needs-template"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-08T14:45:26Z",
+        "body": "<!-- issue-template-check -->\n\nHello @rexblade58. Thanks for taking the time to open an issue and helping to make Electron better!\n\nThis issue was automatically closed because its body does not follow any of this repository's issue templates. Maintainers rely on the sections in those templates to triage issues, and issues that are missing them usually cannot be acted upon.\n\nTo get this issue triaged, please either:\n\n* Edit the issue body above to include all of the sections from one of our [issue templates](https://github.com/electron/electron/tree/main/.github/ISSUE_TEMPLATE) - it will be reopened automatically once it does, or\n* File a new issue via https://github.com/electron/electron/issues/new/choose, which will fill in the correct template for you."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-08T14:45:27Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "needs-template"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-08T14:45:27Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52700,
+     "title": "Windows MSIX/AppX: Chromium GPU process can be killed when Code Integrity rejects vk_swiftshader.dll",
+     "url": "https://github.com/electron/electron/issues/52700",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-08-07T17:21:08Z",
+     "closedAt": "2026-08-26T08:44:00Z",
+     "updatedAt": "2026-08-26T08:44:00Z",
+     "author": {
+      "login": "talshalti",
+      "__typename": "User"
+     },
+     "authorAssociation": "CONTRIBUTOR",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nAn Electron/Chromium application packaged as MSIX/AppX should be able to initialize its GPU process without Windows terminating the process because a bundled Chromium runtime DLL does not satisfy the effective binary-signature policy.\n\nIf SwiftShader cannot be loaded under the GPU process's Code Integrity policy, Chromium should fall back gracefully rather than causing the GPU process \u2014 and potentially the entire packaged application \u2014 to terminate.\n\n### Actual Behavior\n\nThere are now independent reports from multiple packaged Chromium/Electron desktop applications where the Chromium GPU process attempts to load:\n\n```text\nvk_swiftshader.dll\n```\n\nand Windows records Code Integrity Event ID 3033:\n\n```text\nCode Integrity determined that a process (...) attempted to load\n...\\vk_swiftshader.dll\nthat did not meet the Microsoft signing level requirements.\n```\n\nThis is followed by the GPU process terminating and, in several reproductions, failing to relaunch.\n\nTypical Chromium logs include:\n\n```text\nGPU process exited unexpectedly\nGPU process launch failed\nGPU process isn't usable. Goodbye.\n```\n\nOn affected MSIX installations, the package can additionally transition to:\n\n```text\nModified, NeedsRemediation\n```\n\nafter which the application may no longer launch until repaired/reinstalled.\n\n### Evidence that MSIX/AppX execution is relevant\n\nOne OpenAI Codex reproduction copied the exact same application payload out of:\n\n```text\nC:\\Program Files\\WindowsApps\\...\n```\n\nand executed it from an ordinary directory.\n\nResults:\n\n```text\nPackaged MSIX:\nCode Integrity 3033 on vk_swiftshader.dll\napplication terminated\n\nSame files executed unpackaged:\nnormal GPU path works\nno Code Integrity block\napplication remains running\n```\n\nThis suggests that the packaged execution environment / GPU child-process signing policy is material to the failure.\n\nA separate Claude Desktop report reproduced the problem 15/15 times using the MSIX build while the same-version non-MSIX build worked.\n\nWinDbg on the Claude GPU child showed:\n\n```text\nntdll!LdrAppxHandleIntegrityFailure\n```\n\nwith Code Integrity simultaneously rejecting `vk_swiftshader.dll`.\n\n### Code Integrity details\n\nAnother independent Codex reproduction recorded:\n\n```text\nEvent ID: 3033\nDLL: vk_swiftshader.dll\nStatus: 0xC0000428\nRequestedPolicy: 8\nValidatedPolicy: 1\n```\n\nand observed the GPU child with:\n\n```text\nMicrosoftSignedOnly = ON\nAllowStoreSignedBinaries = OFF\n```\n\nThe Code Integrity event was immediately followed by the Chromium GPU process crashing and its relaunch failing.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n### Existing reports\n\nOpenAI Codex:\n\nhttps://github.com/openai/codex/issues/35505\n\nhttps://github.com/openai/codex/issues/34133\n\nhttps://github.com/openai/codex/issues/35352\n\nhttps://github.com/openai/codex/issues/35681\n\nhttps://github.com/openai/codex/issues/35635\n\nAnthropic Claude Desktop:\n\nhttps://github.com/anthropics/claude-code/issues/80999\n\nhttps://github.com/anthropics/claude-code/issues/81341\n\nThere is an existing Electron GPU-sandbox issue:\n\nhttps://github.com/electron/electron/issues/51761\n\nbut that issue appears to involve a different trigger: directory DACLs containing orphaned/zombie SIDs. I am including it only because the failure also occurs during Chromium GPU sandbox initialization; I do not believe it describes the same MSIX/Code Integrity failure.\n\n### Chromium-related finding\n\nOne of the Codex reports points to Chromium change:\n\nhttps://chromium.googlesource.com/chromium/src/+/963206a961a7992b048d07f756f87f11fa2e5420\n\nconcerning SwiftShader initialization/preloading around GPU sandbox startup.\n\nI have not established whether this change completely resolves the MSIX/AppX case, but it may be relevant to determining whether the appropriate fix belongs in Electron, Chromium, ANGLE/SwiftShader, or application packaging.\n\n### Minimal reproduction\n\nI do not currently have a standalone Electron testcase.\n\nA useful minimal reproduction would likely be:\n\n1. Create a minimal Electron application with a `BrowserWindow`.\n2. Package it as MSIX/AppX.\n3. Launch it normally.\n4. Trigger Chromium GPU initialization and a path that probes/falls back to SwiftShader.\n5. Inspect:\n\n```text\nApplications and Services Logs\n  Microsoft\n    Windows\n      CodeIntegrity\n        Operational\n```\n\n6. Check for Event ID `3033` involving:\n\n```text\nvk_swiftshader.dll\n```\n\n7. Run the same Electron payload unpackaged as a control.\n\n### Why I'm reporting this upstream\n\nAt this point I don't know whether the correct fix belongs in:\n\n* Electron\n* Chromium's GPU process / sandbox configuration\n* ANGLE / SwiftShader\n* MSIX/AppX binary signing/catalog handling\n* application packaging configuration\n\nHowever, the same failure mode is now independently documented in multiple Chromium/Electron packaged applications, with Code Integrity logs directly correlating `vk_swiftshader.dll` rejection with GPU-process termination.\n\nI'm opening this primarily to determine whether Electron can reproduce this with a minimal packaged application and whether packaged Windows builds need different handling for Chromium's GPU-process binary-signature policy.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-10T22:54:14Z",
+        "body": "Why is the lib not signed properly?"
+       },
+       {
+        "author": {
+         "login": "talshalti",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-10T23:46:19Z",
+        "body": "> Why is the lib not signed properly?\n\nI believe it wasnt signed properly when chromium added code to load it as a fallback to a mechanism\n\nProblem is, it affects all electron based appx package, with threat of process termination and store listing corruption"
+       },
+       {
+        "author": {
+         "login": "ckerr",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-12T18:21:07Z",
+        "body": "I wasn't sure how to approach this, so I asked Sol for its opinion \ud83d\ude05 and FWIW here is its assessment:\n\n---\n\nVerdict\n\n**(a) Yes, the narrow failure is real. Multiple independent Codex and Claude MSIX reports correlate:**\n\n- Code Integrity Event 3033 rejecting vk_swiftshader.dll\n- GPU exit 101457950\n- failed GPU relaunches\n- Modified, NeedsRemediation\n- identical payload working outside MSIX\n\nHowever, the claim that this affects all Electron AppX packages is unsupported. There is no minimal stock-Electron reproduction yet.\n\n**(b) The likely cause is an MSIX signing/catalog incompatibility exposed by Chromium\u2019s GPU sandbox.**\n\n1. Chromium configures sandboxed children with MicrosoftSignedOnly, excluding ordinary vendor-signed DLLs.\n2. WebGPU/Dawn or an explicit SwiftShader fallback probes vk_swiftshader.dll.\n3. The affected MSIX packages lack a signature/catalog combination acceptable to the effective image-load policy. Anthropic reports specifically show a missing AppxMetadata\\CodeIntegrity.cat; OpenAI package evidence varies.\n4. Under MSIX, Windows escalates the rejection through ntdll!LdrAppxHandleIntegrityFailure, kills the GPU process, and can mark the package for remediation. Outside MSIX, the same failed probe is generally nonfatal.\n5. Repeated GPU launch failures eventually reach Chromium\u2019s GPU process isn't usable. Goodbye. path.\n\nThe cited Chromium change is already in **Electron 43.0.0\u2019s Chromium 150.0.7871.46**. It merely stops _unconditional_ SwiftShader preloading when WARP suffices; it does not fix legitimate WebGPU/Dawn probing or invalid MSIX image signing. The original preload behavior dates to 2022, so this is not a new Electron 43 regression.\n\nMy conclusion: **primarily a packaging defect, with a Chromium robustness gap**. The immediate fix is to produce an MSIX whose native DLLs validate under AppX/CIG, probably through a correct Code Integrity catalog and appropriate page-hash/signing treatment. Chromium could additionally avoid probing SwiftShader unless requested and recover cleanly when AppX makes a load failure fatal.\n\nI could not reproduce it directly because this workspace is Linux and the issue provides no standalone testcase.\n\n"
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-12T18:22:01Z",
+        "body": "<!-- blocked/need-repro -->\n\nHello @talshalti. Thanks for reporting this and helping to make Electron better!\n\nWould it be possible for you to make a standalone testcase with only the code necessary to reproduce the issue? For example, [Electron Fiddle](https://www.electronjs.org/fiddle) is a great tool for making small test cases and makes it easy to publish your test case to a [gist](https://gist.github.com) that Electron maintainers can use.\n\nStand-alone test cases make fixing issues go more smoothly: it ensure everyone's looking at the same issue, it removes all unnecessary variables from the equation, and it can also provide the basis for automated regression tests.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-repro label for this reason. After you make a test case, please link to it in a followup comment. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "talshalti",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-12T18:28:20Z",
+        "body": "idk it seems like something has changed since the spike of these errors originated 3 weeks ago. i reproduce locally through access to a service that requires mfa before providing a link that clicking on it results in a crash, so theres no minimal example.\nI have two accounts with pro (x20) to manage all the work i need to do and I still don't have enough tokens to support this issue at this time. I will maybe add a flag as a workaround and leave this issue open to let you guys, the real pros, handle it on your end to provide a better platform for other people\nI currently develop a browser written in typescript/vue/vite/electron, and it crashes with the same properties of the linked issues. Called Summer Browser (available in microsoft store, obviously)"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 13,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-07T17:21:09Z",
+        "actor": {
+         "login": "talshalti",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-07T17:21:10Z",
+        "actor": {
+         "login": "talshalti",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-07T17:21:22Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-07T17:21:22Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-12T18:21:52Z",
+        "actor": {
+         "login": "ckerr",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-08-12T18:28:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-22T02:54:47Z",
+        "actor": {
+         "login": "Arelion999"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 88323,
+         "url": "https://github.com/anthropics/claude-code/issues/88323",
+         "createdAt": "2026-08-20T18:06:21Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-25T11:39:49Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53174,
+         "url": "https://github.com/electron/electron/pull/53174",
+         "createdAt": "2026-08-25T11:39:48Z"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-08-25T13:32:00Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "assignee": {
+         "login": "codebytere"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-26T08:44:00Z",
+        "actor": {
+         "login": "codebytere",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 53174,
+         "url": "https://github.com/electron/electron/pull/53174"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-28T17:10:02Z",
+        "actor": {
+         "login": "mariomirow"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 80444,
+         "url": "https://github.com/anthropics/claude-code/issues/80444",
+         "createdAt": "2026-07-23T05:42:58Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-12T10:49:35Z",
+        "actor": {
+         "login": "TheNorbmeister"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 53859,
+         "url": "https://github.com/electron/electron/issues/53859",
+         "createdAt": "2026-09-12T10:49:33Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-12T13:02:51Z",
+        "actor": {
+         "login": "TheNorbmeister"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 81341,
+         "url": "https://github.com/anthropics/claude-code/issues/81341",
+         "createdAt": "2026-07-26T10:47:29Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52677,
+     "title": "Electron Fuses for --no-stdio-init flag",
+     "url": "https://github.com/electron/electron/issues/52677",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-08-06T13:29:00Z",
+     "closedAt": null,
+     "updatedAt": "2026-08-06T15:39:48Z",
+     "author": {
+      "login": "Hill-98",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Enhancement"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nElectron fails to start when nul device are disabled on Windows. This issue has been reported in #44881 and fixed in #47870.\n\nCurrent fix is \u200b\u200bto start electron with the `--no-stdio-init` flag, but there is no way to always enable this flag. Because NodeJS has not been initialized, `app.relaunch` cannot work.\n\nWe could probably provide a fuse to always enable it. Otherwise, when the program is released and users experience program crashes, they will be helpless.\n\n### Proposed Solution\n\nProvide a fuse to always enable the `--no-stdio-init` flag\n\n### Alternatives Considered\n\nUse an external program to check if the NUL device is available and then start electron using the `--no-stdio-init` flag, but this requires introducing an additional build process.\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "enhancement :sparkles:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-06T13:29:00Z",
+        "actor": {
+         "login": "Hill-98",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "enhancement :sparkles:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-06T13:29:02Z",
+        "actor": {
+         "login": "Hill-98",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-03T14:20:30Z",
+        "actor": {
+         "login": "Hill-98"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53459,
+         "url": "https://github.com/electron/electron/pull/53459",
+         "createdAt": "2026-09-03T14:20:29Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52675,
+     "title": "DevTools on v43 has a dirty region on Wayland",
+     "url": "https://github.com/electron/electron/issues/52675",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-08-06T05:55:32Z",
+     "closedAt": null,
+     "updatedAt": "2026-08-17T18:09:39Z",
+     "author": {
+      "login": "ljani",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\nDebian 13.6 with Gnome 48 on Wayland\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n42.8.1\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nDevTools behaves normally and does not have dirty region around it.\n\n### Actual Behavior\n\nWhen opening DevTools in a detached state, it has dirty region around it. In the video, it is black, but on the screen, it leaves a trail from previous paints.\n\nhttps://github.com/user-attachments/assets/b7861353-09b9-4fbb-893f-f1ddb816543f\n\n### Testcase Gist URL\n\nhttps://github.com/ljani/electron-52675\n\n`npm ci && npm start` should work, but please note you need to move the dev tools window to make the bug clearly visible. `mode: \"detach\"` is not needed, it can be triggered by manually undocking DevTools too.\n\n### Additional Information\n\nResizing the DevTools window makes it behave normally again.\n\nI also tested 43.3.0, some 44.x and 45.0.0-nightly.20260805 and the all have the same problem.\n\nChromium v151 stable does not have this problem.\n\nI tried disabling rounded corners via the boolean added in v43, but it has no effect.\n\nCompared to v42, v43 seems to make DevTools titlebar look like Gnome. In v42, it looks like Windows 7-ish.\n\nSometimes when screenshotting the window and pasting it to Krita, the region around the window is transparent instead of showing the dirty paints. But here is a screenshot of the dirty region:\n\n<img width=\"862\" height=\"630\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/eba15432-ae32-470a-b551-fbcf9eb3e02d\" />",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-repo"
+       },
+       {
+        "name": "wayland"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-06T15:51:38Z",
+        "body": "CC @mitchchn"
+       },
+       {
+        "author": {
+         "login": "ljani",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-06T16:19:00Z",
+        "body": "Added a repro to the first post: https://github.com/ljani/electron-52675\n\n`npm ci && npm start` should work, but please note you need to move the dev tools window to make the bug clearly visible. `mode: \"detach\"` is not needed, it can be triggered by manually undocking DevTools too."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-06T05:55:33Z",
+        "actor": {
+         "login": "ljani",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-06T05:55:33Z",
+        "actor": {
+         "login": "ljani",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-06T05:55:48Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-06T05:55:48Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-06T15:51:25Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "wayland"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-17T18:09:39Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-repo"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52674,
+     "title": "Appindicator receiving no response from Electron 43.3 applications",
+     "url": "https://github.com/electron/electron/issues/52674",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-08-06T04:36:41Z",
+     "closedAt": "2026-08-31T18:13:21Z",
+     "updatedAt": "2026-09-09T10:35:40Z",
+     "author": {
+      "login": "thesuperbob49",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.3\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\nCachyOS 7.1.6-1, GNOME 50.4 (Wayland)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n43.2\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nicon should appear on the top right through libappindicator when it is launched (and provides one)\n\n### Actual Behavior\n\nthree dots appear on the right side and the icon never loads\n\n<img width=\"45\" height=\"34\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d937c11e-3fea-45f2-875b-a9f26a367c53\" />\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n\nUpgrading from Electron 43.2.x to 43.3.0 causes AppIndicator/StatusNotifierItem tray icons to disappear on GNOME 50.4 (Wayland).\n\nThis has been reproduced with at least Caprine and youtube-music-desktop-app by launching the app.asar with electron directly.\n\nElectron 43.2 works correctly for both applications when doing the same thing.\n\nThe app registers a org.freedesktop.StatusNotifierItem-* D-Bus name, but /StatusNotifierItem exports no interfaces:\n\n```busctl --user introspect \\ \norg.freedesktop.StatusNotifierItem-XXXXX-1 \\ \n/StatusNotifierItem \n\nNAME TYPE SIGNATURE RESULT/VALUE FLAGS\n```\nand running \n`gdbus introspect --session --dest org.freedesktop.StatusNotifierItem-XXXXX-1 --object-path /StatusNotifierItem\n`\nreturns the following:\n\n```\nnode /StatusNotifierItem {\n};\n```\n\nDowngrading to Electron 43.2 through electron43-bin in the AUR restores normal tray icon behavior.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 35,
+      "nodes": [
+       {
+        "author": {
+         "login": "oeyoews",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-06T04:48:57Z",
+        "body": "Electron 43.2.0 -> 43.3.0 regression on Linux: tray icon display and context menu stopped working. Fedora Linux, Wayland, x64. Electron 43.2.0 works correctly; reverting restores the behavior."
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-06T06:11:52Z",
+        "body": "Confirmed related to #52416 (84fe3290be18a7dd60de4eeaba5382171161a5a2) by bisecting. Last known working commit: b44c7dbc9951a8fbef3e91dd2327d2c9f053a022\n\nRepro Gist: https://gist.github.com/YUCLing/bf1ee0764b90ac2a2f0181f67b4460c1\n\nKDE isn't affected; GNOME is.\n\n---\n\n### The empty `gdbus introspect` is *not* the regression\n\n> `gdbus introspect --session --dest org.freedesktop.StatusNotifierItem-XXXXX-1 --object-path /StatusNotifierItem` returns:\n>\n> ```\n> node /StatusNotifierItem {\n> };\n> ```\n\nThis is expected and pre-existing \u2014 Chromium never implements `org.freedesktop.DBus.Introspectable`, so the old code returns the same empty node:\n\n```sh\n$ gdbus introspect --session --dest :1.114 --object-path /org/chromium/StatusNotifierItem/1\nnode /org/chromium/StatusNotifierItem/1 {\n};\n```\n\n### The actual cause\n\nSome DEs (GNOME's AppIndicator extension, xApp) address the item by its **unique** connection name (they use `Gio.DBusProxy`, which sends to the name owner), but the multiplexer only knows/keyed by the **well-known service name**, so the icon lookup fails.\n\n- `Multiplexer::GetIcon` \u2192 `icons_.find(destination)`: https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/status_icons/status_icon_linux_dbus.cc;l=267;drc=3a02de271fd3c1b91c4334801ddd01d98d840331\n- registration/ownership of the well-known service name: https://source.chromium.org/chromium/chromium/src/+/main:chrome/browser/ui/views/status_icons/status_icon_linux_dbus.cc;l=607;drc=3a02de271fd3c1b91c4334801ddd01d98d840331\n\nThe GNOME AppIndicator extension never talks to the item by its well-known name \u2014 it resolves it to the unique name at registration and uses that for everything:\n\n- [statusNotifierWatcher.js#L100](\u2026/statusNotifierWatcher.js#L100) \u2014 `RegisterStatusNotifierItemAsync` parses the registration: a service-name registration is resolved to its **unique owner** (`busName = await DBusUtils.getUniqueBusName(\u2026)` \u2192 `:1.134`) with the default object path `/StatusNotifierItem`. The well-known name is discarded after this.\n- [appIndicator.js#L432](\u2026/appIndicator.js#L432) \u2014 `AppIndicator` builds its proxy from that unique `busName` (`this._proxy = new AppIndicatorProxy(busName, object)`), and `_setupProxy()` even calls `Introspect` explicitly against `this._proxy.gNameOwner` \u2014 the unique name.\n- [dbusProxy.js#L31](\u2026/dbusProxy.js#L31) \u2014 `AppIndicatorProxy extends Gio.DBusProxy`, and `getProperty`/`getProperties` call `this.gConnection.call(this.gName, \u2026)`. Gio.DBusProxy sends every call to the **unique name owner**, so the destination header Chromium sees is always `:1.134`, never `org.freedesktop.StatusNotifierItem-\u2026`.\n\n### Evidence\n\n```sh\n# All registered SNIs \u2014 note both path-form (old) and name-form (new) entries (ayatana is Ubuntu thing, ignore them)\n$ gdbus call --session --dest org.kde.StatusNotifierWatcher --object-path /StatusNotifierWatcher --method org.freedesktop.DBus.Properties.Get org.kde.StatusNotifierWatcher RegisteredStatusNotifierItems\n(<[':1.114@/org/chromium/StatusNotifierItem/1', ':1.119@/org/ayatana/NotificationItem/software_update_available', ':1.119@/org/ayatana/NotificationItem/livepatch', 'org.freedesktop.StatusNotifierItem-3136-1']>,)\n\n# Old impl: works when addressed by the unique name, because routing is by object path\n$ gdbus call --session --dest :1.114 --object-path /org/chromium/StatusNotifierItem/1 --method org.freedesktop.DBus.Properties.GetAll org.kde.StatusNotifierItem\n({'AttentionIconName': <''>, 'AttentionIconPixmap': <@a(iiay) []>, 'AttentionMovieName': <''>, 'Category': <'ApplicationStatus'>, 'IconName': <'status_icon_0'>, 'IconThemePath': <'/tmp/org.chromium.Chromium.cRqLfM'>, 'Id': <'mute-quilt-hum-fp91x_status_icon_1'>, 'ItemIsMenu': <false>, 'Menu': <objectpath '/org/chromium/DbusMenu/1'>, 'OverlayIconName': <''>, 'OverlayIconPixmap': <@a(iiay) []>, 'Status': <'Active'>, 'Title': <''>, 'ToolTip': <('', @a(iiay) [], 'Tray Tooltip', '')>, 'WindowId': <0>},)\n\n# Multiplexer: works when addressed by the well-known name\n$ gdbus call --session --dest org.freedesktop.StatusNotifierItem-3136-1 --object-path /StatusNotifierItem --method org.freedesktop.DBus.Properties.GetAll org.kde.StatusNotifierItem\n({'AttentionIconName': <''>, 'AttentionIconPixmap': <@a(iiay) []>, 'AttentionMovieName': <''>, 'Category': <'ApplicationStatus'>, 'IconName': <'status_icon_0'>, 'IconThemePath': <'/tmp/org.chromium.Chromium.GVhZFe'>, 'Id': <'mute-quilt-hum-fp91x_status_icon_1'>, 'ItemIsMenu': <false>, 'Menu': <objectpath '/org/chromium/DbusMenu/1'>, 'OverlayIconName': <''>, 'OverlayIconPixmap': <@a(iiay) []>, 'Status': <'Active'>, 'Title': <''>, 'ToolTip': <('', @a(iiay) [], 'Tray Tooltip', '')>, 'WindowId': <0>},)\n\n# ...but the same call addressed by the unique name fails\n$ gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.GetNameOwner org.freedesktop.StatusNotifierItem-3136-1\n(':1.134',)\n$ gdbus call --session --dest :1.134 --object-path /StatusNotifierItem --method org.freedesktop.DBus.Properties.GetAll org.kde.StatusNotifierItem\nError: GDBus.Error:org.freedesktop.DBus.Error.Failed: error occurred in GetAll\n```\n\n### Why the old code worked and the multiplexer can't\n\nThe old code gave every icon its own object path (`/org/chromium/StatusNotifierItem/{id}`) and D-Bus routed by **object path**, which works regardless of whether the caller uses the unique or the well-known name. The multiplexer collapses all icons onto a single `/StatusNotifierItem` path, so the only remaining discriminator is the **destination service name**. DEs that address by unique name (via `Gio.DBusProxy`) therefore can't be routed to the right icon \u2014 `GetIcon(\":1.134\")` finds nothing.\n\n---\n\n*Assisted by DeepSeek V4 Flash*"
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-07T09:23:13Z",
+        "body": "Upstream tracking issue: https://issues.chromium.org/543471702"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-07T10:34:27Z",
+        "body": "@YUCLing Appreciate you looking into this. Thank you!"
+       },
+       {
+        "author": {
+         "login": "Hronom",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-13T00:46:46Z",
+        "body": "Confirmed independently in the public [Bronom](https://github.com/Netroforge/bronom) app.\n\n### Reproduction\n\n- Bronom release: [v1.2.0](https://github.com/Netroforge/bronom/releases/tag/v1.2.0)\n- OS: Ubuntu 24.04.4 LTS\n- Desktop: GNOME Shell 46.0 on X11\n- Extension: `ubuntu-appindicators@ubuntu.com`\n- Architecture: x86_64\n- Broken: Electron 43.4.0\n- Working workaround: Electron 42.4.1\n\nWith Electron 43.4.0, Bronom's real tray icon is replaced by the same three-dot placeholder shown in this issue, and clicking it does not expose Bronom's context menu. Pinning the exact same application code to Electron 42.4.1 restores the icon and menu. A user also confirmed the attention-state icon pulse is visible with 42.4.1.\n\nBronom uses packaged PNG assets loaded with `nativeImage.createFromPath(...)`, constructs a normal Electron `Tray`, sets a `Menu`, and explicitly calls `popUpContextMenu()` for both `click` and `right-click`. The relevant implementation is in [src/main/index.ts at v1.2.0](https://github.com/Netroforge/bronom/blob/v1.2.0/src/main/index.ts), and the Electron compatibility pin is tracked in https://github.com/Netroforge/bronom/issues/1.\n\n### D-Bus comparison\n\nDuring isolated minimal probes using the same tray code and icon:\n\n- Electron 43.4.0 registered an `org.freedesktop.StatusNotifierItem-<pid>-1` service and exposed the menu at `/org/chromium/DbusMenu/1`.\n- GNOME logged:\n  `While initalizing proxy for org.freedesktop.StatusNotifierItem-...: Gio.DBusError: GDBus.Error:org.freedesktop.DBus.Error.Failed: error occurred in Get`\n- The item then disappeared from `org.kde.StatusNotifierWatcher.RegisteredStatusNotifierItems`.\n- Electron 42.4.1 exposed the menu at `/com/canonical/dbusmenu`; the watcher retained the item and the tray icon/menu worked.\n\nThe `Id`, `Menu`, `Status`, `IconName`, `ToolTip`, and `GetAll` properties were readable after startup under Electron 43.4.0, which makes this look like an initialization/readiness incompatibility or race in the new Chromium tray backend rather than an invalid Bronom image.\n\nBronom will remain pinned to Electron 42.4.1 until a released Electron version containing the upstream fix passes the tray icon/menu and attention-pulse checks on Ubuntu GNOME.\n"
+       },
+       {
+        "author": {
+         "login": "lamualfa",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-14T17:10:44Z",
+        "body": "Confirming on **Ubuntu 24.04, GNOME Shell 46.0, X11, `ubuntu-appindicators@ubuntu.com`**, Electron 43.3.0 (Token Monitor's packaged build). Same symptom: three-dot placeholder, left and right clicks dead.\n\nAdding a D-Bus timeline that pins down exactly when the failure window opens, in case it helps the fix land:\n\n```\nt+0.000s  RegisterStatusNotifierItem(\"org.freedesktop.StatusNotifierItem-442238-1\")   # from Electron\nt+0.002s  GetAll(\"org.kde.StatusNotifierItem\")                                        # from gnome-shell\n         -> error org.freedesktop.DBus.Error.Failed: \"error occurred in GetAll\"\nt+0.796s  Get(\"Id\")                                                                   # extension retry\n         -> error \"error occurred in Get\"\nt+0.796s  Get(\"Menu\")\n         -> error \"error occurred in Get\"\n```\n\ngnome-shell journal:\n\n```\nWhile initalizing proxy for org.freedesktop.StatusNotifierItem-442238-1: GDBus.Error:...Failed: error occurred in Get\n... Impossible to get basic properties: ...\n```\n\nAfter which the AppIndicator extension gives up and never builds the panel actor.\n\nTwo observations that may narrow it further:\n\n- **The property service is up shortly after**: direct `gdbus call ... Properties.Get/GetAll` against the same well-known name and `/StatusNotifierItem` path succeeds a few seconds later (all standard properties return correctly), so this is purely about reads landing in the immediate post-registration window \u2014 consistent with the unique-name/well-known-name change noted above.\n- **Nothing app-side mitigates it**: recreating the `Tray` repeatedly (up to 5 retries spread over 30 s), and even constructing the very first `Tray` 25 s after `app.whenReady()` in a fully idle process, both still fail the extension's first reads the same way \u2014 every registration through the well-known name path hits the broken window, so no app-level workaround exists.\n\nFor anyone needing a version reference: a minimal `new Tray()` + `setContextMenu()` repro works end-to-end here on Electron 37.2.0 (icon renders, shell menu opens), matching the 43.2.0 last-good / 43.3.0 regression reports above."
+       },
+       {
+        "author": {
+         "login": "Vendicated",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-17T22:19:11Z",
+        "body": "Minimum fiddle in case it helps:\n```js\nconst { app, Tray, nativeImage } = require(\"electron\");\n\napp.whenReady().then(() => {\n\t  const image = nativeImage.createFromDataURL(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAFQUExURSsuOisuOisuOisuOisuOiotOSsuOisuOisuOisuOisuOisuOisuOisuOistOS0yPiwwPCstOSotOSotOSsuOiosOCsuOjdCTjZATCotOS80QFZ0gV1/jCwvOywwPD9OWkVYZU5ndDE4RC0wPUJTYE1lcUxkcUBQXE9pdk9odUthbkFRXSosOD9PXEhdai81QTQ8SUlea01lckBPXDU/SzM7R0pgbT1LWEdbZzlEUDY/TD5NWikrNystOUtibjE5RTtIVERXZDlFUkxkcE5mczQ8SDpGUjlEUUdcaDdCTzlFUTA2QlVzgD5MWVp6h1d1gikqNkZZZkFSXkVXZC4zP1Jtektib0hcaUphbTU+SjI5RUJSX1Nue1Vyfz1MWEtjb0JUYERWY2CEkVFreDI6RkNVYTM8SE1mc0dcaUFSXzpHUy0yPkxjcElfaysvO////30NX24AAAAWdFJOUwAFSKfk+6hJF5LvsfvjSO/ukrCx7vvcuCwFAAAAAWJLR0RvVQhhgQAAAAd0SU1FB+oIERYDGxo9rJIAAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMDgtMTdUMjI6MDM6MTMrMDA6MDCa1MInAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI2LTA4LTE3VDIyOjAzOjEyKzAwOjAwTf5xLwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0wOC0xN1QyMjowMzoyNyswMDowMMZceLQAAAD4SURBVBjTNc9ZV4JQFEDhc+GKgDRYefBWGFJZ2lEzs0nITLPRSiOa5zmr///YSlf7bT9+AABMknkoxJUwg26qpiOacYG6pnY/goijY+NxgRhRAZiGwkpYE3bSQYEag7A+OTWdMp2Z2XRmLqFLoFA2l58vLBQXk6WlZZKB08rqWrpsud56ZaNKHAyxWatvuY1t2tkt7AkDDNw/aLp0eHTcatsWGsCpeJLJou9TzvQE9oGCp0H+7PwCveCydYUy9A9c3/iN27vgPvXw+DQoAYs+l6j9Qq9v7x+fTpQBqEMCO19V+/uHaLiH0UY8v9zs/ON6/FiMK9If/xcdUiUvY6VPJAAAAABJRU5ErkJggg==\");\n\t  const tray = new Tray(image);\n\t  tray.on(\"click\", () => {\n\t      console.log(\"Tray Clicked\")\n\t  })\n})\n```"
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-17T22:24:50Z",
+        "body": "The upstream fix is already landed in Chromium main branch: https://chromium-review.googlesource.com/c/chromium/src/+/8250459\n\nIt'll take some time for it to be backported to older Chromium stable and finally landed in Electron"
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-17T22:56:31Z",
+        "body": "Hi @nikwen , M150 is already a extended stable branch, the fix might not coming to this branch, thus the Electron v43 too. But it's quite a serious issue for Linux users, any chance the team will backport it manully to v43?"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-18T01:14:13Z",
+        "body": "@YUCLing Thanks for the follow-ups. Feel free to put up backport PRs, too, if you have time.\n\nWe have to be a bit careful though because the upstream fix also broke something in Electron: https://github.com/electron/electron/pull/52819"
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-18T01:40:46Z",
+        "body": "@nikwen \n\n> Feel free to put up backport PRs, too, if you have time.\n\nI might not be able to do that, since I got 3 PRs waiting for reviews already, John seems to be away for a while.\n\n> We have to be a bit careful though because the upstream fix also broke something in Electron: [#52819](https://github.com/electron/electron/pull/52819)\n\nAbout this one, one thing I can say is that previously Chromium wasn't using `org.kde` prefix to register SNIs. [It was using the object path](https://chromium-review.googlesource.com/c/chromium/src/+/8043132/6/chrome/browser/ui/views/status_icons/status_icon_linux_dbus.cc#b476). ~~So the PR didn't actually revert the change to fix the issue, it's interesting that previous approach works while snap requires `org.kde.*` prefix.~~\n\nAhh, I got it, it was because the Chromium's new approach tries to also request the ownership, while the old approach didn't. In the new approach, [the registration only happens when ownership is successfully acquired](https://chromium-review.googlesource.com/c/chromium/src/+/8043132/6/chrome/browser/ui/views/status_icons/status_icon_linux_dbus.cc#645)."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-18T01:48:45Z",
+        "body": "> I might not be able to do that, since I got 3 PRs waiting for reviews already\n\nSorry, the project has a problem where we don't have enough people reviewing PRs, unfortunately. I'll see if I can unblock you somehow."
+       },
+       {
+        "author": {
+         "login": "oeyoews",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-19T03:22:49Z",
+        "body": "**43.4.1 - Has anyone tested it? This time, the system tray icon doesn't show up at all.**"
+       },
+       {
+        "author": {
+         "login": "Dadadah",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-19T03:33:39Z",
+        "body": "> **43.4.1 - Has anyone tested it? This time, the system tray icon doesn't show up at all.**\n\nIt is not showing up on Ubuntu 24. I am getting the following error when launching: \n`[38960:0818/213309.547164:ERROR:content/browser/browser_main_loop.cc:276] Gtk: gtk_widget_get_scale_factor: assertion 'GTK_IS_WIDGET (widget)' failed`"
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-20T01:08:16Z",
+        "body": "Here's another fix attempt from Chromium: https://chromium-review.googlesource.com/c/chromium/src/+/8272040\n\nI will test it in Electron myself \ud83e\udd12\n\nUPDATE:\n\nThe fix works on both KDE 6.7.4 and GNOME 46"
+       },
+       {
+        "author": {
+         "login": "yannroux",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-21T15:08:54Z",
+        "body": "I can reproduce what appears to be the same regression with Slack Desktop under Linux Mint / Cinnamon / X11.\n\n**Environment**\n\n* Linux Mint 22.3 (Zena)\n* Cinnamon 6.6.9\n* X11 session\n* Kernel 7.0.0-30-generic\n* `libxapp1`: 3.2.2+zena\n* `xapps-common`: 3.2.2+zena\n* Slack Desktop installed from the official `.deb`/APT repository\n\n**Behavior**\n\nWith Slack Desktop **4.51.191**, launching Slack causes Cinnamon's **XApp Status Applet** to display a warning/fallback icon instead of the Slack tray icon.\n\nQuitting Slack removes the fallback icon.\n\nDowngrading Slack from:\n\n`4.51.191 -> 4.51.180`\n\nimmediately restores the normal Slack tray icon.\n\nUpgrading again to 4.51.191 reproduces the problem.\n\nNo Cinnamon or XApp packages were upgraded when the issue appeared; the relevant package change was Slack itself:\n\n`slack-desktop 4.51.180 -> 4.51.191`\n\nSo this seems consistent with the StatusNotifierItem/AppIndicator regression described here, but it also reproduces on **Cinnamon/XApp with X11**, rather than GNOME/Wayland.\n\nI can provide additional D-Bus/debug output if that would be useful.\n\n<img width=\"307\" height=\"33\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/3b69a6e3-bf05-47fe-89c5-740aa31cb0e2\" />"
+       },
+       {
+        "author": {
+         "login": "Creteil",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-21T15:18:45Z",
+        "body": "My 2cents :\n\nNew versions of \u00ab Electron \u00bb break status icon indicator in Ubuntu Unity flavor...\n\nIt started by my \u00ab element-desktop-nightly \u00bb client that have updated \u00ab Electron \u00bb, and today, my \u00ab slack \u00bb have also updated and no more status icon also.\n\nIt remain my \u00ab teams-for-linux \u00bb client working fine with status icon displaying properly in the status bar with an older version.\n\n```bash\nbigbob@bigbob-t480s:~$ for Electron in element-desktop-nightly teams-for-linux slack ; do printf \"${Electron} is using : \" ; strings $(which ${Electron}) | grep \"Electron v\" ; done\nelement-desktop-nightly is using : Electron v43.4.0\nteams-for-linux is using : Electron v42.8.1\nslack is using : Electron v43.4.0\nbigbob@bigbob-t480s:~$\n```\n\nHope it help..."
+       },
+       {
+        "author": {
+         "login": "Photon89",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-21T16:53:37Z",
+        "body": "@YUCLing \n\n> Here's another fix attempt from Chromium: https://chromium-review.googlesource.com/c/chromium/src/+/8272040\n\nthanks for the hint, is there some howto for testing this with Electron apps?"
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-21T16:59:19Z",
+        "body": "@Photon89 \n\n> thanks for the hint, is there some howto for testing this with Electron apps?\n\nCherry-pick the changes and build the Electron on your own. I'm now building the latest changes, if it works well, I will create a cherry-pick PR."
+       },
+       {
+        "author": {
+         "login": "trymeouteh",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-21T19:33:55Z",
+        "body": "This issue is causing issues for Feridium and Signal Desktop\n\nhttps://github.com/signalapp/Signal-Desktop/issues/7995\n\nhttps://github.com/ferdium/ferdium-app/issues/2513"
+       },
+       {
+        "author": {
+         "login": "iamalismith",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-23T20:24:04Z",
+        "body": "Same bug \u2014 I filed #53138 before finding this issue, and am closing it as a duplicate. Folding its evidence in here, since some of it is not yet on this thread.\n\n## A second desktop, and a second display server\n\nReproduced independently on two stacks, so this is neither GNOME-specific nor Wayland-specific:\n\n- Ubuntu 24.04.3 / GNOME 46 / **Wayland** / `gnome-shell-extension-appindicator`\n- Linux Mint 22.3 / Cinnamon / **X11** / `xapp-sn-watcher` (xapps 3.2.2)\n\nBoth hosts resolve the well-known name to its unique owner before reading properties, which is what puts them on the failing path.\n\n## The behavioural difference between working and broken builds\n\nMeasured with both builds running **concurrently on the same machine and session**, against the same tray host, using isolated `--user-data-dir`:\n\n| | Electron 28.3.3 (works) | Electron 43.4.0 (broken) |\n|---|---|---|\n| Well-known name | **none \u2014 unique only** | `StatusNotifierItem-<pid>-1` |\n| `GetAll` via unique name | OK \u2014 14 properties | **FAIL** |\n| Menu object path | `/com/canonical/dbusmenu` | `/org/chromium/DbusMenu/1` |\n| Host outcome | icon + menu | neither |\n\nElectron 28 registered no well-known name at all, so hosts addressed the unique name that already answers. That is why this reads as a regression rather than a long-standing incompatibility.\n\n## The asymmetry, isolated\n\nSame process, same object path, same interface, same moment \u2014 only the destination differs:\n\n| Call on `/StatusNotifierItem`, iface `org.kde.StatusNotifierItem` | via well-known name | via unique name `:1.1219` |\n|---|---|---|\n| `Properties.GetAll` | OK \u2014 14 properties | **FAIL** |\n| `Properties.Get(Status)` | OK | **FAIL** |\n| `dbusmenu.GetLayout` | OK | **OK** |\n\n```\nError: GDBus.Error:org.freedesktop.DBus.Error.Failed: error occurred in GetAll\n```\n\n`:1.1219` is confirmed via `GetNameOwner` as the owner of that well-known name \u2014 not a different connection.\n\n**The menu object answers on both addresses; only `Properties` on `/StatusNotifierItem` discriminates.** The menu is still unreachable in practice, because the host learns its path from the `Menu` property it can never read. That narrows the fault to the property interface rather than the item's D-Bus export generally.\n\n**Control** \u2014 a non-Electron indicator on the same session answers on its unique name:\n\n```\nGet(Id) via :1.115 /org/ayatana/NotificationItem/livepatch -> (<'livepatch'>,)\n```\n\n## Host-side, from `xapp-sn-watcher` with `sn-watcher-debug true`\n\n```\ncreate_key: Key: 'org.freedesktop.StatusNotifierItem-261894-1/StatusNotifierItem'\nsync_skeleton: Syncing icon properties (org.freedesktop.statusnotifieritem-261894-1)\n** CRITICAL **: Could not get properties for org.freedesktop.StatusNotifierItem-261894-1:\nGDBus.Error:org.freedesktop.DBus.Error.Failed: error occurred in GetAll\n\u2026 no set_icon_from_pixmap, no update_menu \u2014 the item is never populated\n```\n\nThe same watcher handles the Electron 28 build, and other pixmap-only items such as `flameshot` and `copyq`, normally.\n\nOn GNOME the equivalent throw is in `appIndicator.js:_checkNeededProperties` via `statusNotifierWatcher.js:_registerItem` \u2014 and **in one run the exception left the extension INACTIVE for the rest of the session, removing the tray for every other application too.** Worth noting as a blast-radius point: a single affected app can take the whole tray down.\n\n## Ruled out\n\nEach tested directly against the two live builds, listed because several are plausible first guesses:\n\n- Missing `IconName` / `IconThemePath` \u2014 both builds omit them; hosts fall back to `IconPixmap` cleanly, as they do for other apps.\n- Empty D-Bus introspection \u2014 both return `<node></node>`; these hosts do not introspect.\n- The icon asset \u2014 byte-identical between builds, and it renders correctly from the 28.3.3 item.\n- A startup race \u2014 polling `GetAll` from the instant the bus name appears succeeds at t+0ms on the working build; the failure on 43.4.0 is permanent and reproducible minutes later.\n- Wrong interface name \u2014 hosts correctly use `org.kde.StatusNotifierItem`.\n- Stale registration or shell state \u2014 excluded by restarting app, tray host and shell.\n\n## Version range, both boundaries run as binaries\n\n| Electron | Chromium | Tray |\n|---|---|---|\n| **43.2.0** | 150.0.7871.129 | **works** |\n| 43.3.0 | 150.0.7871.212 | broken |\n| 43.4.0 | 150.0.7871.224 | broken |\n| 44 | 152.0.7977.30 | broken |\n| 45 | 153.0.8001.0 | broken |\n\nUpgrading is not an escape \u2014 44 and 45 carry it too.\n\nOn **43.4.1**: its notes name this bug, and the patches deleting `StatusIconLinuxDbus::Multiplexer` are present in `patches/chromium/.patches` at that tag and absent at 43.4.0. But per the reports above on this thread it does not resolve it in practice, and #53101 \u2014 the follow-up cherry-pick of `crrev.com/c/8272040` (\"Use separate D-Bus connections for status icons\") \u2014 is still open. So 43.2.0 appears to be the only shipping 43.x with a working Linux tray.\n\n## Reproduction without a GUI\n\nWith any affected app running:\n\n1. `gdbus call --session --dest org.freedesktop.DBus --object-path /org/freedesktop/DBus --method org.freedesktop.DBus.ListNames | tr ',' '\\n' | grep StatusNotifierItem`\n2. Read a property via that well-known name \u2014 succeeds.\n3. `... --method org.freedesktop.DBus.GetNameOwner <well-known-name>` \u2192 `:1.NNN`\n4. Repeat step 2 against `:1.NNN` \u2014 errors.\n\nSteps 2 and 4 are the whole thing; the asymmetry between them is the bug.\n\nCredit for the Cinnamon/X11 measurements, the concurrent 28-vs-43 comparison and the watcher logs: a user of my app who investigated the regression on his own machine.\n"
+       },
+       {
+        "author": {
+         "login": "elitistphoenix",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-24T01:16:29Z",
+        "body": "Another affected host: **xfce4-panel 4.20.7** (Xfce 4.20, X11, Ubuntu 26.04). Adding it since the thread so far covers GNOME's appindicator extension, Cinnamon's `xapp-sn-watcher` and Unity \u2014 same failing path, the panel's Status Tray plugin is itself the `StatusNotifierWatcher` and resolves the registered name to its unique owner before reading properties.\n\nSlack 4.51.191 (Electron 43.4.0) broken, 4.51.180 (Electron 43.1.1) works, matching @yannroux's Cinnamon report.\n\n**The panel treats the first failed read as fatal and never retries** (`PANEL_DEBUG=systray`):\n\n```\nxfce4-panel(systray): ../plugins/systray/sn-item.c:699: Fatal error for item '(null)':\n  (domain 'g-dbus-error-quark', code 0)\n  GDBus.Error:org.freedesktop.DBus.Error.Failed: error occurred in GetAll\n```\n\nThe item is registered and `Active` \u2014 it is dropped purely on the `GetAll` error, and re-registration on panel restart just reproduces it.\n\n**There is no host-side workaround on Xfce.** I removed the Status Tray plugin so `ayatana-indicator-application-service` 22.2.0 would take `org.kde.StatusNotifierWatcher` instead. It resolves to the unique name too and fails identically:\n\n```\nmethod call sender=:1.2307 -> destination=:1.2322 path=/StatusNotifierItem;\n  interface=org.freedesktop.DBus.Properties; member=GetAll\n  string \"org.kde.StatusNotifierItem\"\nerror sender=:1.2322 -> destination=:1.2307 error_name=org.freedesktop.DBus.Error.Failed\n  string \"error occurred in GetAll\"\n```\n\nSo both tray hosts available on Xfce are on the failing path and swapping between them is not a mitigation \u2014 pinning Electron is the only option here.\n\nOne small thing that may save someone a detour: this is not a startup race. 1881 `GetAll` calls to the well-known name, issued in a loop across a panel restart, all succeeded \u2014 including ones landing in the same millisecond as the panel's failing call to the unique name.\n"
+       },
+       {
+        "author": {
+         "login": "lmisea",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-25T14:10:36Z",
+        "body": "I can reproduce this on CachyOS with KDE Plasma (Wayland), using Vesktop 1.6.7 (`vesktop-bin`) with the system `electron43 43.4.1-1`.\n\nVesktop is launched using the external Electron executable:\n\n```bash\nelectron43 /usr/lib/vesktop/app.asar\n```\n\nIts tray settings are enabled:\n\n```json\n\"minimizeToTray\": true,\n\"tray\": true\n```\n\nHowever, Vesktop never registers a StatusNotifierItem. While Vesktop is running:\n\n```bash\nbusctl --user get-property \\\n  org.kde.StatusNotifierWatcher \\\n  /StatusNotifierWatcher \\\n  org.kde.StatusNotifierWatcher \\\n  RegisteredStatusNotifierItems\n```\n\nonly reports two other applications:\n\n```text\nas 2 \"org.kde.StatusNotifierItem-2448-1/StatusNotifierItem\" \"org.kde.StatusNotifierItem-proton.vpn.app.gtk-2413/StatusNotifierItem\"\n```\n\nSo Plasma's StatusNotifierWatcher itself appears to be working; Vesktop simply never gets registered.\n\nI also tested forcing Vesktop through X11/XWayland with:\n\n```bash\nvesktop --ozone-platform=x11\n```\n\nbut the behavior is unchanged: no tray icon and no additional StatusNotifierItem is registered.\n\nThis seems consistent with #53024, which was closed as a duplicate of this issue and also reproduces the problem when using an external Electron 43.4.1 executable.\n"
+       },
+       {
+        "author": {
+         "login": "vitalii-morvaniuk-airslate",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-26T20:45:20Z",
+        "body": "I can confirm this same regression manifests outside GNOME/Wayland too \u2014 on **Linux Mint 22.3 (Cinnamon 6.6.9)**, affecting **both Slack Desktop 4.51.191** and **Lens Desktop**, both bundling **Electron 43.4.0** (`Chrome/150.0.7871.224`). Both apps show a generic/broken tray icon glyph in Cinnamon's XApp Status Applet, and clicking them does nothing.\n\n**Reproduction:**\n\nCinnamon's tray watcher (`xapp-sn-watcher`) logs this in `~/.xsession-errors` the moment either app starts:\n```\n** (xapp-sn-watcher:3122): CRITICAL **: Could not get properties for org.freedesktop.StatusNotifierItem-<pid>-1: GDBus.Error:org.freedesktop.DBus.Error.Failed: error occurred in GetAll\n```\n\nI reproduced this manually. Calling `Properties.GetAll` with an **explicit interface name** succeeds and returns the full property set (icon pixmap, menu path, tooltip, etc.):\n```\n$ dbus-send --session --print-reply --dest=org.freedesktop.StatusNotifierItem-<pid>-1 \\\n    /StatusNotifierItem org.freedesktop.DBus.Properties.GetAll \\\n    string:org.kde.StatusNotifierItem\n# \u2192 succeeds, full property set returned\n```\n\nBut calling it with an **empty interface string** (`''`) \u2014 which is what `GDBusProxy`-based watchers issue internally \u2014 fails identically to the watcher's error:\n```\n$ gdbus call --session --dest org.freedesktop.StatusNotifierItem-<pid>-1 \\\n    --object-path /StatusNotifierItem \\\n    --method org.freedesktop.DBus.Properties.GetAll ''\nError: GDBus.Error:org.freedesktop.DBus.Error.Failed: error occurred in GetAll\n```\n\nThis confirms the defect is in the app's own D-Bus property server (which changed with Electron 43.3's switch to well-known SNI bus names, `org.freedesktop.StatusNotifierItem-PID-N`), not in the desktop environment. I also confirmed neither app loads `libappindicator`/`libayatana-appindicator3` at all (checked via `/proc/<pid>/maps`) \u2014 both implement the SNI D-Bus service directly via `libdbus-1`, so appindicator-lib installs/symlinks (a common suggested fix) are irrelevant here.\n\nThis looks like the same root cause described in Alexays/Waybar#5240: `GDBusProxy`-based clients that rely on cached/empty-interface property fetches get nothing back from the new well-known-name SNI object, while explicit-interface raw D-Bus calls still work fine.\n\nHappy to test a patched Electron build or provide further traces if useful.\n"
+       },
+       {
+        "author": {
+         "login": "fcojfernandez",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-27T05:44:23Z",
+        "body": "I can confirm the same issue than @vitalii-morvaniuk-airslate in Ubuntu 24.04"
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-27T05:45:53Z",
+        "body": "The issue is fixed in next release ( #53214, #53215 )"
+       },
+       {
+        "author": {
+         "login": "Photon89",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-27T09:09:44Z",
+        "body": "Fix confirmed on Manjaro Linux, Xfce, Ferdium and Obsidian."
+       },
+       {
+        "author": {
+         "login": "RubenKelevra",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-28T11:48:37Z",
+        "body": "Request for Arch to backport the fixes has been created:\n\nhttps://gitlab.archlinux.org/archlinux/packaging/packages/electron/-/work_items/15"
+       },
+       {
+        "author": {
+         "login": "oeyoews",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-31T00:56:53Z",
+        "body": "<img width=\"1661\" height=\"826\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4c1228e1-865c-45b3-96ba-9ee67e20e0f5\" />"
+       },
+       {
+        "author": {
+         "login": "Creteil",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-02T09:11:56Z",
+        "body": "As of today, only \u00ab teams-for-linux \u00bb work fine :\n\n```bash\nbigbob@bigbob-t480s:~/T\u00e9l\u00e9chargements$ for ElectronProg in element-desktop-nightly teams-for-linux slack signal-desktop claude-desktop lens-desktop ; do if command -v \"${ElectronProg}\" >/dev/null 2>&1 ; then printf \"Program \u00ab ${ElectronProg} \u00bb located at \u00ab $(which ${ElectronProg}) \u00bb, is using : \" ; strings $(which ${ElectronProg}) | grep \"Electron v\" ; fi ; done\nProgram \u00ab element-desktop-nightly \u00bb located at \u00ab /usr/bin/element-desktop-nightly \u00bb, is using : Electron v44.0.0\nProgram \u00ab teams-for-linux \u00bb located at \u00ab /usr/bin/teams-for-linux \u00bb, is using : Electron v42.9.3\nProgram \u00ab slack \u00bb located at \u00ab /usr/bin/slack \u00bb, is using : Electron v43.4.0\nProgram \u00ab signal-desktop \u00bb located at \u00ab /usr/bin/signal-desktop \u00bb, is using : Electron v43.4.1\nProgram \u00ab claude-desktop \u00bb located at \u00ab /usr/bin/claude-desktop \u00bb, is using : Electron v42.10.0\nProgram \u00ab lens-desktop \u00bb located at \u00ab /usr/bin/lens-desktop \u00bb, is using : Electron v43.4.0\nbigbob@bigbob-t480s:~/T\u00e9l\u00e9chargements$\n```\n\nDoes someone know how long since a 44.0.1+ or 43.4.2+ containing the tray fix is published ?"
+       },
+       {
+        "author": {
+         "login": "iovcho",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-08T15:13:18Z",
+        "body": "After updating to Slack 4.52.155, minimizing the window hides it completely: it leaves the taskbar and no tray icon is shown. Sound notifications still work, so the process is running, but there is no way to restore the window except killing Slack and starting it again.\n\nThis started on 2026-09-08 after Slack 4.52.155 and Plasma 6.7.4-2 updates.\n\nEnvironment\n\nSlack RPM: 4.52.155-0.1.el8 (official Slack repo), Electron/Chrome 44.0.0\nFedora Linux 44, kernel 7.1.13-200.fc44.x86_64\nKDE Plasma 6.7.4-2, KWin 6.7.4-2, Qt 6.11.2, session: Wayland\nGPU: Intel Iris Xe + NVIDIA GA107M (driver 610.57.04)\nWhat happens\n\nOpen Slack, window is visible.\nMinimize.\nWindow is gone from the taskbar and from the system tray. Slack keeps running (runFromTray).\nMessage sounds still play.\nTechnical notes\n\nProcess runs native Wayland (--ozone-platform=wayland).\nA StatusNotifierItem is registered: org.freedesktop.StatusNotifierItem-<pid>-1 at /org/chromium/StatusNotifierItem/1.\nIntrospection of that object returns an empty node; Activate / property getters fail (UnknownMethod). Plasma therefore has a dead tray slot and Slack has already hidden the window.\nWorkaround that restores minimize-to-taskbar: launch with --ozone-platform=x11 (not using it; waiting for a Slack/Electron fix).\nThis matches the Electron Linux tray/SNI regression (electron#52674) and KDE bug 524697. Please bundle an Electron build that includes the Chromium StatusNotifierItem fix.\n\n"
+       },
+       {
+        "author": {
+         "login": "RubenKelevra",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-08T15:33:29Z",
+        "body": "@iovcho either upgrade to  44.2.0 or downgrade to  43.4.1. "
+       },
+       {
+        "author": {
+         "login": "iovcho",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-09T06:07:19Z",
+        "body": "Slack 4.52.155 bundles Electron 44.0.0. I can\u2019t change the runtime; waiting for Slack to ship \u2265 44.2.0.\n\n"
+       },
+       {
+        "author": {
+         "login": "RubenKelevra",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-09T06:23:00Z",
+        "body": "Well, you can. ArchLinux commonly does this.\n\nHave a look:\n\nhttps://aur.archlinux.org/packages/slack-electron"
+       },
+       {
+        "author": {
+         "login": "srafis",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-09T10:35:39Z",
+        "body": "I hit the same issue with Slack 4.52.155 on Arch Linux, KDE Plasma 6.7.4, Wayland. Slack bundles Electron 44.0.0.\n\nSlack was running with `runFromTray` enabled, but its icon was missing. Its D-Bus name existed, while `/StatusNotifierItem` exposed no interfaces. Restarting Slack and switching to X11 didn\u2019t help.\n\nLaunching Slack with the already-installed Electron 43.6.0 restored the tray registration:\n\n```bash\n# Fully quit Slack first\nelectron43 /usr/lib/slack/resources/app.asar --gtk-version=3 -s\n```\n\nKDE then reported `Slack_status_icon_1` as `Active`, with valid icon image data.\n\nTo keep the workaround, I copied `/usr/share/applications/slack.desktop` to `~/.local/share/applications/slack.desktop` and changed its `Exec` line to:\n\n```ini\nExec=/usr/bin/electron43 /usr/lib/slack/resources/app.asar --gtk-version=3 -s %U\n```\n\nThis is a local workaround using a separate Electron runtime. Paths may differ on other distributions. Once Slack bundles the fix, the launcher override can be removed."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 76,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-06T04:36:42Z",
+        "actor": {
+         "login": "thesuperbob49",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-06T04:36:43Z",
+        "actor": {
+         "login": "thesuperbob49",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-06T04:36:58Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-06T04:36:58Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-06T14:22:19Z",
+        "actor": {
+         "login": "YUCLing"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 639,
+         "url": "https://github.com/ubuntu/gnome-shell-extension-appindicator/issues/639",
+         "createdAt": "2026-08-06T14:22:18Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-06T15:05:07Z",
+        "actor": {
+         "login": "darakuneko"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 415,
+         "url": "https://github.com/darakuneko/pipette-desktop/pull/415",
+         "createdAt": "2026-08-06T15:05:06Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-09T05:55:05Z",
+        "actor": {
+         "login": "DmytroVasin"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 105,
+         "url": "https://github.com/DmytroVasin/DrawPen/issues/105",
+         "createdAt": "2026-08-09T01:52:06Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-10T09:01:09Z",
+        "actor": {
+         "login": "Cyberczy"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 146,
+         "url": "https://github.com/SPlayer-Dev/SPlayer-Next/issues/146",
+         "createdAt": "2026-08-10T09:01:08Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-12T16:39:31Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/upstream \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-14T17:11:01Z",
+        "actor": {
+         "login": "lamualfa"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 417,
+         "url": "https://github.com/Javis603/token-monitor/issues/417",
+         "createdAt": "2026-08-14T17:05:14Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-14T17:11:16Z",
+        "actor": {
+         "login": "lamualfa"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 413,
+         "url": "https://github.com/Javis603/token-monitor/pull/413",
+         "createdAt": "2026-08-14T13:12:00Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-15T05:24:22Z",
+        "actor": {
+         "login": "Memory2314"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 2083,
+         "url": "https://github.com/mihomo-party-org/clash-party/issues/2083",
+         "createdAt": "2026-08-14T02:18:47Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-16T05:16:57Z",
+        "actor": {
+         "login": "Javis603"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 430,
+         "url": "https://github.com/Javis603/token-monitor/pull/430",
+         "createdAt": "2026-08-16T05:16:55Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-16T09:17:54Z",
+        "actor": {
+         "login": "DmytroVasin"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 106,
+         "url": "https://github.com/DmytroVasin/DrawPen/issues/106",
+         "createdAt": "2026-08-15T23:58:47Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-16T13:32:04Z",
+        "actor": {
+         "login": "Creteil"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 34720,
+         "url": "https://github.com/element-hq/element-web/issues/34720",
+         "createdAt": "2026-08-16T13:19:24Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-17T22:15:36Z",
+        "actor": {
+         "login": "Vendicated"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1297,
+         "url": "https://github.com/Vencord/Vesktop/issues/1297",
+         "createdAt": "2026-08-17T21:29:40Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-18T00:55:42Z",
+        "actor": {
+         "login": "Dadadah"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 6,
+         "url": "https://github.com/pkgforge-dev/Stoat-AppImage/issues/6",
+         "createdAt": "2026-08-07T03:26:16Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-18T01:13:14Z",
+        "actor": {
+         "login": "nikwen"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52819,
+         "url": "https://github.com/electron/electron/pull/52819",
+         "createdAt": "2026-08-14T14:49:23Z"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-08-18T01:13:41Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/upstream \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-18T07:39:51Z",
+        "actor": {
+         "login": "VerteDinde"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52951,
+         "url": "https://github.com/electron/electron/pull/52951",
+         "createdAt": "2026-08-18T07:39:50Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-18T07:39:56Z",
+        "actor": {
+         "login": "VerteDinde"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52952,
+         "url": "https://github.com/electron/electron/pull/52952",
+         "createdAt": "2026-08-18T07:39:54Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-18T15:09:44Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/upstream \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-18T21:23:58Z",
+        "actor": {
+         "login": "Dadadah"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 282,
+         "url": "https://github.com/stoatchat/for-desktop/issues/282",
+         "createdAt": "2026-08-18T12:31:17Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-19T12:42:45Z",
+        "actor": {
+         "login": "ShGKme"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1863,
+         "url": "https://github.com/nextcloud/talk-desktop/issues/1863",
+         "createdAt": "2026-08-18T19:08:40Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-19T12:44:13Z",
+        "actor": {
+         "login": "ShGKme"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1143,
+         "url": "https://github.com/nextcloud/talk-desktop/issues/1143",
+         "createdAt": "2025-02-25T21:22:30Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-19T13:31:43Z",
+        "actor": {
+         "login": "ShGKme"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 1864,
+         "url": "https://github.com/nextcloud/talk-desktop/pull/1864",
+         "createdAt": "2026-08-19T13:31:42Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-19T20:16:18Z",
+        "actor": {
+         "login": "the-nummer-zone"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 5240,
+         "url": "https://github.com/Alexays/Waybar/issues/5240",
+         "createdAt": "2026-08-08T13:58:53Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-19T23:46:12Z",
+        "actor": {
+         "login": "YUCLing"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 53024,
+         "url": "https://github.com/electron/electron/issues/53024",
+         "createdAt": "2026-08-19T17:35:00Z"
+        }
+       },
+       {
+        "__typename": "MarkedAsDuplicateEvent",
+        "createdAt": "2026-08-20T05:26:18Z",
+        "actor": {
+         "login": "Damglador",
+         "__typename": "User"
+        },
+        "canonical": {
+         "__typename": "Issue",
+         "number": 52674,
+         "url": "https://github.com/electron/electron/issues/52674",
+         "createdAt": "2026-08-06T04:36:41Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-20T10:46:30Z",
+        "actor": {
+         "login": "mmirg"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 7992,
+         "url": "https://github.com/signalapp/Signal-Desktop/issues/7992",
+         "createdAt": "2026-08-20T05:31:24Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-20T12:39:20Z",
+        "actor": {
+         "login": "afonsojramos"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 154,
+         "url": "https://github.com/gitify-app/electron-menubar/pull/154",
+         "createdAt": "2026-08-20T12:27:56Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-20T13:12:41Z",
+        "actor": {
+         "login": "afonsojramos"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 3208,
+         "url": "https://github.com/gitify-app/gitify/pull/3208",
+         "createdAt": "2026-08-20T13:12:40Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-21T00:36:29Z",
+        "actor": {
+         "login": "yochananmarqos"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 2493,
+         "url": "https://github.com/ferdium/ferdium-app/issues/2493",
+         "createdAt": "2026-08-20T04:50:39Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-21T03:55:22Z",
+        "actor": {
+         "login": "gmurdocca"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 2499,
+         "url": "https://github.com/ferdium/ferdium-app/pull/2499",
+         "createdAt": "2026-08-21T03:55:21Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-21T08:46:27Z",
+        "actor": {
+         "login": "SpecialAro"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 2504,
+         "url": "https://github.com/ferdium/ferdium-app/pull/2504",
+         "createdAt": "2026-08-21T08:46:26Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-21T12:43:53Z",
+        "actor": {
+         "login": "xduugu"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1131,
+         "url": "https://github.com/flathub/org.signal.Signal/issues/1131",
+         "createdAt": "2026-08-20T08:52:12Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-21T12:44:34Z",
+        "actor": {
+         "login": "xduugu"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 7995,
+         "url": "https://github.com/signalapp/Signal-Desktop/issues/7995",
+         "createdAt": "2026-08-21T06:14:44Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-21T18:56:13Z",
+        "actor": {
+         "login": "YUCLing"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53101,
+         "url": "https://github.com/electron/electron/pull/53101",
+         "createdAt": "2026-08-21T18:56:12Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-21T20:21:57Z",
+        "actor": {
+         "login": "YUCLing"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53103,
+         "url": "https://github.com/electron/electron/pull/53103",
+         "createdAt": "2026-08-21T20:21:55Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-23T16:49:55Z",
+        "actor": {
+         "login": "lachaux-remi"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 35,
+         "url": "https://github.com/lachaux-remi/StreamDeckDeeJ-App/issues/35",
+         "createdAt": "2026-08-23T16:49:54Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-23T20:24:19Z",
+        "actor": {
+         "login": "iamalismith"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 53138,
+         "url": "https://github.com/electron/electron/issues/53138",
+         "createdAt": "2026-08-23T16:47:53Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-24T15:21:39Z",
+        "actor": {
+         "login": "ccicnce113424"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 556106,
+         "url": "https://github.com/NixOS/nixpkgs/issues/556106",
+         "createdAt": "2026-08-24T15:21:38Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-24T16:38:29Z",
+        "actor": {
+         "login": "abidzk01"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 18912,
+         "url": "https://github.com/podman-desktop/podman-desktop/issues/18912",
+         "createdAt": "2026-08-24T12:27:19Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-24T19:04:16Z",
+        "actor": {
+         "login": "Sudo-Ali-Dev"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 89310,
+         "url": "https://github.com/anthropics/claude-code/issues/89310",
+         "createdAt": "2026-08-24T19:04:15Z"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-08-25T09:36:11Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/upstream \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-25T15:28:31Z",
+        "actor": {
+         "login": "RubenKelevra"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 3204,
+         "url": "https://github.com/ipfs/ipfs-desktop/issues/3204",
+         "createdAt": "2026-08-25T15:28:30Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-26T10:40:34Z",
+        "actor": {
+         "login": "philg-dev"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 654,
+         "url": "https://github.com/ubuntu/gnome-shell-extension-appindicator/issues/654",
+         "createdAt": "2026-08-21T13:01:05Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-26T19:28:12Z",
+        "actor": {
+         "login": "SpacingBat3"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 721,
+         "url": "https://github.com/SpacingBat3/WebCord/issues/721",
+         "createdAt": "2026-08-25T00:10:03Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-26T19:49:33Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 53213,
+         "url": "https://github.com/electron/electron/issues/53213",
+         "createdAt": "2026-08-26T19:49:32Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-27T13:04:17Z",
+        "actor": {
+         "login": "Hronom"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1,
+         "url": "https://github.com/hronaut/hronaut/issues/1",
+         "createdAt": "2026-08-27T13:04:16Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-27T17:30:55Z",
+        "actor": {
+         "login": "ayumi-signal"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 8003,
+         "url": "https://github.com/signalapp/Signal-Desktop/issues/8003",
+         "createdAt": "2026-08-27T17:20:06Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-27T19:52:22Z",
+        "actor": {
+         "login": "Milkshiift"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 221,
+         "url": "https://github.com/Milkshiift/GoofCord/issues/221",
+         "createdAt": "2026-08-19T21:15:24Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-29T10:44:20Z",
+        "actor": {
+         "login": "YUCLing"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 53307,
+         "url": "https://github.com/electron/electron/issues/53307",
+         "createdAt": "2026-08-29T10:44:18Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-29T21:33:35Z",
+        "actor": {
+         "login": "zquestz"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 13965,
+         "url": "https://github.com/linuxmint/cinnamon/pull/13965",
+         "createdAt": "2026-08-29T21:33:34Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-29T22:04:10Z",
+        "actor": {
+         "login": "ericflo"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 17,
+         "url": "https://github.com/ericflo/openstreamalert/pull/17",
+         "createdAt": "2026-08-29T22:04:09Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-29T22:46:27Z",
+        "actor": {
+         "login": "zquestz"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 210,
+         "url": "https://github.com/linuxmint/xapp/pull/210",
+         "createdAt": "2026-08-29T22:46:26Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-29T22:51:39Z",
+        "actor": {
+         "login": "zquestz"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 211,
+         "url": "https://github.com/linuxmint/xapp/pull/211",
+         "createdAt": "2026-08-29T22:51:38Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-30T13:47:30Z",
+        "actor": {
+         "login": "omrxm18"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 1,
+         "url": "https://github.com/abdallah-shehawey/whatsapp-desktop/pull/1",
+         "createdAt": "2026-08-30T08:49:42Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-31T18:13:22Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-03T17:57:53Z",
+        "actor": {
+         "login": "afonsojramos"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 169,
+         "url": "https://github.com/gitify-app/electron-menubar/pull/169",
+         "createdAt": "2026-09-03T17:57:51Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-03T17:57:55Z",
+        "actor": {
+         "login": "afonsojramos"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 170,
+         "url": "https://github.com/gitify-app/electron-menubar/pull/170",
+         "createdAt": "2026-09-03T17:57:54Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-03T18:09:19Z",
+        "actor": {
+         "login": "afonsojramos"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 3265,
+         "url": "https://github.com/gitify-app/gitify/pull/3265",
+         "createdAt": "2026-09-03T18:09:18Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-03T20:37:06Z",
+        "actor": {
+         "login": "afonsojramos"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 3267,
+         "url": "https://github.com/gitify-app/gitify/pull/3267",
+         "createdAt": "2026-09-03T20:37:05Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-04T11:09:29Z",
+        "actor": {
+         "login": "johannesjo"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 9902,
+         "url": "https://github.com/super-productivity/super-productivity/pull/9902",
+         "createdAt": "2026-09-04T11:09:28Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-04T12:07:26Z",
+        "actor": {
+         "login": "ShGKme"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 1890,
+         "url": "https://github.com/nextcloud/talk-desktop/pull/1890",
+         "createdAt": "2026-09-04T12:07:24Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-04T17:02:26Z",
+        "actor": {
+         "login": "gavinbeatty"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 5856,
+         "url": "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/issues/5856",
+         "createdAt": "2026-08-29T14:40:26Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-08T01:25:42Z",
+        "actor": {
+         "login": "Kurobac"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 261,
+         "url": "https://github.com/xishang0128/sparkle/issues/261",
+         "createdAt": "2026-09-07T08:47:15Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-08T08:30:48Z",
+        "actor": {
+         "login": "mrmrw"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 9275,
+         "url": "https://github.com/swaywm/sway/issues/9275",
+         "createdAt": "2026-09-08T08:30:47Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-13T16:28:56Z",
+        "actor": {
+         "login": "LanceHaverkamp"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1148,
+         "url": "https://github.com/flathub/org.signal.Signal/issues/1148",
+         "createdAt": "2026-09-13T16:28:54Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-14T08:52:29Z",
+        "actor": {
+         "login": "Ge11ert"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 3954,
+         "url": "https://github.com/mattermost/desktop/issues/3954",
+         "createdAt": "2026-08-20T10:44:43Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-15T01:00:03Z",
+        "actor": {
+         "login": "darakuneko"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 441,
+         "url": "https://github.com/darakuneko/pipette-desktop/pull/441",
+         "createdAt": "2026-09-15T01:00:02Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-20T13:38:05Z",
+        "actor": {
+         "login": "oalfroukh"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 54152,
+         "url": "https://github.com/electron/electron/issues/54152",
+         "createdAt": "2026-09-20T13:38:04Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-29T20:04:22Z",
+        "actor": {
+         "login": "IgorKvasn"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 78,
+         "url": "https://github.com/IgorKvasn/whats/pull/78",
+         "createdAt": "2026-09-29T20:04:21Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-01T11:24:58Z",
+        "actor": {
+         "login": "simonl65"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1855,
+         "url": "https://github.com/hovancik/stretchly/issues/1855",
+         "createdAt": "2026-09-09T03:49:34Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-06T19:50:11Z",
+        "actor": {
+         "login": "lachaux-remi"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 62,
+         "url": "https://github.com/lachaux-remi/StreamDeckDeeJ-App/pull/62",
+         "createdAt": "2026-10-06T19:50:08Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-09T15:06:35Z",
+        "actor": {
+         "login": "jangoux"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 3089,
+         "url": "https://github.com/IsmaelMartinez/teams-for-linux/issues/3089",
+         "createdAt": "2026-10-09T15:06:33Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52666,
+     "title": "Building new browser with Electron, but it does not support GMAIL",
+     "url": "https://github.com/electron/electron/issues/52666",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-08-05T12:50:47Z",
+     "closedAt": "2026-08-05T14:51:10Z",
+     "updatedAt": "2026-08-05T17:05:20Z",
+     "author": {
+      "login": "jigsjainil",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 25H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nPlease help me with this. \n\nI am trying to build a new browser with Electron, but it does not support Gmail. Please help me with this issue. \n\n<img width=\"645\" height=\"510\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/98c1c780-5266-41dd-9127-e837c5b0f503\" />\n\n### Actual Behavior\n\nNA\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "discussion"
+       },
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-05T14:51:10Z",
+        "body": "Thanks for reaching out and logging this issue! Because we treat our issues list as the team's backlog, we close issues that are questions since they don't represent a task needing to be completed. For most questions about Electron there are a lot of options.\n\nCheck out the [Electron community](https://www.electronjs.org/community#boilerplates). There are also a bunch of helpful people in this [Discord](https://discord.gg/electronjs) that should be willing to point you in the right direction. For your question, I'd recommend the Discord - we have many active help channels and mentors, as well as fellow devs, who can help you out."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-05T16:31:41Z",
+        "body": "This is not something that needs to be fixed in Electron. It needs to be fixed in your app."
+       },
+       {
+        "author": {
+         "login": "jigsjainil",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-05T17:05:20Z",
+        "body": "I researched all over the internet and all findings say that Electron does not support GMAIL. Can you tell me the steps, so Electron may support Gmail and my browser app does not show \"unsupported browser\" error? @nikwen "
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 7,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T12:50:48Z",
+        "actor": {
+         "login": "jigsjainil",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-05T12:50:49Z",
+        "actor": {
+         "login": "jigsjainil",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T12:51:11Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T12:51:11Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-08-05T14:50:58Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T14:50:58Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "discussion"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-05T14:51:10Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52665,
+     "title": "Google shows unsupported in my browser.",
+     "url": "https://github.com/electron/electron/issues/52665",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-08-05T12:22:03Z",
+     "closedAt": "2026-08-05T12:38:08Z",
+     "updatedAt": "2026-08-05T12:41:33Z",
+     "author": {
+      "login": "jigsjainil",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nHi, I have been working on an Electron supported browser. I used Electron 43.3.0. I used WebContentsView architecture. I can't open Gmail and other google services, it shows unsupported browser error. \n\n### Actual Behavior\n\nNA\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-05T12:38:08Z",
+        "body": "This seems like an issue in your application.\n\nRunning `npx electron \"https://www.google.com\"` loads fine for me."
+       },
+       {
+        "author": {
+         "login": "jigsjainil",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-05T12:41:33Z",
+        "body": "I am trying to open Gmail, but my browser does not open that, Gmail shows unsupported browser. I researched a bit, it shows that Electron does not support Gmail. \n\n<img width=\"657\" height=\"371\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f18936f1-79f7-4dc5-8f0b-0a322e7b7295\" />"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T12:22:04Z",
+        "actor": {
+         "login": "jigsjainil",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-05T12:22:05Z",
+        "actor": {
+         "login": "jigsjainil",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T12:22:24Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T12:22:24Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-05T12:38:08Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52660,
+     "title": "BaseWindow.setBounds throws an exception if some of the properties of the `Rectangle` are missing",
+     "url": "https://github.com/electron/electron/issues/52660",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-08-05T04:30:31Z",
+     "closedAt": "2026-09-25T08:39:12Z",
+     "updatedAt": "2026-09-25T08:39:12Z",
+     "author": {
+      "login": "Imperat",
+      "__typename": "User"
+     },
+     "authorAssociation": "CONTRIBUTOR",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.1.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nMacOS 27 (Golden Gate)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\nunknown\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\n[Documentation](https://www.electronjs.org/docs/latest/api/base-window#winsetboundsbounds-animate) states that `BaseWindow::setBounds` accept `Partial<Rectangle>`.\n\nThis slightly modified example from docs should not throw any exceptions:\n\n```ts\nconst { app, BaseWindow } = require('electron')\n\napp.whenReady().then(() => {\n  const win = new BaseWindow()\n\n  // set all bounds properties\n  win.setBounds({ x: 440, y: 225, width: 800, height: 600 })\n\n  // set a single bounds property\n  win.setBounds({ width: 100 })\n\n  // { x: 440, y: 225, width: 100, height: 600 }\n  console.log(win.getBounds())\n})\n```\n\n### Actual Behavior\n\nThe provided example throws `UnhandledPromiseRejectionWarning: TypeError: Error processing argument at index 0`.\n\n\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nNote, that it does not throw if I use `BrowserWindow` instead of `BaseWindow`.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-comment"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "Imperat",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-08-05T04:39:08Z",
+        "body": "This seems to be just an imperfection in documentation. Instead of saying the method accepts a `Partial<Rectangle>` we can tell it accepts a `Rectangle`.\n\n`BrowserWindow` does not throw because it first fetches the current bounds before calling the method implemented in C++ code:\n\n- https://github.com/electron/electron/blob/main/lib/browser/api/browser-window.ts#L23-L30\n\nAlternatively, we can add the same wrapper to `BaseWindow`. I'll leave the decision to Electron maintainers. I'd tell if I it was up to me to decide, I would choose updating documentation and to not execute some `getBounds -> setBounds` code which is very likely not needed by app authors. If it was needed, the current bug report would be reported earlier than now \ud83d\ude42 "
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-05T12:41:23Z",
+        "body": "I think it would be best to match the `BrowserWindow` behavior.\n\nBest if we can share the code and if we can call `getBounds()` only if properties are actually missing."
+       },
+       {
+        "author": {
+         "login": "codebytere",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-25T08:39:11Z",
+        "body": "fixed by #54333, which moves the partial-bounds merge into `BaseWindow.setBounds()` natively so `baseWindow.setBounds({ width })` works as documented. it's on main (46) with a 45 backport pending. closing this out."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 9,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T04:30:33Z",
+        "actor": {
+         "login": "Imperat",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-08-05T04:30:33Z",
+        "actor": {
+         "login": "Imperat",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T04:30:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "41-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-05T04:30:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-09T15:12:03Z",
+        "actor": {
+         "login": "DebadityaHait"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52737,
+         "url": "https://github.com/electron/electron/pull/52737",
+         "createdAt": "2026-08-09T15:12:01Z"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-08-17T18:11:11Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "41-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-17T18:11:11Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-17T18:11:28Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-comment"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-25T08:39:12Z",
+        "actor": {
+         "login": "codebytere",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

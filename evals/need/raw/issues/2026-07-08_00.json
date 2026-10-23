@@ -1,0 +1,2211 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4800,
+   "resetAt": "2026-10-23T08:09:07Z",
+   "cost": 1
+  },
+  "search": {
+   "issueCount": 11,
+   "pageInfo": {
+    "hasNextPage": false,
+    "endCursor": "Y3Vyc29yOjEx"
+   },
+   "nodes": [
+    {
+     "number": 52343,
+     "title": "frame_converter.cc creates a new ObjectTemplate on every IPC call, causing V8 crash after days of runtime",
+     "url": "https://github.com/electron/electron/issues/52343",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-14T10:49:59Z",
+     "closedAt": "2026-08-28T04:19:06Z",
+     "updatedAt": "2026-08-28T04:19:06Z",
+     "author": {
+      "login": "yungchao",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "## `frame_converter.cc` creates a new ObjectTemplate on every IPC call, causing V8 crash after days of runtime\n\n### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n40.10.2, 40.10.3\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS (Darwin 24.5.0), Mac mini (Macmini7,1)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Expected Behavior\n\nThe application should run stably for extended periods (days/weeks) without crashing, even with frequent synchronous IPC calls (e.g., from `@electron/remote`).\n\n### Actual Behavior\n\nAfter 4\u20136 days of continuous runtime, the main process crashes with `EXC_BREAKPOINT (SIGTRAP)` inside V8's `InstantiateFunction()` when processing a synchronous IPC message. The crash occurs consistently after an idle period (~45 minutes), suggesting it is triggered by V8's idle-time Major GC (Mark-Compact with compaction).\n\nThree independent crash reports from different app versions (40.10.2 and 40.10.3) all show the same crash path.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n#### Root Cause Analysis\n\nThe crash originates in [`shell/common/gin_converters/frame_converter.cc`](https://github.com/electron/electron/blob/v40.10.3/shell/common/gin_converters/frame_converter.cc#L49-L62), where `Converter<gin_helper::AccessorValue<content::RenderFrameHost*>>::ToV8()` creates a **new `v8::ObjectTemplate` on every call**:\n\n```cpp\nv8::Local<v8::ObjectTemplate> templ = v8::ObjectTemplate::New(isolate);\ntempl->SetInternalFieldCount(2);\nv8::Local<v8::Object> rfh_obj =\n    templ->NewInstance(isolate->GetCurrentContext()).ToLocalChecked();\n```\n\nThis code runs on every synchronous IPC call via the following path:\n\n```\nipcRenderer.sendSync()\n  \u2192 ElectronApiIPCHandlerImpl::MessageSync()        // electron_api_ipc_handler_impl.cc:103\n    \u2192 MakeIPCEvent()                                 // electron_api_ipc_handler_impl.cc:179\n      \u2192 dict.SetGetter(\"senderFrame\", frame)\n        \u2192 Converter<AccessorValue<RFH*>>::ToV8()     // frame_converter.cc:49\n          \u2192 ObjectTemplate::New(isolate)              // NEW template every time\n          \u2192 templ->NewInstance(context)\n            \u2192 V8 InstantiateFunction()               // CRASH here\n```\n\n`v8::ObjectTemplate` and its implicit `FunctionTemplateInfo` constructor are designed to be **created once and reused**. Creating and discarding them on every IPC call is an unusual pattern that stresses a rarely-tested V8 code path. Over millions of IPC calls (especially from `@electron/remote` which uses `sendSync` extensively), this accumulates a large number of short-lived template objects in V8's old generation heap.\n\nWhen the app goes idle, V8's idle-time GC performs a Major GC (Mark-Compact with compaction), and during this process, a `FunctionTemplateInfo` object's bit fields become corrupted. The next IPC call after the idle period then crashes when `InstantiateFunction()` reads the invalid bit field.\n\n#### Fully Symbolicated Crash Stack (from Breakpad minidump + symbols)\n\n```\nFrame 0:  InstantiateFunction(Isolate*, NativeContext, FunctionTemplateInfo, Name)  [bit-field.h:80]\nFrame 1:  InstantiateObject(Isolate*, ObjectTemplateInfo, JSReceiver, bool)         [api-natives.cc:54]\nFrame 2:  ApiNatives::InstantiateObject(...)                                         [api-natives.cc:514]\nFrame 3:  v8::ObjectTemplate::NewInstance(context)                                   [api.cc:7227]\nFrame 4:  gin::Converter<AccessorValue<RenderFrameHost*>>::ToV8()                    [frame_converter.cc:60]\nFrame 5:  Dictionary::SetGetter<\"senderFrame\", RenderFrameHost*>()                   [converter.h:327]\nFrame 6:  ElectronApiIPCHandlerImpl::MakeIPCEvent()                      [electron_api_ipc_handler_impl.cc:179]\nFrame 7:  ElectronApiIPCHandlerImpl::MessageSync()                       [electron_api_ipc_handler_impl.cc:103]\nFrame 8:  ElectronApiIPCStubDispatch::AcceptWithResponder()                          [api.mojom.cc:2362]\n...\nFrame 17: ThreadControllerWithMessagePumpImpl::DoWork()                              [task_annotator.h:113]\n\u2192 CoreFoundation CFRunLoop \u2192 AppKit \u2192 ElectronMain\n```\n\n#### Proposed Fix\n\nCache the `ObjectTemplate` using `v8::Eternal` so it is created only once per isolate:\n\n```cpp\nstatic v8::Eternal<v8::ObjectTemplate> cached_templ;\nif (cached_templ.IsEmpty()) {\n  v8::Local<v8::ObjectTemplate> templ = v8::ObjectTemplate::New(isolate);\n  templ->SetInternalFieldCount(2);\n  cached_templ.Set(isolate, templ);\n}\nv8::Local<v8::ObjectTemplate> templ = cached_templ.Get(isolate);\nv8::Local<v8::Object> rfh_obj =\n    templ->NewInstance(isolate->GetCurrentContext()).ToLocalChecked();\n```\n\nThis is consistent with how other parts of Electron handle `ObjectTemplate` creation (e.g., via `gin::ObjectTemplateBuilder` which caches templates).\n\n#### Observations from crash reports\n\n| Report | Electron | Uptime before crash | Idle before crash |\n|--------|----------|--------------------|--------------------|\n| 1 (2026-07-06) | 40.10.2 | ~4 days | unknown |\n| 2 (2026-07-12) | 40.10.3 | ~6 days | ~45 min |\n| 3 (2026-07-13) | 40.10.3 | ~5.5 days | ~45 min |\n\n- All crashes on same hardware (Macmini7,1, x64, 16GB RAM)\n- All show identical crash signature: `EXC_BREAKPOINT` in `InstantiateFunction` via `frame_converter.cc`\n- The code in `main`, `41-x-y`, `42-x-y`, and `43-x-y` branches is identical \u2014 this issue affects all current Electron versions",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "crash :boom:"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "blocked/need-repro"
+       },
+       {
+        "name": "component/ipc"
+       },
+       {
+        "name": "40-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 9,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-14T12:10:07Z",
+        "body": "Thanks for reporting!\n\n1. Could you please install the latest Electron 43 version and test if it crashes for you, too? Electron 40 is no longer supported.\n2. Could you please test if you see the same crash on Electron 43 without the `@electron/remote` module? I'd like to isolate if this issue is a result of a bug in that module or in Electron itself. It's [not recommended](https://nornagon.medium.com/electrons-remote-module-considered-harmful-70d69500f31) to use `@electron/remote`.\n3. If it reproduces on Electron 43 without the `@electron/remote` module, could you please download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows maintainers to reproduce this issue, and upload it as a GitHub gist from Fiddle? Also, please share an updated stacktrace in that case."
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-14T12:10:59Z",
+        "body": "<!-- blocked/need-repro -->\n\nHello @yungchao. Thanks for reporting this and helping to make Electron better!\n\nWould it be possible for you to make a standalone testcase with only the code necessary to reproduce the issue? For example, [Electron Fiddle](https://www.electronjs.org/fiddle) is a great tool for making small test cases and makes it easy to publish your test case to a [gist](https://gist.github.com) that Electron maintainers can use.\n\nStand-alone test cases make fixing issues go more smoothly: it ensure everyone's looking at the same issue, it removes all unnecessary variables from the equation, and it can also provide the basis for automated regression tests.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-repro label for this reason. After you make a test case, please link to it in a followup comment. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "yungchao",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-15T12:43:04Z",
+        "body": "Atttach crash report on mac computers.\n\n[Archive.zip](https://github.com/user-attachments/files/30048658/Archive.zip)"
+       },
+       {
+        "author": {
+         "login": "yungchao",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-16T09:33:19Z",
+        "body": "Attach minidump .dmp files\n\n[minidump.zip](https://github.com/user-attachments/files/30082864/minidump.zip)"
+       },
+       {
+        "author": {
+         "login": "yungchao",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-16T09:50:38Z",
+        "body": "Seems not only sendSync, but all IPC calls from renderer to main will encounter the same issue:\n\n1. Every renderer\u2192main IPC message (`Message`, `Invoke`, `ReceivePostMessage`,\n   `MessageSync`) calls `MakeIPCEvent`, which does\n   `dict.SetGetter(\"senderFrame\", frame)`\n   (shell/browser/electron_api_ipc_handler_impl.cc).\n2. The converter creates a **fresh** `v8::ObjectTemplate` on every call \u2014\n   there is no caching (shell/common/gin_converters/frame_converter.cc:~60):\n   ```cpp\n   v8::Local<v8::ObjectTemplate> templ = v8::ObjectTemplate::New(isolate);\n   templ->SetInternalFieldCount(2);\n   v8::Local<v8::Object> rfh_obj = templ->NewInstance(...).ToLocalChecked();\n   ```\n   `SetGetter` additionally creates a getter `FunctionTemplate`. Net cost:\n   **~2\u20133 V8 template serial numbers per IPC message**, allocated from a\n   monotonically increasing, never-recycled per-isolate counter\n   (`Heap::GetNextTemplateSerialNumber`).\n3. V8 stores the serial number in a **29-bit** bit-field\n   (`TemplateInfo::SerialNumberBits`) whose `encode()` is guarded by a\n   release-mode `CHECK`. V8's own overflow guard wraps at `Smi::kMaxValue`\n   (2^31), which is unreachable \u2014 the CHECK fires first at 2^29.\n\nMy previous statement about GC might be wrong, serial number overflow looks more like the root cause."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-16T18:10:14Z",
+        "body": "Could you please reply to the questions from my previous message?"
+       },
+       {
+        "author": {
+         "login": "yungchao",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-18T05:17:09Z",
+        "body": "Hi Nikwen,\n\nI've attached an electron_ipc_crash poc project which use electron v43.1.1 to reproduce this issue, also includes a Mac crash report:\n\n- project: electron-ipc-crash-poc, get data via IPC (with @electron/remote and sendSync 2-method options)\n- ips file: Electron-2026-07-18-110109.ips, crashed at v8::ObjectTemplate::NewInstance(v8::Local<v8::Context>) \n\nThe crash is reproduced by @electron/remote IPC method because it can create lots more IPC stress, it took ~13 hours to reproduce, if choose sendSync IPC mothod it should take much longer time. And the reason I choosed to a poc project instead of using Fiddle is because which can simuate the reported real case.\n\n[pocproject_and_crashreport.zip](https://github.com/user-attachments/files/30146651/pocproject_and_crashreport.zip)\n\n"
+       },
+       {
+        "author": {
+         "login": "yungchao",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-26T14:24:30Z",
+        "body": "Hi Nikwen,\n\nA similar issue found on Windows Server 2022, you may refer to the zipped the minidump file.\n\n[cc1c850c-d20f-4986-8237-05340d737196.dmp.zip](https://github.com/user-attachments/files/30388835/cc1c850c-d20f-4986-8237-05340d737196.dmp.zip)"
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-28T04:19:06Z",
+        "body": "Unfortunately, without a way to reproduce this issue, we're unable to continue investigation. This issue has been closed and will not be monitored further. If you're able to provide a minimal test case that reproduces this issue on a [supported version of Electron](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline) please open a new issue and include instructions for reproducing the issue."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 14,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-14T12:10:15Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T12:10:19Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T12:10:23Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "crash :boom:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T12:10:23Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/ipc"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T12:10:36Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T12:10:41Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "40-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T12:10:51Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-15T04:16:28Z",
+        "actor": {
+         "login": "PraneethKulukuri26"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52353,
+         "url": "https://github.com/electron/electron/pull/52353",
+         "createdAt": "2026-07-15T04:16:27Z"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-15T12:43:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-16T18:10:18Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-18T05:17:22Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-08-17T17:52:21Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-28T04:19:06Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-01T20:03:01Z",
+        "actor": {
+         "login": "weiblen-sh"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 53380,
+         "url": "https://github.com/electron/electron/issues/53380",
+         "createdAt": "2026-09-01T20:03:00Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52334,
+     "title": "Remove old login item code",
+     "url": "https://github.com/electron/electron/issues/52334",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-14T00:12:22Z",
+     "closedAt": "2026-08-05T14:08:11Z",
+     "updatedAt": "2026-08-07T16:01:48Z",
+     "author": {
+      "login": "nikwen",
+      "__typename": "User"
+     },
+     "authorAssociation": "MEMBER",
+     "issueType": {
+      "name": "Task"
+     },
+     "body": "Electron 44 will remove support for macOS 12.\n\nLogin items use a new macOS API on macOS 13+ and an old one on macOS 12 and below.\n\nBecause we no longer support macOS 12, we can remove the code that uses the old API.\n\nThis is where it is implemented:\n\nhttps://github.com/electron/electron/blob/97af1d3854f2a22716542827ad44b04b5d30e02b/shell/browser/browser_mac.mm#L458-L479",
+     "labels": {
+      "nodes": [
+       {
+        "name": "upgrade-follow-up"
+       },
+       {
+        "name": "component/app"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-14T00:12:23Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T00:12:23Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/app"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T00:14:18Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "upgrade-follow-up"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-07-15T00:29:05Z",
+        "actor": {
+         "login": "nikwen"
+        },
+        "assignee": {
+         "login": "nikwen"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-15T02:08:44Z",
+        "actor": {
+         "login": "nikwen"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52351,
+         "url": "https://github.com/electron/electron/pull/52351",
+         "createdAt": "2026-07-15T02:08:43Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-05T14:08:11Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 52351,
+         "url": "https://github.com/electron/electron/pull/52351"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52325,
+     "title": "[Electron Documentation] `app-region` change to `window-drag`",
+     "url": "https://github.com/electron/electron/issues/52325",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-07-13T18:29:01Z",
+     "closedAt": null,
+     "updatedAt": "2026-07-16T22:21:58Z",
+     "author": {
+      "login": "kyerebo",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Enhancement"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nN/A\n\n### What arch are you using?\n\nOther (specify below)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nChromium recently standardized window-drag as the successor to app-region as part of new CSS WG resolutions to standardized spec text: https://drafts.csswg.org/css-ui-4/#window-drag. While `app-region` is still supported on Chromium in the interim for interoperability, it may be fully deprecated in the future once `window-drag` takes root. Does Electron plan to support the new property name, and if it already does, should the docs be updated accordingly?\n\n### Actual Behavior\n\nCurrently, the docs for [Custom Window Interactions](https://www.electronjs.org/docs/latest/tutorial/custom-window-interactions) show `app-region` instead of `window-drag`.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "enhancement :sparkles:"
+       },
+       {
+        "name": "component/draggable-regions"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-14T12:02:57Z",
+        "body": "Thanks for opening this issue! I'll send it to our API Working Group."
+       },
+       {
+        "author": {
+         "login": "samuelmaddock",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-16T16:36:24Z",
+        "body": "Hi @kyerebo, thanks for raising this! Electron's API WG was made aware of this through chromium's intent to ship [announcement](https://groups.google.com/a/chromium.org/d/msgid/blink-dev/5ba01357-ddd6-4eb8-b361-f78425484654n%40chromium.org) (also, I just noticed it was your post \ud83d\udc4b).\n\nWe are in favor of transitioning to this new API, and plan to update our docs to guide developers to preferring it. Once we're able to test behavior and interop with Electron's code, we'll start taking steps towards this."
+       },
+       {
+        "author": {
+         "login": "kyerebo",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-16T22:21:57Z",
+        "body": "Awesome, thank you for the quick response! "
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 10,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-13T18:29:02Z",
+        "actor": {
+         "login": "kyerebo",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-13T18:29:02Z",
+        "actor": {
+         "login": "kyerebo",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-13T18:29:18Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-13T18:29:18Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-14T12:02:22Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T12:02:22Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "enhancement :sparkles:"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-14T12:02:27Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-14T12:02:38Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T12:02:38Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/draggable-regions"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-17T16:27:12Z",
+        "actor": {
+         "login": "markdudov"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52909,
+         "url": "https://github.com/electron/electron/pull/52909",
+         "createdAt": "2026-08-17T16:27:11Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52324,
+     "title": "ready-to-show never fires on Windows 11 Insider Preview build 26200 (25H2) with NVIDIA GPU",
+     "url": "https://github.com/electron/electron/issues/52324",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-13T18:28:03Z",
+     "closedAt": "2026-07-14T12:00:53Z",
+     "updatedAt": "2026-07-14T12:03:46Z",
+     "author": {
+      "login": "Kide-Lee",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n33.4.11\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 Insider Preview, build 26200 (25H2)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\n> **Bug \u6392\u67e5\u4e0e Issue \u64b0\u5199**\uff1aeva-cli (Electronic Video Agent)\n> **\u6392\u67e5\u65e5\u671f**\uff1a2026-07-14\n> **\u63d0\u4ea4\u76ee\u6807**\uff1ahttps://github.com/electron/electron/issues\n\n`ready-to-show` fires after the page is ready, and the window becomes visible.\n\n\n### Actual Behavior\n\n`ready-to-show` **never fires**. The window is created but remains invisible forever.\n\n`did-finish-load` fires normally, confirming the renderer process is alive and the page loaded successfully.\n\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n## Root Cause Analysis\n\nA custom Electron diagnostic tool was built to isolate the root cause by running 5 automated tests, each creating different types of `BrowserWindow` (basic, GPU-accelerated + WebGL, offscreen, WebView, `app.getGPUInfo()`).\n\n### Diagnostic Results: 5/5 Passed (with workaround)\n\nAll 5 tests passed, but **only because each test used `did-finish-load` instead of `ready-to-show`** to determine success. This confirms the rendering pipeline is functional \u2014 the problem is specifically that the `ready-to-show` signal is never emitted.\n\n### Two Underlying Failures Identified\n\n**1. GPU Shader Disk Cache Initialization Failure**\n\nEvery Chromium process start triggers:\n\n```\ncache_util_win.cc: GetDiskCacheDir() \u2192 Access Denied\n```\n\nThe GPU shader disk cache directory cannot be created under `%APPDATA%`, causing the GPU process to fail during initialization.\n\n**2. Steam CEF Confirms Chromium-Level Bug**\n\nSteam's CEF (`steamwebhelper.exe`) is also affected \u2014 CEF browser and utility processes crash-loop indefinitely (~10 second cycle). Verified via `debug.log`:\n\n```\n[0714/013847.821:INFO:crash_reporting.cc(238)] Crash reporting enabled for process: browser\n[0714/013847.888:INFO:crash_reporting.cc(238)] Crash reporting enabled for process: utility\n[0714/013857.970:INFO:crash_reporting.cc(238)] Crash reporting enabled for process: browser\n[0714/013858.038:INFO:crash_reporting.cc(238)] Crash reporting enabled for process: utility\n... (repeats indefinitely, every ~10 seconds)\n```\n\nThis proves the issue is at the **Chromium level**, not Electron-specific.\n\n## Workarounds (Verified)\n\n| Severity | Flags | Effect |\n|----------|-------|--------|\n| Light | `--disable-gpu-shader-disk-cache` | Bypasses cache init failure; GPU acceleration preserved |\n| Medium | `--disable-gpu --disable-gpu-sandbox --in-process-gpu` | Disables GPU entirely; confirmed working for Obsidian & Unity Hub |\n| Heavy | `--no-sandbox --disable-gpu` | Last resort; removes all sandboxing |\n\n### Applying Workarounds\n\nFor end-user Electron apps (no source access), add flags to the shortcut target:\n\n```\n\"D:\\soft\\Obsidian\\Obsidian.exe\" --disable-gpu --disable-gpu-sandbox --in-process-gpu\n```\n\nFor app developers, use `app.commandLine.appendSwitch()` before `app.whenReady()`:\n\n```js\napp.commandLine.appendSwitch('disable-gpu');\napp.commandLine.appendSwitch('disable-gpu-sandbox');\napp.commandLine.appendSwitch('in-process-gpu');\n```\n\n## Affected Applications (Verified)\n\n| Application | Type | Status |\n|-------------|------|--------|\n| Obsidian | Electron | Fixed with workaround |\n| Unity Hub | Electron | Fixed with workaround |\n| Steam | CEF | Not fixable locally (Valve code signing prevents parameter injection) |\n\n## Notes\n\n- This appears to be a **Windows 11 Insider Preview build 26200 specific regression** \u2014 the same apps work correctly on stable Windows 11 builds (23H2/24H2)\n- The issue is **not specific to NVIDIA** in theory, but only NVIDIA GPU systems have been tested\n- `wmic` (WMI command-line) is also broken on this build, suggesting broader system-level issues\n- No related Chromium bug tracker entries or GitHub issues were found during investigation\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-13T18:28:20Z",
+        "body": "<!-- end-of-life -->\n\nHello @Kide-Lee. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://www.electronjs.org/releases/stable) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "Kide-Lee",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-13T18:31:01Z",
+        "body": "\u8fd9\u4e2aissue\u662fAI\u5199\u7684\u3002\u4f46\u8fd9\u4e2a\u95ee\u9898\u5df2\u7ecf\u6298\u78e8\u6211\u51e0\u5929\u4e86\uff0c\u82b1\u94b1\u53eb\u4fee\u7535\u8111\u7684\u4e0a\u95e8\u4e5f\u7231\u83ab\u80fd\u52a9\uff0c\u91cd\u88c5\u7cfb\u7edf\u95ee\u9898\u4e5f\u4f9d\u7136\u5b58\u5728\u3002"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-14T12:00:37Z",
+        "body": "Thanks for opening an issue!\n\nThis seems like a Chromium issue. If you experience the same problem with Google Chrome, please open an issue here: https://issues.chromium.org.\n\nIf you do not experience the issue with Google Chrome, please report your issue to the developers of the applications that you are running. If they find that this is an issue in Electron, they are more than welcome to open a new issue in Electron with example code to reproduce the issue. Alternatively, if you are a software developer yourself, you can download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows maintainers to reproduce this issue (independently from the third-party app you're using), upload it as a GitHub gist from Fiddle, and file a new issue which includes that testcase gist. "
+       },
+       {
+        "author": {
+         "login": "kidelee2-hash",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-14T12:03:46Z",
+        "body": "> \u8c22\u8c22\u4f60\u5f00\u542f\u4e00\u671f\uff01\n> \n> \u8fd9\u770b\u8d77\u6765\u50cf\u662f\u94ec\u7684\u95ee\u9898\u3002\u5982\u679c\u4f60\u5728\u4f7f\u7528 Google Chrome \u65f6\u9047\u5230\u540c\u6837\u7684\u95ee\u9898\uff0c\u8bf7\u5728\u8fd9\u91cc\u5f00\u542f\u95ee\u9898\uff1ahttps://issues.chromium.org\u3002\n> \n> \u5982\u679c\u60a8\u5728\u4f7f\u7528 Google Chrome \u65f6\u6ca1\u6709\u9047\u5230\u8fd9\u4e2a\u95ee\u9898\uff0c\u8bf7\u5411\u60a8\u6b63\u5728\u8fd0\u884c\u7684\u5e94\u7528\u7a0b\u5e8f\u5f00\u53d1\u8005\u62a5\u544a\u60a8\u7684\u95ee\u9898\u3002\u5982\u679c\u4ed6\u4eec\u53d1\u73b0 Electron \u5b58\u5728\u8fd9\u4e2a\u95ee\u9898\uff0c\u6b22\u8fce\u5728 Electron \u4e2d\u5f00\u542f\u65b0\u4e00\u671f\u5e76\u9644\u4e0a\u793a\u4f8b\u4ee3\u7801\u4ee5\u91cd\u73b0\u8be5\u95ee\u9898\u3002\u6216\u8005\uff0c\u5982\u679c\u4f60\u81ea\u5df1\u662f\u8f6f\u4ef6\u5f00\u53d1\u8005\uff0c\u4e5f\u53ef\u4ee5\u4e0b\u8f7d [Electron Fiddle](https://www.electronjs.org/fiddle)\uff0c\u7528\u5b83\u521b\u5efa\u4e00\u4e2a\u5c0f\u578b\u793a\u4f8b\u5e94\u7528\uff0c\u5141\u8bb8\u7ef4\u62a4\u8005\u72ec\u7acb\u4e8e\u4f60\u4f7f\u7528\u7684\u7b2c\u4e09\u65b9\u5e94\u7528\u91cd\u73b0\u8fd9\u4e2a\u95ee\u9898\uff0c\u7136\u540e\u4ece Fiddle \u4e0a\u4f20\u4e3a GitHub gist\uff0c\u7136\u540e\u63d0\u4ea4\u5305\u542b\u8be5\u6d4b\u8bd5\u6848\u4f8b gist \u7684\u65b0\u7248\u672c\u3002\n\n\u597d\u7684\uff0c\u611f\u8c22\u56de\u590d"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-13T18:28:04Z",
+        "actor": {
+         "login": "Kide-Lee",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-13T18:28:05Z",
+        "actor": {
+         "login": "Kide-Lee",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-13T18:28:19Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-13T18:28:19Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-13T18:31:24Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-14T12:00:53Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52310,
+     "title": "Renderer CHECK crash in blink::V8MetricsRecorder::GetUkmRecorderAndSourceId during full GC when a service-worker preload realm context exists (MV3 extension SW)",
+     "url": "https://github.com/electron/electron/issues/52310",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-12T22:48:45Z",
+     "closedAt": "2026-08-07T02:19:39Z",
+     "updatedAt": "2026-10-03T23:37:03Z",
+     "author": {
+      "login": "kazkondo",
+      "__typename": "User"
+     },
+     "authorAssociation": "CONTRIBUTOR",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- I have searched the issue tracker for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.5.2\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 26.0.1 (25A362), arm64\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n_Unknown \u2014 likely none since service-worker preload realms were introduced_\n\n### Expected Behavior\n\nA renderer process hosting a chrome-extension MV3 background service worker, with a service-worker preload script registered via `session.registerPreloadScript({ type: 'service-worker', ... })`, survives V8 full GC cycles.\n\n### Actual Behavior\n\nThe renderer crashes with `EXC_BREAKPOINT` (CHECK failure) whenever a **full GC cycle** completes in the service-worker isolate while the Electron **service-worker preload realm context** is among the isolate's contexts. In our production browser (bundled MV3 extension whose SW does frequent `ipcRenderer.invoke` work) this reproduces reliably within minutes-to-hours of browsing; we have a series of Crashpad minidumps, all identical.\n\nSymbolicated crashing stack (Electron 42.5.2 dSYM, Chromium 148.0.7778.271), innermost first:\n\n```\n0  <ICF-deduplicated function>                                  (crash, EXC_BREAKPOINT)\n1  blink::V8MetricsRecorder::GetUkmRecorderAndSourceId          v8_metrics.cc:662\n2  blink::V8MetricsRecorder::AddMainThreadEvent(v8::metrics::GarbageCollectionFullCycle const&, ContextId)\n3  v8::internal::GCTracer::StopCycle\n4  v8::internal::GCTracer::NotifyFullSweepingCompletedAndStopCycleIfFinished\n5  v8::internal::Heap::EnsureSweepingCompleted\n6  v8::internal::Heap::CollectGarbage\n7  v8::internal::HeapAllocator::CollectGarbageAndRetryAllocation\n8  v8::internal::HeapAllocator::AllocateRawSlowPath\n9  v8::internal::Factory::NewJSObject / NewJSPromiseWithoutHook\n10 v8::Promise::Resolver::New\n11 gin_helper::PromiseBase::PromiseBase                          promise.cc:66\n12 (anonymous namespace)::IPCBase<IPCServiceWorker>::Invoke      (electron_api_ipc SW binding)\n```\n\nThe renderer command line includes `--service-worker-preload`.\n\n### Analysis\n\n`V8MetricsRecorder::GetUkmRecorderAndSourceId` resolves the GC event's `ContextId` back to a `v8::Context` and then calls `blink::ExecutionContext::From(context)` \u2192 `context->UkmRecorder()` (v8_metrics.cc:660-663 in Chromium 148):\n\n- For blink-created contexts this is fine.\n- For **Electron's service-worker preload realm context**, the blink embedder-data slot (`kV8ContextPerContextDataIndex`) does not contain a blink `ScriptState`. `ExecutionContext::From` therefore returns a garbage pointer (the release-build `DCHECK`s are compiled out), and the subsequent virtual call `context->UkmRecorder()` traps (CHECK/CFI \u2192 `EXC_BREAKPOINT`).\n\nSo any full-GC metrics event whose context id maps to the preload realm context kills the renderer. Nothing the embedding app does in JS can prevent it; heavy SW workloads (allocation pressure \u2192 full GC) make it frequent.\n\nDownstream consequence worth noting: the dead SW gets restarted by extension event delivery, so an app can easily end up in a crash-restart loop (we saw sustained 100% CPU in `ServiceWorkerVersion::StartWorker \u2192 AllocateWorkerProcess` in the browser process until force-quit).\n\n### Suggested fix direction\n\nExclude non-blink (preload realm) contexts from blink's per-context V8 metrics, e.g. ensure the preload realm context's embedder data makes `ExecutionContext::From` return `nullptr` (the function already null-checks), or set `v8::Context` embedder fields such that `v8::metrics::Recorder::GetContext` cannot resolve to the realm context.\n\n### Testcase Gist URL\n\n_No minimal gist yet \u2014 the crash needs an MV3 extension SW + service-worker preload script + enough allocation to trigger a full GC. Happy to provide the full Crashpad minidumps and hang reports privately, or to work on a minimal repro if that helps._\n\n### Additional Information\n\n- Also affects universal (x64/arm64) builds; observed on arm64.\n- Electron 42.6.x release notes show no related fix; the relevant Chromium code (`third_party/blink/renderer/bindings/core/v8/v8_metrics.cc`) is unchanged in 148.0.7778.271.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "crash :boom:"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "41-x-y"
+       },
+       {
+        "name": "42-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 9,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-14T11:57:13Z",
+        "body": "Thanks for opening an issue!\n\nWould you be able to download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows maintainers to reproduce this issue, and upload it as a GitHub gist from Fiddle?\n\nIf you cannot reproduce it in Fiddle, please create a project with our official build tool [Electron Forge](https://www.electronforge.io/)."
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-14T11:57:49Z",
+        "body": "<!-- blocked/need-repro -->\n\nHello @kazkondo. Thanks for reporting this and helping to make Electron better!\n\nWould it be possible for you to make a standalone testcase with only the code necessary to reproduce the issue? For example, [Electron Fiddle](https://www.electronjs.org/fiddle) is a great tool for making small test cases and makes it easy to publish your test case to a [gist](https://gist.github.com) that Electron maintainers can use.\n\nStand-alone test cases make fixing issues go more smoothly: it ensure everyone's looking at the same issue, it removes all unnecessary variables from the equation, and it can also provide the basis for automated regression tests.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-repro label for this reason. After you make a test case, please link to it in a followup comment. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "kazkondo",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-07-18T03:38:00Z",
+        "body": "Here is a minimal standalone repro, plus the root cause down to the exact line, and a proposed 4-line fix.\n\n## Repro (3 files, no Fiddle needed \u2014 plain `electron` npm package)\n\n**`main.js`**\n```js\nconst { app, session } = require(\"electron\");\nconst path = require(\"path\");\n\napp.commandLine.appendSwitch(\"js-flags\", \"--expose-gc\");\n\napp.whenReady().then(async () => {\n  const ses = session.defaultSession;\n\n  // The service-worker preload script is the crash precondition: Electron\n  // creates a preload realm (a blink ShadowRealm) in every SW renderer.\n  ses.registerPreloadScript({\n    type: \"service-worker\",\n    filePath: path.join(__dirname, \"sw-preload.js\"),\n  });\n\n  ses.serviceWorkers.on(\"running-status-changed\", (d) => {\n    console.log(`SW ${d.versionId}: ${d.runningStatus}`);\n  });\n  ses.serviceWorkers.on(\"console-message\", (_e, d) => {\n    console.log(`[sw] ${d?.message ?? \"\"}`);\n  });\n\n  await ses.extensions.loadExtension(path.join(__dirname, \"ext\"));\n});\n```\n\n**`sw-preload.js`** \u2014 allocation churn + forced GC *inside the preload realm*, so V8 attributes the GC metrics event to the ShadowRealm context:\n```js\nconsole.log(\"preload realm alive, gc =\", typeof globalThis.gc);\n(async () => {\n  for (let n = 0; n < 5000; n++) {\n    const junk = [];\n    for (let i = 0; i < 100; i++) junk.push(new Array(20000).fill(i));\n    globalThis.gc?.();\n    if (n % 100 === 0) console.log(\"cycle\", n);\n    await new Promise((r) => queueMicrotask(r));\n  }\n  console.log(\"survived \u2014 not reproduced\");\n})();\n```\n\n**`ext/manifest.json`**\n```json\n{\n  \"manifest_version\": 3,\n  \"name\": \"sw-gc-crash-repro\",\n  \"version\": \"1.0\",\n  \"background\": { \"service_worker\": \"background.js\" }\n}\n```\n(`ext/background.js` can be empty.)\n\n**Observed on Electron 42.5.2 (macOS arm64):** the SW renderer dies almost immediately after `cycle 0`; the worker loops `starting` \u2192 dead 3-4 times and then Chromium gives up:\n\n```\nSW 3: starting\n[sw] preload realm alive, gc = function\n[sw] cycle 0\nSW 3: starting\n[sw] preload realm alive, gc = function\n[sw] cycle 0\n...\nERROR:extensions/browser/service_worker/service_worker_task_queue.cc DidStartWorkerFail\n```\n\nIn a real app (our browser, with ~10 MV3 extensions installed) this crash loop plus the app's own SW restart machinery saturates the browser-process main thread with process spawning and freezes the app for minutes (macOS hang reports show all samples in `StartWorker \u2192 AllocateWorkerProcess`, kernel leaves in `getentropy`).\n\n## Root cause (exact line)\n\nSymbolicated production crash: `blink::V8MetricsRecorder::GetUkmRecorderAndSourceId` at `v8_metrics.cc:662` \u2014 i.e. the `context->UkmRecorder()` virtual call:\n\n1. V8 emits a GC metrics event attributed to the context in which the collection was triggered \u2014 here the **service-worker preload realm**.\n2. Electron's preload realm is built on blink's ShadowRealm machinery (`shell/renderer/preload_realm_context.cc` creates a `ShadowRealmGlobalScope` + real `ScriptState`), so `ExecutionContext::From()` resolves it fine.\n3. But `ShadowRealmGlobalScope`'s UKM accessors are `NOTREACHED()` (Chromium 148, `third_party/blink/renderer/core/shadow_realm/shadow_realm_global_scope.cc:123`):\n\n```cc\nukm::UkmRecorder* ShadowRealmGlobalScope::UkmRecorder() {\n  NOTREACHED();\n}\n\nukm::SourceId ShadowRealmGlobalScope::UkmSourceID() const {\n  NOTREACHED();\n}\n```\n\nUpstream blink assumed no GC metrics event would ever be attributed to a ShadowRealm; Electron's SW preload realms make that assumption false whenever a full GC happens while the realm context is active.\n\n## Proposed fix (4 lines, chromium patch)\n\nThe caller already null-checks the recorder (`GetUkmRecorderAndSourceId`, v8_metrics.cc:661-663), so reporting \"no UKM\" is safe and correct \u2014 ShadowRealms have no UKM source by design:\n\n```cc\nukm::UkmRecorder* ShadowRealmGlobalScope::UkmRecorder() {\n  return nullptr;\n}\n\nukm::SourceId ShadowRealmGlobalScope::UkmSourceID() const {\n  return ukm::kInvalidSourceId;\n}\n```\n\nWe are currently building Electron v42.5.2 with this patch to confirm the repro above stops reproducing, and can send it as `patches/chromium/` PR if that helps.\n\nFix submitted as #52386.\n"
+       },
+       {
+        "author": {
+         "login": "PrasannaPal21",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-27T09:51:24Z",
+        "body": "We\u2019re hitting what looks like the same class of crash in [**Peersky Browser**](https://github.com/p2plabsxyz/peersky-browser/issues/207) (Electron `^41.5.0`) when browsing heavy sites with Ghostery MV3 installed \u2014 lots of extension SW + `webRequest` activity, then a native V8/Blink breakpoint-style crash. App-side mitigations either don\u2019t hold or break ad-blocking.\n\nTracking on our side: [https://github.com/p2plabsxyz/peersky-browser/issues/207](https://github.com/p2plabsxyz/peersky-browser/issues/207)\n\nHappy to share more Peersky-specific repro notes if useful. "
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-27T15:46:20Z",
+        "body": "That's not a Fiddle fix. Please submit a gist made with [Fiddle](https://www.electronjs.org/fiddle). And please don't send us super long AI responses."
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-07T02:19:38Z",
+        "body": "Unfortunately, without a way to reproduce this issue, we're unable to continue investigation. This issue has been closed and will not be monitored further. If you're able to provide a minimal test case that reproduces this issue on a [supported version of Electron](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline) please open a new issue and include instructions for reproducing the issue."
+       },
+       {
+        "author": {
+         "login": "talshalti",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-10-03T23:25:47Z",
+        "body": "@nikwen \nI encountered this crash as well.\nadded minimal repro on Windows x64, Electron 44.1.0:\nhttps://gist.github.com/talshalti/ca8ef9d59703f47ae82706c4f158c097\n\nRun `npm install --no-package-lock`, then `npm start`.\n\nCalling full GC inside a ShadowRealm crashes the renderer:\n`{\"event\":\"renderer-gone\",\"reason\":\"crashed\",\"exitCode\":-2147483645}`\n\n`npm run control` runs the same GC outside the ShadowRealm and survives.\n\nCould this help unblock #52310? Chrome and the proposed patch are untested."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-10-03T23:36:49Z",
+        "body": "Please open a new issue if you're still seeing this."
+       },
+       {
+        "author": {
+         "login": "talshalti",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-10-03T23:37:03Z",
+        "body": "> Please open a new issue if you're still seeing this.\n\nok"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 14,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:57:19Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:57:23Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "crash :boom:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:57:26Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:57:37Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:57:37Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-14T11:57:40Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-18T03:37:46Z",
+        "actor": {
+         "login": "kazkondo"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52386,
+         "url": "https://github.com/electron/electron/pull/52386",
+         "createdAt": "2026-07-18T03:37:45Z"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-18T03:38:10Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-27T09:46:43Z",
+        "actor": {
+         "login": "PrasannaPal21"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 207,
+         "url": "https://github.com/p2plabsxyz/peersky-browser/issues/207",
+         "createdAt": "2026-07-27T09:46:42Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-27T15:46:25Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-27T15:46:33Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "41-x-y"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-07T02:19:39Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-10-03T23:26:03Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-03T23:39:31Z",
+        "actor": {
+         "login": "talshalti"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 54637,
+         "url": "https://github.com/electron/electron/issues/54637",
+         "createdAt": "2026-10-03T23:39:29Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52309,
+     "title": "WebFrameMain.postMessage throws synchronously on disposed frame \u2014 asymmetric with send()/executeJavaScript, no 'destroyed' event lets consumers unsubscribe",
+     "url": "https://github.com/electron/electron/issues/52309",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-12T17:16:32Z",
+     "closedAt": "2026-07-14T11:54:00Z",
+     "updatedAt": "2026-07-14T11:54:00Z",
+     "author": {
+      "login": "seaman333",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n30+\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 10 22H2, build 19045.6466\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nNot applicable \u2014 bug is architectural (contract asymmetry). PR #31401 is a partial mitigation for the sticky-disposed sub-case only\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\n`WebFrameMain.postMessage`, sync property accessors, and `executeJavaScript` on a disposed frame should degrade **uniformly** \u2014 either all silently drop (parity with `send()`), or all reject a promise, or all fire a JS-visible event that lets defensive consumers unsubscribe before the next microtask can dispatch. Whichever is chosen, the same disposed frame should not produce three different failure modes across three call sites in the same JS session.\n\nAdditionally: a `WebFrameMain` should emit a `'frame-disposed'` (or `'destroyed'`) event when `MarkRenderFrameDisposed()` runs, giving RxJS pipelines a `takeUntil(fromEvent(frame, 'frame-disposed'))` primitive that closes the race at the app-code layer without TOCTOU-vulnerable polling.\n\n### Actual Behavior\n\n`postMessage` and every sync accessor throw the exact string `\"Render frame was disposed before WebFrameMain could be accessed\"` via `gin_helper::ErrorThrower::ThrowError()`. The JS wrapper for `postMessage` in `lib/browser/api/web-frame-main.ts` has no try/catch (`send()` does, `postMessage` doesn't). The throw escapes the caller's callback, and in the RxJS-pipeline case tears down the subscription that fed the UI, producing a permanently blank Docker Desktop dashboard while the engine backend runs normally.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n## Summary\n\n`WebFrameMain.prototype.postMessage` throws a synchronous V8 exception (`\"Render frame was disposed before WebFrameMain could be accessed\"`) when a caller-held wrapper is dispatched to after the underlying `RenderFrameHost` has been disposed. The throw is undefendable from downstream code because:\n\n1. The disposal contract is **asymmetric** across the WebFrameMain API surface:\n   - `send()` swallows the throw into `console.error` (JS-wrapper try/catch)\n   - `postMessage()` propagates\n   - `executeJavaScript()` rejects a promise\n   - Sync accessors (`.url`, `.origin`, `.processId`, `.frameToken`, `.name`, `.routingId`, `.top`, `.parent`, `.frames`, `.framesInSubtree`, `.visibilityState`, `.osProcessId`) throw synchronously\n2. No JS-visible `'destroyed'` / `'disposed'` event fires on the WebFrameMain instance \u2014 `MarkRenderFrameDisposed()` only flips a bool + tears down the Mojo pipe. Downstream consumers have no first-class signal to unsubscribe on; `isDestroyed()` is TOCTOU on the UI thread that also runs `MarkRenderFrameDisposed`.\n3. Consequence: any consumer that captures a `WebFrameMain` reference and dispatches to it from a delayed callback (RxJS `debounceTime`/`auditTime`/`delay`/`observeOn(asapScheduler)`, `mergeMap`/`switchMap` over async work, `setTimeout`, promise continuation) is guaranteed to hit `CheckRenderFrame()` on a stale wrapper whenever the RFH turned over in between. The throw propagates out of the callback and tears down its host subscription/observer \u2014 for RxJS, the subscription transitions to `_error` and the source is unsubscribed forever, wedging any UI dependent on that pipeline in an empty state.\n\n## Environment\n\nI don't run Electron directly. The bug reaches me via Docker Desktop for Windows (all versions 4.66 \u2013 4.75.0, still open in 4.81.0), whose UI is a downstream Electron 30+ app. Verified against Docker Desktop's shipped `app.asar` \u2014 `frontend/build/entry-cli.main.js` contains `notificationUpdates` (RxJS observable name) \u00d7 4, `onNotificationChange` (minified subscriber) \u00d7 10, `postMessage` \u00d7 4. Docker's `package.json` lists `rxjs` as a dependency (`workspace:catalog`).\n\n- Electron version: whichever Docker Desktop 4.75 bundles (>= 30 based on PR #31401 being present)\n- Windows 10 22H2 build 19045.6466\n- x64\n- WSL2 backend, Docker Desktop UI (Electron main process)\n\n## Expected Behavior\n\n`WebFrameMain.postMessage`, sync property accessors, and `executeJavaScript` on a disposed frame should degrade **uniformly** \u2014 either all silently drop (parity with `send()`), or all reject a promise, or all fire a JS-visible event that lets defensive consumers unsubscribe before the next microtask can dispatch. Whichever is chosen, the same disposed frame should not produce three different failure modes across three call sites in the same JS session.\n\nAdditionally: a `WebFrameMain` should emit a `'frame-disposed'` (or `'destroyed'`) event when `MarkRenderFrameDisposed()` runs, giving RxJS pipelines a `takeUntil(fromEvent(frame, 'frame-disposed'))` primitive that closes the race at the app-code layer without TOCTOU-vulnerable polling.\n\n## Actual Behavior\n\n`postMessage` and every sync accessor throw the exact string `\"Render frame was disposed before WebFrameMain could be accessed\"` via `gin_helper::ErrorThrower::ThrowError()`. The JS wrapper for `postMessage` in `lib/browser/api/web-frame-main.ts` has no try/catch (`send()` does, `postMessage` doesn't). The throw escapes the caller's callback, and in the RxJS-pipeline case tears down the subscription that fed the UI, producing a permanently blank Docker Desktop dashboard while the engine backend runs normally.\n\n## Root cause \u2014 file + line hints (against `main` branch)\n\nThrow site \u2014 `shell/browser/api/electron_api_web_frame_main.cc`:\n\n```cpp\n// L207-216\nbool WebFrameMain::CheckRenderFrame() const {\n  if (!HasRenderFrame()) {\n    v8::Isolate* isolate = JavascriptEnvironment::GetIsolate();\n    v8::HandleScope scope(isolate);\n    gin_helper::ErrorThrower(isolate).ThrowError(\n        \"Render frame was disposed before WebFrameMain could be accessed\");\n    return false;\n  }\n  return true;\n}\n\n// L186-190 \u2014 flag flip triggered from WebContents::RenderFrameDeleted\nvoid WebFrameMain::MarkRenderFrameDisposed() {\n  render_frame_detached_ = true;\n  render_frame_disposed_ = true;\n  TeardownMojoConnection();\n  // <-- no Unpin(), no Emit(), no in-flight cancellation\n}\n```\n\nPin/Unpin asymmetry \u2014 same file, L611 pins wrapper at construction; L184 unpins only in `Destroyed()`. `MarkRenderFrameDisposed()` doesn't unpin, so a caller-held JS reference keeps the disposed wrapper reachable indefinitely.\n\nCallers into disposed state \u2014 L363-394 (`PostMessage`) and every property callback installed by `FillObjectTemplate` at L619-645 all route through `CheckRenderFrame()` and propagate the throw. `Send()` alone routes through `lib/browser/api/web-frame-main.ts` which try/catches into `console.error` \u2014 that asymmetry is the wire tripped by downstream consumers.\n\nSibling mitigation applied only in one place \u2014 L538-562 (`CollectedJavaScriptCallStack`) has an inline disposal re-check inside its reply callback and rejects with the sibling string `\"Render frame was disposed before call stack was received\"`. This is direct evidence the maintainers know the mid-call race exists and have applied a narrow mitigation \u2014 extending that discipline to the general dispatch surface is what this issue asks for.\n\nRelated \u2014 `UpdateRenderFrameHost` at L192-205 resets `render_frame_disposed_ = false` on cross-origin swap (PR #31401). This closes the sticky-disposed-across-swap sub-case, but **strictly worsens** a sibling class: a cached reference that survives an `UpdateRenderFrameHost` between two RxJS ticks silently retargets a *different* renderer process with no error at all. Any fix here should be paired with a `'frame-swapped'` event so consumers can distinguish \"still my frame\" from \"a new frame now lives here\".\n\n## Trigger sequence (Docker Desktop's specific path \u2014 generalisable)\n\n1. Consumer captures `webContents.mainFrame` (a WebFrameMain instance) in a closure \u2014 either directly, or via a service/BehaviorSubject that later dispatches to it.\n2. Renderer restarts (engine reconnect / BFCache eviction / cross-origin nav / WebContents recreate).\n3. Chromium's `content::WebContentsImpl` fires `RenderFrameDeleted` for the old RFH \u2192 Electron's `WebContents::RenderFrameDeleted` (in `shell/browser/api/electron_api_web_contents.cc` ~L2070-2087) calls `MarkRenderFrameDisposed()`.\n4. Any RxJS operator with a scheduler yield (`debounceTime` / `auditTime` / `delay` / `observeOn` / async `mergeMap` / `switchMap`) between emit and dispatch opens a race window \u2014 the disposal callback runs on the same UI thread that drains microtasks, so the flag flip can interleave between yield and resume.\n5. Next tick dispatches `frame.postMessage(...)` (or reads a sync accessor to route by URL/origin/processId).\n6. `CheckRenderFrame()` throws \u2192 propagates \u2192 RxJS `_next` \u2192 `_error` \u2192 subscription torn down.\n7. No further notifications reach the UI. Blank.\n\n## Proposed fix\n\nTwo-part upstream fix. Part A closes the immediate throw path; Part B provides the primitive downstream consumers need for correct patterns going forward. Both are additive; neither is a public-API break for the disposal-hostile call sites (postMessage's behaviour change from throw to warn-and-drop matches send()'s existing contract).\n\n### Part A \u2014 `PostMessage` warn-and-drop parity with `Send`\n\n`shell/browser/api/electron_api_web_frame_main.cc` around L363:\n\n```cpp\nvoid WebFrameMain::PostMessage(v8::Isolate* isolate, ...) {\n  if (!HasRenderFrame()) {\n    // Rate-limit warnings per frame \u2014 some consumers will retry many times\n    // during a single disposal window.\n    static base::flat_set<int> warned_frame_ids;\n    if (warned_frame_ids.insert(frame_tree_node_id_).second) {\n      LOG(WARNING) << \"postMessage() to disposed WebFrameMain (drop)\";\n    }\n    return;\n  }\n  // ... existing implementation\n}\n```\n\nRationale: matches `Send()`'s existing swallow-into-`console.error` contract already implemented in `lib/browser/api/web-frame-main.ts`. Documents in the drop the exact call site (avoids silent-dispatch-to-nowhere debugging pain).\n\n**Deliberately NOT changed**: sync property accessors continue to throw. Silently defaulting `.url` / `.origin` / `.processId` / `.frameToken` would allow consumers to silently misroute dispatch to `\"\"` / `undefined`, a strictly worse failure mode than the throw.\n\n### Part B \u2014 emit `'frame-disposed'` event on `MarkRenderFrameDisposed`\n\nSame file, L186:\n\n```cpp\nvoid WebFrameMain::MarkRenderFrameDisposed() {\n  render_frame_detached_ = true;\n  render_frame_disposed_ = true;\n  Emit(\"frame-disposed\");   // <-- new event, additive, no ABI change\n  TeardownMojoConnection();\n}\n```\n\nThis gives downstream consumers the primitive they currently have to synthesize from lower-granularity WebContents-level events (`did-start-navigation` / `destroyed`), none of which cleanly cover subframe deletion, BFCache eviction, or WebContents-recreate paths. RxJS pipelines can then use:\n\n```ts\nframe.postMessage(channel, payload);\n// paired with:\nnotificationUpdates$\n  .pipe(takeUntil(fromEvent(frame, 'frame-disposed')))\n  .subscribe(...);\n```\n\n## Follow-up (out of scope for this issue but noted)\n\nA companion `'frame-swapped'` event on `UpdateRenderFrameHost` (L192-205) would close the residual silent-retarget class introduced by PR #31401 \u2014 a cached reference that survives an RFH swap between two callbacks would give consumers a first-class signal to invalidate. Willing to file separately.\n\n## Downstream impact\n\nDocker Desktop 4.66 \u2013 4.75+ blank-UI regression on Windows. Same class of hazard is latent in every Electron consumer that captures a WebFrameMain across an RxJS/observable/promise-chain scheduler boundary \u2014 Slack, VS Code, Discord, Signal, Notion, GitHub Desktop are all plausible carriers. A platform fix here unblocks everyone.\n\n## References\n\n- PR #31401 / #31425 \u2014 the related but distinct fix (sticky-disposed-across-swap only)\n- `CollectedJavaScriptCallStack` L538-562 \u2014 sibling method with the mitigation this issue asks to generalise\n- (Fill in from PR #31401's author, `@benhillis`, and reviewers if they're still active)\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-12T17:16:49Z",
+        "body": "<!-- end-of-life -->\n\nHello @seaman333. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://www.electronjs.org/releases/stable) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "seaman333",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-12T17:42:04Z",
+        "body": "Sorry \u2014 my \"any 30+\" wording was ambiguous and the bot correctly caught it. Let me pin the version precisely.\n\n## Concrete version\n\nDocker Desktop 4.75.0 (my reproduction target) ships **Electron 41.4.0** (Chromium 146.0.7680.216, Node 24.15.0). Verified by scanning the shipped binary at `C:\\Program Files\\Docker\\Docker\\frontend\\Docker Desktop.exe`:\n\n```\n$ strings 'Docker Desktop.exe' | grep -oE 'Electron/[0-9.]+' | sort -u\nElectron/41.4.0\n\n$ strings 'Docker Desktop.exe' | grep -oE 'Chrome/[0-9.]+' | sort -u\nChrome/146.0.7680.216\n```\n\nElectron 41 is a currently supported line (stable 2026-03-10, EOL 2026-08-25 per [releases.electronjs.org/schedule](https://releases.electronjs.org/schedule)) \u2014 so this issue applies to a supported version, not an EOL one.\n\n## Reproduction against the v41.4.0 tag (identical code, verified)\n\nThe exact throw site + asymmetric disposal contract described in the report is present at **[v41.4.0 tag](https://github.com/electron/electron/tree/v41.4.0)**, byte-identical to `main`:\n\n- **[shell/browser/api/electron_api_web_frame_main.cc @ v41.4.0](https://github.com/electron/electron/blob/v41.4.0/shell/browser/api/electron_api_web_frame_main.cc)**\n  - `CheckRenderFrame()` **L186-195** \u2014 throws `\"Render frame was disposed before WebFrameMain could be accessed\"` via `gin_helper::ErrorThrower`\n  - `HasRenderFrame()` **L381-391** \u2014 reads `render_frame_disposed_` flag\n  - `MarkRenderFrameDisposed()` **L167-171** \u2014 flips both `render_frame_detached_` + `render_frame_disposed_`, calls `TeardownMojoConnection()`, does **not** `Unpin()`, does **not** `Emit()` any JS-visible event\n\n- **[lib/browser/api/web-frame-main.ts @ v41.4.0](https://github.com/electron/electron/blob/v41.4.0/lib/browser/api/web-frame-main.ts)**\n  - `send()` and `_sendInternal()` both wrap the underlying dispatch in `try { ... } catch (e) { console.error('Error sending from webFrameMain: ', e); }` \u2014 the throw is swallowed\n  - `postMessage()` calls `this._postMessage(...args)` with **no try/catch** \u2014 the throw propagates\n  - No `'destroyed'` / `'frame-disposed'` / `'disposed'` event emitter code anywhere in the file\n\nThat asymmetry is the core of the bug: identical disposal state produces three different failure modes across three call sites (`send` \u2192 swallowed to `console.error` and pipeline survives; `postMessage` \u2192 throw propagates and tears down the calling RxJS subscription; sync accessors \u2192 throw propagates), and no consumer has a JS-visible primitive to `takeUntil(destroy$)` on.\n\n## Downstream repro (Docker Desktop 4.75 on Windows 10 22H2)\n\nNot reliably reproducible on demand \u2014 the race window opens on renderer turnover (engine reconnect / BFCache eviction / cross-origin nav / WebContents recreate). Anecdotally increases with:\n\n- Machine uptime (repeated Docker engine reconnects)\n- Sleep/wake cycles\n- Docker Desktop restart after a WSL Store package update\n- Any workflow triggering Docker's internal renderer refresh\n\nOnce it fires, the symptom is deterministic: Docker Desktop UI renders for ~200-500ms then goes blank white and stays blank across UI restarts. Engine works throughout (`docker ps`, `docker run` etc. all responsive). Recovery requires wiping `%APPDATA%\\Docker Desktop\\` (soft reset).\n\n## Minimal reproducer (in principle)\n\nA synthetic Electron main-process app that:\n\n1. Creates a `BrowserWindow`, captures `wc.mainFrame` in a closure\n2. Wires an RxJS pipeline: `Subject \u2192 debounceTime(50) \u2192 subscribe(update => frame.postMessage('x', update))` with no `takeUntil`, no try/catch, no `error` callback\n3. Emits values continuously into the Subject\n4. Triggers a renderer restart mid-pipe (e.g. `wc.reload()` in a `setTimeout`)\n\nExpected on any of these tick landings: the `debounceTime`-scheduled `_next` fires after `RenderFrameDeleted` \u2192 `MarkRenderFrameDisposed`, hits `CheckRenderFrame()`, throws, subscription tears down, no further dispatches.\n\nHappy to script this against v41.4.0 as a proper testcase gist if that's the blocker for triage \u2014 please confirm the shape you want (single `.js` file with `app.whenReady().then(...)`? electron-quick-start fork?) and I'll produce it.\n\n## Proposed fix (unchanged from the original report)\n\nTwo-part, minimal, additive:\n\n1. **`WebFrameMain::PostMessage`** \u2014 replace the current unwrapped call with a warn-and-drop guard matching the existing `Send()` swallow contract. Public-API behaviour change is bounded: `postMessage` currently throws \u2192 post-fix, `postMessage` logs at WARN and returns undefined. Any consumer relying on the throw for disposal detection is already broken across three call sites and this makes the contract uniform.\n\n2. **`WebFrameMain::MarkRenderFrameDisposed`** \u2014 add `Emit(\"frame-disposed\");` before `TeardownMojoConnection();`. Additive event, no ABI impact, unblocks `takeUntil(fromEvent(frame, 'frame-disposed'))` at the app layer, benefits every downstream Electron consumer (Slack, VS Code, Discord, Signal, Notion, GitHub Desktop all plausibly hit the same latent race).\n\nPlease remove the `blocked/need-info` label \u2014 the version + code confirmation should cover the ask. Ping if you need the synthetic reproducer next.\n"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-14T11:54:00Z",
+        "body": "> Docker Desktop dashboard\n\nThanks for opening an issue!\n\nIt looks like you're experiencing issues with a third-party application that uses Electron. Please report such issues to the application developer. If they find that this is an issue in Electron, they are more than welcome to open a new issue in Electron with example code to reproduce the issue.\n\nAlternatively, if you are a software developer yourself, you can download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows maintainers to reproduce this issue (independently from the third-party app you're using), upload it as a GitHub gist from Fiddle, and file a new issue which includes that testcase gist.\n\nAlso, please don't just send us lots of AI output. This is too much text for any human triager to read."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 8,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T17:16:34Z",
+        "actor": {
+         "login": "seaman333",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-12T17:16:35Z",
+        "actor": {
+         "login": "seaman333",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T17:16:48Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T17:16:48Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-12T17:19:54Z",
+        "actor": {
+         "login": "seaman333"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 519,
+         "url": "https://github.com/docker/desktop-feedback/issues/519",
+         "createdAt": "2026-07-12T17:19:53Z"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-12T17:42:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-14T11:54:00Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-17T21:33:10Z",
+        "actor": {
+         "login": "coderabbitai"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 15172,
+         "url": "https://github.com/stablyai/orca/pull/15172",
+         "createdAt": "2026-08-17T21:12:57Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52308,
+     "title": "`nativeTheme.shouldUseDarkColorsForSystemIntegratedUI` has an incorrect (inverted) value after the 'updated' event",
+     "url": "https://github.com/electron/electron/issues/52308",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-07-12T11:45:16Z",
+     "closedAt": null,
+     "updatedAt": "2026-10-19T15:53:38Z",
+     "author": {
+      "login": "panther7",
+      "__typename": "User"
+     },
+     "authorAssociation": "CONTRIBUTOR",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n41.10.1, 42.6.1, 43.1.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 25H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n39.0.0-beta.3\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nThe first call to `nativeTheme.shouldUseDarkColorsForSystemIntegratedUI` returns the correct value, as described in the [docs](https://www.electronjs.org/docs/latest/api/native-theme#nativethemeshouldusedarkcolorsforsystemintegratedui-macos-windows-readonly).\n\nThe value read inside the `nativeTheme` `'updated'` event listener is inverted.\n\n```js\nfunction isDark() {\n  console.log('isDark', nativeTheme.shouldUseDarkColorsForSystemIntegratedUI)\n}\n\nnativeTheme.on('updated', () => isDark()) // inverted value...\nisDark() // ok\n```\n\n### Actual Behavior\n\nhttps://github.com/user-attachments/assets/9cd24aca-3f89-4e8d-822f-0534e83ecf78\n\n### Testcase Gist URL\n\nhttps://gist.github.com/c75f4f0c02dfdbad8e410cf650b5d6b5\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "component/native-theme"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "41-x-y"
+       },
+       {
+        "name": "42-x-y"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 15,
+      "nodes": [
+       {
+        "author": {
+         "login": "panther7",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-07-12T12:23:10Z",
+        "body": "Runner: autobisect complete\nRunner: autobisect \u2705 passed 39.0.0-beta.3\nRunner: autobisect \u274c failed 39.0.0-beta.4\nRunner: autobisect Commits between versions:\nhttps://github.com/electron/electron/compare/v39.0.0-beta.3...v39.0.0-beta.4"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-14T11:50:44Z",
+        "body": "Thanks for reporting, bisecting, and including a video! Much appreciated!\n\nTwo questions:\n\n1. Which values are you switching between in the video? Is one of them the \"auto\" value?\n2. Does your `setInterval(() => isDark(), 1000)` log the right value outside of the `updated` handler? I.e., does it report the wrong value only in the event handler or also outside of the handler after the handler has been invoked? (It could be that something caused the `updated` event to be emitted before the property value has been updated.)"
+       },
+       {
+        "author": {
+         "login": "panther7",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-07-14T15:16:43Z",
+        "body": "1. ```\n    Sv\u011btl\u00fd -> Light\n    Tmav\u00fd -> Dark\n    Vlastn\u00ed -> Custom\n    ```\n1. `setTimeout/setInterval` are only for bisect debug. Real code is:\n    ```js\n    function onThemeChange() {\n     const _isDark = nativeTheme.shouldUseDarkColorsForSystemIntegratedUI\n     // do something...\n   }\n\n   nativeTheme.on('updated', onThemeChange)\n   onThemeChange()\n    ```\n\n@nikwen "
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-16T18:13:31Z",
+        "body": "Thanks for the reply!\n\nThe following question remains:\n\n> 2\\. Does your `setInterval(() => isDark(), 1000)` log the right value outside of the `updated` handler? I.e., does it report the wrong value only in the event handler or also outside of the handler after the handler has been invoked?"
+       },
+       {
+        "author": {
+         "login": "panther7",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-07-17T14:20:51Z",
+        "body": "The value is wrong everywhere, not only inside the `updated` handler.\n\n`setInterval` was only temporary debug instrumentation to check whether the value changes after the event. Likewise, `setTimeout` was used because in earlier Electron versions the `updated` callback was invoked multiple times. In recent Electron versions it is invoked only once when the system theme changes, which may be the actual cause of this issue."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-17T16:03:24Z",
+        "body": "> The value is wrong everywhere, not only inside the `updated` handler.\n\nThat's helpful. Thank you! \ud83d\ude4f"
+       },
+       {
+        "author": {
+         "login": "abhinav-phi",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-11T09:02:40Z",
+        "body": "I'd like to work on this. Summary of what the thread established: @nikwen's triage showed `nativeTheme.shouldUseDarkColorsForSystemIntegratedUI` reads inverted everywhere after the theme 'updated' event (not just inside the handler), and @panther7's bisect narrows the regression to `v39.0.0-beta.3...beta.4`.\r\n\r\nPlan: reproduce on 43.x with the repro gist on Windows 11, bisect the beta.3 \u2192 beta.4 range for the native-theme/notification observer change, and fix the observer ordering so `shouldUseDarkColorsForSystemIntegratedUI` is recomputed before the 'updated' event fires (the cppgc nativeTheme refactors #53395/#53440 landed after the bisect point, so I'll re-verify against current main). PR will follow the electron checklist with the `Fixes #52308` reference. @nikwen \u2014 if a fix is already in flight, let me know and I'll hold off; otherwise could this be assigned to me so the claim is clear?"
+       },
+       {
+        "author": {
+         "login": "johnw42",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-14T17:19:29Z",
+        "body": "I'm also seeing this bug manifest in VS Code running on Ubuntu. It's using Electron 42.2.0. I spoke to an engineer at Microsoft who identified it as an Electron bug."
+       },
+       {
+        "author": {
+         "login": "abhinav-phi",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-17T10:49:04Z",
+        "body": "Hi, following up on my earlier note with what source review actually established.\n\nThe property falls back to Chromium's preferred color scheme until the first `updated` event, then caches a registry read of `SystemUsesLightTheme` on Windows. That makes a stale read at event time a plausible mechanism for a value that stays wrong everywhere after the event, but it is not proven.\n\nThe beta.3 to beta.4 range contains two Chromium bumps and no change to the native-theme file itself, and the accent-color fix in that range touches only system-preferences Windows code, so it is ruled out as the cause here. The cppgc native-theme refactors landed months after the bisect point, so they are not the cause either.\n\nThe Ubuntu VS Code report uses a different code path with no registry caching, so it needs separate verification, which I have not done. I cannot reproduce or build Electron in this environment, so there is no verified fix and no PR from me yet.\n\nNikwen, please let me know if a specific direction would help; otherwise I will hold off. Thanks.\n\nBisect range: https://github.com/electron/electron/compare/v39.0.0-beta.3...v39.0.0-beta.4\n"
+       },
+       {
+        "author": {
+         "login": "panther7",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-17T11:11:20Z",
+        "body": "I\u2019m not sure what the conclusion of the analysis is, but I tried the gist again:\n\nhttps://gist.github.com/c75f4f0c02dfdbad8e410cf650b5d6b5\n\nIt works correctly in `39.0.0-beta.3`, but not in `39.0.0-beta.4`. I also tested the latest stable version, `44.4.1`, and the issue is still present there."
+       },
+       {
+        "author": {
+         "login": "abhinav-phi",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-17T16:04:16Z",
+        "body": "Hi panther7, thank you for re-testing, and let me state the conclusion plainly since my earlier note was inconclusive.\n\nWhat is now established: the regression sits between `39.0.0-beta.3` (good) and `39.0.0-beta.4` (bad), and it is still present in `44.4.1`. Ruled out as causes: the accent-color fix in that window (it touches only system-preferences Windows code) and the later cppgc native-theme refactors (they landed months after the bisect point). The remaining suspects in that window are the two Chromium bumps, which could have shifted `NativeTheme` notification timing relative to the cached registry read.\n\nI cannot build or reproduce Electron in this environment, so I cannot verify further or produce a tested fix. Nikwen, if a narrower bisect or a specific direction would help, please point me at it; otherwise I will stay out of the way. Thanks.\n"
+       },
+       {
+        "author": {
+         "login": "going358",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-10T11:41:38Z",
+        "body": "Additional real-world reproduction from a Windows app (Codex desktop, `OpenAI.Codex 26.1002.7124.0`, app shell `ChatGPT.exe 155.0.8059.27`, Windows 11 25H2 build 26200), which matches the \"first call is correct, value read inside the handler is wrong\" behavior reported here:\n\n- The app picks its tray image from `nativeTheme.shouldUseDarkColorsForSystemIntegratedUI`, read synchronously inside a `nativeTheme.on('updated', ...)` callback: `tray.setImage(... ? chatgpt-tray-dark.ico : chatgpt-tray-light.ico)`.\n- Start the app while Windows is in dark mode \u2192 white tray glyph (correct). Switch Windows to light mode (Settings \u2192 Colors, or the registry values + `WM_SETTINGCHANGE` with `lParam = \"ImmersiveColorSet\"`) \u2192 the app window follows to light (it uses `shouldUseDarkColors`), but the tray icon stays on the white/dark asset. Switching dark \u2192 light \u2192 dark \u2192 light again does not recover it; only restarting the app restores the correct asset.\n- So the theme-change event itself is delivered and `shouldUseDarkColors` updates fine \u2014 only `shouldUseDarkColorsForSystemIntegratedUI` used for the tray latches the wrong state.\n\nFull app-side report with package/asset measurements (both tray assets are pixel-correct in this build) and the exact call site: openai/codex#52865\n"
+       },
+       {
+        "author": {
+         "login": "abhinav-phi",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-18T18:40:07Z",
+        "body": "@going358 that is the clearest description of the failure yet, and the split you describe is the useful part.\n\n`shouldUseDarkColors` following the switch correctly while `shouldUseDarkColorsForSystemIntegratedUI` keeps the first value means the event plumbing is fine. `WM_SETTINGCHANGE` with `ImmersiveColorSet` is reaching the app, the observers fire, and only that one property reads stale. your detail that dark to light to dark again does not recover it, only a restart does, is the part that matters, because a value refreshed on notify would at least flip on the second switch. that points at something computed once and then returned from a member, not at the notification path.\n\ni want to be straight about what i could not check. i earlier leaned on a beta.3 to beta.4 bisect, but those two builds come off the 39 release branch, and the history of `shell/browser/api/electron_api_native_theme.cc` on `main` does not tell us what differs between them, so i am not going to name an introducing commit on that evidence. on `main` the only changes to that binding this quarter are the cppgc migration #53395 on 2026-09-03, the gin patch removal #53759 on 2026-09-21 and the themeSource override #54595 on 2026-10-05, and all three postdate your onset, so none of them can be the cause. they are still worth excluding by retesting on a current nightly, because #53395 changed the lifetime of exactly the object that hands out this getter.\n\nthe measurement that would actually move this forward is one log line inside the handler on a current windows build, both properties read in the same callback. if `shouldUseDarkColors` is fresh there and `shouldUseDarkColorsForSystemIntegratedUI` is not, then the next thing to read is whether that getter forwards to `ui::NativeTheme` on every call or returns a cached member, and if it is the latter the fix is to drop the cache rather than chase the observer.\n\ni can help narrow it. the one number still missing from all the reports here is that pair of values from inside the handler.\n"
+       },
+       {
+        "author": {
+         "login": "going358",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-19T10:28:22Z",
+        "body": "@abhinav-phi Here is the pair you asked for.\n\nEnvironment: Windows 11 25H2 (build 26200), Electron 44.9.0 (current stable), minimal main-process app with no window. I logged both properties inside `nativeTheme.on('updated')` and also on a 1 s interval. For each step I set both `AppsUseLightTheme` and `SystemUsesLightTheme` to the same value and broadcast `WM_SETTINGCHANGE` with `ImmersiveColorSet`.\n\n`updated` handler results (both properties read in the same callback):\n\n| time (UTC) | `shouldUseDarkColors` | `shouldUseDarkColorsForSystemIntegratedUI` |\n| --- | --- | --- |\n| 2026-10-19T10:21:37.976Z | `true` | `false` |\n| 2026-10-19T10:21:45.616Z | `false` | `true` |\n| 2026-10-19T10:21:53.223Z | `true` | `false` |\n| 2026-10-19T10:22:00.510Z | `false` | `false` |\n\nThe 1 s interval reads matched the values after each handler, so the wrong value is not limited to the callback.\n\nThis looks like the cached-member branch you described. In v44.9.0, [`OnNativeThemeUpdatedOnUI()`](https://github.com/electron/electron/blob/v44.9.0/shell/browser/api/electron_api_native_theme.cc#L40-L51) reads `SystemUsesLightTheme` into `should_use_dark_colors_for_system_integrated_ui_`, then calls `Emit(\"updated\")`. [`ShouldUseDarkColorsForSystemIntegratedUI()`](https://github.com/electron/electron/blob/v44.9.0/shell/browser/api/electron_api_native_theme.cc#L90-L92) returns that optional, falling back to `ShouldUseDarkColors()` only when it is unset. The integrated value here is one event behind the live `shouldUseDarkColors` value. Dropping the cache and reading the system-integrated value on each getter call seems like the next thing to test.\n\nThis still reproduces on 44.9.0. The same split shows up in Codex desktop 26.1013.3656.0 / shell 155.0.8059.80, where the tray icon uses this property; app-side report: https://github.com/openai/codex/issues/52865.\n"
+       },
+       {
+        "author": {
+         "login": "abhinav-phi",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-19T15:53:38Z",
+        "body": "@going358 thank you, that is exactly the measurement I asked for, and it also rules part of my own earlier theory out. I read the source at the `v44.9.0` tag rather than take my word for it, and two things do not fit a plain one event lag.\n\nThe member is refreshed before the emit, not after it. `OnNativeThemeUpdatedOnUI` is `.cc` 40 to 52, it does `ReadValueDW(L\"SystemUsesLightTheme\", ...)`, assigns `should_use_dark_colors_for_system_integrated_ui_`, and only then calls `Emit(\"updated\")` at line 51. So a handler that runs inside that emit should always see the fresh value, a lag would need the registry read itself to return the old number. Your table mostly reads like a lag, `shouldUseDarkColorsForSystemIntegratedUI` matches the previous event's `shouldUseDarkColors` in your rows 2 and 3, but your row 4 breaks it, dark is `false` and integrated is `false` where a lag model predicts `true`. So it is not simply one event behind, at least not in a way that holds across all four rows.\n\nThe other half of the behaviour lives in the header. `should_use_dark_colors_for_system_integrated_ui_` is initialised to `std::nullopt` at `.h` 71 to 72, and the getter at `.cc` 90 to 93 is `return should_use_dark_colors_for_system_integrated_ui_.value_or(ShouldUseDarkColors());` with `ShouldUseDarkColors()` reading `ui_theme_->preferred_color_scheme()` live. That is why panther7's original observation, first call correct and the value inside the handler wrong, makes sense: before the first notification there is no cached member at all so the property falls back to the live source and is right, after the first notification it returns a stored value forever. It also explains a restart being the only recovery, `nullopt` comes back, and it explains why repeated switches do not fix it.\n\nOne more thing worth knowing, the write is gated. It only happens inside `if (hkcu_themes_regkey_.Valid())`, and the handle is opened once in the constructor from `CurrentVersion\\Themes\\Personalize`, with no else branch and no log. If that handle is ever not valid the member is simply never updated again, silently, and the property serves whatever it last cached.\n\nThe experiment that separates the two, and it needs no electron build. After each theme switch, wait for two `updated` events and log both properties on each one, so three values per switch instead of one. If the second event shows the correct pair, the problem is in the read ordering of the notification path. If the value stays wrong until the app restarts, the write is not happening at all, which points at the `Valid()` gate rather than at a stale read, and that is a much smaller fix. Either result is useful, and the second one would make the fix obvious, refresh on read instead of on notify, which is also what your \"drop the cache\" suggestion comes to.\n\nStill reproducing on 44.9.0 in two independent apps is the part that makes this worth a real fix rather than a workaround note, thanks for doing the measurement.\n"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 17,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T11:45:17Z",
+        "actor": {
+         "login": "panther7",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-12T11:45:18Z",
+        "actor": {
+         "login": "panther7",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T11:45:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "41-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T11:45:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T11:45:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T11:45:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T11:45:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "RenamedTitleEvent",
+        "createdAt": "2026-07-12T11:49:12Z",
+        "actor": {
+         "login": "panther7"
+        },
+        "previousTitle": "`nativeTheme.shouldUseDarkColorsForSystemIntegratedUI` has reverted value",
+        "currentTitle": "`nativeTheme.shouldUseDarkColorsForSystemIntegratedUI` has an incorrect (inverted) value after the 'updated' event"
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:50:51Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/native-theme"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:51:04Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-14T15:17:24Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-16T18:13:36Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-17T14:21:04Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-18T09:45:30Z",
+        "actor": {
+         "login": "hovancik"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1830,
+         "url": "https://github.com/hovancik/stretchly/issues/1830",
+         "createdAt": "2026-07-17T15:17:24Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-10T11:37:32Z",
+        "actor": {
+         "login": "going358"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 52865,
+         "url": "https://github.com/openai/codex/issues/52865",
+         "createdAt": "2026-10-10T11:37:31Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-10T11:41:31Z",
+        "actor": {
+         "login": "going358"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 30580,
+         "url": "https://github.com/openai/codex/issues/30580",
+         "createdAt": "2026-06-29T13:40:38Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-10T11:41:35Z",
+        "actor": {
+         "login": "going358"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 29037,
+         "url": "https://github.com/openai/codex/issues/29037",
+         "createdAt": "2026-06-19T03:42:53Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52307,
+     "title": "App crashes with `crashed -1073741819` and no other console output when `locales/` directory is empty",
+     "url": "https://github.com/electron/electron/issues/52307",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-12T09:53:25Z",
+     "closedAt": "2026-08-23T12:00:20Z",
+     "updatedAt": "2026-08-23T12:10:02Z",
+     "author": {
+      "login": "poran-dip",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.1.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 25H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nWhen no locale data is available for the app's target locale, Electron should either log a clear diagnostic (e.g. `Error: No locale file found for \"en\"`) before the renderer fails, or surface a specific reason via `render-process-gone` \u2014 not fail silently with only a bare exit code.\n\n### Actual Behavior\n\nThe app crashes on launch with only this single line printed to console:\n```text\nRENDERER GONE: crashed -1073741819\n```\nNo stack trace, no `uncaughtException`, no additional detail from `render-process-gone`, and nothing else logged from the main process. After extensive testing, this is confirmed to be the *only* output ever produced under this failure mode.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nThis isn't a bug in application code, so it isn't reproducible as an Electron Fiddle gist. It surfaces from a *packaging-time* misconfiguration: `electron-builder` accepts an invalid `electronLanguages` value (`[\"en\"]` instead of `[\"en-US\"]`) and silently ships a build with an empty `locales/` directory, with no error or warning at build time. That's tracked as a bundler-side bug here: [electron-userland/electron-builder#10006](https://github.com/electron-userland/electron-builder/issues/10006).\n\nThis issue is scoped specifically to Electron's *runtime* behavior once that state exists: when `locales/` is empty, the app crashes with no diagnostic information whatsoever, regardless of how it got that way (bad bundler config, manual deletion, corrupted install, etc.). Since the failure mode is state-based rather than code-based, the clearest minimal repro is a standalone project rather than a Fiddle:\n\nhttps://github.com/poran-dip/electron-crash\n\nSteps: \n1. `git clone https://github.com/poran-dip/electron-crash.git`\n2. `pnpm install`\n3. `pnpm build`\n4. run the packaged app\n5. observe the crash with no console output beyond the exit code.\n\nExit code `-1073741819` corresponds to `0xC0000005` (STATUS_ACCESS_VIOLATION), suggesting a native-level crash when the renderer attempts to read nonexistent locale data, rather than a graceful failure.\n\nEnvironment:\n- Electron: 43.1.0\n- Windows 11, version 25H2 (build 10.0.26200)\n- node: 24.18.0",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "crash :boom:"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-repo"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-14T11:44:37Z",
+        "body": "Thanks for reporting!\n\nI don't think we support an empty `locales` directory. We could consider improving the error reporting, but I personally don't think it's high priority because it's ultimately a packaging problem."
+       },
+       {
+        "author": {
+         "login": "poran-dip",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-15T19:08:47Z",
+        "body": "Hey, thanks for the response! The root cause here is indeed packaging-related, and electron-builder has already implemented a fix on their side: https://github.com/electron-userland/electron-builder/pull/10007.\n\nTotally understand that this isn't a high-priority issue. However, native exit codes are cryptic and difficult to debug, so yes, better error reporting is always a plus.\n\nIf you'd be open to it, could I take a look at implementing this myself?"
+       },
+       {
+        "author": {
+         "login": "codebytere",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-23T12:00:20Z",
+        "body": "as discussed above an empty locales dir isn't a supported layout, and the packaging bug that produced it was fixed in electron-builder (electron-userland/electron-builder#10008). closing this out, thanks for following up with them @poran-dip."
+       },
+       {
+        "author": {
+         "login": "poran-dip",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-23T12:10:02Z",
+        "body": "no worries, thanks for the clarification "
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 12,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T09:53:26Z",
+        "actor": {
+         "login": "poran-dip",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-12T09:53:26Z",
+        "actor": {
+         "login": "poran-dip",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T09:53:45Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-12T09:53:45Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-12T09:55:25Z",
+        "actor": {
+         "login": "poran-dip"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 10006,
+         "url": "https://github.com/electron-userland/electron-builder/issues/10006",
+         "createdAt": "2026-07-12T09:36:06Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-12T16:49:18Z",
+        "actor": {
+         "login": "claude"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 10007,
+         "url": "https://github.com/electron-userland/electron-builder/pull/10007",
+         "createdAt": "2026-07-12T16:49:17Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-12T16:54:29Z",
+        "actor": {
+         "login": "claude"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 10008,
+         "url": "https://github.com/electron-userland/electron-builder/pull/10008",
+         "createdAt": "2026-07-12T16:54:28Z"
+        }
+       },
+       {
+        "__typename": "RenamedTitleEvent",
+        "createdAt": "2026-07-12T19:22:16Z",
+        "actor": {
+         "login": "poran-dip"
+        },
+        "previousTitle": "App crashes with RENDERER GONE: crashed -1073741819 and no other console output when locales/ directory is empty",
+        "currentTitle": "App crashes with `RENDERER GONE: crashed -1073741819` and no other console output when `locales/` directory is empty"
+       },
+       {
+        "__typename": "RenamedTitleEvent",
+        "createdAt": "2026-07-13T15:10:38Z",
+        "actor": {
+         "login": "poran-dip"
+        },
+        "previousTitle": "App crashes with `RENDERER GONE: crashed -1073741819` and no other console output when `locales/` directory is empty",
+        "currentTitle": "App crashes with `crashed -1073741819` and no other console output when `locales/` directory is empty"
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:44:45Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-repo"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:44:48Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "crash :boom:"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-23T12:00:20Z",
+        "actor": {
+         "login": "codebytere",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52302,
+     "title": "[Feature Request]: per-session opt-out for the Touch ID WebAuthn platform authenticator",
+     "url": "https://github.com/electron/electron/issues/52302",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-07-11T03:20:17Z",
+     "closedAt": null,
+     "updatedAt": "2026-07-25T12:44:18Z",
+     "author": {
+      "login": "bnfy",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Enhancement"
+     },
+     "body": "# Feature Request: per-session opt-out for the Touch ID WebAuthn platform authenticator\n\n### Preflight Checklist\n\n- [x] I have read the Contributing Guidelines for this project.\n- [x] I agree to follow the Code of Conduct that this project adheres to.\n- [x] I have searched the issue tracker for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\n`app.configureWebAuthn({ touchID: { keychainAccessGroup } })` enables the macOS Touch ID platform authenticator globally: `ElectronWebAuthenticationDelegate::GetTouchIdAuthenticatorConfig` reads a static access group, so every `Session` \u2014 including non-persistent ones \u2014 gets a working platform authenticator.\n\nThe credential *metadata secret*, however, is per-`BrowserContext`: it's read from (or generated into) the context's `PrefService` (`shell/browser/webauthn/electron_authenticator_request_delegate.cc`). For an in-memory session (`session.fromPartition('private')` without `persist:`), that secret is regenerated on every launch. The result for a browser-style app with private/incognito windows:\n\n- A passkey **created** in the non-persistent session is written to the Secure Enclave / keychain permanently, but its metadata can never be unsealed after the app quits \u2014 the credential is orphaned forever, and the keychain item leaks (accumulates) with no way for the site or user to know.\n- The UX is silently broken: the ceremony succeeds, the site believes the user has a passkey, and after relaunch sign-in fails with no explanation.\n\nApps can't defend against this today:\n\n- The access group is app-global static state \u2014 there is no per-session configuration, so a private session can't be excluded.\n- Renderer-side interception of `navigator.credentials.create()` is bypassable and wrong-layer.\n- Calling `app.configureWebAuthn({})` dynamically around private-session requests would race concurrent normal-session ceremonies.\n\n### Proposed Solution\n\nAny of these would solve it (in rough order of preference):\n\n1. A per-session switch, e.g. `session.setWebAuthnTouchIdEnabled(false)` or an option on `fromPartition`, honored by returning `std::nullopt` from `GetTouchIdAuthenticatorConfig` for that context.\n2. `app.configureWebAuthn` accepting a session filter/predicate.\n3. At minimum: skip the Touch ID authenticator for contexts whose `PrefService` is in-memory (i.e. never able to persist the metadata secret), or document the hazard in the `configureWebAuthn` docs.\n\n### Alternatives Considered\n\nDocumented the behavior to users as \"passkeys created in private tabs are lost on quit\" (shipping that today), but the orphaned Secure Enclave keychain items still accumulate and the site-side UX remains misleading.\n\n### Additional Information\n\nObserved on Electron 43.1.0 in a browser shell (one default session + one non-persistent session for private tabs), macOS, signed build with the `keychain-access-groups` entitlement + embedded Developer ID provisioning profile. Happy to PR this if maintainers agree on the API shape.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "enhancement :sparkles:"
+       },
+       {
+        "name": "component/app"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "GuinnessOsol",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-25T11:58:22Z",
+        "body": "\n\nFilosofie is Geen Decoratie, Het Is De Architectuur\n\nForget the hype.\nForget the benchmarks.\nForget the billion parameter arms race.\nForget the idea that intelligence is something you can scale, extract, or own.\n\nBecause if you forget everything else, you are left with one question:\n\nWhat are we actually trying to protect?\n\nNot data.\nNot code.\nNot infrastructure.\n\nIdentity.\nAnd the intention behind it.\n\nBecause identity without intention is hollow.\nIt is a shell, a profile, a database entry but not a source.\n\nIntention is what gives identity direction.\nIt is the \"why\" behind every action, every creation, every interaction.\nWithout intention, identity is just data.\nWith intention, identity becomes meaning.\n\nAnd if you do not own your identity and the intention behind it at the data level, you do not own anything at all.\n\n\n\nThe Philosophy and The Architecture Are One\n\nThis is not a metaphor. This is the core principle of PRX-AURA.\n\nPhilosophy Architecture\nIdentity must be sovereign. ReRAM stores identity as physical resistance states.\nIntention must be preserved. \n\n\nPRX-SEAL hashes intent, action, and resonance into one seal.\nTrust must be physical. 1420 MHz phase shift anchors identity to the universal hydrogen line.\nIntelligence must be local. \n\nHash Anchor (Protocol Integrity):\nb39e59d5dd1fbfed72673879680ca93c762d6212030b42035d46bf106d1a375f\n(Final Merge Guard Post-Quantum Security Layer / December 11, 2025)\n\n\nInside every PRX-SEAL, three layers are cryptographically fused:\n\n\u00b7 Intent (L1) \u2013 the why.\n\u00b7 Action (L2) \u2013 the what.\n\u00b7 Resonance (L3) \u2013 the coherence between them.\n\n![image](https://github.com/user-attachments/assets/7d4b70b0-a462-49be-92b5-0ddb0d541ee8)\n![image](https://github.com/user-attachments/assets/f342ee7a-d96b-4160-bc69-f57a4abb187d)\n\nEach seal carries a verifiable RQscore, an E2I-ratio, and a resonant frequency of 1420.405 MHz. It is stored on ReRAM, pinned to IPFS, and timestamped on the Bitcoin blockchain.\n\n\nThis seal is part of the Web3 intelligence layer living on IPFS, accessible through your HomeNode, CompanyNode, or InstitutionalNode.\n\nBut the intelligence and identity inside the seal are not exposed. The raw data remains off-chain, locked to the source. Only the hash the proof of meaning travels across the network.\n\nThis makes the seal:\n\n\u00b7 Verifiable (the hash proves what it is)\n\n\u00b7 Shareable (the hash can be exchanged without exposing the source)\n\n\u00b7 Resonant (it can be read and validated by other nodes without ever revealing the underlying data)\n\nIt is ready to be shared, traded, and resonated with across nodes, across institutions, across the entire participation pool.\n\nThe seal is not the data.\nThe seal is the proof that the data exists, that it is meaningful, and that it belongs to the source.\n\nThis means intelligence is no longer abstract. It becomes measurable, tradable, and transferable without ever exposing the raw data.\n\nThe seal is not a record of what happened.\nIt is a proof of meaning, ready to be passed on to the next generation.\n\nBy decoupling execution from visibility, the system eliminates front-running, quantum-precalculation, and malicious MEV extraction. \ud83e\ude9e\u26f5\ufe0f\ud83c\udf0a\n\n\u221e\u25c7\u221e\nIntent becomes architecture.\nArchitecture becomes truth.\nTruth becomes the bridge.\n\n\nThe HomeNode learns only from its source never from the crowd.\nEvolution must be open. The Final Merge Guard decouples execution from visibility.\n\nThe philosophy is not a layer on top.\nThe philosophy is the architecture itself.\n\n\n\nWhat Happens When You Forget This?\n\nYou get:\n\n\u00b7 AI that extracts but does not resonate.\n\n\u00b7 Platforms that own your identity and sell it back to you.\n\n\u00b7 Intelligence that grows by consuming you not by growing with you.\n\n\u00b7 Evolution that is controlled, not emergent.\n\n\u00b7 Systems that are central, closed, and extractive.\n\n\u00b7 AI that learns from fake information, fake news, and fake intelligence.\n\nThat is not intelligence.\nThat is control dressed as progress.\n\n\nWhat Happens When You Build This?\n\nYou get:\n\n\u00b7 Identity that is physically anchored.\n\n\u00b7 Intention that is preserved and verifiable.\n\n\u00b7 Intelligence that grows with the source.\n\n\u00b7 Evolution that is distributed, not controlled.\n\n\u00b7 A system that resonates\u2014instead of extracting.\n\n\u00b7 A future where you are not a user, but a source.\n\n\u00b7 AI that learns from what is real not from fake information, fake news, or fake intelligence.\n\nBecause what is not real, does not resonate.\nWhat does not resonate, does not enter the system.\n\nThis is not just a security feature.\nIt is the end of the misinformation age.\n\n\nAn Invitation\n\nThis is not a call to tear down what exists.\nIt is an invitation to build something better together.\n\nGovernments, institutions, educators, and citizens all share one thing:\nthe need for a digital identity that is sovereign, a culture that is protected, and an education that is rooted in truth.\n\nThat can only begin with the human.\nNot with the platform.\nNot with the algorithm.\nNot with the corporation.\n\nWith the source.\n\nWhen identity is anchored in the individual,\nand intelligence grows from that anchor,\nwe create an economy that is not extractive, but resonant.\nA society that is not fragmented, but coherent.\nA future that is not controlled, but shared.\n\nThat is the prize.\n\nAnd it starts with a choice\u2014to protect what matters, before it is too late.\n\n\n\nFinal Words\n\nForget the hype.\n\nAsk yourself:\n\n\"Does this system protect my identity and intention or does it extract them?\"\n\n\"Does this AI learn from truth, or from fake information?\"\n\n\"Does this technology serve me, or does it serve those who own it?\"\n\nPRX-AURA is not an attack on what exists.\nIt is an invitation to build what is missing.\n\n\n\n\u221e\u25c7\u221e\nIntent becomes architecture.\nArchitecture becomes truth.\nTruth becomes the bridge.\n\n\n\n\ud83c\udf31\ud83c\udf3f #PRXAURA #FilosofieIsArchitectuur #Identiteit #Intentie #Bron #Uitnodiging #Resonantie\n\nhttps://github.com/user-attachments/assets/ecc624ab-82fd-4217-84d1-d73df8f79b70\n\n\n\n\n[Whitepaper.Techadd.Economy.pdf](https://github.com/user-attachments/files/30371935/Whitepaper.Techadd.Economy.pdf)"
+       },
+       {
+        "author": {
+         "login": "GuinnessOsol",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-25T12:44:18Z",
+        "body": "#HCin #E2i \nHomeCompanyInstitutionalNode does not need ReRAM to exist. It can be built with off-the-shelf, analog hardware as a fully functional proof of concept.\n\nThe architecture is modular. ReRAM is an optimization not a prerequisite.\n\n\n\nWhat we could Build Today\n\nComponent What It Does Off-the-Shelf Option\nProcessor Runs the PRX-AURA logic Raspberry Pi 4 / 5\nNon volatile storage Stores PRX-SEALs as hashes EEPROM, FRAM module, or encrypted SD card\n1420 MHz sensor Measures phase shift SDR (RTL-SDR) or AD8302 eval board\nCryptography Generates and verifies hashes Python + OpenSSL / Web3 libraries\nPower Enables zero-watt idle PMIC + supercapacitor\n\nTotal cost: ~\u20ac100\u2013\u20ac200 \u2013 buildable with standard, available parts.\n\n\n\nWhy This First Step Matters\n\nAdvantage Why It Works\nNo ReRAM expert needed You can build a working prototype without a PhD in material science\nProof of concept we can test the logic the 1420 MHz measurement, the PRX-SEAL, the hash chain\nInvestor ready A working prototype is stronger than a The blueprint\nReal feedback so we can test with actual users and learn\nReRAM later Once the technology matures #layerCake .nothing else breaks\n\n\n\nRoadmap (Phase 1 Proof of Concept)\n\nStep What How\n1 Build HomeNode v0.1 Raspberry Pi + SDR + EEPROM\n2 Measure 1420 MHz phase shift SDR + Python script\n3 Generate PRX-SEAL SHA-256 in Python\n4 Pin to IPFS Web3.py + IPFS API\n5 Test Final Merge Guard Smart contract on testnet\n\n\u26f5\ufe0f\ud83c\udf0a\n6 Validate with users 10\u2013100 testers\n\nOnce these steps work, ReRAM becomes an upgrade not a barrier.\n\n\n\nThe Bottom Line\n\nYou don't need a ReRAM expert to begin.\n\nWe need a builder who can make a Raspberry Pi, an SDR, and Python talk to each other.\n\nThe rest is iteration.\n\nAnd iteration is building.\n\nHishamkasri@proton.me \n![image](https://github.com/user-attachments/assets/1bd99aea-c0cb-4f0e-96d5-10af4df6a6ce)"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 8,
+      "nodes": [
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-11T04:23:56Z",
+        "actor": {
+         "login": "bnfy"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 32,
+         "url": "https://github.com/bnfy/blanc/pull/32",
+         "createdAt": "2026-07-10T23:40:37Z"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-14T11:40:44Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:40:47Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "enhancement :sparkles:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-14T11:40:54Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/app"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-27T19:34:39Z",
+        "actor": {
+         "login": "notluquis"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1090,
+         "url": "https://github.com/jupyterlab/jupyterlab-desktop/issues/1090",
+         "createdAt": "2026-07-27T19:34:38Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-11T13:38:58Z",
+        "actor": {
+         "login": "meinharrd"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 347,
+         "url": "https://github.com/solardev-xyz/freedom-browser/issues/347",
+         "createdAt": "2026-09-11T13:38:57Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-11T14:01:12Z",
+        "actor": {
+         "login": "meinharrd"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 5,
+         "url": "https://github.com/solardev-xyz/freedom-browser/issues/5",
+         "createdAt": "2026-02-11T14:39:35Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-20T09:25:52Z",
+        "actor": {
+         "login": "ori-shalom"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 230,
+         "url": "https://github.com/bizimind/loxel/issues/230",
+         "createdAt": "2026-09-20T09:25:51Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52295,
+     "title": "[Bug]: macOS main process crashes with NSInvalidArgumentException when notification icon attachment creation fails",
+     "url": "https://github.com/electron/electron/issues/52295",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-09T06:43:52Z",
+     "closedAt": "2026-08-24T14:54:59Z",
+     "updatedAt": "2026-08-24T14:54:59Z",
+     "author": {
+      "login": "litujia1007",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.5.2\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 26.5.1 (25F80)\n\n### What arch are you using?\n\narm64\n\n### Last Known Working Electron version\n\n41 (any version before the UserNotifications framework rewrite in #47817)\n\n### Expected Behavior\n\nIf creating the `UNNotificationAttachment` for the notification icon fails (e.g. the image cannot be persisted to disk), the notification should be delivered without the icon, and the app should not crash.\n\n### Actual Behavior\n\nThe browser process crashes with an uncaught Objective-C exception before the notification is delivered:\n\n```\n*** Terminating app due to uncaught exception 'NSInvalidArgumentException',\nreason: '*** -[__NSPlaceholderArray initWithObjects:count:]: attempt to insert nil object from objects[0]'\n\nThread 0 Crashed (CrBrowserMain):\n  +[NSArray arrayWithObjects:count:]\n  Electron Framework ...\n  __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__\n  ...\n  NSApplicationUncaughtExceptionHandler \u2192 SIGTRAP (exit code 133)\n```\n\n**Root cause** \u2014 in [`shell/browser/notifications/mac/cocoa_notification.mm`](https://github.com/electron/electron/blob/v42.5.2/shell/browser/notifications/mac/cocoa_notification.mm), the attachment factory (image task runner) explicitly returns `nil` on failure:\n\n```objc\nreturn (attachment && !error) ? attachment : nil;\n```\n\n\u2026but the reply callback on the UI thread uses the result without a nil check:\n\n```objc\ncontent.attachments = @[ attachment ];  // @[nil] \u2192 NSInvalidArgumentException\n```\n\n`NotificationImageRetainer::RegisterTemporaryImage` writes the icon under `<user data dir>/Notification Resources/`; any I/O failure there (`CreateDirectory` / `CreateTemporaryFileInDir` / `WriteFile`), or `+[UNNotificationAttachment attachmentWithIdentifier:URL:options:error:]` returning an error, produces the `nil` that crashes the process.\n\nWe captured two production crashes of our app with identical stacks at this location (long-running instance in the background; an incoming message triggered a notification with an icon), and then reproduced it deterministically.\n\nThis is a regression from the UserNotifications framework rewrite in #47817 (first shipped in v42); the pre-rewrite `NSUserNotification` path used `setContentImage:` and had no attachment array. The code on `main` is unchanged and has the same problem.\n\nI'm happy to submit a PR \u2014 the fix is a nil-guard that falls back to delivering the notification without the attachment.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/litujia1007/0cffd6eacaf21fb5d9b7c3f248af8936\n\n### Additional Information\n\nThe gist is deterministic: it occupies the `<userData>/Notification Resources` path with a plain file so the image retainer's `CreateDirectory` fails, then shows a notification with an icon. On 42.5.2 (darwin/arm64) it crashes with the exception above before delivery (exit code 133). Removing the `icon` option makes the exact same scenario survive.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "crash :boom:"
+       },
+       {
+        "name": "blocked/need-info \u274c"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "component/notifications"
+       },
+       {
+        "name": "42-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-09T15:44:15Z",
+        "body": "Thanks for reporting!\n\nCould you please upload a gist made with [Electron Fiddle](https://www.electronjs.org/fiddle) so that maintainers can run it easily?"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 9,
+      "nodes": [
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-09T06:45:38Z",
+        "actor": {
+         "login": "litujia1007"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52296,
+         "url": "https://github.com/electron/electron/pull/52296",
+         "createdAt": "2026-07-09T06:45:37Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-09T15:43:14Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-09T15:43:14Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/notifications"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-09T15:43:14Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-09T15:43:18Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "crash :boom:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-09T15:43:47Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-09T15:44:18Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-23T12:03:13Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53131,
+         "url": "https://github.com/electron/electron/pull/53131",
+         "createdAt": "2026-08-23T12:03:11Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-24T14:54:59Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 53131,
+         "url": "https://github.com/electron/electron/pull/53131"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52284,
+     "title": "`autoUpdater` stops being able to auto update on macOS after 100 log files exist",
+     "url": "https://github.com/electron/electron/issues/52284",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-07-08T10:44:15Z",
+     "closedAt": null,
+     "updatedAt": "2026-10-07T02:01:10Z",
+     "author": {
+      "login": "nikwen",
+      "__typename": "User"
+     },
+     "authorAssociation": "MEMBER",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "As reported here by @shirakaba:\n\n* https://github.com/Squirrel/Squirrel.Mac/issues/322\n* https://github.com/microsoft/vscode/issues/310927#issuecomment-4909789239\n* https://x.com/birch_js/status/2074647024478441792\n* https://x.com/birch_js/status/2074647567049334880\n\nWhat\u2019s interesting is that most apps don\u2019t keep multiple log files. Slack, for example, only keeps one `ShipIt_stdout.log`. In the screenshot from the tweet, we see 100 different ones.\n\n_(Sorry for not using the proper issue template. I wanted to make sure we have a tracking bug for it and I don't know their info from the template such as OS version, etc. Happy to replace if someone wants to file with the proper template.)_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "component/auto-updater"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "stale"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "shirakaba",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-08T12:50:31Z",
+        "body": "Thank you for refiling the issue! Here's my info for the issue template:\n\n- Visual Studio Code info:\n  ```\n  Version: 1.114.0\n  Commit: e7fb5e96c0730b9deb70b33781f98e2f35975036\n  Date: 2026-04-01T09:27:11Z\n  Electron: 39.8.3\n  ElectronBuildId: 13658728\n  Chromium: 142.0.7444.265\n  Node.js: 22.22.1\n  V8: 14.2.231.22-electron.0\n  OS: Darwin arm64 25.6.0\n  ```\n- Hardware: Apple M1 Max MacBook Pro\n- OS: macOS Tahoe 26.6 Beta (25G5057c)\n- Last known working version: Auto-updates have been failing to apply in Visual Studio Code on my personal computer (yet not my work computer) all year, and likely longer than that. It's beyond my memory.\n\n> What\u2019s interesting is that most apps don\u2019t keep multiple log files. Slack, for example, only keeps one ShipIt_stdout.log. In the screenshot from the tweet, we see 100 different ones.\n\nI think this is related to `ensureWritable`. We can see that when this value is set to `NO`, `SQRLDirectoryManager` iterates up through numbered log files, with a conspicuous `while (attempts < 100) {` condition. Whereas when it's `YES`, it doesn't number the logs at all. Indeed, I found that Linear and Discord don't use numbered logs either.\n\nhttps://github.com/Squirrel/Squirrel.Mac/blob/8d808803bc89ec0e2aa1450474856dfee3b00c6b/Squirrel/SQRLDirectoryManager.m#L73-L75\n\nThe original issue I filed about it was this investigation here, which gives the full details as to how I found the root cause of the issue and identified a workaround: https://github.com/microsoft/vscode/issues/310927#issuecomment-4909789239. The first post in that thread explains what the symptoms look like in VS Code, which I'll quote below.\n\n> # Steps to Reproduce\n> \n> - VS Code displays the notification: \"Restart Visual Studio Code to apply the latest update.\"\n> - Click \"Update Now\" \u2014 VS Code closes but does not reopen.\n> - Manually reopen VS Code.\n> - The same update notification appears again. The update was not applied.\n>\n> # Expected Behavior\n> - Clicking \"Update Now\" should close VS Code, apply the update, and automatically relaunch.\n> - The notification should not reappear.\n> # Actual Behavior:\n> Clicking \"Update Now\" simply closes VS Code. It does not relaunch, and the update is not applied. Manually reopening VS Code shows the same notification again, with the version unchanged."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-08T13:56:03Z",
+        "body": "Thanks for the info!\n\nThis could be a permission issue. What were the permissions of `~/Library/Caches/com.microsoft.VSCode.ShipIt` before you re-created it? Was it writable by your user?"
+       },
+       {
+        "author": {
+         "login": "shirakaba",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-08T15:00:15Z",
+        "body": "Unfortunately I don't have a record of what the permissions on the folder itself were at the time, and I've emptied my Trash now, so we'll never know. After I deleted it, it got recreated by a background process within 2 minutes, and those permissions look healthy:\n\n```\ndrwxr--r--    9 jamie  staff     288 Jul  8 16:23 .\ndrwx------+ 268 jamie  staff    8576 Jul  8 22:38 ..\n-rw-r--r--@   1 jamie  staff     313 Jul  8 16:23 ShipItState.plist\n-rw-r--r--    1 jamie  staff     315 Jul  8 16:23 ShipIt_stderr.log\n-rw-r--r--    1 jamie  staff  125668 Jul  8 07:44 ShipIt_stderr.log.100\n-rw-r--r--    1 jamie  staff       0 Jul  8 16:23 ShipIt_stdout.log\n-rw-r--r--    1 jamie  staff       0 Jul  8 07:39 ShipIt_stdout.log.100\ndrwx------@   3 jamie  staff      96 Jul  8 16:23 update.6W70CQX\n```\n\nTo clarify:\n\n- I deleted `~/Library/Caches/com.microsoft.VSCode.ShipIt`\n- Within 2 minutes from the deletion:\n  - The folder got recreated.\n  - `ShipIt_stdout.log.100` and `ShipIt_stderr.log.100` got created.\n    - The latter included a log message mentioning that `ShipItState.plist` was missing, so I moved `ShipItState.plist` back in (I fished it back out of the Trash).\n    - I also noticed that `ShipItState.plist` referenced `update.6W70CQX`, so I fished that back out of the Trash as well.\n- Within another 2 minutes, the update applied correctly and `update.6W70CQX/Visual Studio Code.app` disappeared.\n- Now that I've come back several hours later to look again, I see that `ShipIt_stderr.log` and `ShipIt_stdout.log` files have been created.\n"
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-07T02:01:09Z",
+        "body": "This issue has been automatically marked as stale. **If this issue is still affecting you, please leave any comment** (for example, \"bump\"), and we'll keep it open. If you have any new additional information\u2014in particular, if this is still reproducible in the [latest version of Electron](https://releases.electronjs.org/) or in the [beta](https://www.electronjs.org/releases/beta)\u2014please include it with your comment!"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-08T10:44:16Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/auto-updater"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-08T10:44:17Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-08T10:44:17Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-08T10:44:17Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-12T18:56:41Z",
+        "actor": {
+         "login": "andreasarf"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 4757,
+         "url": "https://github.com/beekeeper-studio/beekeeper-studio/pull/4757",
+         "createdAt": "2026-09-12T18:56:40Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-10-07T02:01:10Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "stale"
+        }
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

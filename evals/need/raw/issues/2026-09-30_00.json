@@ -1,0 +1,186 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4787,
+   "resetAt": "2026-10-23T08:09:07Z",
+   "cost": 1
+  },
+  "search": {
+   "issueCount": 1,
+   "pageInfo": {
+    "hasNextPage": false,
+    "endCursor": "Y3Vyc29yOjE="
+   },
+   "nodes": [
+    {
+     "number": 54594,
+     "title": "[Bug]: SIGSEGV in MenuBar::RefreshColorCache when creating a framed BrowserWindow with a menu on Wayland (GTK not loaded)",
+     "url": "https://github.com/electron/electron/issues/54594",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-30T14:33:47Z",
+     "closedAt": "2026-10-12T14:08:42Z",
+     "updatedAt": "2026-10-12T14:08:42Z",
+     "author": {
+      "login": "nawawi",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.5.1 (also 46.0.0-nightly.20260929)\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\nAlmaLinux 8.10 (RHEL 8 family), GNOME Shell / mutter 3.32.2 on Wayland, GTK 3.22.30, glibc 2.28, x64\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n38.1.2\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nA framed `BrowserWindow` with the default application menu opens on a Wayland session.\n\n### Actual Behavior\n\nThe main process crashes with SIGSEGV inside `new BrowserWindow()`. No window opens.\n\nThis looks related to #49244, but it is a different call site. #54365 fixed the title bar path. This crash is in the menu bar path, and it still happens on `46.0.0-nightly.20260929`, which includes #54365.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n**Repro**\n\n`package.json`:\n\n```json\n{ \"name\": \"repro\", \"version\": \"1.0.0\", \"main\": \"main.js\" }\n```\n\n`main.js`:\n\n```js\nconst { app, BrowserWindow } = require('electron')\n\napp.whenReady().then(() => {\n  const win = new BrowserWindow({ width: 800, height: 600 })\n  win.loadURL('data:text/html,<h1>hello</h1>')\n  console.log('window created, electron', process.versions.electron)\n  setTimeout(() => app.quit(), 3000)\n})\n```\n\nRun from a GNOME Wayland session (`XDG_SESSION_TYPE=wayland`): `npx electron .`\n\n**Results**\n\n| Case | Result |\n|---|---|\n| 37.10.3, 38.0.0, 38.1.0, 38.1.1, 38.1.2 | OK |\n| 38.2.0, 38.4.0, 38.8.6, 39.8.10, 40.10.6, 41.10.6, 42.11.10, 44.5.1, 46.0.0-nightly.20260929 | SIGSEGV |\n| 44.5.1 with `--ozone-platform=x11` or `XDG_SESSION_TYPE=x11` | OK |\n| 44.5.1 with `Menu.setApplicationMenu(null)` | OK |\n| 44.5.1 with `frame: false` | OK |\n| 44.5.1 with `--gtk-version=3` | SIGSEGV |\n| 44.5.1 with `app.commandLine.appendSwitch('ozone-platform', 'x11')` in `main.js` | SIGSEGV (switch is applied too late) |\n\n38.1.2 and 38.2.0 use the same Chromium (140.0.7339.133). The only Linux change in 38.2.0 is #48309 (\"set ozone platform for wayland\"), which made Electron honor `XDG_SESSION_TYPE=wayland`. Before 38.2.0 the app ran on X11 on this machine.\n\nA framed window without a menu works. A frameless window works (no menu bar is created). The crash needs both a native frame and a menu bar.\n\n**Stack trace (44.5.1)**\n\ngdb on RHEL 8 (8.2) cannot read the zstd-compressed sections in `electron.debug`, so frames were resolved from its `.symtab` by scanning the crashed thread's stack for return addresses. Frame #0 is a call to address `0x0`.\n\n```\n#0  0x0000000000000000\n#1  gtk::GtkCheckVersion(unsigned int, unsigned int, unsigned int)+0xb1\n#2  gtk::AppendCssNodeToStyleContext(gtk::GtkCssContext, std::string const&)+0x58e\n#3  gtk::GetStyleContextFromCss(std::string const&)+0x77\n#4  gtk::GetBgColor(std::string const&)+0x1a\n#5  electron::MenuBar::RefreshColorCache(ui::NativeTheme const*)+0x32\n#6  electron::MenuBar::MenuBar(electron::NativeWindow*, electron::RootView*)+0x145\n#7  electron::RootView::SetMenu(electron::ElectronMenuModel*)+0x65\n#8  electron::api::BaseWindow::SetMenu(v8::Isolate*, v8::Local<v8::Value>)+0x94\n    ...\n    electron::api::BaseWindow::InitWith(v8::Isolate*, v8::Local<v8::Object>)+0x18\n    electron::api::BrowserWindow::BrowserWindow(gin::Arguments*, gin_helper::Dictionary const&)+0x35c\n    electron::api::BrowserWindow::New(gin_helper::ErrorThrower, gin::Arguments*)+0xc2\n```\n\n`GtkCheckVersion+0xb1` returns from a call to the `gtk_get_major_version` stub, and the stub jumps through `gtk_get_major_version_ptr`, which is still null. So the GTK symbols were never loaded on this path, but `MenuBar::RefreshColorCache` calls into GTK anyway.\n\nThe only GTK message in the log before the crash is:\n\n```\nERROR:ui/gtk/gtk_ui.cc:265] Schema org.gnome.desktop.interface does not have key font-antialiasing\n```\n\n(The schema on this system is from gsettings-desktop-schemas 3.32. Adding the key removes the message but not the crash.)\n\n**Suggested fix**\n\nGuard the GTK color lookup in `MenuBar::RefreshColorCache` the same way #54365 guarded the frame view: skip the `gtk::GetBgColor` path, or fall back to `ui::NativeTheme` colors, when GTK is not loaded or no `ui::LinuxUiTheme` is available.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       },
+       {
+        "name": "46-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 11,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-30T14:33:48Z",
+        "actor": {
+         "login": "nawawi",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-30T14:33:49Z",
+        "actor": {
+         "login": "nawawi",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-30T14:34:06Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-30T14:34:06Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "46-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-30T14:34:06Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "RenamedTitleEvent",
+        "createdAt": "2026-09-30T14:34:59Z",
+        "actor": {
+         "login": "nawawi"
+        },
+        "previousTitle": "Title: [Bug]: SIGSEGV in MenuBar::RefreshColorCache when creating a framed BrowserWindow with a menu on Wayland (GTK not loaded)",
+        "currentTitle": "[Bug]: SIGSEGV in MenuBar::RefreshColorCache when creating a framed BrowserWindow with a menu on Wayland (GTK not loaded)"
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-09-30T16:54:53Z",
+        "actor": {
+         "login": "mlaurencin"
+        },
+        "assignee": {
+         "login": "ckerr"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-08T17:01:07Z",
+        "actor": {
+         "login": "ckerr"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54777,
+         "url": "https://github.com/electron/electron/pull/54777",
+         "createdAt": "2026-10-08T17:01:05Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-10-12T14:08:42Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 54777,
+         "url": "https://github.com/electron/electron/pull/54777"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-18T06:31:06Z",
+        "actor": {
+         "login": "lacymorrow"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 571,
+         "url": "https://github.com/lacymorrow/crossover/pull/571",
+         "createdAt": "2026-10-18T06:20:53Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-20T19:53:36Z",
+        "actor": {
+         "login": "lacymorrow"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 456,
+         "url": "https://github.com/lacymorrow/crossover/issues/456",
+         "createdAt": "2025-10-26T22:18:40Z"
+        }
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

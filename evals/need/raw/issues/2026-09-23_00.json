@@ -1,0 +1,2241 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4789,
+   "resetAt": "2026-10-23T08:09:07Z",
+   "cost": 1
+  },
+  "search": {
+   "issueCount": 21,
+   "pageInfo": {
+    "hasNextPage": true,
+    "endCursor": "Y3Vyc29yOjIw"
+   },
+   "nodes": [
+    {
+     "number": 54553,
+     "title": "GPU process crashes when offscreen useSharedTexture paints are imported with sharedTexture (Linux, Vulkan)",
+     "url": "https://github.com/electron/electron/issues/54553",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-09-29T13:45:19Z",
+     "closedAt": null,
+     "updatedAt": "2026-09-30T16:53:02Z",
+     "author": {
+      "login": "ake-app",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n44.4.5 (also seen on 43.1.1)\n\n### What operating system(s) are you using?\nOther Linux\n\n### Operating System Version\nArch Linux, kernel 6.18 LTS, KDE Plasma 6 (Wayland), Mesa 26.2.2 (RADV)\n\n### What arch are you using?\nx64\n\n### Last Known Working Electron version\nUnknown. I haven't found a version where it works.\n\n### Does the issue also appear in Chromium / Google Chrome?\nNo. It needs Electron's offscreen `useSharedTexture` paints and the `sharedTexture` module, which Chrome doesn't have.\n\n### Expected Behavior\nAn app that takes the `paint` textures of an offscreen window (`offscreen: { useSharedTexture: true }`), imports them with `sharedTexture.importSharedTexture()` and sends them to a normal window with `sharedTexture.sendSharedTexture()` should keep running.\n\n### Actual Behavior\nWith Vulkan enabled (`--use-angle=vulkan --enable-features=Vulkan,VulkanFromANGLE`), the GPU process crashes, usually within the first minute. `child-process-gone` fires with `type: 'GPU'`, reason `crashed`, exit code 133. Chromium restarts it and it keeps crashing. After a few rounds the whole app exits with:\n\n```\nFATAL:content/browser/gpu/gpu_data_manager_impl_private.cc:417] GPU process isn't usable. Goodbye.\n```\n\nIn the gist the receiving page does nothing with the frames except close them, so it isn't about how they're drawn. Without the import step (same offscreen windows, paints released straight away) I haven't seen it crash at all, including one run of over 57,000 paints. Without Vulkan it doesn't crash either.\n\nIn 4 runs of the gist on 44.4.5, the first GPU crash came at 8.9 s, 28.7 s and 46.1 s, and one run got through 120 s without crashing.\n\nGPU: AMD Radeon RX 7900 XTX.\n\n### Testcase Gist URL\nhttps://gist.github.com/ake-app/a298dabf82c35a617c88df23dc1f1ad4\n\n### Additional Information\nThe gist runs four producer/viewer pairs at 1080p and 120 fps so it crashes sooner. It still happens at 24 fps with one pair, just less often.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nThe first crash in each run is a `CHECK` in `gpu::AddCleanupTaskForSkiaFlush` (`gpu/command_buffer/service/skia_utils.cc:303`, `CHECK_EQ(flush_info->fFinishedProc, &CleanupAfterSkiaFlush)`). Minidump from 44.4.5, symbolized with the release's breakpad symbols:\n\n```\ngpu::AddCleanupTaskForSkiaFlush(base::OnceCallback<void ()>, GrFlushInfo*)\ngpu::VulkanFenceHelper::CreateExternalCallback()\ngpu::AddVulkanCleanupTaskForSkiaFlush(viz::VulkanContextProvider*, GrFlushInfo*)\nviz::SkiaOutputSurfaceImplOnGpu::FlushSurface(...)\nviz::ReadbackContextTexture::OnMailboxReady(void*)\nviz::SkiaOutputSurfaceImplOnGpu::RenderSurface(...)\nviz::SkiaOutputSurfaceImplOnGpu::CopyOutputRGBAInTexture(...)\nviz::SkiaOutputSurfaceImplOnGpu::CopyOutputRGBA(...)\n```\n\nAfter a restart, some of the later GPU crashes are a different CHECK in `viz::GmbVideoFramePoolContext::InitializeOnGpu`, called from `viz::GpuServiceImpl::GetContextState()`. That looks like a follow-on from the first crash, not a separate bug.\n\nHow I read the first one: the offscreen `useSharedTexture` paint goes through `CopyOutputRGBAInTexture`, which hands `ReadbackContextTexture::OnMailboxReady` to `FlushSurface` as the flush's finished proc. `FlushSurface` then calls `AddVulkanCleanupTaskForSkiaFlush`. If the Vulkan fence helper has cleanup queued at that moment, `CreateExternalCallback()` returns a task, and `AddCleanupTaskForSkiaFlush` hits the CHECK because the finished proc is already the readback's rather than `CleanupAfterSkiaFlush`.\n\nThe imported shared textures are what queue that cleanup (for example `SkiaVkOzoneImageRepresentation` end-access and destruction, and `ExternalSemaphorePool`). That's why the readback alone doesn't crash and the import is the trigger. The NV12 readback path has the same shape, so changing `sharedTexturePixelFormat` doesn't help. As far as I can tell, Chromium `main` still has the same code in both functions.\n\nPossible fixes: `FlushSurface` could chain the caller's finished proc through the cleanup context, or `CopyOutputRGBAInTexture` could register its readback context via `AddCleanupTaskForSkiaFlush` instead of setting `fFinishedProc` directly.\n\nThings I tried that didn't avoid it: `ForceEnableWebGpuInterop` with ANGLE on Vulkan or GL, drawing the frames through WebGPU (`copyExternalImageToTexture` or `importExternalTexture`) or WebGL instead of just closing them, and `supportsZeroCopyWebGpuImport`. Turning Vulkan off avoids it, but on this machine that also drops WebGPU to SwiftShader.\n\n</p>\n</details>\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "43-x-y"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 7,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-29T13:45:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:45:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:45:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:45:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:45:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:45:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-09-30T16:53:02Z",
+        "actor": {
+         "login": "mlaurencin"
+        },
+        "assignee": {
+         "login": "georgexu99"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 54552,
+     "title": "Windows: Electron apps crash at launch (exit_code=-2147483645) when Indirect Display Driver adapters are present",
+     "url": "https://github.com/electron/electron/issues/54552",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-09-29T13:06:57Z",
+     "closedAt": null,
+     "updatedAt": "2026-10-12T14:06:37Z",
+     "author": {
+      "login": "tiancaixiaoxi",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.0.0, 43.6.0, 41.0.3 (three separate apps, all affected)\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 Home (Chinese), 10.0.26200 (build 26200)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nUnknown \u2014 the machine has had two Indirect Display Driver (IDD) adapters installed for a long time.\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nYes\n\n### Expected Behavior\n\nElectron apps should launch on a Windows machine whose display topology contains **Indirect Display Driver (IDD) adapters** \u2014 the virtual monitors used by remote-desktop, screen-streaming, and Android-emulator software. These adapters are a normal, permanent part of many Windows setups (remote work, VDI, streaming, emulators) and are usually the *only* way a remote user can see the screen at all.\n\nElectron should either pick the real hardware adapter, or fall back to software rendering. It should not terminate the whole browser process.\n\n### Actual Behavior\n\nThree unrelated Electron apps crash on launch, with no window and no error dialog. All three produce the identical fatal sequence:\n\n```\nERROR:content\\browser\\gpu\\gpu_process_host.cc:1108] GPU process exited unexpectedly: exit_code=-2147483645\nWARNING:content\\browser\\gpu\\gpu_process_host.cc:1558] The GPU process has crashed 1 time(s)\n... (repeats)\nWARNING:content\\browser\\gpu\\gpu_process_host.cc:1558] The GPU process has crashed 6 time(s)\nFATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:416] GPU process isn't usable. Goodbye.\n```\n\n`exit_code=-2147483645` is `0x80000003` (`STATUS_BREAKPOINT`). After 6 attempts the app exits immediately.\n\n**Affected apps on this machine (all reproducible, all with a clean profile):**\n\n| App | Electron | Chrome | Result |\n|---|---|---|---|\n| Kimi Desktop | 43.6.0 | 150.0.7871.250 | 0 processes, exits after 6 GPU crashes |\n| ZCode | 41.0.3 | 146.0.7680.80 | exits after 6 GPU crashes |\n| DeepSeek Harness | 44.0.0 | 152.0.7977.54 | exits after 6 GPU crashes |\n\nBecause three different Electron majors (41 / 43 / 44) fail identically, this is **not** a version regression \u2014 it is a persistent condition of this machine's display topology.\n\n**The only way to launch any of them is `--no-sandbox`**, which works 3/3 times on all three apps. Every other GPU-related flag fails:\n\n| Flag | ZCode | DeepSeek Harness |\n|---|---|---|\n| `--no-sandbox` | 3/3 works | 3/3 works |\n| `--disable-gpu-sandbox` | 0/3 | 0/3 |\n| `--disable-gpu` | 0/3 | 0/3 |\n| `--disable-gpu-compositing` | 0/3 | 0/3 |\n| `--use-angle=d3d11` / `d3d11on12` / `gl` / `swiftshader` | 0/3 | 0/3 |\n| `--in-process-gpu` | 0/3 | 0/3 |\n\n`--no-sandbox` is not an acceptable fix for end users: it disables the renderer sandbox and is not something an end user can set on a packaged app anyway.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n#### This is not the DACL / zombie-SID bug\n\nI am aware of #51761, #52098, #52255 and #51770. Those are caused by orphaned `S-1-15-2-*` ACEs in the app directory's DACL, and are fixed by `icacls /reset` on the install folder. **That fix does nothing here.** I verified:\n\n- The install directories (`D:\\software\\Kimi`, `D:\\software\\ZCode`, `D:\\software\\DeepSeek Harness`) contain **no orphaned or unresolvable SIDs**.\n- `icacls` reports no \"Unknown Account\" entries in any of the three install trees.\n- The crash is 100% reproducible and 100% deterministic; it is not intermittent.\n- The identical failure occurs on apps installed under `D:\\software\\` (not `%LOCALAPPDATA%\\Programs`), so the MSIX/AppX ACE-leak scenario does not apply.\n- The failing process is the **GPU process**, and it fails *after* successfully creating at least one adapter \u2014 meaning the sandbox launched, but the GPU init inside it did not survive.\n\n#### Machine hardware\n\n- **CPU:** Intel(R) Core(TM) Ultra 5 125H (14 cores / 18 threads, Meteor Lake)\n- **iGPU:** Intel(R) Arc(TM) Graphics \u2014 `PCI\\VEN_8086&DEV_7D55&SUBSYS_3E7219E5&REV_08`, driver `31.0.101.5382`\n- **Display adapters present (`Get-CimInstance Win32_VideoController`):**\n\n| # | Name | PNP Device ID | Driver |\n|---|---|---|---|\n| 0 | `wjIddDriver Device` | `ROOT\\DISPLAY\\0000` | 9.22.56.244 |\n| 1 | `Intel(R) Arc(TM) Graphics` | `PCI\\VEN_8086&DEV_7D55...` | 31.0.101.5382 |\n| 2 | `GameViewer Virtual Display Adapter` | `ROOT\\DISPLAY\\0001` | 15.6.5.199 |\n\nNote that **both IDD adapters enumerate before the real Intel adapter** in the Display device class, and they are enumerated on `ROOT\\DISPLAY\\*` rather than on the PCI bus.\n\n#### Why the display topology matters\n\nBoth non-hardware adapters are genuine Microsoft **Indirect Display Drivers (IDD)** built on the UMDF / `IddCx` framework. From `GameViewerIddDriver.inf` (shipped by the streaming app):\n\n```ini\nClass = Display\nClassGUID = {4D36E968-E325-11CE-BFC1-08002BE10318}\n[Standard.NTamd64.10.0...22000]\n%DeviceName%=MyDevice_Install_WIN11, Root\\GameViewerIddDriver   ; ROOT bus, not PCI\n\n[MyDevice_HardwareDeviceSettings]\nHKR,, \"UpperFilters\",  %REG_MULTI_SZ%, \"IndirectKmd\"            ; <- Microsoft IDD upper filter\nHKR, \"WUDF\", \"DeviceGroupId\", %REG_SZ%, \"IddDriverGroup\"\n\n[MyDevice_Install.NT.Wdf]\nUmdfService=GameViewerIddDriver,IddDriver_Install\nUmdfExtensions = IddCx0102                                      ; <- IddCx indirect display framework\n```\n\nThese adapters are **dynamic and hot-pluggable**: the kernel PnP log shows the `ROOT\\DISPLAY\\0000` node being created, torn down and re-created by user-mode software:\n\n```\nSystem log, Microsoft-Windows-Kernel-PnP:\n[09/28/2026 22:31:08] ID=225  Application \\Device\\HarddiskVolume4\\software\\leidian\\wujie\\bin\\wujie.exe (PID 25212)\n                     \"stopped to remove or eject device\" ROOT\\DISPLAY\\0000\n[09/28/2026 18:34:34] ID=219  Driver \\Driver\\WUDFRd failed to load. Device: ROOT\\DISPLAY\\0000\n                     status: 0xC0000365\n```\n\nSo these display devices appear, disappear and fail to re-initialize while the session is live. An Electron app launching during or after such a transition sees an unstable adapter list.\n\n#### Why I believe the GPU process dies rather than falling back\n\nThe `LOG(FATAL)` in `gpu_data_manager_impl_private.cc` is only reached once `FallBackToNextGpuMode()` reports that the fallback stack is exhausted. On Windows `GpuProcessHost::GetFallbackCrashLimit()` is a hard-coded 3, and the stack is `HARDWARE \u2192 DISPLAY_COMPOSITOR \u2192 SOFTWARE_GL`. Here the GPU process dies 6 times before the fatal, i.e. **it crashes again after every single fallback, including the software path**. That points at something that is not \"the hardware adapter is bad\", but \"the GPU-side sandbox/init cannot complete in this display environment at all\".\n\n`--no-sandbox` working while `--disable-gpu-sandbox` does not is also informative: `--disable-gpu-sandbox` leaves the GPU process running with the *renderer* sandbox settings (`kNoSandbox` vs `kDisableGpuSandbox` are distinct switches in `sandbox/policy/switches.cc`). The fact that the app comes up only when the whole sandbox is off suggests the failure happens during GPU-process startup, before or outside the GPU sandbox is even the deciding factor.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\n**Adapter enumeration has no IDD / software filter.** `CollectDriverInfoD3D()` in `gpu/config/gpu_info_collector_win.cc` walks DXGI adapters with a plain loop and assigns the first one as the primary GPU:\n\n```cpp\nfor (i = 0; SUCCEEDED(dxgi_factory->EnumAdapters(i, &dxgi_adapter)); i++) {\n  DXGI_ADAPTER_DESC desc;\n  CHECK_EQ(S_OK, dxgi_adapter->GetDesc(&desc));\n  GPUInfo::GPUDevice device;\n  device.vendor_id = desc.VendorId;\n  device.device_id = desc.DeviceId;\n  // ...\n  if (i == 0) {\n    gpu_info->gpu = device;\n  } else {\n    gpu_info->secondary_gpus.push_back(device);\n  }\n}\n```\n\nThere is no check of `DXGI_ADAPTER_FLAG_SOFTWARE`, no check of `D3DKMT_ADAPTERTYPE.IndirectDisplayDevice`, and no preference for PCI-attached adapters. Whatever DXGI returns at index 0 becomes `gpu_info->gpu`. On this machine index 0 (by Display-class enumeration order) is an IDD on the ROOT bus.\n\nChromium is aware that non-PCI display devices exist \u2014 bug [973695](https://bugs.chromium.org/p/chromium/issues/detail?id=973695) (\"InitializeAndStartSandbox uses the wrong information to lookup devices in fallback databases\") was specifically about *\"Scenarios such as Windows Virtual Desktop, Remote Desktop and VM connection are not PCI displays\"* being mis-parsed. That issue fixed the *parsing* of the device id string, but the enumeration still has no IDD/software classification step.\n\nOn the ANGLE side the same gap exists: `third_party/angle/src/gpu_info_util/SystemInfo_win.cpp` also enumerates DXGI adapters without filtering IDD devices.\n\n**Environment note (why this is a real-world blocker, not an exotic config).** This machine is being controlled remotely. The IDD adapters are the remote-session display: disabling them costs the user control of the machine entirely. Asking the user to uninstall the IDD drivers to make Electron launch is not a workaround \u2014 it is a data-loss / lock-out risk. This is the reason such setups are common and will become more common, and it is the reason the fallback chain needs to survive an unexpected adapter rather than kill the browser.\n\n**Steps to reproduce the crash on this machine (no special tooling required):**\n\n1. Install any of the three apps above on a machine that has at least one IDD adapter on the ROOT bus.\n2. Launch the app with **no** command-line flags.\n3. Observe: no window appears; the process exits within ~1 second; running from a shell with `--enable-logging=stderr` prints the six `exit_code=-2147483645` lines followed by `GPU process isn't usable. Goodbye.`\n4. Relaunch with `--no-sandbox` \u2192 the app starts normally.\n\n**What a fix could look like (for discussion, not a demand):**\n\n1. When selecting the primary GPU in `CollectDriverInfoD3D()`, skip adapters flagged `DXGI_ADAPTER_FLAG_SOFTWARE` and adapters whose PnP device is on the ROOT bus / whose `D3DKMT_ADAPTERTYPE.IndirectDisplayDevice` bit is set, unless no other adapter exists.\n2. Make the GPU fallback chain resilient: if every mode including software rendering is exhausted, prefer to start with GPU disabled (and log loudly) over terminating the browser process. Users strongly prefer a degraded window over no window.\n3. At minimum, surface the real reason. `GPU process isn't usable. Goodbye.` gives users nothing actionable; the actual GPU-init failure is swallowed before the `LOG(FATAL)`.\n\n</p>\n</details>\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "blocked/upstream \u274c"
+       },
+       {
+        "name": "43-x-y"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "tiancaixiaoxi",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-29T13:42:12Z",
+        "body": "I've since found two more pieces of evidence that strengthen this report, and one important correction to my own flag matrix.\n\n### 1. Independent corroboration: the same signature, the same virtual adapter\n\nWhile searching, I found an unrelated app reporting the identical failure with the **same** virtual display adapter present:\n\n- **fathah/hermes-desktop#592** (2026-06-08) \u2014 *\"App crashes on startup with virtual display adapters \u2014 GPU process isn't usable\"*\n  - Environment: Windows 10 Pro 22H2 (19045), Intel UHD Graphics 630 **+ Todesk Virtual Display Adapter + `GameViewer Virtual Display Adapter`**\n  - Same `exit_code=-2147483645`, same `0x80000003` (STATUS_BREAKPOINT), same `FATAL ... GPU process isn't usable. Goodbye.`\n  - Same conclusion: *\"the standard Electron command-line switches for disabling GPU acceleration are not sufficient to work around this particular issue with virtual display adapters\"*\n\nThat report is still open with **zero maintainer response and no labels** after ~4 months. It is the same `GameViewer Virtual Display Adapter` (driver 15.6.5.199) that is on my machine, and Todesk is the same class of IDD as my `wjIddDriver`. Two unrelated apps, two different machines, same adapter vendor, same crash \u2014 this is a reproducible class, not a one-off.\n\n### 2. Important correction: the sandbox is a *second*, independent factor\n\nThe hermes-desktop report states that `--disable-gpu --disable-software-rasterizer --no-sandbox` **still crashed** for them. That contradicts a simple reading of my own matrix, so I want to be precise about what I actually observed:\n\n| Launched with | Result on my machine |\n|---|---|\n| `--no-sandbox` alone | \u2705 works (3/3, on all three apps) |\n| `--no-sandbox` combined with `--disable-gpu` | \u274c crashes |\n| `--disable-gpu-sandbox` alone | \u274c crashes |\n\nSo `--no-sandbox` alone recovers the apps, but `--no-sandbox` *plus* a GPU-disabling flag does not. That is consistent with hermes-desktop#592 seeing failures, since every combination they tried included a GPU-disabling flag.\n\nThis tells us there are **two independent failures layered on top of each other**:\n1. Something about the IDD adapters in the display topology, and\n2. The GPU-process startup path itself, which does not survive even in software mode.\n\nFixing only one of these will not be enough, which is probably why this has stayed unfixed. I've adjusted my original repro steps accordingly: to reproduce cleanly, launch with **no flags at all**, not with a GPU-disabling flag.\n\n### 3. Chromium has known about the IDD case since 2019 \u2014 and it was only half-fixed\n\nTwo historical Chromium bugs describe exactly this class of device, and neither resulted in the enumeration being fixed:\n\n- **crbug.com/973695** \u2014 *\"InitializeAndStartSandbox uses the wrong information to lookup devices in fallback databases\"*, reported by a Microsoft engineer (2019-06-13). Key quotes:\n  > \"if you use Chromium in a remote desktop session, you will receive **`RdpIdd_IndirectDisplay`**\"\n  >\n  > \"the device returned from EnumDisplayDevices **may not correspond to an PCI device**\"\n  >\n  > \"Note that this problem affects the GPU accelerated feature of **Windows Virtual Desktop**.\"\n\n  The proposed solution was to enumerate via DXGI, then resolve the adapter's device path through `DisplayConfigGetDeviceInfo` / `SetupDiOpenDeviceInterfaceW` instead of string-parsing a device id. The DXGI half was adopted; the adapter *classification* (is this an IDD? is it on the PCI bus?) was not.\n\n- **crbug.com/671539** \u2014 patch *\"Fix a bug that GPU process may fail to launch in RDP sessions\"*, which found that `EnumDisplayDevices()` can return only the mirror driver **`RDPUDD Chained DD`** with an empty `DeviceID` and no physical display device, *\"which will cause the failure of launching the GPU process.\"*\n\nSo the pattern \u2014 an indirect/virtual display device causes GPU-process startup to fail \u2014 has been observed and papered over twice, but never structurally addressed. My machine has **two** such adapters (`wjIddDriver`, `GameViewer`) enumerated ahead of the real PCI adapter, which is the same situation with more of the trigger present.\n\n### 4. Why the IDD adapters cannot simply be removed\n\nBoth of my IDD adapters are load-bearing for how the machine is used:\n\n- `wjIddDriver` is created and torn down dynamically by an Android-emulator component (`wujie.exe`), per the kernel PnP log in the original report.\n- `GameViewer Virtual Display Adapter` is the display used by the remote-control session. **This machine is being controlled remotely; disabling the virtual display ends the remote session.** Telling users to uninstall the IDD driver to make an app launch is not a workaround, it's removing their ability to use the machine.\n\nThat is the core argument for handling this inside Chromium/Electron rather than in user config.\n"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 10,
+      "nodes": [
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-29T13:07:05Z",
+        "actor": {
+         "login": "tiancaixiaoxi"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 51761,
+         "url": "https://github.com/electron/electron/issues/51761",
+         "createdAt": "2026-05-24T14:52:39Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:07:18Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:07:18Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:07:18Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T13:07:18Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-29T13:07:18Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-29T13:42:23Z",
+        "actor": {
+         "login": "tiancaixiaoxi"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 592,
+         "url": "https://github.com/fathah/hermes-desktop/issues/592",
+         "createdAt": "2026-06-08T03:24:44Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-04T23:28:59Z",
+        "actor": {
+         "login": "Tyler-V"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 503,
+         "url": "https://github.com/Kangentic/kangentic/pull/503",
+         "createdAt": "2026-10-04T23:28:58Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-10-12T14:06:37Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/upstream \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-16T15:26:28Z",
+        "actor": {
+         "login": "jzhao0"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 2507,
+         "url": "https://github.com/XiaomiMiMo/MiMo-Code/issues/2507",
+         "createdAt": "2026-09-23T04:17:11Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 54547,
+     "title": "Electron on Linux Wayland SIGTRAP on logout | teardown race condition",
+     "url": "https://github.com/electron/electron/issues/54547",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-09-29T08:26:25Z",
+     "closedAt": null,
+     "updatedAt": "2026-09-29T08:32:56Z",
+     "author": {
+      "login": "mixonomicon",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\n2026.04.1\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nno  idea\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nElectron should tolerate graphical-session teardown and terminate cleanly when the desktop session ends.\nLoss of the Wayland/X11 connection or GPU/display resources during logout should not cause the browser process to terminate via SIGTRAP or generate a crash report.\n\n### Actual Behavior\n\nDuring GNOME logout, the Chromium GPU process can become unusable while Electron is still shutting down.\nThis eventually and randomly results in a fatal Chromium condition and SIGTRAP, causing crash reporting systems such as Ubuntu Apport to treat an otherwise normal session logout as an application crash.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nExample Signal Apport metadata:\n```\nProblemType: Crash\nDate: Mon Sep 28 11:37:39 2026\nExecutablePath: /opt/Signal Beta/signal-desktop-beta\nPackage: signal-desktop-beta 8.29.0~beta.1\nProcCmdline: /opt/Signal\\ Beta/signal-desktop-beta\nSignal: 5\nSignalName: SIGTRAP\n\n```\nAt the same timestamp GNOME begins tearing down the graphical session.\nElectron/Chromium processes then report GPU failures with:\n```\nGPU process exited unexpectedly\nGPU process isn't usable. Goodbye.\n```\n\nThe parent Electron process subsequently terminates with SIGTRAP.\nThe applications work normally again after the next login, so this does not appear to be a persistent GPU initialization failure.\n\nSuspected race\nThe GNOME graphical session is managed by the systemd user manager.\nDuring logout, application scopes/services and graphical-session components are stopped concurrently. This appears to allow Mutter/GNOME Shell, Wayland/XWayland, or related graphical resources to begin disappearing while Electron's Chromium GPU process is still shutting down.\n\nA suspected sequence is:\n1. GNOME logout begins\n2. Electron application receives termination and graphical session teardown begins (race starts)\n3. Wayland/XWayland/GPU resources disappear before electron teardown\n4. Chromium process fails\n5. fatal CHECK / SIGTRAP\n\nThis would explain why the application behaves normally during normal use but randomly produce a crash report during logout.\nNot entirely sure who to blame here, you or the mutter team, but its a fact that non-electron apps (and chromium based browsers) do not cause crashes, so I suspect this is in your court and that your teardown needs some TLC.\n\nFor people who are looking for a temp solution, I made a workaround to add a 3 sec delay before wayland itself starts tearing down. The fact that workaround works is one more proof its a race condition. \nYou can find it here: [Linux: GNOME logout causes sing-box for Desktop to exit with SIGTRAP and generate core dumps](https://github.com/SagerNet/sing-box/issues/4441#issuecomment-5886141278)",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-29T08:26:40Z",
+        "body": "<!-- end-of-life -->\n\nHello @mixonomicon. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://releases.electronjs.org/) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "mixonomicon",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-29T08:32:39Z",
+        "body": "Electron version in Mattermost is 43. Signal beta uses 44. This is not version specific. "
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T08:26:27Z",
+        "actor": {
+         "login": "mixonomicon",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-29T08:26:28Z",
+        "actor": {
+         "login": "mixonomicon",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T08:26:39Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-29T08:26:39Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-29T08:32:56Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-14T03:06:10Z",
+        "actor": {
+         "login": "ClickCalickClick"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 2,
+         "url": "https://github.com/ClickCalickClick/gemini-desktop/pull/2",
+         "createdAt": "2026-10-13T22:35:14Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 54530,
+     "title": "Electron crashes with no display",
+     "url": "https://github.com/electron/electron/issues/54530",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-28T22:43:27Z",
+     "closedAt": "2026-10-12T14:05:06Z",
+     "updatedAt": "2026-10-12T14:05:06Z",
+     "author": {
+      "login": "dfriederich",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.5\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04 X11\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nN/A\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nElectron should not crash, best if it would automatically use a headless platform.\n\nI'm working on adding some cli support to an electron based app. More specifically via theia.\nUses an older version of electron, but the issue is not fixed in the current version.\nFor reproduction, I did asked an AI (Claude) to create an minimal reproducible case.\n[electron-headless-crash-repro.zip](https://github.com/user-attachments/files/32776442/electron-headless-crash-repro.zip)\n\nWhat we try to do is to support some operations as cli, without an actual UI. Whereas the app normally runs with an UI.  But when starting with a cli option, we currently crash if no display is setup, or if the DISPLAY env var is incorrectly set. One environment we run into this is the Ubuntu github build runner. But in general we want to support to run some operations headless.\n\n\n### Actual Behavior\n\nwith our older version of electron, we run into a crash (SIGSEGV) with the current one I see a SIGTRAP. We cannot handle either of those).\n\nI cannot easily create a github gist (company setup), so I did attach a zip instead (sorry :-( ).\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "ckerr",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-10-08T18:59:23Z",
+        "body": "This is fixed by in `main` and `46-x-y` as by #54163, commit 08c729bdf3c, which destroys MicrotasksRunner before the isolate when startup exits early. The relevant code is in `JavascriptEnvironment::~JavascriptEnvironment()`.\n\n54163 is part of a larger refactor and is marked as no-backport, but we can probably backport the smaller piece for this fix."
+       },
+       {
+        "author": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-10-12T14:05:06Z",
+        "body": "Fixed via https://github.com/electron/electron/pull/54163 / https://github.com/electron/electron/pull/54794"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 8,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-28T22:43:29Z",
+        "actor": {
+         "login": "dfriederich",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-28T22:43:30Z",
+        "actor": {
+         "login": "dfriederich",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-28T22:43:41Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-28T22:43:41Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-09-30T16:48:20Z",
+        "actor": {
+         "login": "mlaurencin"
+        },
+        "assignee": {
+         "login": "mlaurencin"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-09-30T16:49:39Z",
+        "actor": {
+         "login": "mlaurencin"
+        },
+        "assignee": {
+         "login": "ckerr"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-08T19:49:34Z",
+        "actor": {
+         "login": "ckerr"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54781,
+         "url": "https://github.com/electron/electron/pull/54781",
+         "createdAt": "2026-10-08T19:49:33Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-10-12T14:05:06Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54514,
+     "title": "Keep menu item images visible when building against the macOS 27 SDK",
+     "url": "https://github.com/electron/electron/issues/54514",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-09-28T16:24:06Z",
+     "closedAt": null,
+     "updatedAt": "2026-10-04T15:10:40Z",
+     "author": {
+      "login": "thomasbachem",
+      "__typename": "User"
+     },
+     "authorAssociation": "CONTRIBUTOR",
+     "issueType": null,
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nWhile checking our app against macOS 27, I came across this in Apple's release notes: Apps built against the macOS 27 SDK get every image they put on a menu item hidden, symbol images and regular ones alike, unless they also set the new `preferredImageVisibility` on the `NSMenuItem`. With the 26 SDK, only symbol images are hidden.\n\nElectron is still on the 26 SDK, so current releases are fine. But once it switches, every `icon` set on a `MenuItem` would disappear on macOS 27, and apps couldn't do anything about it. For some apps that's more than a cosmetic problem. The tray menu I'm working on, for example, shows each meeting's start time and color as the item's icon.\n\nChromium just fixed this for its own menus by setting `preferredImageVisibility` wherever it assigns a menu item image ([crrev.com/c/8463164](https://chromium-review.googlesource.com/c/chromium/src/+/8463164)). Electron's menus don't go through that code though, because `ElectronMenuController` sets `item.image` itself.\n\nI haven't been able to try this myself, since there's no Electron build on the 27 SDK yet.\n\n### Proposed Solution\n\nDo the same as Chromium and set `preferredImageVisibility` to visible wherever Electron sets a menu item image. If an app sets an `icon`, it wants it shown, so I'd just keep the current behavior.\n\nAs far as I can tell, that's three places in `electron_menu_controller.mm`: `makeMenuItemForIndex:`, `applyStateToMenuItem:` and `menuItemForService:`. Chromium's new `ui/base/cocoa/macos27_sdk.h` already declares the property for builds against the 26 SDK.\n\n### Alternatives Considered\n\n- Exposing `preferredImageVisibility` as a `MenuItem` option instead: Existing apps would lose their icons on macOS 27 until they opt in. It could still be useful later as an override\n- Leaving AppKit's default in place: Apps would silently lose icons they set on purpose\n\n### Additional Information\n\n- Apple's release notes (AppKit section, 170477566 and 179374305): https://developer.apple.com/documentation/macos-release-notes/macos-27-release-notes\n- Chromium's [switch to the macOS 27 SDK](https://chromium-review.googlesource.com/c/chromium/src/+/8406027) has already landed and been reverted three times in September, so this might come up soon\n",
+     "labels": {
+      "nodes": []
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "shruthipavalavel",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-04T15:10:40Z",
+        "body": "Hi ! I'd like to work on this issue. I'll take a look on the existing menu image handling and Chromium's macOS 27 SDK compatibility change."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-22T20:05:56Z",
+        "actor": {
+         "login": "Maheidem"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 316,
+         "url": "https://github.com/Maheidem/openstyle/issues/316",
+         "createdAt": "2026-10-22T20:05:55Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 54505,
+     "title": "Enable cfi",
+     "url": "https://github.com/electron/electron/issues/54505",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-09-28T09:36:58Z",
+     "closedAt": null,
+     "updatedAt": "2026-10-08T01:52:19Z",
+     "author": {
+      "login": "deepak1556",
+      "__typename": "User"
+     },
+     "authorAssociation": "MEMBER",
+     "issueType": {
+      "name": "Task"
+     },
+     "body": "Refs https://github.com/electron/electron/blob/d58cb24d78c8f7867123debdf3f18c4ae967e628/build/args/all.gn#L62-L66",
+     "labels": {
+      "nodes": []
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "deepak1556",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-28T09:51:15Z",
+        "body": "the comment regarding V8 is invalid, the major concern are public callbacks from addon back into V8 and libuv (in case of NAN) modules that need to be unchecked for cfi_vcall"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-09-28T09:36:59Z",
+        "actor": {
+         "login": "deepak1556"
+        },
+        "assignee": {
+         "login": "deepak1556"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-29T18:35:37Z",
+        "actor": {
+         "login": "deepak1556"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54561,
+         "url": "https://github.com/electron/electron/pull/54561",
+         "createdAt": "2026-09-29T18:35:36Z"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-10-08T01:52:20Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 54490,
+     "title": "macOS 27: startup SIGSEGV when IORegisterForSystemPower fails",
+     "url": "https://github.com/electron/electron/issues/54490",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-27T18:06:10Z",
+     "closedAt": "2026-09-30T21:33:25Z",
+     "updatedAt": "2026-09-30T21:38:17Z",
+     "author": {
+      "login": "mbianchidev",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.3 / 45.0.0-alpha.12 / 46.0.0-nightly.20260925\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nMacOS 27 (latest)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\nN/A\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nYes\n\n### Expected Behavior\n\nElectron starts successfully even if registration for system sleep/wake\nnotifications fails. That failure should degrade the unavailable notification\nfunctionality, not terminate the application or prevent independent battery\nand thermal monitors from initializing.\n\n### Actual Behavior\n\nElectron exits with a native SIGSEGV during startup, before application\nJavaScript runs. Application-level error handlers and logging therefore cannot\ncapture the failure.\n\nThe crash is in IOKit!IONotificationPortGetRunLoopSource, with\nEXC_BAD_ACCESS at address 0x10 on the main thread. It also occurs when\nlaunching fresh alpha/nightly Electron binaries with an isolated user-data\ndirectory and only --version, without loading the application's JavaScript.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/mbianchidev/1fba9b144ba1c6bbb1393a2b1554dfd7\n\n### Additional Information\n\nChromium landed the fix on 2026-09-17:\n\nChromium issue: https://issues.chromium.org/issues/562777834\nReview: https://chromium-review.googlesource.com/c/chromium/src/+/8424840\nCommit: https://chromium.googlesource.com/chromium/src/+/69403d85b78bef2370cc9f8206dce84c5ff63ea4\n\nI found a terrible workaround for two different projects but it's really AI slop so I would not submit it as a proper fix.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "44-x-y"
+       },
+       {
+        "name": "45-x-y"
+       },
+       {
+        "name": "46-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "georgexu99",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-30T21:38:17Z",
+        "body": "Thanks for the report @mbianchidev \ud83d\ude47 This should be fixed for next release, and has been backported to all of our supported versions. We had a laugh @ the last sentence of the issue description. Cheers!"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 12,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-27T18:06:11Z",
+        "actor": {
+         "login": "mbianchidev",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-27T18:06:12Z",
+        "actor": {
+         "login": "mbianchidev",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-27T18:06:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-27T18:06:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "45-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-27T18:06:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "46-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-27T18:06:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-27T18:06:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-30T06:03:22Z",
+        "actor": {
+         "login": "zxch3n"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 1154,
+         "url": "https://github.com/LodyAI/Lody/pull/1154",
+         "createdAt": "2026-09-30T06:03:17Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-30T17:09:36Z",
+        "actor": {
+         "login": "georgexu99"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54596,
+         "url": "https://github.com/electron/electron/pull/54596",
+         "createdAt": "2026-09-30T17:09:35Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-30T17:09:45Z",
+        "actor": {
+         "login": "georgexu99"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54597,
+         "url": "https://github.com/electron/electron/pull/54597",
+         "createdAt": "2026-09-30T17:09:44Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-30T17:09:52Z",
+        "actor": {
+         "login": "georgexu99"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54598,
+         "url": "https://github.com/electron/electron/pull/54598",
+         "createdAt": "2026-09-30T17:09:51Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-30T21:33:25Z",
+        "actor": {
+         "login": "georgexu99",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54372,
+     "title": "Without X11 and XWayland and with XDG_SESSION_TYPE unset, all electron apps just crash with a weird technical error message",
+     "url": "https://github.com/electron/electron/issues/54372",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-25T12:12:33Z",
+     "closedAt": "2026-10-08T13:19:02Z",
+     "updatedAt": "2026-10-08T13:19:02Z",
+     "author": {
+      "login": "ell1e",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\nseems to affect a variety of them, I'm not sure which one is shipped in the affected programs\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\npostmarketOS Edge (Linux)\n\n### What arch are you using?\n\nOther (specify below)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nElectron should obviously just use the Wayland socket. It has the ability to do so, without a user messing around with environment variables.\n\n### Actual Behavior\n\nWithout X11 and XWayland, all electron apps just crash with a weird technical error message:\n\n```\n$ flatpak run chat.delta.desktop\nLogfile: /home/ellie/.var/app/chat.delta.desktop/config/DeltaChat/logs/2026-09-25-14-05-43.log\n[2:0925/140543.213314:ERROR:ui/ozone/platform/x11/ozone_platform_x11.cc:257] Missing X server or $DISPLAY\n[2:0925/140543.213344:ERROR:ui/aura/env.cc:246] The platform failed to initialize.  Exiting.\n$\n```\nThis affects a wide array of applications, including e.g. FreeTube and DeltaChat Desktop.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nThis happens on both ARM64 and x64 systems, I tried both.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-25T12:12:57Z",
+        "body": "<!-- end-of-life -->\n\nHello @ell1e. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://releases.electronjs.org/) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "ell1e",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-25T12:16:21Z",
+        "body": "After browsing the other issues, I think the problem might be that electron just assumes `$XDG_SESSION_TYPE` is set, and if it isn't then it will always use X11/XWayland and when that fails it won't try to use Wayland instead. I think it should default to Wayland, and it should also know how to fallback to the other option on failure.\n\nAt least this is what this pull request seems to suggest: https://github.com/electron/electron/pull/48301"
+       },
+       {
+        "author": {
+         "login": "ell1e",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-25T12:20:16Z",
+        "body": "I can confirm that setting `XDG_SESSION_TYPE=wayland` fixes the problem. But I still think this should be auto-detected better."
+       },
+       {
+        "author": {
+         "login": "ell1e",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-28T13:47:50Z",
+        "body": "Some new information on this:\n\n1. Apparently some believe `XDG_SESSION_TYPE` shouldn't be in the XDG namespace and therefore some compositors downright refuse to set it: https://codeberg.org/river/river/issues/1546#issuecomment-24048711\n\n   > After trying to find the official spec for XDG_SESSION_TYPE I just discovered it is not actually a real XDG thing. It is a systemd invention that the FDO people weren't even informed of initially.\n   >\n   > As this is not actually part of the XDG API and just appropriates the namespace, I believe it would actually be a mistake to set it\n\n2. Qt6 doesn't rely on this env var either. It seems to be mostly just electron.\n\nSo it seems like electron should perhaps change the approach here...? With the easiest fix being to just default to Wayland, especially if there is no X socket to be found anyway."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 10,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-25T12:12:34Z",
+        "actor": {
+         "login": "ell1e",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-25T12:12:35Z",
+        "actor": {
+         "login": "ell1e",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-25T12:12:46Z",
+        "actor": {
+         "login": "ell1e"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 6784,
+         "url": "https://github.com/deltachat/deltachat-desktop/issues/6784",
+         "createdAt": "2026-09-25T12:08:37Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-25T12:12:54Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-25T12:12:54Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-25T12:16:36Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "RenamedTitleEvent",
+        "createdAt": "2026-09-25T12:19:28Z",
+        "actor": {
+         "login": "ell1e"
+        },
+        "previousTitle": "Without X11 and XWayland, all electron apps just crash with a weird technical error message",
+        "currentTitle": "Without X11 and XWayland and with XDG_SESSION_TYPE unset, all electron apps just crash with a weird technical error message"
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-28T18:35:58Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54523,
+         "url": "https://github.com/electron/electron/pull/54523",
+         "createdAt": "2026-09-28T18:35:57Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-01T14:26:13Z",
+        "actor": {
+         "login": "kruxarth"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 2440,
+         "url": "https://github.com/OpenWhispr/openwhispr/issues/2440",
+         "createdAt": "2026-10-01T14:26:12Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-10-08T13:19:02Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 54523,
+         "url": "https://github.com/electron/electron/pull/54523"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 54330,
+     "title": "[Feature Request]: Docs: `navigateOnDragDrop` opens the dropped URL through `setWindowOpenHandler` (new window), it does not navigate the page",
+     "url": "https://github.com/electron/electron/issues/54330",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:08:45Z",
+     "closedAt": "2026-09-24T22:10:52Z",
+     "updatedAt": "2026-09-24T22:10:52Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\n`docs/api/structures/web-preferences.md` describes `navigateOnDragDrop` as \"Whether dragging and dropping a file or link onto the page causes a navigation. Default is `false`.\" That is not what happens. With `navigateOnDragDrop: true`, a link dropped on a page that does not handle the drop is opened as a **new foreground tab request**: `webContents.setWindowOpenHandler` is called with `{ url: <dropped URL>, disposition: 'foreground-tab', \u2026 }`, and without a handler a new `BrowserWindow` is created (`did-create-window` fires). The page that received the drop never navigates: `will-navigate`, `did-start-navigation` and `did-navigate` do not fire and `webContents.getURL()` is unchanged. With the default `false`, the drop is rejected (the page sees a trailing `dragleave`) and nothing opens.\n\nObserved on Electron 44.4.5 (Chromium 152.0.7977.130) and 45.0.0-alpha.11 (Chromium 155.0.8046.0), Ubuntu 24.04 x64 under Xvfb, driving the drop with `webContents.debugger` `Input.dispatchDragEvent` (`text/uri-list` item):\n\n```\nnavigateOnDragDrop: true, with setWindowOpenHandler\n[+ 1137ms] PAGE DOM dragover types=[\"text/uri-list\"]\n[+ 1138ms] EVENT setWindowOpenHandler url= http://127.0.0.1:42601/b disposition= foreground-tab -> deny\n[+ 4291ms] RESULT url now = http://127.0.0.1:42601/a | windows = 1\n\nnavigateOnDragDrop: true, no setWindowOpenHandler\n[+ 1102ms] EVENT app web-contents-created type= window\n[+ 1106ms] EVENT did-create-window\n[+ 4261ms] RESULT url now = http://127.0.0.1:44297/a | windows = 2\n\nnavigateOnDragDrop: false (default)\n[+ 1095ms] PAGE DOM dragover types=[\"text/uri-list\"]\n[+ 1096ms] PAGE DOM dragleave types=[\"text/uri-list\"]\n[+ 4250ms] RESULT url now = http://127.0.0.1:40137/a | windows = 1\n```\n\nDevelopers who enable the option because of its name and description expect the page to navigate; instead a window appears (or their `setWindowOpenHandler` is invoked with a URL they did not anticipate). Developers who want the dropped link to load in the same page have to recognise these drops in `setWindowOpenHandler` and call `loadURL` themselves, and nothing in the docs tells them so.\n\n### Proposed Solution\n\nCorrect the description in `web-preferences.md` (and the mirrored text in `browser-window.md` if present), for example:\n\n> `navigateOnDragDrop` boolean (optional) - Whether a file or link dropped onto the page, when the page does not handle the drop itself, is opened by Electron. Default is `false`. When `true`, the dropped URL is opened as a new foreground-tab request: `webContents.setWindowOpenHandler` is called with `disposition: 'foreground-tab'` (a new `BrowserWindow` is created if no handler is set). The page that received the drop is not navigated; to load the URL in the same page, handle it in `setWindowOpenHandler` and call `webContents.loadURL`.\n\n### Alternatives Considered\n\n- Changing the behaviour so that `navigateOnDragDrop: true` navigates the receiving page. Chromium deliberately opens dropped URLs in a new tab to avoid data loss in the current tab (crbug.com/451659); Electron only sets `RendererPreferences::can_accept_load_drops` from this option and receives the result as a generic new-tab open request, so a same-page navigation would need Electron-specific plumbing. A docs correction is the low-cost fix.\n- Leaving the docs as they are: the option's name keeps suggesting a same-page navigation that never happens.\n\n### Additional Information\n\nMinimal repro (`main.js`, `package.json` `{\"main\":\"main.js\"}`; run `electron . on`, `electron . off`, `electron . on nohandler`). It serves two pages from a local http server and drives the drop through `webContents.debugger` (`Input.dispatchDragEvent`), which enters the same `RenderWidgetHostImpl::DragTargetDrop` path as a platform drop.\n\n```js\nconst { app, BrowserWindow } = require('electron')\nconst http = require('http')\n\nconst navOn = process.argv.includes('on')\nconst t0 = Date.now()\nconst log = (...a) => console.log(`[+${String(Date.now() - t0).padStart(5)}ms]`, ...a)\nconst sleep = (ms) => new Promise((r) => setTimeout(r, ms))\n\nconst pageA = `<!doctype html><title>A</title><body style=\"margin:0;height:100vh\"><h1>page A</h1>\n<script>\n  for (const t of ['dragenter','dragover','dragleave','drop'])\n    document.addEventListener(t, (e) => console.log('DOM ' + t + ' types=' + JSON.stringify(Array.from(e.dataTransfer.types))))\n</script></body>`\n\napp.whenReady().then(async () => {\n  const server = http.createServer((req, res) => {\n    res.setHeader('content-type', 'text/html')\n    res.end(req.url.startsWith('/b') ? '<h1>page B</h1>' : pageA)\n  })\n  await new Promise((r) => server.listen(0, '127.0.0.1', r))\n  const base = `http://127.0.0.1:${server.address().port}`\n  log('navigateOnDragDrop =', navOn)\n\n  app.on('browser-window-created', () => log('EVENT app browser-window-created'))\n  const win = new BrowserWindow({ width: 800, height: 600, webPreferences: { navigateOnDragDrop: navOn } })\n  const wc = win.webContents\n  if (!process.argv.includes('nohandler')) {\n    wc.setWindowOpenHandler((d) => { log('EVENT setWindowOpenHandler url=', d.url, 'disposition=', d.disposition, '-> deny'); return { action: 'deny' } })\n  }\n  wc.on('console-message', (e) => { if (e.message.startsWith('DOM ')) log('PAGE', e.message) })\n  wc.on('will-navigate', (_e, url) => log('EVENT will-navigate', url))\n  wc.on('did-navigate', (_e, url) => log('EVENT did-navigate', url))\n  wc.on('did-create-window', () => log('EVENT did-create-window'))\n  await wc.loadURL(`${base}/a`)\n  await sleep(500)\n\n  wc.debugger.attach('1.3')\n  const data = { items: [{ mimeType: 'text/uri-list', data: `${base}/b` }], dragOperationsMask: 19 }\n  for (const type of ['dragEnter', 'dragOver', 'dragOver', 'drop']) {\n    await wc.debugger.sendCommand('Input.dispatchDragEvent', { type, x: 300, y: 300, data })\n    log('CDP Input.dispatchDragEvent', type)\n    await sleep(150)\n  }\n  await sleep(3000)\n  log('RESULT url now =', wc.getURL(), '| windows =', BrowserWindow.getAllWindows().length)\n  process.exit(0)\n})\n```\n\nWhere this comes from: Blink `DragController::PerformDrop` loads a dropped URL that the document did not consume with `NavigationPolicy::kNavigationPolicyNewForegroundTab` (\"Open the dropped URL in a new tab to avoid potential data-loss in the current tab. See https://crbug.com/451659\"), gated by `ChromeClient::AcceptsLoadDrops()`, which Electron feeds from `navigateOnDragDrop` via `RendererPreferences::can_accept_load_drops` (`shell/browser/web_contents_preferences.cc`). The resulting `NEW_FOREGROUND_TAB` open request reaches Electron's `WebContents::OpenURLFromTab` and is routed to `setWindowOpenHandler` like any other new-window request. This has been Chromium's behaviour since well before Electron's currently supported lines (the same code is at Chromium tags 90 and 100).\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": []
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:52Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54329,
+     "title": "[Feature Request]: A way to map a service worker (`ServiceWorkerInfo.renderProcessId`) to its process in `app.getAppMetrics()`",
+     "url": "https://github.com/electron/electron/issues/54329",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:08:45Z",
+     "closedAt": "2026-09-24T22:10:52Z",
+     "updatedAt": "2026-09-24T22:10:52Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nWe show per-process CPU and memory (a task-manager view) in an Electron browser. For renderers that host a WebContents this works: `webContents.getOSProcessId()` joins with `ProcessMetric.pid` from `app.getAppMetrics()`. For MV3 extension background service workers there is no WebContents, and the APIs that describe the worker cannot be joined with the process list:\n\n- `session.serviceWorkers.getAllRunning()` / `ServiceWorkerInfo` gives `renderProcessId`, which is the render-process-host id (the `webContents.getProcessId()` space), not an OS pid.\n- `ProcessMetric` carries only the OS `pid`; renderer rows are `type: 'Tab'` with no `name`.\n- `ServiceWorkerMain` has `isDestroyed()`, `send()`, `startTask()`, `ipc`, `scope`, `scriptURL`, `versionId` \u2014 nothing about its process.\n\nSo a worker-only extension shows up in `getAppMetrics()` as an anonymous `Tab` renderer and its CPU/memory cannot be attributed to the extension. Observed on 44.4.5 and 45.0.0-alpha.11 (Linux x64); the 45.0.0-alpha.11 typings and the current docs (`process-metric.md`, `service-worker-info.md`, `service-worker-main.md`) have no field that would join them.\n\n### Proposed Solution\n\nAny one of these would do:\n\n1. Add the render-process-host id to `ProcessMetric` (e.g. `processId?: number` for renderer rows), so `metric.processId === info.renderProcessId` (and `=== webContents.getProcessId()`), which joins all renderers generically.\n2. Expose the OS pid on the worker side: `ServiceWorkerInfo.osProcessId` and/or `ServiceWorkerMain.getOSProcessId()`, mirroring `webContents.getOSProcessId()`.\n3. Optionally, fill `ProcessMetric.name` for extension service worker renderers with the extension name, as Chrome's task manager does.\n\nOption 1 is the smallest change; the browser side has both ids on the `RenderProcessHost`.\n\n### Alternatives Considered\n\n- Join through a WebContents of the extension (`chrome-extension://<id>/` origin) that shares the worker's process: fails for worker-only extensions, which have no WebContents unless a popup/options page happens to be open, and the worker is not guaranteed to share that process.\n- Elimination (renderer pids in `getAppMetrics()` not owned by any WebContents): only says \"some non-WebContents renderer\", and is ambiguous as soon as two workers or a spare renderer exist.\n- A `service-worker` preload script sending `process.pid` to the main process: with the sandbox on the worker sees `process.pid === 1` on Linux (sandbox pid namespace), not the OS pid; without the sandbox the service-worker preload does not run; and it requires instrumenting every worker in the session.\n\n### Additional Information\n\n`main.js` (`electron main.js`; `extension/manifest.json` contains only `\"background\": { \"service_worker\": \"sw.js\" }`, `sw.js` is `setInterval(() => {}, 1000)`):\n\n```js\nconst { app, session, webContents } = require('electron')\nconst path = require('path')\n\napp.whenReady().then(async () => {\n  const ses = session.defaultSession\n  await ses.extensions.loadExtension(path.join(__dirname, 'extension'))\n  await new Promise(r => setTimeout(r, 2000))\n\n  const running = ses.serviceWorkers.getAllRunning()\n  console.log('getAllRunning():', JSON.stringify(running))\n  const worker = ses.serviceWorkers.getWorkerFromVersionID(Number(Object.keys(running)[0]))\n  console.log('ServiceWorkerMain members:', Object.getOwnPropertyNames(Object.getPrototypeOf(worker)).filter(k => !k.startsWith('_') && k !== 'constructor').join(', '))\n\n  const metrics = app.getAppMetrics()\n  console.log('ProcessMetric keys:', Object.keys(metrics[0]).join(', '))\n  for (const m of metrics) console.log('  ', JSON.stringify({ pid: m.pid, type: m.type, name: m.name, serviceName: m.serviceName }))\n  const known = webContents.getAllWebContents().map(wc => wc.getOSProcessId())\n  console.log('renderer pids with no WebContents (one of them is the worker):', metrics.filter(m => m.type === 'Tab' && !known.includes(m.pid)).map(m => m.pid))\n  app.quit()\n})\n```\n\n`extension/manifest.json`:\n\n```json\n{ \"manifest_version\": 3, \"name\": \"worker-only-extension\", \"version\": \"1.0\", \"background\": { \"service_worker\": \"sw.js\" } }\n```\n\nOutput, Electron 44.4.5 (Chromium 152.0.7977.130), Ubuntu 24.04.4, X11 under Xvfb, x64:\n\n```\ngetAllRunning(): {\"0\":{\"scriptUrl\":\"chrome-extension://bcjinncndifnhepabjbbbjonoccihogh/sw.js\",\"scope\":\"chrome-extension://bcjinncndifnhepabjbbbjonoccihogh/\",\"renderProcessId\":5}}\nServiceWorkerMain members: isDestroyed, versionId, scope, scriptURL, ipc, send, startTask\nProcessMetric keys: cpu, pid, type, creationTime, memory\n   {\"pid\":34338,\"type\":\"Browser\"}\n   {\"pid\":34369,\"type\":\"GPU\",\"serviceName\":\"GPU\"}\n   {\"pid\":34371,\"type\":\"Utility\",\"name\":\"Network Service\",\"serviceName\":\"network.mojom.NetworkService\"}\n   {\"pid\":34400,\"type\":\"Tab\"}\nrenderer pids with no WebContents (one of them is the worker): [ 34400 ]\n```\n\n`renderProcessId` is `5`; no `ProcessMetric` has `pid === 5`, and nothing on the `Tab` row says which extension it belongs to. 45.0.0-alpha.11 (Chromium 155.0.8046.0) gives the same shape. See also #28114 (more per-process metrics).\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": []
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:52Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54328,
+     "title": "macOS: a `WebContentsView` that is in no window reports `isFocused()` true once it loads, and `webContents.getFocusedWebContents()` returns it instead of the window's focused document",
+     "url": "https://github.com/electron/electron/issues/54328",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:08:39Z",
+     "closedAt": "2026-09-24T22:10:51Z",
+     "updatedAt": "2026-09-24T22:10:51Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.3.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 14 (GitHub Actions `macos-14`, arm64) and macOS 13 (`macos-13`, x64)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nA `WebContentsView` that has not been added to any window cannot hold a window's keyboard focus. `view.webContents.isFocused()` should be `false` for it, and `webContents.getFocusedWebContents()` should return the WebContents that actually has focus (the window's own `webContents`, whose document reports `document.hasFocus() === true`).\n\n### Actual Behavior\n\nOn macOS, a `new WebContentsView()` that is never added to a window (created to preload a page, attached to a window later) emits `focus` about a second after `loadURL()` and never `blur`. From then on two WebContents claim focus at once:\n\n| what | value |\n| --- | --- |\n| `win.webContents.isFocused()` | `true` |\n| `detached.webContents.isFocused()` | `true` (never goes back to `false`) |\n| `webContents.getFocusedWebContents().id` | the detached view |\n| `win.contentView.children` | one hidden view, `isFocused()` `false` |\n| in the window's document: `document.hasFocus()` / `activeElement` | `true` / the focused `<input>` |\n\nSo `getFocusedWebContents()` answers with a view that is on no screen while the window's document holds the keyboard. Any main-process code that uses `getFocusedWebContents()` to decide where the keyboard is (menu roles, shortcuts, \"which page is active\") picks the wrong one.\n\nObserved on Electron 44.3.0 (Chromium 152) on macOS 14 arm64 and macOS 13 x64 (GitHub Actions runners, app packaged with electron-builder). Not reproducible on Linux (X11): with 44.4.5 and 45.0.0-alpha.11 the detached view never emits `focus`, `isFocused()` stays `false` and `getFocusedWebContents()` stays the window's webContents. We could not yet re-run on macOS with 44.4.5.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n`main.js` (run with `electron main.js`):\n\n```js\nconst { app, BrowserWindow, WebContentsView, webContents } = require('electron')\nconst t0 = Date.now()\nconst log = (...a) => console.log(`[${Date.now() - t0} ms]`, ...a)\nconst wire = (wc, name) => { wc.on('focus', () => log(`${name} focus`)); wc.on('blur', () => log(`${name} blur`)) }\nasync function snapshot (win, detached, label) {\n  const doc = await win.webContents.executeJavaScript('JSON.stringify({ activeElement: document.activeElement.id, hasFocus: document.hasFocus() })')\n  log(label, `getFocusedWebContents() = ${webContents.getFocusedWebContents()?.id}; win.webContents.isFocused() = ${win.webContents.isFocused()}; detached.isFocused() = ${detached.webContents.isFocused()}; window document ${doc}; win.contentView.children = ${win.contentView.children.length}`)\n}\napp.whenReady().then(async () => {\n  const win = new BrowserWindow({ width: 800, height: 600 })\n  wire(win.webContents, 'window (1)')\n  await win.loadURL('data:text/html,<input id=\"url\" autofocus>')\n  win.focus(); win.webContents.focus()\n  await new Promise(r => setTimeout(r, 1000))\n\n  const detached = new WebContentsView()        // never added to any window\n  wire(detached.webContents, 'detached (2)')\n  await snapshot(win, detached, 'before load:')\n  detached.webContents.loadURL('data:text/html,<p>detached page</p>')\n  await new Promise(r => setTimeout(r, 2000))\n  await snapshot(win, detached, 'after 2 s:')\n  app.quit()\n})\n```\n\nmacOS 14 / 13, Electron 44.3.0 (observed in our app with the same instrumentation): `detached (2) focus` about 1 s after `loadURL`, no `blur`; snapshot as in the table above (`getFocusedWebContents() = 2`, both `isFocused()` true, window document `hasFocus: true`).\n\nLinux X11 (Xvfb), Electron 44.4.5 and 45.0.0-alpha.11, same script: no `focus` event for the detached view; `getFocusedWebContents() = 1`, `detached.isFocused() = false` before and after the load.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\n`WebContents::IsFocused()` in `shell/browser/api/electron_api_web_contents_mac.mm` only consults the key window when the view's NSView has one:\n\n```\nauto window = [web_contents()->GetNativeView().GetNativeNSView() window];\nif (window && ![window isKeyWindow]) return false;\nreturn view->HasFocus();\n```\n\nFor a view in no window `window` is `nil`, so the key-window check is skipped and the answer is `RenderWidgetHostViewMac::HasFocus()`, i.e. the view's own first-responder flag, which once set is never resigned for a view that is in no window (there is no window whose first responder could change). The non-Mac implementation checks `GetToplevelWindow()` visibility instead and does not show the problem.\n\n`webContents.getFocusedWebContents()` (`lib/browser/api/web-contents.ts`) returns the first WebContents from `getAllWebContents()` whose `isFocused()` is true, so the detached view can be preferred over the window's actually focused document.\n\nPresumed fix: in `IsFocused()` return `false` when the NSView has no window (a view in no window cannot be focused), or resign the first-responder state when the view is detached.\n\n</p>\n</details>\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the macOS observations come from our app's CI runs with the instrumentation shown, the Linux control runs from running the script as shown.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:08:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:08:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:08:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T22:08:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:51Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54327,
+     "title": "`WebContentsView.setBorderRadius()` with docked DevTools: the toolbox's outer corners stay square and the page is notched where it meets the toolbox",
+     "url": "https://github.com/electron/electron/issues/54327",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:07:11Z",
+     "closedAt": "2026-09-24T22:10:51Z",
+     "updatedAt": "2026-09-24T22:10:51Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.5\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04.4 (X11, Xvfb 1600x1000, scale factor 1)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nAfter `view.setBorderRadius(10)` the `WebContentsView` is drawn as a rounded rectangle, with the window background showing in the four corner cutouts. When DevTools is opened docked in that view (`view.webContents.openDevTools({ mode: 'bottom' })`), the page and the toolbox share the same box, so we expect the box to keep its four rounded outer corners and the page's two corners at the page/toolbox seam to be square, with no gap between page and toolbox.\n\n### Actual Behavior\n\nWith DevTools docked, only the page is rounded:\n\n- the two outer corners now occupied by the toolbox (bottom-left / bottom-right for `mode: 'bottom'`) are square: the DevTools frontend paints right up to the corner pixel;\n- the two outer corners still occupied by the page are rounded, but the cutout shows the DevTools frontend's white background instead of the window background;\n- the page's two corners at the seam are rounded as well, leaving a white notch of the corner radius at each end of the seam.\n\n`setBorderRadius(0)` makes everything square and the seam whole; closing DevTools brings the rounded box back. Same with `mode: 'right'`, same when `setBorderRadius()` is called after DevTools is already open, same with and without `--disable-gpu`, same on 45.0.0-alpha.11 (Chromium 155.0.8046.0).\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n`main.js` (run with `electron main.js`; it reads the pixels back through `desktopCapturer`, so the window must be on an unobscured display \u2014 we used `xvfb-run -a -s \"-screen 0 1600x1000x24\" electron --disable-gpu main.js`; the effect is also visible by eye):\n\n```js\nconst { app, BrowserWindow, WebContentsView, desktopCapturer, screen } = require('electron')\n\nconst sleep = (ms) => new Promise((r) => setTimeout(r, ms))\n\napp.whenReady().then(async () => {\n  console.log('versions:', process.versions.electron, process.versions.chrome)\n  console.log('legend: window background #eeeeee = rgb(238,238,238); page #e8f0fe = rgb(232,240,254); DevTools frontend = white / near-white')\n  const win = new BrowserWindow({ width: 1200, height: 800, backgroundColor: '#eeeeee' })\n  const view = new WebContentsView()\n  win.contentView.addChildView(view)\n  view.setBounds({ x: 40, y: 40, width: 1120, height: 720 })\n  view.setBorderRadius(10)\n  await view.webContents.loadURL('data:text/html,<body style=\"margin:0;height:100vh;background:%23e8f0fe\">')\n  await sleep(1500)\n\n  // Reads screen pixels with desktopCapturer; d = distance along the diagonal from the corner.\n  async function report (label, devtoolsOpen) {\n    const { width, height } = screen.getPrimaryDisplay().size\n    const [src] = await desktopCapturer.getSources({ types: ['screen'], thumbnailSize: { width, height } })\n    const bmp = src.thumbnail.toBitmap() // BGRA\n    const w = src.thumbnail.getSize().width\n    const rgb = (x, y) => { const i = (y * w + x) * 4; return `rgb(${bmp[i + 2]},${bmp[i + 1]},${bmp[i]})` }\n    const cb = win.getContentBounds()\n    const x0 = cb.x + 40; const y0 = cb.y + 40; const x1 = x0 + 1119; const y1 = y0 + 719\n    const corners = {\n      'view top-left': (d) => [x0 + d, y0 + d],\n      'view top-right': (d) => [x1 - d, y0 + d],\n      'view bottom-left': (d) => [x0 + d, y1 - d],\n      'view bottom-right': (d) => [x1 - d, y1 - d]\n    }\n    let seamInfo = ''\n    if (devtoolsOpen) {\n      // first row (in column x0+12, clear of the corner arcs) that is not the page colour = top of the docked toolbox\n      let seam = y1 + 1\n      for (let y = y0 + 12; y <= y1; y++) if (rgb(x0 + 12, y) !== 'rgb(232,240,254)') { seam = y; break }\n      seamInfo = `, page/toolbox seam at y=${seam}`\n      corners['page bottom-left (seam)'] = (d) => [x0 + d, seam - 1 - d]\n      corners['page bottom-right (seam)'] = (d) => [x1 - d, seam - 1 - d]\n    }\n    console.log(`[${label}] view on screen x=${x0}..${x1} y=${y0}..${y1}${seamInfo}`)\n    for (const [name, at] of Object.entries(corners)) {\n      console.log(`  ${name.padEnd(25)}`, [0, 1, 2, 3].map((d) => `d=${d} ${rgb(...at(d))}`).join(' | '))\n    }\n  }\n\n  await report('radius 10, no DevTools', false)\n\n  const opened = new Promise((r) => view.webContents.once('devtools-opened', r))\n  view.webContents.openDevTools({ mode: 'bottom', activate: true })\n  await opened\n  await sleep(2500)\n  await report('radius 10, DevTools docked bottom', true)\n\n  view.setBorderRadius(0)\n  await sleep(1000)\n  await report('radius 0, DevTools docked bottom', true)\n  app.quit()\n})\n```\n\nOutput on Electron 44.4.5 (`d` = pixels along the diagonal from the corner into the view; a radius-10 corner reads \"colour behind the view\" at `d=0..2` and the page at `d=3`):\n\n```\nversions: 44.4.5 152.0.7977.130\nlegend: window background #eeeeee = rgb(238,238,238); page #e8f0fe = rgb(232,240,254); DevTools frontend = white / near-white\n[radius 10, no DevTools] view on screen x=240..1359 y=169..888\n  view top-left             d=0 rgb(238,238,238) | d=1 rgb(238,238,238) | d=2 rgb(238,238,238) | d=3 rgb(232,240,254)\n  view top-right            d=0 rgb(238,238,238) | d=1 rgb(238,238,238) | d=2 rgb(238,238,238) | d=3 rgb(232,240,254)\n  view bottom-left          d=0 rgb(238,238,238) | d=1 rgb(238,238,238) | d=2 rgb(238,238,238) | d=3 rgb(232,240,254)\n  view bottom-right         d=0 rgb(238,238,238) | d=1 rgb(238,238,238) | d=2 rgb(238,238,238) | d=3 rgb(232,240,254)\n[radius 10, DevTools docked bottom] view on screen x=240..1359 y=169..888, page/toolbox seam at y=589\n  view top-left             d=0 rgb(255,255,255) | d=1 rgb(255,255,255) | d=2 rgb(255,255,255) | d=3 rgb(232,240,254)\n  view top-right            d=0 rgb(255,255,255) | d=1 rgb(255,255,255) | d=2 rgb(255,255,255) | d=3 rgb(232,240,254)\n  view bottom-left          d=0 rgb(255,255,255) | d=1 rgb(255,255,255) | d=2 rgb(255,255,255) | d=3 rgb(255,255,255)\n  view bottom-right         d=0 rgb(252,252,252) | d=1 rgb(252,252,252) | d=2 rgb(252,252,252) | d=3 rgb(252,252,252)\n  page bottom-left (seam)   d=0 rgb(255,255,255) | d=1 rgb(255,255,255) | d=2 rgb(255,255,255) | d=3 rgb(232,240,254)\n  page bottom-right (seam)  d=0 rgb(255,255,255) | d=1 rgb(255,255,255) | d=2 rgb(255,255,255) | d=3 rgb(232,240,254)\n[radius 0, DevTools docked bottom] view on screen x=240..1359 y=169..888, page/toolbox seam at y=589\n  view top-left             d=0 rgb(232,240,254) | d=1 rgb(232,240,254) | d=2 rgb(232,240,254) | d=3 rgb(232,240,254)\n  view top-right            d=0 rgb(232,240,254) | d=1 rgb(232,240,254) | d=2 rgb(232,240,254) | d=3 rgb(232,240,254)\n  view bottom-left          d=0 rgb(255,255,255) | d=1 rgb(255,255,255) | d=2 rgb(255,255,255) | d=3 rgb(255,255,255)\n  view bottom-right         d=0 rgb(252,252,252) | d=1 rgb(252,252,252) | d=2 rgb(252,252,252) | d=3 rgb(252,252,252)\n  page bottom-left (seam)   d=0 rgb(232,240,254) | d=1 rgb(232,240,254) | d=2 rgb(232,240,254) | d=3 rgb(232,240,254)\n  page bottom-right (seam)  d=0 rgb(232,240,254) | d=1 rgb(232,240,254) | d=2 rgb(232,240,254) | d=3 rgb(232,240,254)\n```\n\nReading the tables: without DevTools every corner is window background \u00d73 then page, i.e. the box is rounded. With DevTools docked at the bottom, the view's top corners are DevTools white \u00d73 then page (the page is still rounded, but over an unclipped DevTools surface instead of the window), the bottom corners are white / `rgb(252,252,252)` all the way in (the toolbox is square), and the page's corners at the seam are white \u00d73 then page (the notch). With radius 0 the seam corners are page colour all the way and nothing is rounded. `mode: 'right'` gives the mirror image on the right-hand corners (page/toolbox seam at x=805 in the same geometry); 45.0.0-alpha.11 gives identical tables.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\n`WebContentsView::SetBorderRadius()` (`shell/browser/api/electron_api_web_contents_view.cc`) calls `View::SetBorderRadius()` and then `ApplyBorderRadius()`, which hands the radius to `InspectableWebContentsView::SetCornerRadii()` (`shell/browser/ui/inspectable_web_contents_view.cc`):\n\n```cpp\nvoid InspectableWebContentsView::SetCornerRadii(\n    const gfx::RoundedCornersF& corner_radii) {\n  // WebView won't exist for offscreen rendering.\n  if (contents_web_view_) {\n    contents_web_view_->holder()->SetNativeViewCornerRadii(corner_radii);\n    // ... SetIsFastRoundedCorner(false) on the native view's layer (Aura)\n  }\n}\n```\n\nThe radii only reach the native-view host of `contents_web_view_`, the page. When DevTools is docked, `InspectableWebContentsView::Layout()` runs `ApplyDevToolsContentsResizingStrategy()` and gives `devtools_web_view_` the whole container while the page is laid out in the inset the frontend asks for:\n\n```cpp\n  devtools_web_view_->SetBoundsRect(new_devtools_bounds);\n  SetContentsViewBounds(new_contents_bounds);\n```\n\n`devtools_web_view_->holder()` never receives corner radii, and the clip path that `View::ApplyBorderRadius()` sets on the container does not clip the layer-backed `WebView`s. So the DevTools surface is a square covering the whole view and the page surface is rounded on all four of its own corners, two of which are now at the seam: the page's arcs reveal the DevTools surface beneath (white in the cutouts of the outer corners, the notches at the seam), and the toolbox's corners are never clipped. The function is identical on `main`, and it has behaved this way since `setBorderRadius()` was added in 33.0.0 (#42320, at the time `contents_web_view_->holder()->SetCornerRadii(...)`), so there is no last-known-good version.\n\nA fix without API changes: have `SetCornerRadii()` remember the radii and apply them to `devtools_web_view_->holder()` as well (with the same `SetIsFastRoundedCorner(false)` treatment), and in `Layout()` \u2014 when DevTools is docked \u2014 give each host only the corners that coincide with the container's corners, e.g. for `mode: 'bottom'` `gfx::RoundedCornersF(r, r, 0, 0)` for the page and `gfx::RoundedCornersF(0, 0, r, r)` for the toolbox (for `right`: page `(r, 0, 0, r)`, toolbox `(0, r, r, 0)`), restoring all four corners on the page when DevTools is closed or undocked. `gfx::RoundedCornersF` already supports per-corner values.\n\n</p>\n</details>\n\nRelated: #51342 (per-corner radii in `setBorderRadius`) would let an app zero the two seam corners itself, but the docked toolbox would still be square.\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the repro output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:25Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:25Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:25Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T22:07:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:51Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54326,
+     "title": "`webContents.print({ silent: true, pageRanges })` prints every page on Linux; the ranges are dropped from silent print jobs",
+     "url": "https://github.com/electron/electron/issues/54326",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:07:10Z",
+     "closedAt": "2026-09-24T22:10:50Z",
+     "updatedAt": "2026-09-24T22:10:50Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.5\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04.4 (X11, Xvfb; CUPS 2.4.7 with a cups-pdf queue)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\n`webContents.print({ silent: true, deviceName, pageRanges: [{ from: 1, to: 1 }] })` on a three-page document should print one page (the second), the way `webContents.printToPDF({ pageRanges: '2' })` renders one page and the way `lp -o page-ranges=2` prints one page on the same CUPS queue.\n\n### Actual Behavior\n\nAll three pages are printed, for every range we tried (`[{ from: 1, to: 1 }]`, `[{ from: 0, to: 0 }]`, `[{ from: 0, to: 1 }]`). The callback reports `success = true` with no `failureReason`. The CUPS job is submitted as a three-page PDF (`job-impressions-completed = 3`) and carries no `page-ranges` attribute, so nothing downstream can restore the selection. `printToPDF` with the equivalent range in the same process produces one page.\n\nSame result on 45.0.0-alpha.11 (Chromium 155.0.8046.0). Reported before in #25013 (Windows, closed by #25064, which fixed the system-dialog paths on macOS/Windows); a 2024 comment there reports the same on Ubuntu with 30/31. The open refactor #53083 rewrites this code path.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nSetup (Ubuntu 24.04): `sudo apt-get install -y cups printer-driver-cups-pdf poppler-utils cups-ipp-utils && sudo service cups start && sudo lpadmin -p PDF -E -v cups-pdf:/ -m lsb/usr/cups-pdf/CUPS-PDF_opt.ppd && sudo lpadmin -d PDF` (output files land in `~/PDF/`).\n\n`main.js` (run with `electron main.js`; set `PRINTER=<queue>` if the target queue is not the default):\n\n```js\nconst { app, BrowserWindow } = require('electron')\nconst fs = require('fs')\nconst path = require('path')\n\n// 0-based, inclusive: [{ from: 1, to: 1 }] = page 2 only (override with PAGE_RANGES='[{\"from\":0,\"to\":0}]')\nconst pageRanges = JSON.parse(process.env.PAGE_RANGES || '[{\"from\":1,\"to\":1}]')\nconst html = `<!doctype html><title>pageRanges repro</title>\n<style>section{height:90vh;font:48px sans-serif;page-break-after:always}</style>\n<section>Page one</section><section>Page two</section><section>Page three</section>`\n\napp.whenReady().then(async () => {\n  console.log('versions:', process.versions.electron, process.versions.chrome, process.versions.node)\n  const win = new BrowserWindow({ show: false })\n  await win.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(html))\n\n  // control: printToPDF with the equivalent (1-based) range\n  fs.writeFileSync(path.join(__dirname, 'control.pdf'), await win.webContents.printToPDF({ pageRanges: '2' }))\n\n  const printers = await win.webContents.getPrintersAsync()\n  const deviceName = process.env.PRINTER || printers.find((p) => p.isDefault)?.name || printers[0].name\n  const options = { silent: true, deviceName, pageRanges, printBackground: true }\n  console.log('print options:', JSON.stringify(options))\n  win.webContents.print(options, (success, failureReason) => {\n    console.log('print callback:', success, failureReason || '')\n    setTimeout(() => app.quit(), 3000)\n  })\n})\n```\n\nObserved, Electron 44.4.5 (`xvfb-run -a electron main.js`, then `pdfinfo`, `lpstat`, `ipptool`):\n\n```\nversions: 44.4.5 152.0.7977.130 24.21.0\nprint options: {\"silent\":true,\"deviceName\":\"PDF\",\"pageRanges\":[{\"from\":1,\"to\":1}],\"printBackground\":true}\nprint callback: true\ncontrol.pdf: Pages: 1                                   <- printToPDF({ pageRanges: '2' })\nlpstat -W completed -o: PDF-9   ubuntu   8192   Thu 24 Sep 2026 09:32:39 PM UTC\nspool output: ~/PDF/pageRanges_repro-job_9.pdf -> Pages: 3   <- webContents.print(...)\nipptool -tv ipp://localhost/jobs/9 get-job-attributes.test:\n    copies (integer) = 1\n    document-format (mimeMediaType) = application/pdf\n    number-up (integer) = 1\n    job-impressions-completed (integer) = 3\n    job-media-sheets-completed (integer) = 3\n    (no page-ranges attribute)\n```\n\n`PAGE_RANGES='[{\"from\":0,\"to\":0}]'` and `'[{\"from\":0,\"to\":1}]'` give the same 3-page output. The three spool pages are distinct pages 1\u20133 (checked with `pdftoppm`). Control on the same queue: `lp -d PDF -o page-ranges=2 ~/PDF/pageRanges_repro-job_9.pdf` \u2192 1 page, `page-ranges (rangeOfInteger) = 2-2`, `job-impressions-completed = 1`. 45.0.0-alpha.11: identical results for all three ranges.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nThe ranges are converted and delivered correctly up to the renderer, then discarded by the silent branch:\n\n1. `WebContents::Print` (`shell/browser/api/electron_api_web_contents.cc`) turns `pageRanges: [{ from, to }]` into the 1-based `printing::kSettingPageRange` list in the job settings dictionary.\n2. In the renderer, Electron's `patches/chromium/printing.patch` makes `PrintRenderFrameHelper::Print()` call `InitPrintSettings(frame, node, settings)`, which sends the dictionary to the browser over the Electron-only sync `UpdatePrintSettings` IPC. The browser side, `PrintViewManagerElectron::CompleteGetPrintPreviewParams` (`shell/browser/printing/print_view_manager_electron.cc`), replies with a `PrintPagesParams` whose `pages` is `printing::GetPageRangesFromJobSettings(job_settings)`, i.e. the requested ranges; `InitPrintSettings` stores it with `SetPrintPagesParamsForPrinting(*settings)`, so at this point `print_pages_params_->pages` holds the ranges.\n3. Back in `Print()`, the patch replaces the dialog step with:\n\n```cpp\n    if (silent) {\n      print_settings = mojom::PrintPagesParams::New();\n      print_settings->params = print_pages_params_->params->Clone();\n    } else {\n      print_settings = GetPrintSettingsFromUser(\n          frame_ref.GetFrame(), node, expected_page_count, print_request_type);\n    }\n    ...\n    SetPrintPagesParamsForPrinting(*print_settings);\n```\n\n   The new `PrintPagesParams` copies only `params`; its `pages` vector is empty, and `SetPrintPagesParamsForPrinting` overwrites the stored params with it.\n4. `PrintRenderFrameHelper::OnFramePreparedForPrintPages` (`components/printing/renderer/print_render_frame_helper.cc`) computes `PageNumber::GetPages(print_pages_params_->pages, page_count)`; an empty range list means \"all pages\", so all pages are rendered and spooled (as a single PDF on Linux, which is why CUPS never sees a `page-ranges` attribute either).\n\nIn the non-silent branch `GetPrintSettingsFromUser` \u2192 browser `OnDidScriptedPrint` sets `params->pages = printer_query->settings().ranges()`, which is why the dialog path was fixable in #25064 without touching this code. A one-line fix for the silent branch is `print_settings->pages = print_pages_params_->pages;` (or `std::move`) before `SetPrintPagesParamsForPrinting`. #53083 removes this branch altogether and sets `params->pages` from the job's ranges in the browser, which should also fix it.\n\n</p>\n</details>\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the repro output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T22:07:25Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:50Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54325,
+     "title": "Refusing a request in `setDisplayMediaRequestHandler` rejects `getDisplayMedia()` with `AbortError: Invalid capture constraints` instead of `NotAllowedError`",
+     "url": "https://github.com/electron/electron/issues/54325",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:07:09Z",
+     "closedAt": "2026-09-24T22:10:50Z",
+     "updatedAt": "2026-09-24T22:10:50Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.5\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04.4 (X11, Xvfb)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nWhen the `setDisplayMediaRequestHandler` handler declines a request (the user closed the app's source picker without choosing, or the app does not allow screen sharing for that page), the page's `navigator.mediaDevices.getDisplayMedia()` promise should reject with `NotAllowedError`, which is what a page gets when the user cancels the picker in Chrome, and what Electron itself produces when the request is refused one step earlier in `setPermissionRequestHandler` (`callback(false)` \u2192 `NotAllowedError: Permission denied`). There should be one documented way to decline from the handler that does not throw in the main process.\n\n### Actual Behavior\n\nEvery way of declining from the display-media handler rejects the page's promise with `AbortError: Invalid capture constraints`. Two of them also throw a `TypeError` synchronously inside the handler (an unhandled exception unless the app wraps the `callback` call). `getDisplayMedia({ video: true, audio: true })` from a user gesture, Electron 44.4.5:\n\n| Handler action | Main process | Page: `err.name: err.message` |\n| --- | --- | --- |\n| `setDisplayMediaRequestHandler` \u2192 `callback(null)` | \u2013 | `AbortError: Invalid capture constraints` |\n| \u2026 \u2192 `callback(undefined)` | \u2013 | `AbortError: Invalid capture constraints` |\n| \u2026 \u2192 `callback()` | \u2013 | `AbortError: Invalid capture constraints` |\n| \u2026 \u2192 `callback({})` | `TypeError: Video was requested, but no video stream was provided` | `AbortError: Invalid capture constraints` |\n| \u2026 \u2192 `callback({ video: undefined })` | `TypeError: video must be a WebFrameMain or DesktopCapturerSource` | `AbortError: Invalid capture constraints` |\n| `setPermissionRequestHandler` \u2192 `callback(false)` (control) | \u2013 | `NotAllowedError: Permission denied` |\n\nPages that follow the usual web pattern (`if (err.name === 'NotAllowedError') { /* user cancelled */ } else { /* capture failed */ }`) therefore show a \"could not start screen capture\" style error for a plain cancellation. Declining in the permission handler instead is not equivalent: in 44 the permission request for `getDisplayMedia()` arrives as `permission: \"media\"` with `mediaTypes: []`, and in any version the handler has to decide before the app's picker has been shown, so \"user cancelled the picker\" can only be expressed from the display-media handler.\n\nSame result on 45.0.0-alpha.11 (Chromium 155.0.8046.0). The `session.setDisplayMediaRequestHandler` docs describe the `streams` object but not how to decline.\n\nSee also #47980 (same question, closed without a repro) and #45517 (the `TypeError` for `callback({ video: undefined })`).\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n`main.js` (run with `electron main.js`; the page is served over `http://127.0.0.1` because `navigator.mediaDevices` is not available on `data:` URLs, and the call is made with a user gesture via `executeJavaScript(code, true)`):\n\n```js\nconst { app, BrowserWindow, session } = require('electron')\nconst http = require('http')\n\nconst shapes = [\n  { label: 'display-media callback(null)', dm: (cb) => cb(null) },\n  { label: 'display-media callback(undefined)', dm: (cb) => cb(undefined) },\n  { label: 'display-media callback()', dm: (cb) => cb() },\n  { label: 'display-media callback({})', dm: (cb) => cb({}) },\n  { label: 'display-media callback({ video: undefined })', dm: (cb) => cb({ video: undefined }) },\n  { label: 'permission-handler callback(false)', permissionDeny: true }\n]\nlet current = null\n\napp.whenReady().then(async () => {\n  const ses = session.defaultSession\n  ses.setPermissionRequestHandler((wc, permission, callback, details) => {\n    console.log('  permission request:', JSON.stringify({ permission, mediaTypes: details.mediaTypes }))\n    callback(!(current && current.permissionDeny))\n  })\n  ses.setDisplayMediaRequestHandler((request, callback) => {\n    console.log('  display-media request:', JSON.stringify({ video: request.videoRequested, audio: request.audioRequested, userGesture: request.userGesture }))\n    try { current.dm(callback) } catch (e) { console.log('  handler callback threw:', e.message) }\n  })\n\n  const server = http.createServer((req, res) => { res.setHeader('Content-Type', 'text/html'); res.end('<p>getDisplayMedia repro</p>') })\n  await new Promise((r) => server.listen(0, '127.0.0.1', r))\n  const win = new BrowserWindow({ width: 800, height: 600 })\n  await win.loadURL(`http://127.0.0.1:${server.address().port}/`)\n\n  for (const shape of shapes) {\n    current = shape\n    console.log(`--- getDisplayMedia({ video: true, audio: true }) with ${shape.label} ---`)\n    console.log('  page:', await win.webContents.executeJavaScript(\n      `navigator.mediaDevices.getDisplayMedia({ video: true, audio: true }).then(s => 'RESOLVED', e => 'REJECTED ' + e.name + ': ' + e.message)`,\n      true))\n  }\n  app.quit()\n})\n```\n\nOutput, Electron 44.4.5, `xvfb-run -a electron main.js` (Linux X11):\n\n```\n--- getDisplayMedia({ video: true, audio: true }) with display-media callback(null) ---\n  permission request: {\"permission\":\"media\",\"mediaTypes\":[]}\n  display-media request: {\"video\":true,\"audio\":true,\"userGesture\":true}\n  page: REJECTED AbortError: Invalid capture constraints\n--- getDisplayMedia({ video: true, audio: true }) with display-media callback(undefined) ---\n  permission request: {\"permission\":\"media\",\"mediaTypes\":[]}\n  display-media request: {\"video\":true,\"audio\":true,\"userGesture\":true}\n  page: REJECTED AbortError: Invalid capture constraints\n--- getDisplayMedia({ video: true, audio: true }) with display-media callback() ---\n  permission request: {\"permission\":\"media\",\"mediaTypes\":[]}\n  display-media request: {\"video\":true,\"audio\":true,\"userGesture\":true}\n  page: REJECTED AbortError: Invalid capture constraints\n--- getDisplayMedia({ video: true, audio: true }) with display-media callback({}) ---\n  permission request: {\"permission\":\"media\",\"mediaTypes\":[]}\n  display-media request: {\"video\":true,\"audio\":true,\"userGesture\":true}\n  handler callback threw: Video was requested, but no video stream was provided\n  page: REJECTED AbortError: Invalid capture constraints\n--- getDisplayMedia({ video: true, audio: true }) with display-media callback({ video: undefined }) ---\n  permission request: {\"permission\":\"media\",\"mediaTypes\":[]}\n  display-media request: {\"video\":true,\"audio\":true,\"userGesture\":true}\n  handler callback threw: video must be a WebFrameMain or DesktopCapturerSource\n  page: REJECTED AbortError: Invalid capture constraints\n--- getDisplayMedia({ video: true, audio: true }) with permission-handler callback(false) ---\n  permission request: {\"permission\":\"media\",\"mediaTypes\":[]}\n  page: REJECTED NotAllowedError: Permission denied\n```\n\nOn 45.0.0-alpha.11 the permission request line reads `{\"permission\":\"display-capture\",\"mediaTypes\":[\"audio\",\"video\"]}` (#52824); the page results are unchanged.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\n`ElectronBrowserContext::DisplayMediaDeviceChosen` (`shell/browser/electron_browser_context.cc`) runs the `content::MediaResponseCallback` with `blink::mojom::MediaStreamRequestResult::INVALID_DISPLAY_CAPTURE_CONSTRAINTS` in every refusal case: when the handler's result `IsNullOrUndefined()`, when it is not an object, when `video` is neither a `WebFrameMain` nor a `DesktopCapturerSource` (`ThrowTypeError(\"video must be a WebFrameMain or DesktopCapturerSource\")`), and when video was requested but none was provided (`ThrowTypeError(\"Video was requested, but no video stream was provided\")`). Blink maps that result code to `DOMExceptionCode::kAbortError` (`third_party/blink/renderer/modules/mediastream/user_media_request.cc`, the `INVALID_DISPLAY_CAPTURE_CONSTRAINTS` / `INVALID_GUM_*_CAPTURE_CONSTRAINTS` cases) with the message `\"Invalid capture constraints\"` (`ErrorCodeToString` in `user_media_processor.cc`).\n\nThe permission-handler path goes through `MediaAccessAllowed(request, callback, /*allowed=*/false)` in `shell/browser/web_contents_permission_helper.cc`, which runs the callback with `MediaStreamRequestResult::PERMISSION_DENIED`; Blink maps `PERMISSION_DENIED` / `PERMISSION_DISMISSED` / `PERMISSION_DENIED_BY_USER` to `kNotAllowedError` (\"Permission denied\" / \"Permission denied by user\").\n\nA small fix would be to treat a null/undefined result from the display-media handler as the user's refusal and run the callback with `PERMISSION_DENIED_BY_USER` (or `PERMISSION_DISMISSED`) instead of `INVALID_DISPLAY_CAPTURE_CONSTRAINTS`, and to document `callback(null)` as the way to decline; the `TypeError` cases can stay `INVALID_DISPLAY_CAPTURE_CONSTRAINTS` since they are programming errors.\n\n</p>\n</details>\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the repro output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:07:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T22:07:26Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:50Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54324,
+     "title": "`webContents.debugger`: `Security.enable` succeeds but `Security.visibleSecurityStateChanged` is never emitted",
+     "url": "https://github.com/electron/electron/issues/54324",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:05:00Z",
+     "closedAt": "2026-09-24T22:10:49Z",
+     "updatedAt": "2026-09-24T22:10:49Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.5\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04 (X11, Xvfb)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nAfter `Security.enable` succeeds on a `webContents.debugger` session, the session receives `Security.visibleSecurityStateChanged` (the current state immediately, then on every change), as the DevTools protocol documents and as Chrome delivers it. Alternatively, `Security.enable` fails, or the Electron docs state that the Security domain's events are not available over `webContents.debugger`.\n\n### Actual Behavior\n\n`Security.enable` resolves with `{}` and no `Security.*` event ever follows: not on enable, not across a reload, not across navigations. The same session receives `Network.*` and `Page.*` events normally, and the document response's `securityDetails` shows the connection is a plain, valid TLS 1.3 connection (`securityState: \"secure\"`).\n\nOutput of the repro below on 44.4.5 (page served by a local https server whose certificate is trusted through `setCertificateVerifyProc`; zero `certificate-error` events):\n\n```\n[+  170ms] Security.enable -> {}\n[+ 3173ms] methods seen 3 s after Security.enable: []\n[+ 3174ms] Security.setIgnoreCertificateErrors -> {}\n[+ 3174ms] Network.enable -> {}\n[+ 6177ms] Network.responseReceived (Document) after reload: [{\"url\":\"https://localhost:36253/\",\"securityState\":\"secure\",\"issuer\":\"localhost\",\"subjectName\":\"localhost\",\"protocol\":\"TLS 1.3\"}]\n[+ 6177ms] Security.* methods seen overall: []\n[+ 7682ms] Page.* seen after Page.enable + reload: [\"Page.frameStartedNavigating\",\"Page.frameStartedLoading\",\"Page.frameNavigated\",\"Page.domContentEventFired\",\"Page.loadEventFired\",\"Page.frameStoppedLoading\"]\n```\n\nIdentical on 45.0.0-alpha.11 (Chromium 155.0.8046.0).\n\nPractical effect: a browser-style app cannot get the page's security state (and the certificate issuer for the site-information UI) through the protocol the way it can in Chrome; the `Security` domain looks fully enabled but is silent. Reading `securityDetails` from `Network.responseReceived` or recording certificates in `setCertificateVerifyProc` works as a workaround.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nMinimal repro. Create a self-signed certificate next to `main.js`, then run `electron .` (`package.json`: `{\"main\":\"main.js\"}`):\n\n```\nopenssl req -x509 -newkey rsa:2048 -nodes -subj /CN=localhost -keyout k.pem -out c.pem -days 2\n```\n\n```js\nconst { app, BrowserWindow, session } = require('electron')\nconst https = require('https')\nconst fs = require('fs')\nconst path = require('path')\n\nconst t0 = Date.now()\nconst log = (...a) => console.log(`[+${String(Date.now() - t0).padStart(5)}ms]`, ...a)\nconst sleep = (ms) => new Promise((r) => setTimeout(r, ms))\n\napp.whenReady().then(async () => {\n  const server = https.createServer(\n    { key: fs.readFileSync(path.join(__dirname, 'k.pem')), cert: fs.readFileSync(path.join(__dirname, 'c.pem')) },\n    (req, res) => { res.setHeader('content-type', 'text/html'); res.end('<h1>hello over https</h1>') }\n  )\n  await new Promise((r) => server.listen(0, '127.0.0.1', r))\n  const url = `https://localhost:${server.address().port}/`\n\n  // Trust the self-signed certificate for this process, so no 'certificate-error' fires.\n  session.defaultSession.setCertificateVerifyProc((_req, cb) => cb(0))\n\n  const win = new BrowserWindow({ width: 800, height: 600 })\n  const wc = win.webContents\n  await wc.loadURL(url)\n\n  const dbg = wc.debugger\n  dbg.attach('1.3')\n  const seen = []\n  const docs = []\n  dbg.on('message', (_e, method, params) => {\n    seen.push(method)\n    if (method === 'Network.responseReceived' && params.type === 'Document') {\n      const sd = params.response.securityDetails || null\n      docs.push({ url: params.response.url, securityState: params.response.securityState, issuer: sd && sd.issuer, protocol: sd && sd.protocol })\n    }\n  })\n\n  log('Security.enable ->', JSON.stringify(await dbg.sendCommand('Security.enable')))\n  await sleep(3000)\n  log('methods seen 3 s after Security.enable:', JSON.stringify(seen))\n  log('Security.setIgnoreCertificateErrors ->', JSON.stringify(await dbg.sendCommand('Security.setIgnoreCertificateErrors', { ignore: true })))\n  log('Network.enable ->', JSON.stringify(await dbg.sendCommand('Network.enable')))\n  wc.reload()\n  await sleep(3000)\n  log('Network.responseReceived (Document) after reload:', JSON.stringify(docs))\n  log('Security.* methods seen overall:', JSON.stringify(seen.filter((m) => m.startsWith('Security.'))))\n  log('Page.enable ->', JSON.stringify(await dbg.sendCommand('Page.enable')))\n  wc.reload()\n  await sleep(1500)\n  log('Page.* seen after Page.enable + reload:', JSON.stringify([...new Set(seen.filter((m) => m.startsWith('Page.')))]))\n  server.close()\n  process.exit(0)\n})\n```\n\nEnvironment used: Electron 44.4.5 (Chromium 152.0.7977.130, Node 24.21.0) and 45.0.0-alpha.11 (Chromium 155.0.8046.0), Ubuntu 24.04.4 x64 under Xvfb (X11), Chromium sandbox enabled.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nChromium implements the `Security` domain twice:\n\n- `content/browser/devtools/protocol/security_handler.cc` (//content) implements the commands (`enable`, `disable`, `setIgnoreCertificateErrors`, `setOverrideCertificateErrors`, `handleCertificateError`) and the `certificateError` event only. Its `Enable()` calls `AttachToRenderFrameHost()`, which calls `DidChangeVisibleSecurityState()` \"to send an initial event\", but the class does not override that `WebContentsObserver` method (its header lists only `DidFinishNavigation` under \"WebContentsObserver overrides\"), so the call is a no-op and `frontend_->VisibleSecurityStateChanged` is never reached anywhere in //content.\n- `chrome/browser/devtools/protocol/security_handler.cc` (//chrome) is the emitter: `Enable()` \u2192 `DidChangeVisibleSecurityState()` \u2192 `CreateVisibleSecurityState(web_contents())` (built on `SecurityStateTabHelper`) \u2192 `frontend_->VisibleSecurityStateChanged(...)`. It is wired through Chrome's `ChromeDevToolsSession`.\n\nElectron builds only a few `//chrome/browser/devtools/*` utility files (`chromium_src/BUILD.gn`: contents resizing strategy, embedder message dispatcher, eye dropper, file system indexer, settings, features, visual logging) and nothing from `//chrome/browser/devtools/protocol/`; `shell/browser/ui/devtools_manager_delegate.cc` `HandleCommand()` handles `Browser.close` and forwards everything else to //content. Every DevTools client of an Electron `WebContents` (`webContents.debugger`, `--remote-debugging-port`, the DevTools frontend) therefore gets the //content handler, whose `Security.enable` succeeds while the event that the protocol documents for it does not exist in this build.\n\nOptions: implement the event in Electron's DevTools layer (a small `WebContentsObserver::DidChangeVisibleSecurityState` bridge that builds `Security.VisibleSecurityState` from `content::WebContents::GetController().GetVisibleEntry()->GetSSL()` \u2014 the //chrome version is 289 lines and depends on `SecurityStateTabHelper`, which Electron does not have; a reduced version could report `securityState`, `certificateSecurityState.certificate`/`issuer`/`subjectName`/`protocol`/`validFrom`/`validTo` from `SSLStatus`), or document on `debugger.md` that the Security domain's `visibleSecurityStateChanged` / `securityStateChanged` events are not available and point at `Network.responseReceived.response.securityDetails` and `session.setCertificateVerifyProc` instead.\n\nVerified against Chromium `main` sources on 2026-09-24; the behaviour is the same in the Chromium 152 (Electron 44) and 155 (Electron 45 alpha) builds tested.\n\n</p>\n</details>\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the repro output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:17Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:17Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:17Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T22:05:17Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:49Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54323,
+     "title": "`webContents` never emits `unresponsive` while `webContents.debugger` is attached",
+     "url": "https://github.com/electron/electron/issues/54323",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:05:00Z",
+     "closedAt": "2026-09-24T22:10:49Z",
+     "updatedAt": "2026-09-24T22:10:49Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.5\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04 (X11, Xvfb)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nA renderer that stops responding is reported through `webContents.on('unresponsive')` whether or not the app holds a `webContents.debugger` session on that `webContents`. A session that only issues emulation or instrumentation commands (`Emulation.*`, `Network.enable`, \u2026) and is not paused at a breakpoint should not disable the hang report. If the suppression is intended, it should be documented on the `unresponsive` event and on `debugger.attach()`; today neither page mentions it.\n\n### Actual Behavior\n\nWhile any `webContents.debugger` session is attached, `unresponsive` (and the matching `responsive`) is never emitted for that `webContents`. Detaching restores it.\n\nWith the repro below (a button whose click handler runs `for(;;){}`; the click is sent with `sendInputEvent`):\n\n- no debugger attached: `unresponsive` fires 16.0 s after the click;\n- `debugger.attach('1.3')` plus one `Emulation.setHardwareConcurrencyOverride` command, session left attached: no `unresponsive` within 60 s (`debugger.isAttached()` is `true`);\n- same attach and command, then `debugger.detach()` before the click: `unresponsive` fires 16.0 s after the click.\n\nOutput on 44.4.5 (Ubuntu 24.04, Xvfb, sandbox enabled):\n\n```\nA: no debugger\n[+   636ms] clicked hang button\n[+ 16644ms] EVENT unresponsive\n\nB: debugger attached\n[+   132ms] debugger attached; Emulation.setHardwareConcurrencyOverride -> {}\n[+   634ms] clicked hang button\n[+ 60695ms] RESULT variant=B waited=60s after click     (no EVENT line)\n\nC: attached, then detached before the click\n[+   643ms] clicked hang button\n[+ 16651ms] EVENT unresponsive\n```\n\nSame on 45.0.0-alpha.11 (Chromium 155.0.8046.0): A fires at 16.0 s, B never fires within 60 s.\n\nAny app that keeps a CDP session on a page for its own purposes (emulation, network instrumentation, throttling) therefore loses hang detection for that page without any indication. The same happens to every page under Playwright for Electron or any `--remote-debugging-port` client with `Target.setAutoAttach`, so hang handling cannot be tested under such a harness.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nMinimal repro, `main.js` (with `{\"main\":\"main.js\"}` in `package.json`). Run `electron . A 45`, `electron . B 60`, `electron . C 45` (A = no debugger, B = attached, C = attached then detached; the number is how many seconds to wait after the click). The renderer is deliberately hung; the process exits by itself after the wait.\n\n```js\nconst { app, BrowserWindow } = require('electron')\n\nconst variant = process.argv.find((a) => /^[ABC]$/.test(a)) || 'A'\nconst waitMs = Number(process.argv.find((a) => /^\\d+$/.test(a)) || 45) * 1000\nconst t0 = Date.now()\nconst log = (...args) => console.log(`[+${String(Date.now() - t0).padStart(6)}ms]`, ...args)\n\napp.whenReady().then(async () => {\n  log('versions', process.versions.electron, process.versions.chrome)\n  const win = new BrowserWindow({ width: 800, height: 600 })\n  const wc = win.webContents\n  wc.on('unresponsive', () => log('EVENT unresponsive'))\n  wc.on('responsive', () => log('EVENT responsive'))\n  await wc.loadURL('data:text/html,<button style=\"position:fixed;left:0;top:0;width:200px;height:100px\" onclick=\"for(;;){}\">hang</button>')\n\n  if (variant === 'B' || variant === 'C') {\n    wc.debugger.attach('1.3')\n    const r = await wc.debugger.sendCommand('Emulation.setHardwareConcurrencyOverride', { hardwareConcurrency: 2 })\n    log('debugger attached; Emulation.setHardwareConcurrencyOverride ->', JSON.stringify(r))\n  }\n  if (variant === 'C') {\n    wc.debugger.detach()\n    log('debugger detached')\n  }\n  log('debugger.isAttached() =', wc.debugger.isAttached())\n\n  await new Promise((r) => setTimeout(r, 500))\n  wc.sendInputEvent({ type: 'mouseDown', x: 50, y: 50, button: 'left', clickCount: 1 })\n  wc.sendInputEvent({ type: 'mouseUp', x: 50, y: 50, button: 'left', clickCount: 1 })\n  log('clicked hang button')\n\n  setTimeout(() => {\n    log(`RESULT variant=${variant} waited=${waitMs / 1000}s after click (no EVENT line above = never fired)`)\n    process.exit(0)\n  }, waitMs)\n})\n```\n\nEnvironment used: Electron 44.4.5 (Chromium 152.0.7977.130, Node 24.21.0) and 45.0.0-alpha.11 (Chromium 155.0.8046.0), Ubuntu 24.04.4 x64 under Xvfb (X11), Chromium sandbox enabled.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nThe gate is applied in Electron's code. `patches/chromium/refactor_unfilter_unresponsive_events.patch` (from #44629) removes Chromium's `ShouldIgnoreUnresponsiveRenderer()` early return from `WebContentsImpl::RendererUnresponsive` so that every hang reaches Electron, and Electron re-applies the same predicate before emitting:\n\n- `main`: `shell/browser/api/electron_api_web_contents.cc`, `WebContents::RendererUnresponsive`: `bool should_ignore = web_contents_impl->ShouldIgnoreUnresponsiveRenderer(); \u2026 if (!should_ignore && visible && renderer_initialized) EmitWithoutEvent(\"unresponsive\", event_object);`\n- `44-x-y`: the same three fields are put on the internal `-unresponsive` event and `lib/browser/api/web-contents.ts` emits `unresponsive` only when `!event.shouldIgnore && event.visible && event.rendererInitialized`.\n\n`content::WebContentsImpl::ShouldIgnoreUnresponsiveRenderer()` returns `DevToolsAgentHost::IsDebuggerAttached(this)` as its last step, i.e. true for any attached DevTools client of the `WebContents`, with the upstream comment `// TODO(pfeldman): Fix this to only return true if the renderer is *actually* sitting on a breakpoint. https://crbug.com/684202`. `webContents.debugger.attach()` creates such a client, so `shouldIgnore` is true for as long as the session lives. Chrome uses the predicate only to hide its hung-page dialog; in Electron it silently removes the app's only hang signal.\n\nPossible directions: emit `unresponsive` regardless of `IsDebuggerAttached` (the visibility and sleep cases were already reworked in #53529, so the predicate is already Electron's decision); or track whether the attached session is actually paused (`Debugger.paused` without a matching `Debugger.resumed`) and ignore only then; or exclude `webContents.debugger` sessions from the check (they belong to the app, not to a developer at a breakpoint). At minimum, document the current behaviour on `unresponsive` and `debugger.attach()`.\n\nSee also #14257 (2018, the inverse case: `unresponsive` firing while paused in DevTools, which is what the debugger check protects against).\n\n</p>\n</details>\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the repro output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T22:05:14Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:49Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54322,
+     "title": "`service-worker` preload scripts never run when the app is launched with `--no-sandbox`",
+     "url": "https://github.com/electron/electron/issues/54322",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:04:59Z",
+     "closedAt": "2026-09-24T22:10:48Z",
+     "updatedAt": "2026-09-24T22:10:48Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.5\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04.4 (X11, Xvfb)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nA preload script registered with `session.registerPreloadScript({ type: 'service-worker', ... })` runs in the session's extension service workers regardless of whether the app was started with `--no-sandbox`, or the API documents that it requires the sandbox and warns when it is skipped.\n\n### Actual Behavior\n\nWith the sandbox on, the preload runs in an MV3 extension's background service worker (`process.type === 'service-worker'`, `contextIsolated: true`, `sandboxed: true`) and the global it sets through `contextBridge.executeInMainWorld` is visible to the worker script. With `--no-sandbox` the same preload never runs: the worker starts and runs normally, `chrome.*` is populated, but the global is `undefined`. `session.getPreloadScripts()` reports the registration in both cases and nothing is logged.\n\n| Electron | sandbox | worker sees `__preloadRan` |\n| --- | --- | --- |\n| 44.4.5 (Chromium 152.0.7977.130) | on | `\"type=service-worker contextIsolated=true sandboxed=true\"` |\n| 44.4.5 | `--no-sandbox` | `undefined` |\n| 45.0.0-alpha.11 (Chromium 155.0.8046.0) | on | `\"type=service-worker contextIsolated=true sandboxed=true\"` |\n| 45.0.0-alpha.11 | `--no-sandbox` | `undefined` |\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nFour files; run `electron main.js` and `electron main.js --no-sandbox`.\n\n`main.js`:\n\n```js\nconst { app, session } = require('electron')\nconst path = require('path')\n\napp.whenReady().then(async () => {\n  console.log('sandbox:', process.argv.includes('--no-sandbox') ? 'off (--no-sandbox)' : 'on')\n  const ses = session.fromPartition('persist:probe')\n  ses.registerPreloadScript({ type: 'service-worker', id: 'diag', filePath: path.join(__dirname, 'worker-preload.js') })\n  console.log('getPreloadScripts():', JSON.stringify(ses.getPreloadScripts()))\n  ses.serviceWorkers.on('console-message', (_e, d) => console.log(`[service worker console] ${d.message}`))\n  await ses.extensions.loadExtension(path.join(__dirname, 'extension'))\n  await new Promise(r => setTimeout(r, 3000))\n  app.quit()\n})\n```\n\n`worker-preload.js`:\n\n```js\nconst { contextBridge } = require('electron')\ncontextBridge.executeInMainWorld({\n  func: (info) => { globalThis.__preloadRan = info },\n  args: [`type=${process.type} contextIsolated=${process.contextIsolated} sandboxed=${process.sandboxed}`]\n})\n```\n\n`extension/manifest.json`:\n\n```json\n{ \"manifest_version\": 3, \"name\": \"sw-preload-probe\", \"version\": \"1.0\", \"background\": { \"service_worker\": \"sw.js\" } }\n```\n\n`extension/sw.js`:\n\n```js\nconsole.log('__preloadRan=' + JSON.stringify(globalThis.__preloadRan) + ' chrome=' + Object.keys(chrome).sort().join(','))\n```\n\nOutput, Electron 44.4.5, `electron main.js`:\n\n```\nsandbox: on\ngetPreloadScripts(): [{\"filePath\":\".../worker-preload.js\",\"id\":\"diag\",\"type\":\"service-worker\"}]\n[service worker console] __preloadRan=\"type=service-worker contextIsolated=true sandboxed=true\" chrome=dom,extension,i18n,management,runtime,tabs\n```\n\n`electron main.js --no-sandbox`:\n\n```\nsandbox: off (--no-sandbox)\ngetPreloadScripts(): [{\"filePath\":\".../worker-preload.js\",\"id\":\"diag\",\"type\":\"service-worker\"}]\n[service worker console] __preloadRan=undefined chrome=dom,extension,i18n,management,runtime,tabs\n```\n\n45.0.0-alpha.11 behaves the same in both cases. Ubuntu 24.04.4, X11 under Xvfb, x64.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\n`ElectronMainDelegate::CreateContentRendererClient` (`shell/app/electron_main_delegate.cc`) instantiates `ElectronSandboxedRendererClient` when `IsSandboxEnabled(command_line)` is true and `ElectronRendererClient` otherwise; `IsSandboxEnabled` (`shell/app/command_line_args.cc`) is simply `--enable-sandbox` present or `--no-sandbox` absent, so `--no-sandbox` switches every renderer, including service-worker renderers, to `ElectronRendererClient`.\n\nOnly `ElectronSandboxedRendererClient::WillEvaluateServiceWorkerOnWorkerThread` (`shell/renderer/electron_sandboxed_renderer_client.cc`) creates the preload realm: when `context_proxy->ElectronPreloadData().has_value()` it allocates `ServiceWorkerData` and calls `preload_realm::OnCreatePreloadableV8Context`. `ElectronRendererClient` does not override `WillEvaluateServiceWorkerOnWorkerThread`, so the base `RendererClientBase` implementation runs (`shell/renderer/renderer_client_base.cc`), which only forwards to the extensions dispatcher; the only service-worker reference in `electron_renderer_client.cc` is the `IsServiceWorkerGlobalScope()` bail-out in the Node integration check. The browser side still attaches the preload data (hence `getPreloadScripts()` looks fine), it is just never consumed.\n\nEither running the preload realm from `ElectronRendererClient` as well (the realm is sandbox-style, `contextIsolated: true`, and does not need Node in the worker), or documenting in `session.registerPreloadScript` / `--no-sandbox` that `service-worker` preloads require the sandbox and emitting a warning when they are dropped, would resolve this.\n\n</p>\n</details>\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the repro output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:05:16Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T22:05:17Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:48Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 54321,
+     "title": "Hidden `WebContentsView` (`setVisible(false)`) takes the window's keyboard focus when a navigation commits in it",
+     "url": "https://github.com/electron/electron/issues/54321",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T22:03:23Z",
+     "closedAt": "2026-09-24T22:10:47Z",
+     "updatedAt": "2026-09-24T22:10:47Z",
+     "author": {
+      "login": "BenItBuhner",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.4.5\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04.4 (X11, Xvfb)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nA `WebContentsView` that is hidden (`view.setVisible(false)`) and that the app never called `focus()` on should not become the focused WebContents when a page loads in it. Keyboard focus should stay where it was (here: a focused `<input>` in the window's own `webContents`).\n\nUse case: a browser-style app loads background tabs (middle-click, `target=_blank`) into hidden `WebContentsView`s while the user types in the visible one.\n\n### Actual Behavior\n\nThe moment the hidden view's main-frame navigation commits, the window's `webContents` emits `blur`, the hidden view's `webContents` emits `focus`, `webContents.getFocusedWebContents()` returns the hidden view, `view.webContents.isFocused()` is `true`, and in the visible document `document.hasFocus()` becomes `false`. Focus stays with the hidden view, so subsequent key events go to a widget that is not on screen (in our app, keyboard shortcuts handled by the visible content stop working until focus is moved back).\n\nObserved on 44.4.5 (Chromium 152.0.7977.130) and 45.0.0-alpha.11 (Chromium 155.0.8046.0), Linux X11 under Xvfb, sandbox on. `about:blank` does not trigger it; a `data:` or `http:` page does. `webPreferences: { focusOnNavigation: false }` on the hidden view avoids it, but that also disables focus-on-navigation for the view once it is shown; there is no way to keep the default for visible views and skip hidden ones.\n\nSee also #42339 (option to stop an added view from grabbing focus) and #42578 (fixed by the `focusOnNavigation` opt-out).\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n`main.js` (run with `electron main.js`; add `--focus-on-navigation-false` to try the opt-out):\n\n```js\nconst { app, BrowserWindow, WebContentsView, webContents } = require('electron')\nconst t0 = Date.now()\nconst log = (...a) => console.log(`[${Date.now() - t0} ms]`, ...a)\nconst wire = (wc, name) => { wc.on('focus', () => log(`${name} focus`)); wc.on('blur', () => log(`${name} blur`)) }\nconst snapshot = async (win, label) => log(label, 'focused webContents =', webContents.getFocusedWebContents()?.id,\n  'chrome document:', await win.webContents.executeJavaScript('JSON.stringify({ activeElement: document.activeElement.id, hasFocus: document.hasFocus() })'))\n\napp.whenReady().then(async () => {\n  const win = new BrowserWindow({ width: 800, height: 600 })\n  wire(win.webContents, 'window webContents (1)')\n  await win.loadURL('data:text/html,<input id=\"url\" autofocus>')\n  win.focus(); win.webContents.focus()\n  await new Promise(r => setTimeout(r, 1000))\n  await snapshot(win, 'before:')\n\n  const opts = process.argv.includes('--focus-on-navigation-false') ? { webPreferences: { focusOnNavigation: false } } : {}\n  const view = new WebContentsView(opts)\n  wire(view.webContents, 'hidden view (2)')\n  view.setVisible(false)\n  win.contentView.addChildView(view)\n  view.webContents.loadURL('data:text/html,<p>background page</p>')   // never shown, never focused by the app\n\n  await new Promise(r => setTimeout(r, 1500))\n  await snapshot(win, 'after 1.5 s:')\n  log('hidden view: getVisible() =', view.getVisible(), 'isFocused() =', view.webContents.isFocused())\n  app.quit()\n})\n```\n\nOutput, Electron 44.4.5, `xvfb-run -a electron main.js`:\n\n```\n[127 ms] window webContents (1) focus\n[1141 ms] before: focused webContents = 1 chrome document: {\"activeElement\":\"url\",\"hasFocus\":true}\n[1145 ms] window webContents (1) blur\n[1146 ms] hidden view (2) focus\n[2648 ms] after 1.5 s: focused webContents = 2 chrome document: {\"activeElement\":\"url\",\"hasFocus\":false}\n[2648 ms] hidden view: getVisible() = false isFocused() = true\n```\n\nWith `--focus-on-navigation-false`: no `blur`/`focus`, focused webContents stays `1`, `hasFocus: true`. 45.0.0-alpha.11 behaves the same as 44.4.5 in both cases.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\n`WebContents::ReadyToCommitNavigation` in `shell/browser/api/electron_api_web_contents.cc` calls `web_contents()->SetInitialFocus()` for every main-frame commit when the owner window is active, `type_ == Type::kBrowserWindow` (which is the type a `WebContentsView`'s webContents gets) and `WebContentsPreferences::ShouldFocusOnNavigation()` is true. It does not consider whether the `views::View` hosting the WebContents is visible (`WebContentsView.getVisible()` / `views::View::IsDrawn()`), so a hidden child view is focused like a visible one and, on Linux (aura), its hidden widget then holds the focus.\n\nA check such as \"skip `SetInitialFocus()` when the hosting view is not drawn\" would keep the current default for visible views and leave `focusOnNavigation: false` for apps that never want it.\n\n</p>\n</details>\n\nFound while building Zenium, an Electron-based browser: https://github.com/BenItBuhner/Zenium\n\nPrepared with AI assistance (Claude, via Cursor): the investigation and write-up were AI-assisted; the repro output above was produced by running the code as shown.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:03:37Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:03:37Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T22:03:37Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T22:03:38Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T22:10:48Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-05T10:27:10Z",
+        "actor": {
+         "login": "IsmaelMartinez"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 3061,
+         "url": "https://github.com/IsmaelMartinez/teams-for-linux/pull/3061",
+         "createdAt": "2026-10-05T10:27:09Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 54317,
+     "title": "WebAuthn request that needs a security-key PIN crashes the browser process on Linux",
+     "url": "https://github.com/electron/electron/issues/54317",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-24T21:17:47Z",
+     "closedAt": "2026-09-25T12:04:56Z",
+     "updatedAt": "2026-09-26T01:04:11Z",
+     "author": {
+      "login": "nisavid",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.4.0\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\nCachyOS (Arch-based), Linux 7.1.8-1-cachyos, KDE Plasma 6 (Wayland)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nNone found. 43.4.1, 42.9.0, and 39.8.10 also crashed with SIGTRAP, but those runs followed an earlier crash that had left the YubiKey 5 unresponsive, so they are consistent with the finding rather than clean data. The clean single-key runs below are on 43.4.0.\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nWhen a WebAuthn request reaches a USB security key that requires a PIN and Electron has no PIN prompt to show, the request should reject (for example with `NotAllowedError`) and the app should keep running.\n\n### Actual Behavior\n\nThe browser process dies with SIGTRAP from a CHECK about 0.7 s after launch, during `navigator.credentials.create()` and before the key is touched. With `--enable-logging=stderr --vmodule=device_event_log_impl=1`, the FIDO log ends right after Chromium reads the key's PIN retry count:\n\n```\nFIDO: DEBUG: fido_device.cc:70 The device supports the CTAP2 protocol.\nFIDO: DEBUG: ctap2_device_operation.h:91 <- 0x6 (kAuthenticatorClientPin) {1: 2, 2: 7}\nFIDO: DEBUG: ctap2_device_operation.h:188 -> {5: 0}\nFIDO: DEBUG: ctap2_device_operation.h:91 <- 0x6 (kAuthenticatorClientPin) {1: 2, 2: 1}\nFIDO: DEBUG: ctap2_device_operation.h:188 -> {3: 8}\n```\n\n`{5: 0}` answers the UV-retries query and `{3: 8}` reports 8 PIN retries.\n\nResults with the gist on 43.4.0:\n\n| Keys plugged in | Result |\n|---|---|\n| YubiKey 5 only | Crash during `create()`, no touch |\n| YubiKey 4 only | `create()` OK, `get()` OK |\n| Both; YubiKey 4 touched | `create()` OK, `get()` OK; the log shows a clean cancel of the YubiKey 5's operation |\n\nThe YubiKey 5 (USB `1050:0406`, firmware 5.8.0) reports `alwaysUv: true`, `uv: true`, `clientPin: true`, `bioEnroll: true`, `makeCredUvNotRqd: false`, and `pinUvAuthToken: true`, so every operation needs user verification. The YubiKey 4 (USB `1050:0407`) is U2F only.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/nisavid/a7e5438b6ceef5a0761898dc99ec6b64\n\n### Additional Information\n\nThe gist is a minimal main-process app that serves `index.html` on `http://localhost` and runs `navigator.credentials.create()` for a non-resident credential with `userVerification: \"discouraged\"`, then `navigator.credentials.get()` with that credential. `get()` takes `userVerification` from the `uv` query parameter (default `discouraged`); `REPRO_QUERY='?uv=preferred'` sets it, which the crashing runs used, though the single-key run crashed inside `create()` before `get()` ran. Run it with a PIN-protected FIDO2 key plugged in:\n\n```\nelectron . --enable-logging=stderr --vmodule=device_event_log_impl=1\n```\n\nThis is narrower than #24573, which tracks the missing Linux FIDO2 PIN UI: here a request that needs the PIN takes the browser process down instead of rejecting. It surfaced in the Proton Pass desktop app (`/usr/lib/electron43/electron /usr/share/proton-pass/app.asar`), whose in-app sign-in crashed three times on 2026-09-24 with a main-thread stack identical to the gist's. Chrome was not tested.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nThe distro `electron43` binary is stripped. `systemd-coredump` labels frame 0 `cppgc::internal::FatalImpl`, but that 7-byte exported symbol (`push rbp; mov rbp,rsp; int3; ud2`) is an identical-code-folded `IMMEDIATE_CRASH` stub, so the name is a misattribution. Identifying the other frames by the source-path strings their functions reference gives: a `device.mojom.HidConnection` read, then `device/fido/hid/fido_hid_device.cc` (message received), then the `device/fido/ctap2_device_operation.h` response callback, then the crash stub. The gist's core has the same stack hash as the Proton Pass cores.\n\nMy reading, as inference: the key's `alwaysUv` makes the request need PIN/UV, the request handler moves on to PIN collection after reading the retry counts, and with no PIN UI on Linux the browser process hits a CHECK instead of failing the request.\n\n</p>\n</details>",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 10,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T21:18:02Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T21:18:02Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T21:18:02Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T21:18:02Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T21:18:03Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-24T22:35:35Z",
+        "actor": {
+         "login": "nisavid"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 324,
+         "url": "https://github.com/nisavid/dotfiles/pull/324",
+         "createdAt": "2026-09-24T21:16:52Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-25T09:44:08Z",
+        "actor": {
+         "login": "MarshallOfSound"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54355,
+         "url": "https://github.com/electron/electron/pull/54355",
+         "createdAt": "2026-09-25T09:44:07Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-25T10:45:22Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54363,
+         "url": "https://github.com/electron/electron/pull/54363",
+         "createdAt": "2026-09-25T10:45:21Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-25T12:04:56Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 54355,
+         "url": "https://github.com/electron/electron/pull/54355"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-17T16:54:32Z",
+        "actor": {
+         "login": "petfold"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 733,
+         "url": "https://github.com/solardev-xyz/freedom-browser/issues/733",
+         "createdAt": "2026-10-17T16:54:30Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 54288,
+     "title": "BrowserWindow restores to previous display after minimize following display hot-plug (Windows)",
+     "url": "https://github.com/electron/electron/issues/54288",
+     "state": "OPEN",
+     "stateReason": "REOPENED",
+     "createdAt": "2026-09-24T07:49:34Z",
+     "closedAt": null,
+     "updatedAt": "2026-10-05T07:42:30Z",
+     "author": {
+      "login": "oalfroukh",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.7.5\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 Pro, build 10.0.22631\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nAfter a secondary monitor is disconnected and then reconnected, and the window has moved back onto it, minimizing and then restoring the window should keep it on that same monitor.\n\n### Actual Behavior\n\n1. Open the app so its window sits on Screen 2 (a secondary/extended display).\n2. Disconnect Screen 2. Windows moves the window to Screen 1.\n3. Reconnect Screen 2. Windows moves the window back to Screen 2.\n4. Minimize the window.\n5. Restore it (click the taskbar icon).\n6. The window reappears on Screen 1 instead of Screen 2, even though it was visibly on Screen 2 immediately before being minimized.\n\nReproduced with a completely default, unmodified `BrowserWindow` \u2014 no app code touches window position on `minimize`/`restore`/`show`.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/oalfroukh/3eb9ee4387c855c4710dede1da9b8d5b\n\n### Additional Information\n\nThis has a real privacy impact for anyone sharing a secondary monitor (e.g. presenting to a remote audience) while keeping other apps on a private primary monitor: minimizing and restoring an unrelated app can make it reappear on the shared screen and expose private content.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nThis looks like Windows' `WINDOWPLACEMENT.rcNormalPosition` (the rect used to restore a minimized window) isn't refreshed when the OS auto-relocates the window during the temporary disconnect/reconnect, so restoring from minimize replays the stale placement from the disconnect step instead of the window's actual, current position.\n\n</p>\n</details>\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-24T07:49:49Z",
+        "body": "<!-- issue-template-check -->\n\nHello @oalfroukh. Thanks for taking the time to open an issue and helping to make Electron better!\n\nThis issue was automatically closed because its body does not follow any of this repository's issue templates. Maintainers rely on the sections in those templates to triage issues, and issues that are missing them usually cannot be acted upon.\n\nTo get this issue triaged, please either:\n\n* Edit the issue body above to include all of the sections from one of our [issue templates](https://github.com/electron/electron/tree/main/.github/ISSUE_TEMPLATE) - it will be reopened automatically once it does, or\n* File a new issue via https://github.com/electron/electron/issues/new/choose, which will fill in the correct template for you."
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-25T09:35:35Z",
+        "body": "Steps 2 and 3, where the window moves off the disconnected display and back when it's reconnected, are handled by Windows itself. That's the \"Remember window locations based on monitor connection\" setting under **Settings \u2192 System \u2192 Display \u2192 Multiple displays**. Restoring a minimized window to `WINDOWPLACEMENT.rcNormalPosition` is also done by the OS. So my first guess is that Windows doesn't refresh that rect after it moves the window, and Electron isn't the cause.\n\nThat said, Electron does touch this code path, so I don't want to rule us out yet. We save `rcNormalPosition` when the window is minimized and re-apply it on restore. That's an old workaround for minimized windows reporting the wrong display or scale factor.\n\nCould you run the same six steps with:\n\n1. Notepad (or any plain Win32 app)\n2. A regular Google Chrome window\n\nand tell us where each one ends up after you minimize and restore it?\n\n- **If they also come back on Screen 1:** this is how Windows behaves, and there isn't much Electron can sensibly do about it.\n- **If they stay on Screen 2 and only the Electron window jumps to Screen 1:** our restore workaround is the likely culprit, and we can dig in from there.\n\nCould you also check whether \"Remember window locations based on monitor connection\" is turned on for your machine? That would help too."
+       },
+       {
+        "author": {
+         "login": "oalfroukh",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-05T07:42:14Z",
+        "body": "Hi @MarshallOfSound \n\nwe tested both Notepad and Google Chrome; no issues with either app, and it restored to screen 2, while only Electron apps jumps to screen 1."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 10,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T07:49:50Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "needs-template"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-24T07:49:50Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-24T07:49:51Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T07:49:51Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-24T07:49:51Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "RenamedTitleEvent",
+        "createdAt": "2026-09-24T07:53:07Z",
+        "actor": {
+         "login": "oalfroukh"
+        },
+        "previousTitle": "BrowserWindow restores to previous/disconnected display after minimize, following a monitor hot-plug (stale window placement)",
+        "currentTitle": "BrowserWindow restores to previous display after minimize following display hot-plug (Windows)"
+       },
+       {
+        "__typename": "ReopenedEvent",
+        "createdAt": "2026-09-24T07:53:23Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-24T07:53:23Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "needs-template"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-25T09:35:44Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-10-05T07:42:29Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

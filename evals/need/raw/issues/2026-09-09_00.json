@@ -1,0 +1,2377 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4791,
+   "resetAt": "2026-10-23T08:09:07Z",
+   "cost": 1
+  },
+  "search": {
+   "issueCount": 17,
+   "pageInfo": {
+    "hasNextPage": false,
+    "endCursor": "Y3Vyc29yOjE3"
+   },
+   "nodes": [
+    {
+     "number": 53939,
+     "title": "CSOAI \u2014 Electron AI governance desktop",
+     "url": "https://github.com/electron/electron/issues/53939",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-15T04:02:18Z",
+     "closedAt": "2026-09-15T04:02:32Z",
+     "updatedAt": "2026-09-15T04:02:32Z",
+     "author": {
+      "login": "CSOAI-ORG",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "npm: csoai-gspc-mcp | https://github.com/CSOAI-ORG/gspc-harness | nicholas@csoai.org",
+     "labels": {
+      "nodes": [
+       {
+        "name": "needs-template"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-15T04:02:31Z",
+        "body": "<!-- issue-template-check -->\n\nHello @CSOAI-ORG. Thanks for taking the time to open an issue and helping to make Electron better!\n\nThis issue was automatically closed because its body does not follow any of this repository's issue templates. Maintainers rely on the sections in those templates to triage issues, and issues that are missing them usually cannot be acted upon.\n\nTo get this issue triaged, please either:\n\n* Edit the issue body above to include all of the sections from one of our [issue templates](https://github.com/electron/electron/tree/main/.github/ISSUE_TEMPLATE) - it will be reopened automatically once it does, or\n* File a new issue via https://github.com/electron/electron/issues/new/choose, which will fill in the correct template for you."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-15T04:02:32Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "needs-template"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-15T04:02:32Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 53923,
+     "title": "[Bug]: Main process crashes when UtilityProcess.postMessage() is called inside the child's 'exit' listener",
+     "url": "https://github.com/electron/electron/issues/53923",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-14T19:58:16Z",
+     "closedAt": "2026-09-14T19:58:33Z",
+     "updatedAt": "2026-09-14T19:58:37Z",
+     "author": {
+      "login": "johnhenry",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "### Preflight Checklist\n\n- [x] I have searched the issue tracker for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.0.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 26.5.2 (arm64)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\nUnknown\n\n### Expected Behavior\n\nCalling `postMessage()` on a `UtilityProcess` whose child has exited is a no-op (or throws), and the main process keeps running \u2014 which is what happens everywhere *outside* the `'exit'` listener: every post returns `undefined` and is silently dropped, including posts to a SIGKILLed child that has not been reaped yet, bursts of 1000 posts, and 5 MB messages.\n\n### Actual Behavior\n\nCalled synchronously **inside** `child.on('exit', \u2026)` after the child was killed, `postMessage()` kills the **main process**. No exception is thrown and no event is emitted first. The macOS crash report shows:\n\n```\nEXC_BAD_ACCESS (SIGSEGV) KERN_INVALID_ADDRESS at 0x00000000000000f8\nThread: CrBrowserMain\nnative frame called from JavaScript under node::InternalMakeCallback\n```\n\n### Testcase Gist URL\n\n_None \u2014 the two-file reproduction is inline below._\n\n### Additional Information\n\n**Reproduction.** Save both files in one directory and run `electron main.js` (default `--mode=sigkill`; also try `--mode=kill`, and `--mode=deferred` as the control).\n\n`child.js`:\n\n```js\n// Utility process: stay alive until killed.\nprocess.parentPort.on('message', () => {});\nsetInterval(() => {}, 1000);\n```\n\n`main.js`:\n\n```js\n// Minimal reproduction: postMessage() from inside a UtilityProcess 'exit'\n// listener crashes the main process when the child was killed.\nconst { app, utilityProcess } = require('electron');\nconst path = require('node:path');\n\nconst mode = process.argv.find((a) => a.startsWith('--mode='))?.slice(7) ?? 'sigkill';\napp.on('window-all-closed', () => {}); // no windows in this repro\n\napp.whenReady().then(() => {\n  const child = utilityProcess.fork(path.join(__dirname, 'child.js'));\n  child.once('spawn', () => {\n    child.once('exit', (code) => {\n      console.log(`[${mode}] exit ${code}; posting from inside the exit listener`);\n      child.postMessage({ hello: 'after exit' });\n      console.log(`[${mode}] postMessage returned`);\n    });\n    setTimeout(() => {\n      if (mode === 'sigkill') process.kill(child.pid, 'SIGKILL');\n      else if (mode === 'kill') child.kill();\n      else if (mode === 'deferred') {\n        // control: same kill, but the post is deferred out of the listener\n        child.removeAllListeners('exit');\n        child.once('exit', () => setImmediate(() => { child.postMessage({ hello: 'deferred' }); console.log('[deferred] postMessage returned'); }));\n        process.kill(child.pid, 'SIGKILL');\n      }\n    }, 300);\n  });\n  setTimeout(() => { console.log(`[${mode}] main process still alive`); app.exit(0); }, 2500);\n});\n```\n\nWhen the post in the `'exit'` listener crashes main, neither \"postMessage returned\" nor \"main process still alive\" is printed.\n\n**Results** (each run in a fresh Electron process; counts combine a larger measurement harness and the minimal repro above):\n\n| How the child ended | Post made | Main process crashed |\n|---|---|---|\n| SIGKILL from outside | synchronously inside the `'exit'` listener | 16 / 16 (minimal repro: 2 / 3) |\n| `process.abort()` in the child | synchronously inside the `'exit'` listener | 16 / 16 |\n| `child.kill()` | synchronously inside the `'exit'` listener | 15 / 17 (minimal repro: 3 / 3) |\n| `process.exit()` in the child | synchronously inside the `'exit'` listener | 0 / 16 |\n| SIGKILL or `child.kill()` | in a microtask, `setImmediate` or `setTimeout 0` queued by the `'exit'` listener | 0 (10 / 10 survived each; minimal repro deferred control: 3 / 3 survived) |\n| SIGKILL or `child.kill()` | `'exit'` listener that posts nothing (control) | 0 / 20 |\n\n**Workaround.** Latch an \"exited\" flag in the first `'exit'` listener (registered right after `fork`) and never call `postMessage()` once it is set.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "44-x-y"
+       },
+       {
+        "name": "needs-template"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-14T19:58:32Z",
+        "body": "<!-- issue-template-check -->\n\nHello @johnhenry. Thanks for taking the time to open an issue and helping to make Electron better!\n\nThis issue was automatically closed because its body does not follow any of this repository's issue templates. Maintainers rely on the sections in those templates to triage issues, and issues that are missing them usually cannot be acted upon.\n\nTo get this issue triaged, please either:\n\n* Edit the issue body above to include all of the sections from one of our [issue templates](https://github.com/electron/electron/tree/main/.github/ISSUE_TEMPLATE) - it will be reopened automatically once it does, or\n* File a new issue via https://github.com/electron/electron/issues/new/choose, which will fill in the correct template for you."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T19:58:32Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "needs-template"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-14T19:58:33Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T19:58:37Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T19:58:37Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-09T21:26:55Z",
+        "actor": {
+         "login": "qodesmith"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 37,
+         "url": "https://github.com/qodesmith/unimatrix-zero/issues/37",
+         "createdAt": "2026-10-09T21:12:54Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 53911,
+     "title": "getLoginItemSettings() fails to detect Windows launchItems when executable path contains spaces",
+     "url": "https://github.com/electron/electron/issues/53911",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-14T14:34:35Z",
+     "closedAt": "2026-09-25T16:12:33Z",
+     "updatedAt": "2026-09-25T16:12:33Z",
+     "author": {
+      "login": "Dxg125",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.4.1\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 Enterprise 23H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nTL;DR\n\nElectron.app.getLoginItemSettings()\ndid not yield the valid item.\n\nElectron.app.getLoginItemSettings({path: `\"${process.execPath}\"`})\ndid yield the correct item\n\nThe space inside the parental path seems to cause trouble: \"C:\\Program Files\\AppName\\AppName.exe\"\n\n### Actual Behavior\n\nIt does not yield the correct launchItems if parental path contains spaces.\n\nIn \"Electron Fiddle\", i could also reproduce this issue with:\n\"C:\\Users\\Username\\AppData\\Roaming\\Electron Fiddle\\electron-bin\\current\\electron.exe\"\n\n### Testcase Gist URL\n\nhttps://gist.github.com/Dxg125/6e8bfb9dd77ec487519114018b8c9994\n\n### Additional Information\n\nIt also happens on Win 11 24H2 / 26100.9445",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-14T22:59:19Z",
+        "body": "There was a breaking change related to spaces in paths in https://github.com/electron/electron/pull/50016.\n\nBefore, paths needed to be quoted. Now, that should no longer be necessary. If it is, that's a bug."
+       },
+       {
+        "author": {
+         "login": "Dxg125",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-15T13:02:53Z",
+        "body": "It seems that way: Re-tested on Electron Fiddle with \"v44.3.0\", \"44.2.0\", \"v44.1.1\" and on \"v43.7.0\".\n\nThe output is basically the same for the diff. versions:\n\nConsole ready \ud83d\udd2c\nSaving files to temp directory...\nSaved files to C:\\Users\\Username\\AppData\\Local\\Temp\\electron-fiddle-28712-5tLTk7qaDvzK\nElectron v44.3.0 started.\n\nFor help, see: https://nodejs.org/learn/getting-started/debugging\nprocess.execPath: C:\\Users\\Username\\AppData\\Roaming\\Electron Fiddle\\electron-bin\\current\\electron.exe\n\nDefault: {\nlaunchItems: [],\nexecutableWillLaunchAtLogin: false,\nopenAtLogin: false,\nwasOpenedAtLogin: false\n}\n\nExplicit path: {\nlaunchItems: [],\nexecutableWillLaunchAtLogin: false,\nopenAtLogin: false,\nwasOpenedAtLogin: false\n}\n\nQuoted path: {\nlaunchItems: [\n{\nname: 'ElectronLoginItemRepro',\npath: 'C:\\\\Users\\\\Username\\\\AppData\\\\Roaming\\\\Electron Fiddle\\\\electron-bin\\\\current\\\\electron.exe',\nargs: [],\nscope: 'user',\nenabled: true\n}\n],\nexecutableWillLaunchAtLogin: true,\nopenAtLogin: false,\nwasOpenedAtLogin: false\n}\n\nElectron exited with code 0."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 9,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-14T14:34:37Z",
+        "actor": {
+         "login": "Dxg125",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T14:34:37Z",
+        "actor": {
+         "login": "Dxg125",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T14:34:52Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T14:34:52Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T14:34:52Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-25T10:43:09Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54360,
+         "url": "https://github.com/electron/electron/pull/54360",
+         "createdAt": "2026-09-25T10:43:08Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-25T10:45:45Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54364,
+         "url": "https://github.com/electron/electron/pull/54364",
+         "createdAt": "2026-09-25T10:45:44Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-25T16:12:33Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 54364,
+         "url": "https://github.com/electron/electron/pull/54364"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-19T10:21:42Z",
+        "actor": {
+         "login": "fisherdaddy"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 2902,
+         "url": "https://github.com/netease-youdao/LobsterAI/pull/2902",
+         "createdAt": "2026-10-19T10:21:41Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 53901,
+     "title": "Framed window on Linux has rounded top corners and square bottom corners",
+     "url": "https://github.com/electron/electron/issues/53901",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-14T09:12:32Z",
+     "closedAt": "2026-09-18T15:57:33Z",
+     "updatedAt": "2026-09-18T15:57:33Z",
+     "author": {
+      "login": "DeJeune",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.2.0\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04.3 LTS, GNOME 46 (Mutter), **Wayland** session (`XDG_SESSION_TYPE=wayland`), linux-arm64 (Parallels VM)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n42.x \u2014 Linux windows had no rounding at all before 43, so a framed window was square on all four corners and there was no visible mismatch.\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nA window's four corners should be consistent with each other. On macOS and Windows the same window configuration renders rounded corners on all four corners, so I would expect framed windows on Linux to either be rounded on all four corners as well, or square on all four \u2014 not mixed.\n\nFor reference, `frame: false` on the same machine renders rounded corners on all four corners correctly.\n\n### Actual Behavior\n\nOn Linux (Wayland), a `BrowserWindow` created with `frame: true` renders **rounded top corners and square bottom corners**. The top and bottom of the window visibly do not match, because the top corners follow the CSD frame's rounding while the content area below keeps square corners.\n\nNo error is thrown and nothing appears in the console \u2014 the window simply draws with an asymmetric shape.\n\nSteps:\n\n1. Open the gist from the Testcase Gist URL below in [Electron Fiddle](https://github.com/electron/fiddle), or download it and run `npx electron .` in the folder. It opens one framed and one frameless window side by side.\n2. Look at the four corners of each window.\n\nThe framed window: rounded at the top, square at the bottom. The frameless window: rounded on all four corners.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/DeJeune/6f71a14df8cfd9d8cd16438c1a0d9359\n\n### Additional Information\n\nI am not sure whether this is intended, so the main question is: **is a framed window on Linux supposed to have consistent corners, and if so which way?** If the current mixed shape is intended, then it would help to document it \u2014 the `roundedCorners` option is documented as applying to *frameless* windows only (\"Whether a frameless window should have rounded corners\"), which suggests an app has no supported way to influence the corners of a framed window at all.\n\nExtra environment detail, in case the desktop matters: this is native Wayland on GNOME 46 / Mutter, not XWayland.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nContext that may be useful once someone picks this up \u2014 I deliberately kept it out of the sections above.\n\n**Where the rounding comes from**\n\n- The frameless path is fine and is what the release notes describe: Electron 43 added \"Frameless windows on Linux now have rounded corners by default\" ([#52111](https://github.com/electron/electron/pull/52111), also [#51459](https://github.com/electron/electron/pull/51459)). That path deliberately scoped itself to frameless windows.\n- The framed path is a different code path. [`#51160`](https://github.com/electron/electron/pull/51160) \"refactor: replace ClientFrameViewLinux with NativeFrameViewLinux\" (merged 2026-04-28) replaced the Linux client frame view with a thin wrapper over Chromium's `views::NativeFrameViewLinux`. That is the code that draws the frame for `frame: true` on Linux, and it is where the top-only rounding appears to come from.\n- I could not find an existing report for the framed case. The closest open issue I found is [#52024](https://github.com/electron/electron/issues/52024) (\"Linux: frameless windows have a border on non-compositing X11 WMs\"), which is about the frameless path on X11 and not this symptom.\n\n**Why I did not just work around it in my app**\n\n- `roundedCorners` is documented as frameless-only:\n  > `roundedCorners` boolean (optional) - Whether a frameless window should have rounded corners. Default is `true`. ... On Linux, rounded corners are only drawn when the desktop environment supports client-side decorations.\n- I verified it is a no-op for a framed window: `frame: true` and `frame: true, roundedCorners: false` produce an identical window on this machine, while `frame: false` vs `frame: false, roundedCorners: false` visibly differ (four rounded corners vs four square corners). So the only app-side lever would be to force the *frameless* look square, which would make Linux diverge from macOS/Windows rather than fix anything.\n\n**Related docs**\n\n- `win.setBounds` / `win.setPosition` / `win.getBounds`: \"On Wayland (Linux), has the same limitations as ...\" / \"On Wayland, this method will return `{ x: 0, y: 0, ... }` as introspecting or programmatically changing the global window coordinates is prohibited.\" \u2014 mentioned only because it confirms Wayland is treated as a distinct path in this area, not because I think it is related to the corners.\n\n</p>\n</details>\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "component/BrowserWindow"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-16T18:33:36Z",
+        "body": "CC @mitchchn"
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-18T15:57:33Z",
+        "body": "Electron's `frame: true` path on Wayland asks the GTK theme to draw the window decoration, and stock GTK themes (Adwaita GTK3, GTK4's default theme, Ubuntu's Yaru) all declare border-radius: `R R 0 0` for normal windows. Only libadwaita apps round all four corners. Chrome renders its own GTK-themed frame the same way and additionally forces the bottom radius to zero.\n\nTLDR: This is expected in your configuration"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 8,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T09:13:00Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T09:13:00Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-14T09:13:00Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-09-16T16:56:12Z",
+        "actor": {
+         "login": "georgexu99"
+        },
+        "assignee": {
+         "login": "ckerr"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-16T18:33:22Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/BrowserWindow"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-16T18:33:47Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-16T18:34:04Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-18T15:57:33Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 53889,
+     "title": "Clicking panel windows activates the app on macOS 27",
+     "url": "https://github.com/electron/electron/issues/53889",
+     "state": "OPEN",
+     "stateReason": "REOPENED",
+     "createdAt": "2026-09-13T14:09:56Z",
+     "closedAt": null,
+     "updatedAt": "2026-09-26T04:32:04Z",
+     "author": {
+      "login": "danteissaias",
+      "__typename": "User"
+     },
+     "authorAssociation": "CONTRIBUTOR",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.0.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 27.0 (26A5416b)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\nN/A\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nA `type: 'panel'` window should accept clicks without activating the app. After switching to another app, clicking a button in the panel should run the button's handler and leave the other app active.\n\n### Actual Behavior\n\nClicking the button makes Electron the active app instead. Electron emits `did-become-active`.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/danteissaias/5334864f77f77f3b099f408c66d3346b\n\nRepro steps:\n\n1. Run the Fiddle on macOS 27 with Electron 44.0.0.\n2. Switch to another app (e.g. Finder). The green panel stays visible because it uses `alwaysOnTop: true`.\n3. Click the panel's \u201cClick me\u201d button.\n4. Notice that the button text changes, but Electron also becomes active. The console logs `did-become-active`.\n\n### Additional Information\n\nI found a workaround, but it requires a rather horrible private AppKit API. A small native addon calls this method on the panel before it is shown:\n\n```objc\n[window _setPreventsActivation:YES];\n```\n\nWith this call, the button still works and the previous app stays active. Clicking the panel no longer emits `did-become-active`.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-13T14:11:07Z",
+        "body": "<!-- issue-template-check -->\n\nHello @danteissaias. Thanks for taking the time to open an issue and helping to make Electron better!\n\nThis issue was automatically closed because its body does not follow any of this repository's issue templates. Maintainers rely on the sections in those templates to triage issues, and issues that are missing them usually cannot be acted upon.\n\nTo get this issue triaged, please either:\n\n* Edit the issue body above to include all of the sections from one of our [issue templates](https://github.com/electron/electron/tree/main/.github/ISSUE_TEMPLATE) - it will be reopened automatically once it does, or\n* File a new issue via https://github.com/electron/electron/issues/new/choose, which will fill in the correct template for you."
+       },
+       {
+        "author": {
+         "login": "innerluxesdev",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-15T12:49:05Z",
+        "body": "This is the macOS non-activating panel behaviour not holding. With type:'panel' + focusable:false shown via showInactive(), the window should carry NSWindowStyleMaskNonactivatingPanel so a click is delivered without activating the app. On macOS 27 that style isn't sticking, so AppKit activates the app and did-become-active fires on the click. _setPreventsActivation: forces the internal flag back, but it's private, so it can break on any macOS point release.\n\nThe supported fix is to keep the panel on the non-activating style on the public side and validate it on macOS 27, rather than the private call, the same underlying gap as #49393. I've worked in this exact area and would be glad to put up a proper patch and take it through upstream."
+       },
+       {
+        "author": {
+         "login": "2opremio",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-26T04:26:32Z",
+        "body": "Also seeing this on macOS 26.6.2 (Electron 42.11.3, `electron_ns_panel.mm` is the same on main), but only for clicks generated in software, not a real mouse. We drive a touchscreen by posting mouse events with `CGEventPost(kCGHIDEventTap, ...)`, and those are what trigger it.\n\nWith the testcase gist, a real mouse click on the panel works as it should: the other app stays active. A software-generated click doesn't. macOS makes Electron the frontmost app, but `did-become-active` never fires. After that, single clicks on the app's normal windows do nothing, until you switch to another app and back.\n\n`_setPreventsActivation:YES` fixes it here too: software-generated clicks no longer activate anything.\n"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 18,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-13T14:09:57Z",
+        "actor": {
+         "login": "danteissaias",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T14:09:57Z",
+        "actor": {
+         "login": "danteissaias",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T14:10:14Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T14:10:14Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T14:10:14Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T14:11:07Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "needs-template"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-13T14:11:08Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       },
+       {
+        "__typename": "ReopenedEvent",
+        "createdAt": "2026-09-13T14:12:06Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-13T14:12:07Z",
+        "actor": {
+         "login": "github-actions",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "needs-template"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-20T23:00:04Z",
+        "actor": {
+         "login": "Jessie-QingYu"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 462,
+         "url": "https://github.com/rome-os/rome/pull/462",
+         "createdAt": "2026-09-20T23:00:03Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-05T02:59:00Z",
+        "actor": {
+         "login": "Orpheuscn"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54644,
+         "url": "https://github.com/electron/electron/pull/54644",
+         "createdAt": "2026-10-05T02:58:59Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-08T05:36:05Z",
+        "actor": {
+         "login": "KentoShimizu"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 191,
+         "url": "https://github.com/wakakusa-labs/pantaray/pull/191",
+         "createdAt": "2026-10-08T04:32:50Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-09T19:27:58Z",
+        "actor": {
+         "login": "Orpheuscn"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54807,
+         "url": "https://github.com/electron/electron/pull/54807",
+         "createdAt": "2026-10-09T19:27:57Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-12T12:00:15Z",
+        "actor": {
+         "login": "JunieXD"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 117,
+         "url": "https://github.com/ECNU/EduWork/issues/117",
+         "createdAt": "2026-10-08T17:04:59Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-12T13:05:14Z",
+        "actor": {
+         "login": "KentoShimizu"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 354,
+         "url": "https://github.com/wakakusa-labs/pantaray/pull/354",
+         "createdAt": "2026-10-12T13:05:13Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-12T13:35:39Z",
+        "actor": {
+         "login": "KentoShimizu"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 356,
+         "url": "https://github.com/wakakusa-labs/pantaray/pull/356",
+         "createdAt": "2026-10-12T13:35:37Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-13T08:30:48Z",
+        "actor": {
+         "login": "JunieXD"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 149,
+         "url": "https://github.com/ECNU/EduWork/pull/149",
+         "createdAt": "2026-10-13T08:30:47Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-16T13:46:23Z",
+        "actor": {
+         "login": "PylotLight"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 242,
+         "url": "https://github.com/PylotLight/Surffish/pull/242",
+         "createdAt": "2026-10-16T13:46:21Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 53888,
+     "title": "Calling setIgnoreMenuShortcuts(false) during macOS window blur can crash the main process",
+     "url": "https://github.com/electron/electron/issues/53888",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-13T12:46:57Z",
+     "closedAt": "2026-09-19T14:36:11Z",
+     "updatedAt": "2026-09-19T14:36:11Z",
+     "author": {
+      "login": "Iktahana",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the issue tracker for a matching bug report without success.\n\n### Electron Version\n\n44.2.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 26.5.2 (25F84)\n\n### What arch are you using?\n\narm64 (Apple Silicon)\n\n### Last Known Working Electron version\n\nUnknown. Older versions of the application did not execute this API call during the same window-blur path.\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo. `webContents.setIgnoreMenuShortcuts()` is an Electron-specific API.\n\n### Expected Behavior\n\nCalling `webContents.setIgnoreMenuShortcuts(false)` while a `BrowserWindow` is losing focus should update the shortcut state safely, or have no effect when shortcuts are already enabled. The Electron main process should remain running.\n\n### Actual Behavior\n\nThe Electron main process intermittently terminates with `EXC_BAD_ACCESS (SIGSEGV)` during a macOS window-focus transition.\n\nThe crash was observed repeatedly when `browser-window-blur` synchronously caused `setIgnoreMenuShortcuts(false)` to be called for multiple `webContents` instances, including `BrowserWindow`, `WebContentsView`, and detached DevTools contents.\n\nAfter a crash, macOS window-state restoration can immediately restore the same window arrangement and cause a crash loop on subsequent development launches.\n\nSeven same-signature crashes were recorded with Electron 44.2.0 during one investigation session. A matching crash was also observed with Electron 43.4.1.\n\n### Testcase Gist URL\n\nA standalone testcase is not currently available. An attempted reduced example using two `BrowserWindow`s, a `WebContentsView`, detached DevTools, and automatic focus changes did not reproduce the crash reliably.\n\n### Additional Information\n\nAdding an application-side state guard stopped the crash: `setIgnoreMenuShortcuts(false)` is now called only if a shortcut hold was actually active. Ordinary window blur events no longer perform an idempotent native reset, and the guarded behavior has automated regression coverage.\n\nOn macOS, launching the development application once with `-ApplePersistenceIgnoreState YES` bypassed the window-state restoration loop. This is only a recovery measure.\n\nIssue #53808 also concerns a `WebContentsView` native crash, but has a different trigger: it passes an extension background page into `new WebContentsView({ webContents })` and crashes while applying web preferences. This report concerns `setIgnoreMenuShortcuts(false)` during an AppKit focus transition.\n\nSanitized crash summary:\n\n```text\nApplication: Electron\nElectron version: 44.2.0\nOperating system: macOS 26.5.2 (25F84)\nArchitecture: arm64\nTranslated: No\n\nException Type: EXC_BAD_ACCESS (SIGSEGV)\nException Subtype: KERN_INVALID_ADDRESS at 0x0000000000000110\nTermination Reason: SIGNAL 11, Segmentation fault\nFaulting Thread: CrBrowserMain\nDispatch Queue: com.apple.main-thread\n\nRelevant partially symbolicated frames:\n\n-[NSWindow _realMakeFirstResponder:] + 196\n-[NSView _setHidden:setNeedsDisplay:] + 280\n```\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nThe application originally attached a reset callback for every `webContents` created, including BrowserWindow renderers, WebContentsViews, and detached DevTools:\n\n```js\napp.on(\"web-contents-created\", (_event, contents) => {\n  const reset = () => {\n    if (!contents.isDestroyed()) {\n      contents.setIgnoreMenuShortcuts(false);\n    }\n  };\n\n  app.on(\"browser-window-blur\", reset);\n  contents.once(\"destroyed\", () => {\n    app.removeListener(\"browser-window-blur\", reset);\n  });\n});\n```\n\nConsequently, one `browser-window-blur` event could synchronously update several native views while AppKit was changing the first responder.\n\nThe application-side mitigation avoids the native call unless the state was previously enabled:\n\n```js\nconst reset = () => {\n  if (!held) return;\n\n  held = undefined;\n  if (!contents.isDestroyed()) {\n    contents.setIgnoreMenuShortcuts(false);\n  }\n};\n```\n\nThe correlation with `setIgnoreMenuShortcuts(false)` and the effectiveness of the state guard are strong, but a standalone testcase has not yet reproduced the failure reliably. The surrounding Electron frames were not symbolicated reliably enough to identify a specific Electron source location.\n\n</p>\n</details>\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "georgexu99",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-16T16:51:20Z",
+        "body": "Hey @Iktahana thanks for submitting this issue- if a minimal fiddle repro is proving tough to recreate, would you mind posting a (sanitized if need to be) more verbose set of crash frames/crash dumps?\n\nthank you!"
+       },
+       {
+        "author": {
+         "login": "Iktahana",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-17T00:06:55Z",
+        "body": "Good morning @georgexu99, \n \nAttached are the original .ips crash reports captured when the issue occurred. They include seven crashes from Electron 44.2.0 and one matching crash from Electron 43.4.1. \n\nI hope they help with symbolication and further investigation. \n\nUnfortunately, I\u2019m unable to share the application\u2019s source code. However, the relevant call pattern has already been included in the issue description.\n\n Thank you.\n\n--------\n\n[Electron-53888-crash-reports.zip](https://github.com/user-attachments/files/32312752/Electron-53888-crash-reports.zip)\n\n--------\n\n# Crash reports for electron/electron#53888\n\nIssue: https://github.com/electron/electron/issues/53888\n\nThese are the complete macOS `.ips` reports associated with the crash described in the issue. macOS already redacted local user paths as `/Users/USER/*`; no additional stack frames, registers, thread data, or binary-image metadata were removed.\n\n## Environment\n\n- macOS 26.5.2 (25F84)\n- Apple Silicon (arm64), not translated\n- Faulting thread: `CrBrowserMain`\n- Dispatch queue: `com.apple.main-thread`\n- Exception: `EXC_BAD_ACCESS (SIGSEGV)`\n\n## Included reports\n\n### Electron 44.2.0 \u2014 seven reports\n\n[Electron-53888-crash-reports.zip](https://github.com/user-attachments/files/32312741/Electron-53888-crash-reports.zip)\n\nAll seven have `KERN_INVALID_ADDRESS at 0x0000000000000110` and contain the AppKit frames `-[NSWindow _realMakeFirstResponder:]` and `-[NSView _setHidden:setNeedsDisplay:]`.\n\n- `Electron-2026-09-13-204921.ips`\n- `Electron-2026-09-13-205024.ips`\n- `Electron-2026-09-13-205215.ips`\n- `Electron-2026-09-13-210132.ips`\n- `Electron-2026-09-13-210521.ips`\n- `Electron-2026-09-13-211441.ips`\n- `Electron-2026-09-13-212947.ips`\n\n### Electron 43.4.1 \u2014 one report\n\nThis report has the same faulting thread, dispatch queue, and AppKit frame pair, with `KERN_INVALID_ADDRESS at 0x0000000000000108`.\n\n- `Electron-2026-09-13-211001.ips`\n\n## Suggested issue comment\n\nAttached are the eight complete macOS `.ips` crash reports from the investigation: seven from Electron 44.2.0 and one matching crash from Electron 43.4.1. The seven 44.2.0 reports share the `EXC_BAD_ACCESS / KERN_INVALID_ADDRESS at 0x110` signature; the 43.4.1 report faults at `0x108`. All fault on `CrBrowserMain` / `com.apple.main-thread` and contain the same `-[NSWindow _realMakeFirstResponder:]` and `-[NSView _setHidden:setNeedsDisplay:]` AppKit frame pair. macOS had already redacted local user paths as `/Users/USER/*`.\n\n"
+       },
+       {
+        "author": {
+         "login": "nmggithub",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-17T00:31:20Z",
+        "body": "Thanks @Iktahana ! I have investigated the reports and have confirmed the crash is actually elsewhere and a fix is being worked on. For future reference, production builds of Electron don't include many symbols, which may cause Apple's crash reports to include inaccurately-named stack frames. The [`@electron/symbolicate-mac`](https://github.com/electron/symbolicate-mac) tool can be used to recover the true symbols."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T12:47:16Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T12:47:16Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-16T16:46:22Z",
+        "actor": {
+         "login": "georgexu99",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-16T16:51:45Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-16T22:27:04Z",
+        "actor": {
+         "login": "ckerr"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54014,
+         "url": "https://github.com/electron/electron/pull/54014",
+         "createdAt": "2026-09-16T22:27:03Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-19T14:36:11Z",
+        "actor": {
+         "login": "ckerr",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 54014,
+         "url": "https://github.com/electron/electron/pull/54014"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 53887,
+     "title": "PAC requests fail from Electron custom schemes registered with standard: true",
+     "url": "https://github.com/electron/electron/issues/53887",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-09-13T11:04:35Z",
+     "closedAt": null,
+     "updatedAt": "2026-09-13T11:04:51Z",
+     "author": {
+      "login": "powellnorma",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.3.0\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04 (X11)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nA remote HTTPS image requested from a page served by a standard custom scheme should load through the configured PAC script, just as it does from an HTTP page.\n\n### Actual Behavior\n\nThe remote image fails when the top-level page uses a standard custom scheme and the session uses a PAC script.\n\nChromium logs:\n\nVALIDATION_ERROR_DESERIALIZATION_FAILED\nMessage ... rejected by interface proxy_resolver.mojom.ProxyResolver\n\nThe renderer request then fails. In the same session, session.resolveProxy() returns DIRECT, session.fetch() succeeds, and the identical image loads from an HTTP control page.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/powellnorma/97d06e6c9670590caa175f673b20de60\n\n### Additional Information\n\nThe Fiddle registers an app-defined custom:// scheme with Electron's standard: true privilege and compares it with an HTTP page using the same session and PAC script.\n\nChanging standard: true to false avoids the failure, but removes the normal URL and storage behavior required from the custom scheme.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-13T11:04:36Z",
+        "actor": {
+         "login": "powellnorma",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T11:04:36Z",
+        "actor": {
+         "login": "powellnorma",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T11:04:51Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T11:04:51Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T11:04:51Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 53863,
+     "title": "[Linux] Native context menu item border renders only at the rounded corners",
+     "url": "https://github.com/electron/electron/issues/53863",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-12T18:04:36Z",
+     "closedAt": "2026-09-18T17:06:21Z",
+     "updatedAt": "2026-09-18T17:10:33Z",
+     "author": {
+      "login": "yanhenrique-dev",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.9.3\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\nCachyOS (Arch-based) x86_64, kernel 7.2.3-1-cachyos, KDE Plasma 6.7.5 on Wayland, GTK theme Breeze (dark), display scale 1\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nUnknown\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nThe focused native menu item's highlight/border is drawn as a single clean, aligned shape.\n\n### Actual Behavior\n\nOn Linux, native context menus created with `Menu.popup` draw items in a rounded \"pill\" style, and the focused item's thin light border is only visible as quarter-circle arcs at the corners. The arcs have a larger radius than the item highlight and do not meet the straight edges, so the outline looks broken/misaligned.\n\n![Electron 42.9.3 corner-only border](https://raw.githubusercontent.com/yanhenrique-dev/opencode/857af6d0a7ce2ce954ee5f940cecbbe59ec0e23e/issue-assets/electron42-corner-border.png)\n\nSteps: run the gist below (`npm install && npm start`) and right-click the text input.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/yanhenrique-dev/f67de62a281afc3a467049fbe7f1281c\n\n### Additional Information\n\nReproduced with the gist above on Electron 42.9.3, and in OpenCode Desktop 1.18.29 (which bundles Electron 42.9.3) on the same machine. Both `menu.popup({ window, sourceType: 'mouse' })` and `menu.popup(win)` show it.\n\nNot reproducible: Chromium 153.0.8010.36 (Helium build) on the same machine renders classic square menu items with a normal highlight, both on X11 and `--ozone-platform=wayland`:\n\n![Chromium 153 normal menu](https://raw.githubusercontent.com/yanhenrique-dev/opencode/857af6d0a7ce2ce954ee5f940cecbbe59ec0e23e/issue-assets/chromium153-normal.png)\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nThe focused item's border appears to be painted at a different corner radius than the item highlight itself (or clipped), leaving only corner arcs. Electron 42 bundles Chromium 140; current Chromium (153) no longer renders menus this way, so this may already be fixed upstream by the eventual Chromium upgrade, but filing in case it is Electron's Linux platform-menu configuration.\n\n</p>\n</details>\n\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "42-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 8,
+      "nodes": [
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-18T15:55:27Z",
+        "body": "Can't reproduce this on any combination of your reported environment. I suspect this is something specific to your system / theming. Can you provide repro instructions from a fresh install\n\n<img width=\"1038\" height=\"960\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/82f98406-b159-41e1-9539-dc7a1947200b\" />"
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-18T15:55:41Z",
+        "body": "<!-- blocked/need-repro -->\n\nHello @yanhenrique-dev. Thanks for reporting this and helping to make Electron better!\n\nWould it be possible for you to make a standalone testcase with only the code necessary to reproduce the issue? For example, [Electron Fiddle](https://www.electronjs.org/fiddle) is a great tool for making small test cases and makes it easy to publish your test case to a [gist](https://gist.github.com) that Electron maintainers can use.\n\nStand-alone test cases make fixing issues go more smoothly: it ensure everyone's looking at the same issue, it removes all unnecessary variables from the equation, and it can also provide the basis for automated regression tests.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-repro label for this reason. After you make a test case, please link to it in a followup comment. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "yanhenrique-dev",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-18T16:02:26Z",
+        "body": "> Can't reproduce this on any combination of your reported environment. I suspect this is something specific to your system / theming. Can you provide repro instructions from a fresh install\n> \n> <img alt=\"Image\" width=\"1038\" height=\"960\" src=\"https://private-user-images.githubusercontent.com/6634592/654773804-82f98406-b159-41e1-9539-dc7a1947200b.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODk3NDc1MzcsIm5iZiI6MTc4OTc0NzIzNywicGF0aCI6Ii82NjM0NTkyLzY1NDc3MzgwNC04MmY5ODQwNi1iMTU5LTQxZTEtOTUzOS1kYzdhMTk0NzIwMGIucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDkxOCUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA5MThUMTYwMDM3WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9OTNlOTlkN2E1MWY0Y2ZlOTcyM2QzZDE2YjAwODRhMDdkYThhOGIxNzVkMzYzMTYyMGY2ZDEwMDliZGRmMmFmYyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.meKaSLRmWu9VycNgulXWMCrEBYbcD8xetNjbEMb_teU\">\n\nOpen the OpenCode Desktop in KDE Linux. There, when you right-click, the copy dialog reports an error. The default KDE theme has not been modified."
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-18T16:20:41Z",
+        "body": "@yanhenrique-dev your image is dead / missing?"
+       },
+       {
+        "author": {
+         "login": "yanhenrique-dev",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-18T16:43:57Z",
+        "body": "> [@yanhenrique-dev](https://github.com/yanhenrique-dev) your image is dead / missing?\n\noh wait\n"
+       },
+       {
+        "author": {
+         "login": "yanhenrique-dev",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-18T16:47:45Z",
+        "body": "> > [@yanhenrique-dev](https://github.com/yanhenrique-dev) your image is dead / missing?\n> \n> oh wait\n\n<img width=\"1552\" height=\"763\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2673403e-77a5-4d28-9d79-e62a421e6cb6\" />\n\n\nFor some reason, the result isn't the same as before. Now I don't know if the error was a temporary rendering error or if it was fixed by the system update I did."
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-18T17:06:21Z",
+        "body": "Probably a system update given I also couldn't repro on latest install last night. If you figure out how to repro it come back and we can re-open, otherwise closing this out here \ud83d\udc4d "
+       },
+       {
+        "author": {
+         "login": "yanhenrique-dev",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-18T17:10:33Z",
+        "body": "> Probably a system update given I also couldn't repro on latest install last night. If you figure out how to repro it come back and we can re-open, otherwise closing this out here \ud83d\udc4d\n\nOkay, thank you."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 8,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-12T18:04:52Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-12T18:04:52Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-12T18:04:52Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-16T20:13:18Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-16T20:13:18Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-18T15:55:33Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-18T16:02:54Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-18T17:06:21Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 53859,
+     "title": "Windows MSIX/AppX: GPU process killed when Code Integrity rejects an externally-injected DLL (Auto Super Resolution), not an app-bundled one",
+     "url": "https://github.com/electron/electron/issues/53859",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-12T10:49:33Z",
+     "closedAt": "2026-10-12T15:12:59Z",
+     "updatedAt": "2026-10-12T15:12:59Z",
+     "author": {
+      "login": "TheNorbmeister",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.2.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 Home, build 10.0.26200, ARM64\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nAn MSIX/AppX-packaged Electron application should initialize its GPU process\nsuccessfully even when a third-party DLL injected into that process by the\noperating system fails the GPU child's binary-signature policy.\n\nIf an injected module cannot be loaded under the GPU process's Code Integrity\npolicy, the load failure should be non-fatal \u2014 as it is for the same DLL in\nnon-packaged Chromium processes on the same machine \u2014 rather than terminating the\nGPU process and, after the retry limit, the entire application.\n\n### Actual Behavior\n\nThis is a distinct trigger from #52700, and it contradicts the packaging-defect\nconclusion reached in that thread.\n\nIn every report on #52700 the rejected DLL is `vk_swiftshader.dll`, bundled\n*inside* the application package \u2014 so the app's own signing and Code Integrity\ncatalog are plausibly at fault, and the assessment there concluded this was\n\"primarily a packaging defect.\"\n\nIn this report the rejected DLL is **`SuperResExt.dll`, shipped by Microsoft in a\nseparate MSIX package** (`Microsoft.AutoSuperResolution`) and injected into the\nGPU child from outside the application entirely. The affected applications'\nsigning, catalogs and page hashes are irrelevant to it. **No amount of correct\napplication packaging can prevent this failure.**\n\n## Mechanism\n\nOn Copilot+ ARM64 hardware, Windows Auto Super Resolution injects\n`SuperResExt.dll` into Chromium-based processes. In MSIX-packaged Electron apps\nthe GPU child runs with `MicrosoftSignedOnly`; the injected DLL does not satisfy\nit; Code Integrity logs Event 3033 and the GPU process is killed. Chromium\nrespawns it, the identical rejection recurs, and the app aborts at the retry\nlimit.\n\nBecause injection happens at launch, **the app never draws a window** \u2014 no error\ndialog, no in-app recovery, and on MSIX no way for a user to pass a mitigating\nflag.\n\n## Two unrelated MSIX Electron apps affected; non-MSIX control unaffected\n\n| App | Packaging | Arch | Result |\n|---|---|---|---|\n| Claude Desktop 1.52386.3.0 | MSIX | arm64 native | Dies at launch |\n| Proton Pass 1.40.0.0 | MSIX | x64 under Prism emulation | Dies at launch |\n| VS Code (arm64) | **non-MSIX**, `%LOCALAPPDATA%\\Programs` | arm64 native | **Works**, GPU sandbox enabled |\n\nDifferent vendors, different Electron versions, different architectures. The only\nshared property is MSIX packaging.\n\n## The rejection is routine machine-wide \u2014 only MSIX makes it fatal\n\nEvent 3033 counts for `SuperResExt.dll` over a 2-day window on this machine:\n\n| Process | Event 3033 count | Outcome |\n|---|---|---|\n| `msedgewebview2.exe` | 112 | Works |\n| `claude.exe` | 36 | **Dies** |\n| `ProtonPass.exe` | 27 | **Dies** |\n| `msedge.exe` | 4 | Works |\n| `Code.exe` | 1 | Works |\n\nEdge, WebView2 and VS Code take the same rejection of the same DLL, in the same\nsessions, and carry on normally. This also answers the Chrome/Chromium question:\nthe rejection occurs there too, the fatality does not.\n\n## Crash signature\n\n    Claude Desktop:\n      ERROR:content\\browser\\gpu\\gpu_process_host.cc:1017]\n        GPU process exited unexpectedly: exit_code=101457950\n      ... to 6 crashes ...\n      FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:418]\n        GPU process isn't usable. Goodbye.\n\n    Proton Pass:\n      ERROR:content\\browser\\gpu\\gpu_process_host.cc:999]\n        GPU process exited unexpectedly: exit_code=101457950\n      ... to 9 crashes ...\n      FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:415]\n        GPU process isn't usable. Goodbye.\n\n    exit_code 101457950 = 0x060C201E \u2014 same code as #52700 and the Codex reports\n\nCode Integrity event (`Microsoft-Windows-CodeIntegrity/Operational`), verbatim:\n\n    Code Integrity determined that a process (\\Device\\HarddiskVolume14\\Program\n    Files\\WindowsApps\\Claude_1.52386.3.0_arm64__pzs8sxrjxfjjc\\app\\claude.exe)\n    attempted to load \\Device\\HarddiskVolume14\\Program Files\\WindowsApps\\\n    Microsoft.AutoSuperResolution_1.0.1.0_arm64__8wekyb3d8bbwe\\SuperResExt.dll\n    that did not meet the Microsoft signing level requirements.\n\nOne Event 3033 plus three Event 3089 per GPU child spawn attempt, second-aligned\nwith each crash. Identical event text for `ProtonPass.exe`.\n\n**Note:** `vk_swiftshader.dll` (5.0.0) IS present in the Claude Desktop package,\nbut it was NOT rejected in this reproduction \u2014 no Event 3033 names it, and no\nEvent 3010 (missing `CodeIntegrity.cat`) appears. The only rejected module is the\nexternally-injected `SuperResExt.dll`. The app ships the binary implicated in\n#52700, Code Integrity accepted it, and the crash originated elsewhere.\n\n## A/B test \u2014 three states, same machine\n\n| ASR state | `claude.exe` 3033 events | Claude Desktop |\n|---|---|---|\n| Package registered (Windows default) | 36 | Dies at launch |\n| Toggled **Off** in Settings, rebooted | 12 | Dies at launch |\n| Package **removed**, rebooted | 0 | **Launches normally** |\n\nAfter removal both apps launch from their Start Menu tiles with no flags and the\nGPU sandbox fully enabled. The Windows Settings toggle does not stop injection,\nso the only user-available mitigation is removing a Microsoft OS component.\n\n## Flag bisect \u2014 eliminates the graphics stack\n\n| Flag | Result |\n|---|---|\n| *(none)* | Crash |\n| `--use-angle=d3d11-warp` | **Crash** |\n| `--in-process-gpu` | Works, hardware acceleration intact |\n| `--disable-gpu-sandbox` | Works, hardware acceleration intact |\n\nWARP is Microsoft's CPU software rasteriser and does not touch the vendor GPU\npath, so the crash surviving it rules out the GPU driver and the ANGLE D3D11\nrendering path. Both working flags eliminate the *restricted child process*\nrather than changing rendering, localising the fault to GPU child creation under\nthe signing policy.\n\n## Ruled out\n\n- **GPU driver** \u2014 identical on current Qualcomm UGD 31.0.152.1; survives WARP. `anthropics/claude-code#68049` reports identical failure on an older OEM driver on comparable hardware.\n- **Orphaned/zombie SID DACLs (#51761)** \u2014 `%LOCALAPPDATA%` DACL clean (SYSTEM, Administrators, user only; no orphaned `S-1-15-2-*`). Both failing packages' DACLs are equivalent to Windows Terminal, Notepad and Proton Pass; `S-1-15-2-2` is absent from **all** of them including the working ones, so its absence is not the differentiator on this platform.\n- **App package signing/catalog** \u2014 `Get-AppxPackage` Status: Ok for both; the rejected DLL is in neither package.\n- **Qualcomm Snapdragon/Adreno Control Panel** \u2014 uninstalled, rebooted, no change.\n- **Exploit Protection** \u2014 `Get-ProcessMitigation -System`: every mitigation `NOTSET`, no overrides.\n- **WER** \u2014 no Application Error/Hang entry; no Display/Dxgkrnl TDR events at any crash timestamp.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nEnvironment:\n  Device:       ASUS Zenbook A14 UX3407QA\n  SoC:          Qualcomm Snapdragon X X1-26-100 (ARM64, Copilot+)\n  GPU:          Qualcomm Adreno X1-45, driver 31.0.152.1 (2026-05-23,\n                Qualcomm Upgradeable Graphics Driver)\n  OS:           Windows 11 Home, build 10.0.26200, ARM64\n  Device Guard: HVCI + System Guard Secure Launch active\n                (SecurityServicesRunning {2,3})\n  Exploit Prot: all system mitigations NOTSET, no overrides\n\nElectron version: not determinable from the shipped MSIX builds. Both vendors\noverwrite the executable's version metadata with their own app version\n(claude.exe reports 1.52386.3; ProtonPass.exe reports 1.40.0), and the bundled\nChromium DLLs carry no usable Chromium version string. The two affected apps\nclearly bundle different Electron versions, evidenced by the differing source\nline numbers in the crash output above (gpu_process_host.cc:1017 vs :999,\ngpu_data_manager_impl_private.cc:418 vs :415) \u2014 which also indicates the failure\nis not specific to one Electron version.\n\nClaude Desktop auto-updated from 1.46388.4.0 to 1.52386.3.0 during this\ninvestigation; the crash reproduced identically on both builds. The source line\nnumbers above correspond to the build bundled with 1.46388.4.0.\n\nRelationship to existing reports:\n  electron/electron#52700 \u2014 same fatality mechanism (MSIX + CIG rejection kills\n    the GPU child), different trigger. The rejected DLL here is injected by the\n    OS from a separate package rather than bundled in the app, which the\n    packaging-defect explanation in that thread does not cover.\n  electron/electron#51761 \u2014 different root cause (orphaned SID DACLs), ruled out\n    here.\n  anthropics/claude-code#68049 \u2014 same device class and exit code, closed as\n    invalid for want of this root cause; that reporter could not test any flags\n    because direct exe launch from WindowsApps was ACL-blocked.\n  anthropics/claude-code#81341 \u2014 same CIG mechanism, bundled vk_swiftshader.dll.\n  openai/codex#34133 \u2014 Event 3033, Status 0xC0000428, RequestedPolicy 8,\n    ValidatedPolicy 1, then exitCode 101457950.\n\nAlso filed with Microsoft via Feedback Hub, since Auto Super Resolution, the\nsigning policy, and the failing binary are all Microsoft-side:\nhttps://aka.ms/AA13dw5h (opens in the Windows Feedback Hub app)\n\nDiagnosability note: the surfaced symptom is a bare GPU-process exit code with no\nmodule name anywhere in the Electron log. The Code Integrity event log is the only\nplace the cause appears, and nothing points a user toward it. Logging the rejected\nmodule on GPU child launch failure would stop this class of bug being\nmisattributed to graphics drivers \u2014 which is what happened in\nanthropics/claude-code#68049.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-12T10:49:52Z",
+        "body": "<!-- end-of-life -->\n\nHello @TheNorbmeister. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://releases.electronjs.org/) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "TheNorbmeister",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-12T10:54:02Z",
+        "body": "Updated the Electron Version field: **44.2.0** (Chromium 152.0.7977.76).\n\nThe `unknown` was not an out-of-support version \u2014 these MSIX builds overwrite\ntheir executable version metadata with the vendor app version (`claude.exe`\nreports 1.52386.3), so I extracted the bundled runtime version from the\nembedded user-agent string in the binary:\n\n    Electron/44.2.0\n    Chrome/152.0.7977.76\n\nNote the second affected app, Proton Pass 1.40.0.0, bundles a different Electron\nversion \u2014 the differing source line numbers in the crash output show this\n(`gpu_process_host.cc:1017` vs `:999`, `gpu_data_manager_impl_private.cc:418` vs\n`:415`). The failure is therefore not specific to one Electron release."
+       },
+       {
+        "author": {
+         "login": "TheNorbmeister",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-12T10:59:13Z",
+        "body": "For transparency, I am not a developer. I used Claude to diagnose apps not working on my laptop. The above is created by Claude based on diagnostics and successful workaround I performed following Claude instructions.\n\nMy understanding is that the root cause sits with Microsoft but I am posting it here for visibility as I do not have sufficient expertise to be the judge on that. I filed report with Microsoft via feedback hub: https://aka.ms/AA13dw5h"
+       },
+       {
+        "author": {
+         "login": "TheNorbmeister",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-12T11:09:42Z",
+        "body": "Important refinement, from anthropics/claude-code#89525 \u2014 which contains the only GPU-process minidump in this cluster.\n\n`0x060C201E` is an **exception code, not an exit code**: `RaiseFailFastException`, `EXCEPTION_NONCONTINUABLE`, zero parameters, raised from ntdll on behalf of **`D3D12Core.dll`** \u2014 a deliberate abort by the Direct3D 12 runtime. Electron logs it as `exitCode` because a process killed by an unhandled exception exits with the exception code.\n\nTwo corrections to my report above.\n\n**1. Shared code does not imply shared cause.** I implied that sharing `0x060C201E` with #52700 and the Codex reports pointed to one root cause. That inference was wrong. The code is the *manner* of termination \u2014 a D3D12 runtime fail-fast \u2014 not a signature of a single cause, and it appears across NVIDIA, AMD, Intel and Qualcomm on both x64 and ARM64, including non-Copilot+ desktop hardware where Auto Super Resolution cannot be installed (anthropics/claude-code#85934, RTX 4080 SUPER desktop, crashes while idle).\n\nThe ASR finding in this report stands as reported: on this machine the A/B is deterministic and reversible, and removing the package fixes two unrelated MSIX Electron apps. What I withdraw is the suggestion that it explains the other reports carrying the same code. ASR is one trigger of a broader abort class \u2014 and as far as I can tell it may be the only trigger in that class currently identified.\n\n**2. The step from Code Integrity rejection to GPU-process death is correlation, not a proven mechanism.** What is established here is the A/B, not the causal chain.\n\nWhat still points at the signing policy specifically: `--disable-gpu-sandbox` resolves it while keeping hardware acceleration. If `D3D12Core` were aborting for reasons unrelated to the sandbox's signing policy, removing the sandbox should not help.\n\n**Hypothesis, offered as such:** ASR hooks the D3D12 path, CIG blocks the hook inside the sandboxed GPU child, and `D3D12Core.dll` raises the non-continuable fail-fast in response. That would reconcile the Code Integrity evidence here with the `D3D12Core` stack in #89525.\n\nAlso relevant from #89525 and #85934: Crashpad cannot capture this crash class at all, because fail-fast bypasses SEH and the unhandled-exception filter. Only an attached debugger gets the GPU-process dump \u2014 which explains why no report in this cluster carries one."
+       },
+       {
+        "author": {
+         "login": "TheNorbmeister",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-12T13:06:16Z",
+        "body": "Update with measured data, plus two corrections to my earlier comment.\n\n### Measured: the signing gate is identical to electron/electron#52700's\n\nEvent 3033 raw fields for `claude.exe` on this machine, six occurrences, all identical:\n\n| Process | File | RequestedPolicy | ValidatedPolicy | Status |\n|---|---|---|---|---|\n| `claude.exe` | `SuperResExt.dll` | **8** | **1** | **0xC0000428** |\n\n`RequestedPolicy 8` = `SE_SIGNING_LEVEL_MICROSOFT`, `Status 0xC0000428` = `STATUS_INVALID_IMAGE_HASH` \u2014 the same fields decoded for the bundled-`vk_swiftshader.dll` case. Six rejections, six GPU-process crashes, then the fatal abort.\n\nSame-machine MSIX-vs-non-MSIX control, same DLL, same policy fields, same 24 hours:\n\n| Process | 3033 rejections | Packaging | Outcome |\n|---|---|---|---|\n| `msedgewebview2.exe` | **292** | non-MSIX | survives, no crashes |\n| `claude.exe` | **6** | MSIX | **dies, 6 crashes** |\n\n### Measured: why the injected DLL fails outside its own package\n\nThe ASR package contents, inspected directly:\n\n    AppxMetadata\\CodeIntegrity.cat   present, 12548 bytes\n    SNPE.dll                         NotSigned\n    SnpeHtpV73Stub.dll               NotSigned\n    SuperResExt.dll                  UnknownError\n                                     Subject: CN=TestAzureEngBuildCodeSign\n                                     Issuer:  CN=TestAzureEngBuildCodeSign\n                                     (subject = issuer, untrusted root)\n\nWithin its own package context the catalog vouches for these and they load fine. When ASR injects `SuperResExt.dll` into a foreign MSIX process, that catalog is out of scope, the DLL is evaluated on its embedded signature \u2014 a test cert chaining to an untrusted root \u2014 and Code Integrity refuses it.\n\nFor contrast on the same machine: `Test-Path <Claude package>\\AppxMetadata\\CodeIntegrity.cat` returns **False**, while the ASR package's returns **True**.\n\n### Correction 1 \u2014 my \"exception code, not an exit code\" framing was an over-correction\n\nIt is both. The value is raised as an exception and, going unhandled, becomes the child's exit code \u2014 which is why Chromium logs `exit_code=101457950`. More to the point, `0x060C201E` appears to be reasonably specific to the AppX image-integrity failure path rather than a generic marker: the same `60c201e` \u2194 `ntdll!LdrAppxHandleIntegrityFailure` bucket shows up in unrelated AppX applications, and a genuinely different fatal fault in the same process surfaces a different code \u2014 a Chromium `CHECK()` appears as `0x80000003` in anthropics/claude-code#83028.\n\n### Correction 2 \u2014 I should not have cited anthropics/claude-code#89525 as proof that shared code implies different causes\n\n`RaiseFailFastException` produces `STATUS_FAIL_FAST_EXCEPTION` (`0xC0000409`), not `0x060C201E`. So if that report genuinely shows a `D3D12Core.dll` fail-fast, its exit code should not be 101457950 and it is likely a separate bug; if its exit code *is* 101457950, the fatal frame is more likely `LdrAppxHandleIntegrityFailure` with D3D12Core merely the caller that triggered the blocked load. I don't know which, and I shouldn't have leaned on it. My broader point \u2014 that this report's ASR trigger does not explain other reports carrying the same code \u2014 still stands on its own: anthropics/claude-code#85934 is a non-Copilot+ desktop where ASR cannot be installed.\n\n### Consolidation\n\nHaving read #52700 properly, the Electron-side question there is the same as here: a Code-Integrity-rejected DLL load in an MSIX GPU child is fatal, where the same rejection is survivable unpackaged. The only thing this issue adds is that the rejected module can be **externally injected** rather than app-bundled \u2014 which rules out app-side packaging or re-signing as a complete fix, since an app cannot prevent an OS component from injecting into its GPU child.\n\nI've posted the full evidence on anthropics/claude-code#81341 and summarised the injected-DLL angle on #52700. **Happy for maintainers to close this as covered by #52700** if that's the cleaner record; I'd rather the mechanism discussion live in one place than be split across two issues."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 10,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-12T10:49:34Z",
+        "actor": {
+         "login": "TheNorbmeister",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-12T10:49:35Z",
+        "actor": {
+         "login": "TheNorbmeister",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-12T10:49:50Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-12T10:49:50Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-12T10:54:23Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-12T11:11:17Z",
+        "actor": {
+         "login": "TheNorbmeister"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 89525,
+         "url": "https://github.com/anthropics/claude-code/issues/89525",
+         "createdAt": "2026-08-25T12:50:16Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-12T11:12:33Z",
+        "actor": {
+         "login": "TheNorbmeister"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 68049,
+         "url": "https://github.com/anthropics/claude-code/issues/68049",
+         "createdAt": "2026-06-12T20:36:53Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-12T13:02:51Z",
+        "actor": {
+         "login": "TheNorbmeister"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 81341,
+         "url": "https://github.com/anthropics/claude-code/issues/81341",
+         "createdAt": "2026-07-26T10:47:29Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-13T19:14:35Z",
+        "actor": {
+         "login": "claude",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-10-12T15:12:59Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 53821,
+     "title": "Crash in Sunrize on Mac Air, Intel, Monterey (I think).",
+     "url": "https://github.com/electron/electron/issues/53821",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-10T18:59:58Z",
+     "closedAt": "2026-09-10T19:24:33Z",
+     "updatedAt": "2026-09-10T19:24:34Z",
+     "author": {
+      "login": "coderextreme",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\nI don\u2019t know \n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nMonterey \n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nNo crash\n\n### Actual Behavior\n\nCrash\n\n### Testcase Gist URL\n\nhttps://coderextreme.net/twb-4d.x3d\n\n### Additional Information\n\nhttps://github.com/create3000/sunrize/issues/30\n\nConfimed to work on Apple Silicon, failure is on Intel.\n\nSunrize has been updated since test, so perhaps use Sunrize 2.3.0.\n\nI don\u2019t know electron version, perhaps that\u2019s available in the crash.\n\nI am away from desk currently, not all details are correct.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-10T19:00:16Z",
+        "body": "<!-- end-of-life -->\n\nHello @coderextreme. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://releases.electronjs.org/) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "coderextreme",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-10T19:04:06Z",
+        "body": "I will use X_ITE on MacOS Monterey if I can\u2019t get a working version of Electron."
+       },
+       {
+        "author": {
+         "login": "nmggithub",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-10T19:11:27Z",
+        "body": "The crash in the related issue appears to be related to a missing API that does not exist on macOS Monterrey 12. I'm not sure what our support is for that macOS version. I will confirm and follow up."
+       },
+       {
+        "author": {
+         "login": "nmggithub",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-10T19:24:33Z",
+        "body": "Reading through your related issue, the version being used is Electron 44, which dropped support for Electron Monterrey and below (https://www.electronjs.org/docs/latest/breaking-changes#removed-macos-12-support). Please coordinate with the external project on OS support and/or update your macOS version."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T18:59:59Z",
+        "actor": {
+         "login": "coderextreme",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-10T19:00:01Z",
+        "actor": {
+         "login": "coderextreme",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T19:00:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T19:00:15Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-10T19:04:40Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-10T19:24:34Z",
+        "actor": {
+         "login": "nmggithub",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 53819,
+     "title": "Main-process crash (EXC_BAD_ACCESS / heap UAF) when destroying a <webview> with an attached webContents.debugger session",
+     "url": "https://github.com/electron/electron/issues/53819",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-10T15:22:22Z",
+     "closedAt": "2026-09-15T09:32:01Z",
+     "updatedAt": "2026-09-15T09:32:08Z",
+     "author": {
+      "login": "regrlomon",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.1.1\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS arm64 (OS X 26.4.1, 25E253)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nDestroying (unmounting from the DOM) a <webview> tag whose guest webContents has a webContents.debugger CDP session attached should never crash the main (browser) process. Detaching the debugger before destroying the webview, with arbitrary delay, should make it safe.\n\n### Actual Behavior\n\nThe **main process crashes** (whole app dies) when a `<webview>` is destroyed while/after a CDP session was attached to it. Three distinct crash signatures observed, all on `Thread 0 CrBrowserMain`:\n\n**1) Null-deref in `RenderFrameDevToolsAgentHost` during navigation notifications** (observed both in production and in the minimal repro):\n```\n0  Electron Framework!content::RenderFrameDevToolsAgentHost::UpdateFrameHost(content::RenderFrameHostImpl*) [render_frame_devtools_agent_host.cc:1082]   (EXC_BAD_ACCESS, addr 0x28)\n1  Electron Framework!content::RenderFrameDevToolsAgentHost::ReadyToCommitNavigation(content::NavigationHandle*) [:518]\n2  Electron Framework!content::WebContentsImpl::WebContentsObserverList::NotifyObservers<...>\n3  Electron Framework!content::WebContentsImpl::ReadyToCommitNavigation(content::NavigationHandle*) [web_contents_impl.cc:7761]\n4  Electron Framework!content::NavigationRequest::ReadyToCommitNavigation(bool)\n5  Electron Framework!content::NavigationRequest::CommitNavigation() [navigation_request.cc:6915]\n```\nVariant: same class, `OnNavigationRequestWillBeSent` (render_frame_devtools_agent_host.cc:748, addr 0x20).\n\n**2) Heap use-after-free in `DevToolsSession` message dispatch** (register `x1 = 0xcdcdcdcdcdcdcdcd` \u2014 destroyed-object fill pattern):\n```\n0  Electron Framework!content::DevToolsSession::DispatchProtocolResponseOrNotification(...) [devtools_session.cc:602]   (EXC_BAD_ACCESS)\n1  Electron Framework!content::DevToolsSession::DispatchProtocolNotification(...)\n```\n\n**3) `CHECK` failure while re-launching the guest renderer process after remount** (SIGTRAP / EXC_BREAKPOINT):\n```\n0  Electron Framework!electron::ElectronBrowserClient::AppendExtraCommandLineSwitches(...) [immediate_crash.h:180]\n1  Electron Framework!content::RenderProcessHostImpl::AppendRendererCommandLine [render_process_host_impl.cc:3714]\n2  Electron Framework!content::RenderProcessHostImpl::Init() [render_process_host_impl.cc:2041]\n3  Electron Framework!content::RenderFrameHostManager::InitRenderView(...)\n4  Electron Framework!content::WebContentsImpl::AttachInnerWebContentsImpl(...) [web_contents_impl.cc:3365]\n5  Electron Framework!electron::WebViewGuestDelegate::AttachToIframe(...)\n```\n\n## How to reproduce\n\nTwo files, no build step, no external dependencies beyond `electron@43.1.1` itself.\n\n**`main.js`**\n```js\nconst { app, BrowserWindow, crashReporter } = require('electron');\ncrashReporter.start({ submitURL: 'http://127.0.0.1', uploadToServer: false });\n\nconst HAMMER_MS = 20;    // CDP command interval, mimics an automation agent\nconst REMOUNT_MS = 1500; // destroy & recreate the <webview>, mimics a React remount\n\napp.whenReady().then(() => {\n  const win = new BrowserWindow({\n    width: 960, height: 720,\n    webPreferences: { webviewTag: true },\n  });\n  win.loadFile('host.html');\n\n  // attach a debugger to every guest webContents and keep a high CDP message rate\n  app.on('web-contents-created', (_e, contents) => {\n    if (contents.getType() !== 'webview') return;\n    try { contents.debugger.attach('1.3'); } catch {}\n    let n = 0;\n    const timer = setInterval(() => {\n      if (contents.isDestroyed()) { clearInterval(timer); return; }\n      if (!contents.debugger.isAttached()) { try { contents.debugger.attach('1.3'); } catch { return; } }\n      const p = (n % 10 === 0)\n        ? contents.debugger.sendCommand('Runtime.enable')\n        : contents.debugger.sendCommand('Runtime.evaluate', { expression: '1+1' });\n      p.catch(() => {});\n      n++;\n    }, HAMMER_MS);\n    contents.on('destroyed', () => clearInterval(timer));\n  });\n});\n\nsetTimeout(() => app.exit(0), 90000).unref();\napp.on('window-all-closed', () => app.quit());\n```\n\n**`host.html`**\n```html\n<!doctype html>\n<html><body style=\"font:13px/1.5 monospace;margin:8px\">\n  <div id=\"stat\">remount #0</div>\n  <webview id=\"wv\" src=\"https://www.zhipin.com/\" style=\"width:900px;height:560px\"></webview>\n  <script>\n    // destroy & recreate the webview every 1.5s (like a React remount)\n    let n = 0;\n    setInterval(function () {\n      const old = document.getElementById('wv');\n      const fresh = document.createElement('webview');\n      fresh.id = 'wv';\n      fresh.src = 'https://www.zhipin.com/';\n      fresh.style.cssText = 'width:900px;height:560px';\n      old.replaceWith(fresh);\n      n++;\n      document.getElementById('stat').textContent = 'remount #' + n;\n    }, 1500);\n  </script>\n</body></html>\n```\n\nRun:\n```\nnpm init -y && npm i electron@43.1.1\nnpx electron main.js\n```\n\nCrash usually occurs within 10\u201320 remount cycles (15\u201330 s). Reproduces faster with a content-heavy site on a slower network (wide navigation-timing window); a lightweight page (e.g. example.com) may survive many more cycles, but the mechanism is identical.\n\n## Control experiments (all on the same page/network)\n\n| Setup | Result |\n|---|---|\n| `BrowserWindow` + attached debugger + `reload()` every 3 s (webContents never destroyed) | **No crash** (1649 CDP commands, 13 reloads) |\n| `<webview>` + attached debugger + repeated navigation, webview never destroyed | **No crash** (22 reloads) |\n| Reproducer as above (webview destroyed & recreated) | **Crash** (all 3 signatures above) |\n| Reproducer + `debugger.detach()` on all guests right before destroying | **Still crashes** |\n| Reproducer + `detach()` + 500 ms delay before destroying | **Still crashes** (7 remounts) |\n\nThis isolates the crash to the **combination of \"CDP session was attached\" + \"webview element destroyed\"**: navigation traffic and CDP load alone are safe; destroying a webview that ever had a session attached is not \u2014 and JS-level detach (even with delay) does not make destruction safe, which suggests the internal DevTools session teardown (mojo) is not synchronized with the guest teardown in the browser process.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "ayusharora07",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-11T12:20:21Z",
+        "body": "Hi @regrlomon, thanks for the detailed report and minimal reproducer!\n\nI'm taking a look into this issue to debug the teardown lifecycle desynchronization between WebViewGuestDelegate and DevToolsSession / RenderFrameDevToolsAgentHost. I'll update here once I have a fix or further findings"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T15:22:23Z",
+        "actor": {
+         "login": "regrlomon",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-10T15:22:23Z",
+        "actor": {
+         "login": "regrlomon",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T15:22:42Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T15:22:43Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-15T09:32:01Z",
+        "actor": {
+         "login": "regrlomon",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 53814,
+     "title": "Linux Wayland frame callback throttling causes rAF to stay idle when an electron window is occluded",
+     "url": "https://github.com/electron/electron/issues/53814",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-10T07:00:22Z",
+     "closedAt": "2026-10-23T01:51:34Z",
+     "updatedAt": "2026-10-23T01:51:34Z",
+     "author": {
+      "login": "itsdouges",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.4.1\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\n26.04 (Wayland)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nHello :-)\n\nWhen running Paper Desktop it's very common to tab back and fourth between your IDE and Paper itself when using Paper MCP. Because of this the behaviour in Wayland causes frames to stop being ran until focus is back in the window. This ends up blocking anything requiring an animation loop, for Paper that's screenshots and exports.\n\nIt looks like [Chromium ran into this](https://github.com/chromium/chromium/commit/de4b707490acca3612e077adaa35679231ee4b35) and shipped a workaround for WebRTC which we end up leaning on: starting self capture for the view so frames continue firing even when the window is occluded.\n\nOn macOS/Windows it's enough to disable background throttling, for Linux Wayland that's not the case and we needed to reach for self capture.\n\nThe deprecated and now removed APIs `webContents.incrementCapturerCount` / `decrementCapturerCount` sounded like they could have also solved this problem.\n\n### Actual Behavior\n\nWhen an Electron window / view is occluded frames stop firing, even with background throttling being disabled.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "blocked/need-repro"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-12T14:02:00Z",
+        "body": "<!-- blocked/need-repro -->\n\nHello @itsdouges. Thanks for reporting this and helping to make Electron better!\n\nWould it be possible for you to make a standalone testcase with only the code necessary to reproduce the issue? For example, [Electron Fiddle](https://www.electronjs.org/fiddle) is a great tool for making small test cases and makes it easy to publish your test case to a [gist](https://gist.github.com) that Electron maintainers can use.\n\nStand-alone test cases make fixing issues go more smoothly: it ensure everyone's looking at the same issue, it removes all unnecessary variables from the equation, and it can also provide the basis for automated regression tests.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-repro label for this reason. After you make a test case, please link to it in a followup comment. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-23T01:51:33Z",
+        "body": "Unfortunately, without a way to reproduce this issue, we're unable to continue investigation. This issue has been closed and will not be monitored further. If you're able to provide a minimal test case that reproduces this issue on a [supported version of Electron](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline) please open a new issue and include instructions for reproducing the issue."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 7,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T07:00:23Z",
+        "actor": {
+         "login": "itsdouges",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-10T07:00:24Z",
+        "actor": {
+         "login": "itsdouges",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T07:00:39Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T07:00:39Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-10-12T14:01:48Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-16T19:22:24Z",
+        "actor": {
+         "login": "patrickjaja"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 280,
+         "url": "https://github.com/patrickjaja/claude-desktop-extra/issues/280",
+         "createdAt": "2026-10-16T09:35:40Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-10-23T01:51:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 53808,
+     "title": "`new WebContentsView({ webContents })` crashes the main process when given an extension background page",
+     "url": "https://github.com/electron/electron/issues/53808",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-09-10T05:07:17Z",
+     "closedAt": null,
+     "updatedAt": "2026-09-10T05:07:18Z",
+     "author": {
+      "login": "MarshallOfSound",
+      "__typename": "User"
+     },
+     "authorAssociation": "MEMBER",
+     "issueType": null,
+     "body": "Passing an extension background page's `webContents` into `new WebContentsView({ webContents })` segfaults the main process.\n\n```js\nconst { app, session, WebContentsView } = require('electron')\n\napp.whenReady().then(async () => {\n  const bgPage = new Promise((resolve) => {\n    app.on('web-contents-created', (_e, wc) => {\n      if (wc.getType() === 'backgroundPage') resolve(wc)\n    })\n  })\n  // any MV2 extension with a background page, e.g. spec/fixtures/extensions/persistent-background-page\n  await session.defaultSession.extensions.loadExtension(extensionPath)\n  new WebContentsView({ webContents: await bgPage })\n})\n```\n\n```\nReceived signal 11 SEGV_MAPERR 000000000078\nelectron::WebContentsPreferences::Clear()                 web_contents_preferences.cc:199\nelectron::WebContentsPreferences::SetFromDictionary()     web_contents_preferences.cc:243\nelectron::api::WebContents::CreateFromWebPreferences()    electron_api_web_contents.cc:5291\nelectron::api::WebContentsView::New()                     electron_api_web_contents_view.cc:230\n```\n\nBackground pages are created without a `WebContentsPreferences`, and when `CreateFromWebPreferences` adopts an existing `webContents` it uses `WebContentsPreferences::From()` without a null check. The owner window check in `WebContentsView::New` doesn't catch it because a background page has no owner window (DevTools contents, for example, get rejected there with \"already attached to a window\" and are fine).\n\nReproduced on main on Linux. The same unguarded code is on 42-x-y through main, and the `webContents` option has been there since #42086 (v32).\n\nProbably simplest to throw here like we do for the owner window case, I don't think hosting a background page in a view is something we mean to support?\n",
+     "labels": {
+      "nodes": []
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-09-10T05:07:18Z",
+        "actor": {
+         "login": "MarshallOfSound"
+        },
+        "assignee": {
+         "login": "MarshallOfSound"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-10T05:11:42Z",
+        "actor": {
+         "login": "MarshallOfSound"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53757,
+         "url": "https://github.com/electron/electron/pull/53757",
+         "createdAt": "2026-09-09T04:38:29Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-13T12:46:58Z",
+        "actor": {
+         "login": "Iktahana"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 53888,
+         "url": "https://github.com/electron/electron/issues/53888",
+         "createdAt": "2026-09-13T12:46:57Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-20T23:34:51Z",
+        "actor": {
+         "login": "absunstar"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54154,
+         "url": "https://github.com/electron/electron/pull/54154",
+         "createdAt": "2026-09-20T23:34:50Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 53794,
+     "title": "[Wayland] setIgnoreMouseEvents(true) has no effect and screen.getCursorScreenPoint() always returns {x:0, y:0}",
+     "url": "https://github.com/electron/electron/issues/53794",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-09T20:59:59Z",
+     "closedAt": "2026-09-10T05:08:34Z",
+     "updatedAt": "2026-09-16T20:16:49Z",
+     "author": {
+      "login": "AlexSilva-dev",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n43.1.0\n\n### What operating system(s) are you using?\nOther Linux\n\n### Operating System Version\nArch Linux, Wayland session (Hyprland 0.56.2)\n\n### What arch are you using?\nx64\n\n### Last Known Working Electron version\nUnknown, first tested on 43.1.0\n\n### Does the issue also appear in Chromium / Google Chrome?\nI don't know how to test\n\n### Expected Behavior\nWith `setIgnoreMouseEvents(true)` applied to a transparent always-on-top window, mouse clicks over it should pass through to the window below.\n`screen.getCursorScreenPoint()` should return the current cursor position.\n\n### Actual Behavior\nOn a native Wayland session, clicks over the window with `setIgnoreMouseEvents(true)` are swallowed. The window below never receives them. I verified this manually: I dragged the overlay window over a window that logs clicks, clicked on the overlay, and the window below registered nothing.\nIn the same setup, `screen.getCursorScreenPoint()` printed `{\"x\":0,\"y\":0}` on every poll (every 500ms) while the mouse was moving around the screen.\n\n### Testcase Gist URL\nhttps://gist.github.com/AlexSilva-dev/90f9e55b34e26e8b841e67e02ee8627c\n\n### Additional Information\nRun the gist with:\n\n```\nnpx electron . --ozone-platform=wayland\n```\n\nTwo windows open: a green target window that logs clicks, and a red transparent overlay with `setIgnoreMouseEvents(true)`. Drag the overlay over the target and click: no click is registered by the target. The terminal also prints the cursor polls showing `{x:0, y:0}`.\n\n<details><summary>In-depth investigation</summary>\n<p>\n\nI hit this while building a screen recorder overlay that needs click-through regions on Wayland. A related observation from the same setup, in case it helps: the app had to fall back to reading the cursor position from the compositor because of the `getCursorScreenPoint()` result above. Happy to split the two symptoms into separate issues if that is preferred.\n\n</p>\n</details>\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-10T02:15:55Z",
+        "body": "`screen.getCursorScreenPoint()` is [not supported](https://www.electronjs.org/docs/latest/api/screen#screengetcursorscreenpoint) and can't be supported per Wayland protocol"
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-10T05:08:34Z",
+        "body": "As noted by @YUCLing above and in our docs, this is not possible under wayland"
+       },
+       {
+        "author": {
+         "login": "YUCLing",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-09-10T08:03:33Z",
+        "body": "But, `setIgnoreMouseEvents(true)` is possible to support with [`wl_surface::set_input_region`](https://wayland.app/protocols/wayland#wl_surface:request:set_input_region). You can open a new issue about it if you wish."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T21:00:16Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T21:00:16Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T21:00:16Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-10T05:08:34Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-16T20:16:48Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-16T20:16:49Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 53789,
+     "title": "Pages having Meta Pixel embeded cause renderer-process-gone when sanbox=false + nodeIntegrationInSubFrames=true",
+     "url": "https://github.com/electron/electron/issues/53789",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-09-09T15:01:49Z",
+     "closedAt": "2026-09-13T06:52:31Z",
+     "updatedAt": "2026-09-13T06:52:31Z",
+     "author": {
+      "login": "yungchao",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.11.3\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 26.6.2\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nUser can interact with web pages having Meta Pixel embeded without renderer crash.\n\n### Actual Behavior\n\nWhen user interact with web pages having Meta Pixel embeded will cause renderer-process-gone. This issue can be reproduced by Electron Fiddle, please refer the attached screen recording.\n\nhttps://github.com/user-attachments/assets/3d6c9bfb-4b32-4a0d-a4e4-c2041b884f9c\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "42-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 7,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T15:01:50Z",
+        "actor": {
+         "login": "yungchao",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-09T15:01:51Z",
+        "actor": {
+         "login": "yungchao",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T15:02:14Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T15:02:14Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-09-10T05:33:33Z",
+        "actor": {
+         "login": "MarshallOfSound"
+        },
+        "assignee": {
+         "login": "MarshallOfSound"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-12T00:05:01Z",
+        "actor": {
+         "login": "MarshallOfSound"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53833,
+         "url": "https://github.com/electron/electron/pull/53833",
+         "createdAt": "2026-09-12T00:05:00Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-13T06:52:31Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 53833,
+         "url": "https://github.com/electron/electron/pull/53833"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 53770,
+     "title": "[Bug]: macOS globalShortcut.register returns true for the same shortcut in two applications",
+     "url": "https://github.com/electron/electron/issues/53770",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-09T10:41:34Z",
+     "closedAt": "2026-09-10T05:23:35Z",
+     "updatedAt": "2026-09-10T05:23:35Z",
+     "author": {
+      "login": "307914070",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.8.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 15.5 (24F74)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\nUnknown; no Electron regression range established\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nYes\n\n### Expected Behavior\n\nIf application A has registered Command+Shift+A and remains running, application B should receive a conflict result when registering the same accelerator, as described in the [globalShortcut.register documentation](https://www.electronjs.org/docs/latest/api/global-shortcut#globalshortcutregisteraccelerator-callback).\n\nIf shared registration is intentional on macOS, please document the platform difference and provide a supported way to request exclusive registration or detect this kind of conflict.\n\n\n### Actual Behavior\n\n\nTwo separately installed builds of our Electron application, with separate application names and user-data directories, were running on the same Mac. Both used globalShortcut.register('Command+Shift+A', callback), and both calls returned true.\n\nThe application's success log is emitted only when register() returns true. These are the relevant log messages, with the application identities replaced by A and B:\n\n```text\nApp A, 16:00:56.784: Successfully registered screenshot shortcut: Command+Shift+A\nApp B, 16:01:33.877: Successfully registered screenshot shortcut: Command+Shift+A\n```\n\nBoth settings pages displayed the shortcut without a conflict warning. The settings query uses !globalShortcut.isRegistered(shortcut); the raw isRegistered() results were not separately logged. We understand that isRegistered() describes registration by the current application, not a system-wide registry.\n\nOn Windows, the same application logic reports a conflict for the equivalent Control+Shift+A shortcut. No macOS Electron regression range has been established.\n\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n\nThe observation above is from the application builds. This reduced example has not been independently run on macOS. A current supported Electron release has not yet been retested.\n\n```js\nconst { app, BrowserWindow, globalShortcut } = require('electron');\nlet window;\n\napp.whenReady().then(() => {\n  window = new BrowserWindow({ width: 480, height: 240 });\n  window.loadURL('data:text/html,<h1>Global shortcut check</h1>');\n  const shortcut = 'Command+Shift+A';\n  const registered = globalShortcut.register(shortcut, () => {\n    console.log('shortcut fired', process.pid);\n  });\n  console.log({ pid: process.pid, shortcut, registered,\n    isRegistered: globalShortcut.isRegistered(shortcut) });\n});\n\napp.on('will-quit', () => globalShortcut.unregisterAll());\n```\n\nRun two independent processes without a single-instance lock.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "42-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-10T05:23:35Z",
+        "body": "The platform level behavior of the underlying macOS APIs differs across macOS version and depends on what the other app specifically requests. There is an \"exclusive mode\" flag but it doesn't actually work very well.\n\nIf A requests exclusive and B doesn't, B silently fails.\nIf A requests exclusive and B does too, B fails noisily\nIf A requests normal and B requests exclusive B works but is not exclusive\netc.\n\nThe whole thing makes sense and differs between macOS 26 and macOS 11 as an example matrix I could trivially test.\n\n`globalShortcut` is best effort and documented to silently fail in some cases. The exhaustive matrix is not worth documenting as it will be wrong on things we can't test \ud83d\ude13 "
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T10:41:35Z",
+        "actor": {
+         "login": "307914070",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-09T10:41:35Z",
+        "actor": {
+         "login": "307914070",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T10:41:48Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T10:41:48Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-10T05:23:35Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 53768,
+     "title": "WebRTC audio call fails with \"codec collision\" (payload_type 111, stereo/non-stereo Opus) \u2014 works fine in Chromium-based Edge on the same system",
+     "url": "https://github.com/electron/electron/issues/53768",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-09-09T10:15:35Z",
+     "closedAt": "2026-09-21T07:27:50Z",
+     "updatedAt": "2026-09-21T07:27:50Z",
+     "author": {
+      "login": "daivalar",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\nReproduced on both:\n- 39.8.10 (Arch/Manjaro `electron39` package)\n- 43.6.0 (Arch/Manjaro `electron43` package, bundled Chromium 150.0.7871.250)\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\nManjaro Linux, kernel 6.18.49-1-MANJARO, Wayland session (KDE Plasma), PipeWire audio.\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nUnknown \u2014 reproduces identically in two Electron majors 4 versions apart (39 and 43), so likely not a recent regression.\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nA WebRTC audio call (Google Chat / Google Meet) negotiates a valid SDP and connects, as it does in a real Chromium-based browser (Microsoft Edge stable) on the exact same machine, same OS session, same audio devices.\n\n### Actual Behavior\n\nThe call fails to connect. Chromium's WebRTC stack logs a codec collision and the call layer reports a disconnect:\n\n\\`\\`\\`\n[ERROR:third_party/webrtc/pc/sdp_offer_answer.cc:575] A BUNDLE group contains a codec collision between\n{payload_type: 111, codec: {mime_type: audio/opus, clock_rate: 48000, num_channels: 2, parameters: {minptime: 10, stereo: 1, useinbandfec: 1}}}\nand\n{payload_type: 111, codec: {mime_type: audio/opus, clock_rate: 48000, num_channels: 2, parameters: {minptime: 10, useinbandfec: 1}}}.\nAll codecs must share the same type, encoding name, clock rate and parameters. (INVALID_PARAMETER)\n\\`\\`\\`\n\nTwo Opus codec entries for the same payload type (111) are generated \u2014 one advertising `stereo=1`, one without it \u2014 which is an invalid/self-contradictory SDP. The calling web app (Google Chat/Meet) then reports the peer connection as disconnected (`DisconnectedError`, various `EndCause`/`StartupCode` combinations depending on how far initialization got).\n\n\n### Testcase Gist URL\n\nNo minimal repro gist yet \u2014 this only reproduces against a live Google Chat/Meet call (a real-world WebRTC service doing its own SDP munging), not a synthetic getUserMedia+RTCPeerConnection testcase. Happy to help build one if a maintainer can point to what would be useful (e.g. a two-peer local repro that forces a `stereo=1`/no-`stereo` transceiver pair on the same m-line).\n\n### Additional Information\n\n- Confirmed NOT reproducible in Microsoft Edge (Chromium-based, not Electron) on the exact same machine, same session, same audio devices, same call \u2014 rules out a system/PipeWire/audio-device-specific cause.\n- Confirmed independent of which audio input device is selected (tested with two different physical microphones \u2014 same collision both times).\n- Possibly related to Electron's Linux builds not shipping with the same PipeWire integration as stock Chromium/Chrome/Edge builds (see #29115) \u2014 mentioning in case that's a relevant lead for maintainers, though that issue was specifically about screen-share, not general audio/call codec negotiation.\n- Audio setup: PipeWire, one active USB microphone tested at a time (Logitech A50 USB headset in `mono-fallback` PipeWire profile, and separately a Creative Live! Cam webcam mic in `analog-stereo` profile) \u2014 both trigger the identical collision.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "blocked/need-info \u274c"
+       },
+       {
+        "name": "bug :beetle:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-09T10:15:53Z",
+        "body": "<!-- end-of-life -->\n\nHello @daivalar. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://releases.electronjs.org/) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "daivalar",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-09T10:19:28Z",
+        "body": "I change it."
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-10T05:30:04Z",
+        "body": "That log line is a warning, it doesn't fail the connection. WebRTC only rejects the SDP when the `WebRTC-SdpBundlePayloadTypeCollisionCheck` field trial is enabled (added upstream in April, https://webrtc-review.googlesource.com/c/src/+/438741), which is off by default and nothing in Chromium or Electron turns on. Without it the collision gets logged, counted in UMA, and negotiation carries on. 39 predates that change entirely so it can't be what's breaking your calls there.\n\nI put together a local repro with two bundled audio m-lines where only one has `stereo=1` on opus PT 111. On 42 and 45 you get the exact same `codec collision` line in the logs, every SDP call succeeds, the peers connect and audio flows. Chrome 152 is identical. The only way I can get it to actually fail is forcing the trial on with `--force-fieldtrials=WebRTC-SdpBundlePayloadTypeCollisionCheck/Enabled/`, and that fails in Chrome too. Edge will be printing the same line, it just doesn't log to stderr by default.\n\nSo the disconnect is coming from something else. Can you grab a `chrome://webrtc-internals` dump from a failing call (load it in a second `BrowserWindow` before joining)? Also worth trying with Edge's UA via `app.userAgentFallback`, Meet/Chat can behave differently depending on the browser they detect and that's a much more likely difference than the codec warning. And plz test against our release from npm rather than the Arch package so we're comparing the same thing."
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-21T07:27:50Z",
+        "body": "Closing this out as the info we requested hasn't been provided"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 7,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T10:15:36Z",
+        "actor": {
+         "login": "daivalar",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-09-09T10:15:37Z",
+        "actor": {
+         "login": "daivalar",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T10:15:52Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-09T10:15:52Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-09-09T10:19:59Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-09-10T05:30:13Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-21T07:27:50Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

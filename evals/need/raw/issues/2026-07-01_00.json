@@ -1,0 +1,2204 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4855,
+   "resetAt": "2026-10-23T08:14:07Z",
+   "cost": 1
+  },
+  "search": {
+   "issueCount": 12,
+   "pageInfo": {
+    "hasNextPage": false,
+    "endCursor": "Y3Vyc29yOjEy"
+   },
+   "nodes": [
+    {
+     "number": 52268,
+     "title": "[MAS Rejection]:",
+     "url": "https://github.com/electron/electron/issues/52268",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-06T17:21:55Z",
+     "closedAt": "2026-07-06T22:12:11Z",
+     "updatedAt": "2026-07-06T22:12:11Z",
+     "author": {
+      "login": "sk4591520180-wq",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n\n### Electron Version\n\nUi14\n\n### Rejection Email\n\nA\n\n### Additional Information\n\nGj",
+     "labels": {
+      "nodes": []
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-06T22:12:11Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52266,
+     "title": "Linux: webContents.print() returns \"Invalid printer settings\" in Electron 43, works in Electron 42",
+     "url": "https://github.com/electron/electron/issues/52266",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-06T13:58:01Z",
+     "closedAt": "2026-07-17T16:13:24Z",
+     "updatedAt": "2026-07-17T16:13:24Z",
+     "author": {
+      "login": "8lurry",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.06 (x11)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n42.6.0\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\n`win.webContents.print` with a non empty options object (for example, `{silent: true, deviceName: \"MyPrinter\"}`) is supposed to print the content seamlessly.\n\n### Actual Behavior\n\n`win.webContents.print` with an empty options (`{}`) object, opens the print dialog alright but when I put options like `silent` or `deviceName` the function returns with an error saying `Invalid printer settings`.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "component/printing"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-comment"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-06T22:12:47Z",
+        "body": "Thanks for reporting!\n\nWould you be able to download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows maintainers to reproduce this issue, and upload it as a GitHub gist from Fiddle? "
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-06T22:13:02Z",
+        "body": "<!-- blocked/need-repro -->\n\nHello @8lurry. Thanks for reporting this and helping to make Electron better!\n\nWould it be possible for you to make a standalone testcase with only the code necessary to reproduce the issue? For example, [Electron Fiddle](https://www.electronjs.org/fiddle) is a great tool for making small test cases and makes it easy to publish your test case to a [gist](https://gist.github.com) that Electron maintainers can use.\n\nStand-alone test cases make fixing issues go more smoothly: it ensure everyone's looking at the same issue, it removes all unnecessary variables from the equation, and it can also provide the basis for automated regression tests.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-repro label for this reason. After you make a test case, please link to it in a followup comment. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "davidjgraph",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-15T08:44:44Z",
+        "body": "Root cause and repro from draw.io desktop, where all printing broke after moving to 43 (jgraph/drawio-desktop#2476, jgraph/drawio-desktop#2484).\n\nwebContents.print(opts) fails with \"Invalid printer settings\" for any non-empty opts. print({}) works. Not Linux specific, we see it on Windows, macOS and Linux. Broken in 43.0.0 through 43.1.1 and on main as of 44.0.0-alpha.3. 42.x is fine.\n\nCause: Chromium moved UpdatePrintSettings() out of PrintViewManagerBase into the preview-only PrintViewManager. PrintViewManagerElectron now overrides it and rejects every request:\n\nhttps://github.com/electron/electron/blob/v43.1.1/shell/browser/printing/print_view_manager_electron.cc#L119-L123\n\n```cc\nvoid PrintViewManagerElectron::UpdatePrintSettings(\n    base::DictValue job_settings,\n    UpdatePrintSettingsCallback callback) {\n  std::move(callback).Run(nullptr);\n}\n```\n\nIn 42.x there is no override, so the working base class implementation handled it. Any print call that carries settings now fails before the system dialog opens.\n\nMinimal repro:\n\n```js\nconst { app, BrowserWindow } = require('electron')\n\napp.whenReady().then(() => {\n  const win = new BrowserWindow()\n  win.loadURL('data:text/html,<h1>print test</h1>')\n  win.webContents.once('did-finish-load', () => {\n    win.webContents.print({ printBackground: true }, (ok, err) => {\n      console.log(ok, err) // false 'Invalid printer settings' on 43, dialog opens on 42\n    })\n  })\n})\n```\n\nOur workaround is to retry with print({}) when that error comes back, but then pageSize, scaleFactor and margins are all ignored. We have reverted to 42.7.0 for now. Happy to test a fix."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 13,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-06T13:58:02Z",
+        "actor": {
+         "login": "8lurry",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-06T13:58:03Z",
+        "actor": {
+         "login": "8lurry",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-06T13:58:19Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-06T13:58:19Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-06T22:12:54Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/printing"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-06T22:12:54Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-15T08:41:59Z",
+        "actor": {
+         "login": "davidjgraph"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 2476,
+         "url": "https://github.com/jgraph/drawio-desktop/issues/2476",
+         "createdAt": "2026-07-14T03:28:38Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-15T08:42:11Z",
+        "actor": {
+         "login": "davidjgraph"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 2484,
+         "url": "https://github.com/jgraph/drawio-desktop/issues/2484",
+         "createdAt": "2026-07-15T05:15:14Z"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-15T08:45:17Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-07-15T17:07:51Z",
+        "actor": {
+         "login": "jkleinsc"
+        },
+        "assignee": {
+         "login": "jkleinsc"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-16T13:45:06Z",
+        "actor": {
+         "login": "jkleinsc"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52367,
+         "url": "https://github.com/electron/electron/pull/52367",
+         "createdAt": "2026-07-16T13:45:05Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-16T18:11:42Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-comment"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-17T16:13:24Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 52367,
+         "url": "https://github.com/electron/electron/pull/52367"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52265,
+     "title": "[Bug]: chrome.webRequest is schema-registered but has no bindings in MV3 service workers, crashing worker registration",
+     "url": "https://github.com/electron/electron/issues/52265",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-05T10:29:47Z",
+     "closedAt": "2026-07-30T20:34:11Z",
+     "updatedAt": "2026-07-30T20:34:11Z",
+     "author": {
+      "login": "dep",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [X] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [X] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [X] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 15 (Darwin 25.5.0)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Expected Behavior\n\nAn MV3 extension with the `webRequest` permission can register observational listeners (e.g. `chrome.webRequest.onBeforeRequest.addListener(...)`) in its background service worker, as it can in Chrome.\n\n### Actual Behavior\n\nThe `webRequest` API feature/schema is registered \u2014 `typeof chrome.webRequest === 'object'` inside the worker \u2014 but the renderer bindings module resources are missing from the resource bundle:\n\n```\nERROR:extensions/renderer/resource_bundle_source_map.cc:72] NOTREACHED hit. Module resource registered as \"webRequest\" not found\nERROR:extensions/renderer/resource_bundle_source_map.cc:72] NOTREACHED hit. Module resource registered as \"webRequestEvent\" not found\n\"(BLESSED_EXTENSION context for <id>) No source for require(webRequest)\"\n```\n\nAs a result `chrome.webRequest` is an empty object, `chrome.webRequest.onBeforeRequest` is `undefined`, the worker throws at top level, and MV3 service worker registration fails entirely:\n\n```\nUncaught TypeError: Cannot read properties of undefined (reading 'addListener')\nService worker registration failed. Status code: 15\n```\n\nBecause the registration failure takes the whole worker down, any real-world extension whose worker touches `chrome.webRequest` at startup is completely non-functional (observed with NordPass, whose action button is driven by its worker). This half-registered state is arguably worse than the API being absent \u2014 extensions that feature-detect `chrome.webRequest` pass the check and then crash.\n\nFull log: see the gist.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/dep/ec59df61562cfb3af21031a660e733b4\n\n### Additional Information\n\n- Follow-up to the MV3 support push in #37876 (https://github.com/electron/electron/issues/37876#issuecomment-1656808686) \u2014 service worker registration, `chrome.scripting`, and `chrome.tabs` all work great now; `chrome.webRequest` appears to be the next-most-impactful gap for MV3 extensions.\n- `chrome.declarativeNetRequest` is entirely `undefined` in the same context (expected, since it is not on the supported-API list, but noting it since MV3 network-observing extensions typically need one of the two).\n- Prior art: #2115 (2016 request for `chrome.webRequest.*`, closed), #19447 (//extensions integration tracking issue, closed).\n- Two plausible resolutions from the outside: (a) pack the `webRequest`/`webRequestEvent` custom-bindings resources and wire the browser-side `WebRequestAPI`/event router so the API actually works, or (b) stop registering the schema so the API is cleanly absent and feature-detection in extensions behaves. (a) is obviously the dream. \ud83d\ude4f\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "component/extensions"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 9,
+      "nodes": [
+       {
+        "author": {
+         "login": "dep",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-05T10:52:09Z",
+        "body": "Update after digging into the Electron source and testing against nightly: root cause found, and the picture splits into two distinct problems:\n\n## 1. The crash is a packaging regression in Electron 43, already fixed on `main` \u2014 needs backport\n\nBetween Chromium 149 \u2192 150 (Electron 42 \u2192 43), the extensions renderer bindings JS moved out of `extensions_renderer_resources.grd` into a new grit target, `extensions_renderer_generated_resources.pak` (`extensions/renderer/resources/BUILD.gn`). Electron 43's `build/electron_paks.gni` still repacks only `extensions_renderer_resources.pak` + `extensions_resources.pak`, so the generated pak is built but never included in `resources.pak` \u2192 `NOTREACHED` in `resource_bundle_source_map.cc:72` \u2192 `chrome.webRequest` has no members.\n\n- This is **not MV3-specific**: an MV2 persistent background page fails identically on 43.0.0 (same `NOTREACHED` pair, `onBeforeRequest` undefined). The `spec/fixtures/extensions/chrome-webRequest` tests can't pass on the shipped 43 build.\n- `main` already contains the fix, incidentally, via #51804 (the resource-allowlist work packs `extensions_renderer_generated_resources.pak`). Verified on `electron-nightly` 45.0.0-nightly.20260703: bindings load, no crash, worker registration succeeds, and **MV2 background-page `onBeforeRequest` events fire correctly**.\n- Neither `43-x-y` nor `44-x-y` has the fix. Since this is a regression that silently broke all extension `chrome.webRequest` usage (and crashes every MV3 worker that touches it), a backport of that one pak line to both branches would be \ud83d\ude4f.\n\n## 2. After the fix, MV3 service workers still receive no webRequest events (repro's second act)\n\nOn the same nightly (45.0.0-nightly.20260703), with bindings loading fine:\n\n- MV3 worker registers `chrome.webRequest.onBeforeRequest.addListener(..., {urls: ['<all_urls>']})` without error (manifest has `webRequest` permission + `<all_urls>` in `host_permissions`; also tried it in `permissions`).\n- Loading `https://example.com` in a `BrowserWindow` on the same session fires **zero events** in the worker, while the identical listener in an MV2 background page fires as expected.\n\nSo the browser\u2192service-worker webRequest event dispatch path (lazy/SW listeners in the WebRequest event router) appears unwired independently of the packaging issue. Happy to file this as a separate issue if that's cleaner \u2014 the net effect for MV3 extensions like password managers is the same \"worker can't observe requests\" gap this issue describes.\n\n(Side note from the same investigation, in case it's useful triage context: `chrome.declarativeNetRequest` dynamic rules **do** enforce correctly on stock 43.0.0 when the permission is declared \u2014 my original repro saw `undefined` only because the manifest lacked the `declarativeNetRequest` permission. Static `rule_resources` never load, though \u2014 `getEnabledRulesets()` returns `[]` \u2014 presumably because install-time ruleset indexing never runs. And registering any `session.webRequest` listener disables both extension webRequest *and* dNR enforcement for those loader factories, per the precedence rule in `docs/api/extensions.md`.)\n"
+       },
+       {
+        "author": {
+         "login": "d45577841-beep",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-07T17:08:58Z",
+        "body": "A high-quality 3D animation style funny cartoon video. Scene: A vibrant, colorful Indian village marketplace. Two main characters: Motu, a chubby man in a red kurta, and Patlu, a thin man in an orange shirt and glasses. They are at a mysterious food stall. Motu takes a bite of a glowing golden samosa, his eyes widen, and suddenly he starts floating clumsily while holding a large sack of samosas. Patlu looks on with a funny, confused expression, trying to pull Motu down by his dhoti. The animation should be fluid, expressive, and slapstick comedy style, similar to popular Indian cartoon shows, 4k resolution, cinematic lighting, bright and cheerful color palette.\""
+       },
+       {
+        "author": {
+         "login": "d45577841-beep",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-07T17:09:31Z",
+        "body": "@Dhananjay0117"
+       },
+       {
+        "author": {
+         "login": "d45577841-beep",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-07T17:11:23Z",
+        "body": "https://www.instagram.com/roshni_modanval97080?igsh=MWkyeWYzMHo2bG5tcQ=="
+       },
+       {
+        "author": {
+         "login": "d45577841-beep",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-07T17:11:35Z",
+        "body": "https://www.instagram.com/roshni_modanval97080?igsh=MWkyeWYzMHo2bG5tcQ=="
+       },
+       {
+        "author": {
+         "login": "d45577841-beep",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-07T17:11:49Z",
+        "body": "https://www.instagram.com/roshni_modanval97080?igsh=MWkyeWYzMHo2bG5tcQ=="
+       },
+       {
+        "author": {
+         "login": "mlaurencin",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-08T21:05:12Z",
+        "body": "@dep to be clear, are you saying https://github.com/electron/electron/pull/51804 fixes this issue for you?"
+       },
+       {
+        "author": {
+         "login": "dotrongkhang2000",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-14T08:50:10Z",
+        "body": "@dep any update?"
+       },
+       {
+        "author": {
+         "login": "quanghung309",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-27T04:52:40Z",
+        "body": "Requesting a backport to 43-x-y\n\nAs @dep diagnosed, this is a packaging regression in Electron 43: the extensions renderer bindings moved into extensions_renderer_generated_resources.pak in Chromium 150, but build/electron_paks.gni on 43-x-y was never updated to repack it, so the bindings JS is missing at runtime.\n\nThe fix is already merged on main via [#51804](https://github.com/electron/electron/pull/51804) (Linux) and [#52290](https://github.com/electron/electron/pull/52290) (macOS) \u2014 shipping in Electron 44 \u2014 but both are labeled no-backport.\n\nCould maintainers consider targeting these to 43-x-y? It's a regression that breaks any MV3 extension using chrome.webRequest entirely (service worker registration fails at startup), with no workaround from the extension side. The change is build/packaging config only, so backport risk should be low.\n\nHappy to test a backport build. Thanks!"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 12,
+      "nodes": [
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-05T11:38:12Z",
+        "actor": {
+         "login": "dep"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 183,
+         "url": "https://github.com/samuelmaddock/electron-browser-shell/pull/183",
+         "createdAt": "2026-07-05T11:38:11Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-05T19:23:24Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-05T19:23:24Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-05T19:23:24Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/extensions"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-05T19:23:28Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-05T19:24:44Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-05T19:24:46Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-27T03:32:26Z",
+        "actor": {
+         "login": "akhileshthite"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 206,
+         "url": "https://github.com/p2plabsxyz/peersky-browser/pull/206",
+         "createdAt": "2026-07-13T18:36:09Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-27T09:46:43Z",
+        "actor": {
+         "login": "PrasannaPal21"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 207,
+         "url": "https://github.com/p2plabsxyz/peersky-browser/issues/207",
+         "createdAt": "2026-07-27T09:46:42Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-28T22:06:10Z",
+        "actor": {
+         "login": "mlaurencin"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52503,
+         "url": "https://github.com/electron/electron/pull/52503",
+         "createdAt": "2026-07-28T22:06:09Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-30T20:34:11Z",
+        "actor": {
+         "login": "mlaurencin",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-27T05:19:38Z",
+        "actor": {
+         "login": "name1423user"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 7,
+         "url": "https://github.com/name1423user/Trueful/pull/7",
+         "createdAt": "2026-09-27T04:59:01Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52263,
+     "title": "Allow monospaced digit fonts for menu item labels on macOS",
+     "url": "https://github.com/electron/electron/issues/52263",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-07-05T08:53:18Z",
+     "closedAt": null,
+     "updatedAt": "2026-07-06T22:11:11Z",
+     "author": {
+      "login": "thomasbachem",
+      "__typename": "User"
+     },
+     "authorAssociation": "CONTRIBUTOR",
+     "issueType": {
+      "name": "Enhancement"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nOn macOS, menu item labels are rendered with the system menu font, whose digits are proportional. So any menu showing a column of numbers comes out jagged, because e.g. `11:15` renders narrower than `09:45`:\n\n<img width=\"214\" height=\"121\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/28269fc6-8033-4065-8e63-0782f94198f0\" />\n\nThere's currently no way around this: `MenuItem.label` maps to `NSMenuItem.title`, and Electron exposes neither `attributedTitle` nor any font option. In a native app this is a one-liner: set `attributedTitle` with `monospacedDigitSystemFontOfSize:`, the SF variant with tabular figures that's otherwise identical to the menu font.\n\n#22363 solved the same problem for the tray title with `tray.setTitle(title, { fontType: 'monospacedDigit' })`. Menu item labels never got the equivalent, so a tray calendar can align its countdown but not the time column in its dropdown.\n\n### Proposed Solution\n\nThe same `fontType` option on `MenuItem`, macOS-only like `toolTip`:\n\n```js\nnew MenuItem({\n  label: \"11:15  Doctor's appointment\",\n  fontType: 'monospacedDigit'\n})\n```\n\nThe implementation looks small: when the option is set, `electron_menu_controller.mm` renders the label via `attributedTitle` with the corresponding font variant, analogous to the `fontType` handling in `tray_icon_cocoa.mm`. Supporting both tray values (`monospaced` and `monospacedDigit`) keeps the two APIs symmetric.\n\n### Alternatives Considered\n\n- Padding with figure spaces (U+2007): Still unequal widths, the digits themselves are proportional\n- Unicode fullwidth/monospace digits: Wrong font, looks out of place\n- Pre-rendering the time column into template `NativeImage` icons: What we ship today \u2013 works well, but adds a lot of machinery for one line of AppKit\n\n### Additional Information\n\nI attached [menu-item-font-type.patch](https://github.com/user-attachments/files/29671470/menu-item-font-type.patch) mirroring the `toolTip` per-item plumbing and the tray `fontType` implementation. It was drafted with Claude Fable 5, and I'm currently unable to build Electron locally \u2013 so it's untested. Happy to open a PR from it so CI can validate it, or for a maintainer to adopt or rework it instead.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "enhancement :sparkles:"
+       },
+       {
+        "name": "component/menu"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-05T19:20:35Z",
+        "body": "Thanks for reporting!\n\n> It was drafted with Claude Fable 5, and I'm currently unable to build Electron locally \u2013 so it's untested. Happy to open a PR from it so CI can validate it, or for a maintainer to adopt or rework it instead.\n\nAttaching the patch was the right move. Thanks! Please don't open untested PRs. (We get too many of them already due to AI.)"
+       },
+       {
+        "author": {
+         "login": "felixrieseberg",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-06T18:32:24Z",
+        "body": "I can take this one over the line, I think it's a good idea given that we already support it on tray: https://github.com/electron/electron/pull/52269"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-05T08:53:20Z",
+        "actor": {
+         "login": "thomasbachem",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "enhancement :sparkles:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-05T08:53:20Z",
+        "actor": {
+         "login": "thomasbachem",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-05T19:19:45Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/menu"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-06T18:12:45Z",
+        "actor": {
+         "login": "felixrieseberg"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52269,
+         "url": "https://github.com/electron/electron/pull/52269",
+         "createdAt": "2026-07-06T18:12:44Z"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-07-06T22:11:11Z",
+        "actor": {
+         "login": "nikwen"
+        },
+        "assignee": {
+         "login": "felixrieseberg"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52260,
+     "title": "[Bug]: macOS: every keystroke in any input/textarea recreates a native autofill popup NSWindow, blocking the browser process 100-260 ms per key on macOS 26 (worst with CJK IME)",
+     "url": "https://github.com/electron/electron/issues/52260",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-04T03:25:47Z",
+     "closedAt": "2026-07-13T15:37:42Z",
+     "updatedAt": "2026-07-13T15:37:42Z",
+     "author": {
+      "login": "hirorocky",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.3.3 (the relevant code is unchanged on `main`)\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 26.4.1 (25E253)\n\n### What arch are you using?\n\narm64 (Apple Silicon)\n\n### Last Known Working Electron version\n\nUnknown \u2014 the popup churn exists in all recent versions; it became user-visible on macOS 26, where window ordering waits on synchronous WindowServer transactions.\n\n### Expected Behavior\n\nTyping into an `<input>` or `<textarea>` that has no datalist suggestions should not create or destroy native windows, and should not block the browser process.\n\n### Actual Behavior\n\nEvery keystroke that changes the value of a focused `<input>`/`<textarea>` (with the caret at the end) makes the renderer send `ElectronAutofillDriver::ShowAutofillPopup` **with an empty suggestion list**, and the browser process destroys and recreates a native autofill popup `NSWindow` each time. On macOS 26, each of those window-ordering operations blocks `CrBrowserMain` for 50\u2013350 ms in a synchronous WindowServer transaction. Since `CrBrowserMain` routes all input events, **every window and input of the app stutters**.\n\nCJK IME users are hit hardest: apps that type into a hidden textarea (e.g. xterm.js terminals) never change the textarea value for plain keys (keydown is `preventDefault()`ed), but **IME preedit lives in the textarea and changes its value on every keystroke** \u2014 so composition triggers the churn on every key. This was discovered while investigating Japanese-IME typing jank in [Orca](https://github.com/stablyai/orca) (an Electron-based terminal/agent app), where the jank affects the whole UI while composing.\n\nRoot cause chain (all verified):\n\n1. **Renderer** \u2014 `AutofillAgent::ShowSuggestions` (`shell/renderer/electron_autofill_agent.cc`) reaches `ShowPopup(element, {}, {})` for any editable with a non-empty value and caret at end, **even when there are zero datalist suggestions** \u2014 including `<textarea>`, which can never have any. `TextFieldValueChanged` fires per keystroke (and per `compositionupdate` during IME composition).\n2. **Browser** \u2014 `AutofillDriver::ShowAutofillPopup` (`shell/browser/electron_autofill_driver.cc`) calls `AutofillPopup::CreateView` (`shell/browser/ui/autofill_popup.cc`), which unconditionally `Hide()`s the previous popup and creates + shows a new native child window \u2014 even for an empty list. Net effect: one NSWindow destroy + create + order-in per keystroke.\n3. **macOS 26** \u2014 `sample(1)` of the browser process during typing shows `CrBrowserMain` blocked in:\n\n   ```text\n   -[NSWindow _doOrderWindow:]\n     -[NSCGSWindow(NSCGSWindowOrdering) isOrderedIn]\n       SLSWindowIsOrderedIn (SkyLight)\n         SLSConnectionSynchronizeSLSCATransaction\n           _SLSTransactionWaitSource \u2192 mach_msg2_trap   \u2190 1961 of 2006 samples\n   ```\n\nEvidence from a real 90 s Japanese-typing session in Orca (`devtools.timeline` + `toplevel` + `latencyInfo` trace): 74 `Receive mojo message` tasks \u2265 30 ms tagged `electron.mojom.ElectronAutofillDriver` on `CrBrowserMain`, totalling **10.1 s** with a **263 ms** max; 15 of 23 keydowns with > 100 ms `InputLatency::RawKeyDown` overlapped one of those tasks. Renderer-side handlers took 1\u20132 ms \u2014 the latency is entirely browser-process dispatch delay.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/hirorocky/82b35c2604e29b80883921b806a711ac\n\n### Additional Information\n\nThe testcase needs no IME: it synthesizes composition updates via `webContents.debugger` (`Input.imeSetComposition`) into a plain autofocused `<textarea>`, and measures browser-process main-thread stalls with a 16 ms timer-drift monitor (the Node event loop shares `CrBrowserMain`, so synchronous WindowServer waits appear as timer drift).\n\nResults on macOS 26.4.1 / Electron 42.3.3 / M-series:\n\n```text\n# textarea focused (autofill popup churn):\n50 synthetic IME composition updates in 6957 ms\nmain-process event-loop stalls >50ms: count=37 total=4915 ms max=350 ms\n\n# CONTROL=1 (textarea blurred, no editable target \u2192 no autofill traffic):\n50 synthetic IME composition updates in 5220 ms\nmain-process event-loop stalls >50ms: count=1 total=118 ms max=118 ms\n```\n\nManual repro: run the same app and type into the textarea with a Japanese/Chinese/Korean IME \u2014 the Event Timing API logs keydown durations in the hundreds of ms.\n\nThe same measurement against **VS Code 1.125.1 (Electron 42.2.0)** on the same machine reproduces identically \u2014 VS Code ships the same code and is not immune: 25 synthetic composition updates into its integrated terminal (a real xterm.js helper textarea) produced 26 `ElectronAutofillDriver` tasks totalling **1081 ms (max 163 ms)** on CrBrowserMain; a plain `<input>` in its workbench produced 333 ms. VS Code's *editor* escapes only because Monaco keeps the caret mid-value in its hidden textarea, which fails the `requires_caret_at_end` check.\n\nCausality was also confirmed in-app with the caret condition alone: keeping a zero-width sentinel after the caret during composition (so `SelectionEnd() != value.length()`) drops the same 25-keystroke workload from **1208 ms to 0 ms** of browser-main blocking \u2014 the messages still flow, but the cheap `HideAutofillPopup` path replaces the popup-window rebuild.\n\nWhy editors like VS Code (Monaco) escape this: Monaco keeps surrounding context in its hidden textarea with the caret mid-value, so the `requires_caret_at_end` check in `ShowSuggestions` fails and only the cheap `HidePopup` path runs. xterm.js keeps the caret at the end of the preedit, hitting the expensive path on every composition update.\n\n**Proposed fix** \u2014 mirror Chromium and only show the popup when there are suggestions:\n\n```cc\n// shell/renderer/electron_autofill_agent.cc, AutofillAgent::ShowSuggestions\n  std::vector<std::u16string> data_list_values;\n  std::vector<std::u16string> data_list_labels;\n  if (!input_element.IsNull()) {\n    GetDataListSuggestions(input_element, &data_list_values, &data_list_labels);\n  }\n  if (data_list_values.empty()) {\n    HidePopup();\n    return;\n  }\n  ShowPopup(element, data_list_values, data_list_labels);\n```\n\n`AutofillPopup::Hide()` is already a no-op when nothing is showing, so the steady-state cost for suggestion-less fields becomes zero. A belt-and-suspenders guard in `AutofillDriver::ShowAutofillPopup` (`if (values.empty()) { autofill_popup_->Hide(); return; }`) would additionally protect against compromised renderers.\n\nThis is likely a meaningful contributor to the broader \"Electron apps feel sluggish on macOS 26\" class of reports (e.g. #48311 discusses SLS transaction sensitivity): the per-keystroke popup churn predates Tahoe but used to be cheap; Tahoe's synchronous WindowServer transactions turned it into user-visible input latency. Full `sample(1)` output and the 90 s trace are retained and can be shared on request.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "component/BrowserWindow"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "42-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "author": {
+         "login": "hirorocky",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-04T03:37:33Z",
+        "body": "Corroborating evidence from the archives: #26667 (2020) is a debug-build DCHECK crash \u2014 `Check failed: !clamped_content_size.IsEmpty(). Zero-sized windows not supported on Mac` \u2014 with exactly this call stack (`ElectronAutofillDriverStubDispatch::Accept` \u2192 `AutofillDriver::ShowAutofillPopup` \u2192 `AutofillPopup::CreateView` \u2192 `AutofillPopupView::Show` \u2192 `SetBounds`), observed while running Slack. That is the empty-suggestion popup described here being created with zero size: debug builds have been asserting on this exact misbehavior since at least 2020, release builds just silently paid for the window churn \u2014 until macOS 26 made each one cost 100+ ms. The proposed fix (skip `ShowPopup` when there are no datalist suggestions) would also resolve that six-year-old DCHECK."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-04T20:09:49Z",
+        "body": "Thanks for reporting!\n\nDoes this window recreation also happen in Chrome?"
+       },
+       {
+        "author": {
+         "login": "hirorocky",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-06T03:19:41Z",
+        "body": "No \u2014 I ran the identical workload against Chrome on the same machine (Chrome 149.0.7827.199, macOS 26.4.1, arm64), driving 50 synthetic composition updates via CDP (`Input.imeSetComposition`, 120 ms apart) into the same test page:\n\n```text\n# Chrome, <textarea> focused:\nautofill-tagged mojo messages on CrBrowserMain: count=106 total=5 ms  max=0 ms\nbrowser-main long tasks (>=30 ms):              count=0   total=0 ms\n\n# Chrome, <input> focused:\nautofill-tagged mojo messages on CrBrowserMain: count=159 total=15 ms max=3 ms\nbrowser-main long tasks (>=30 ms):              count=0   total=0 ms\n\n# Electron 42.3.3/43.0.0 fiddle, same workload (from the report above):\nmain-process event-loop stalls >50 ms:          count=37  total=4915 ms max=350 ms\n```\n\nThe Event Timing API in the page shows every composition event completing in 16\u201324 ms with 0 ms input delay \u2014 Chrome stays perfectly smooth on the same macOS build.\n\nThe reason is architectural: Chromium's renderer-side agent *queries* the browser (`AskForValuesToFill`) instead of pushing a show command, and the browser only creates/shows the popup when it actually has suggestions. With zero suggestions it explicitly hides instead \u2014 `AutofillExternalDelegate::OnSuggestionsReturned` in `components/autofill/core/browser/ui/autofill_external_delegate.cc`:\n\n```cc\nif (suggestions.empty() && !IsAtMemoryTriggerSource(trigger_source)) {\n    ...\n    // No suggestions, any popup currently showing is obsolete.\n    manager_->client().HideSuggestions(SuggestionHidingReason::kNoSuggestions, ...);\n```\n\nSo the autofill IPC traffic per keystroke exists in Chrome too (as the message counts above show), but it never turns into native window creation/destruction. Electron's `AutofillAgent::ShowSuggestions` is the divergence: it reaches `ShowPopup(element, {}, {})` with an empty datalist, and `AutofillPopup::CreateView` then rebuilds the native window unconditionally. That is what the proposed fix aligns with Chromium's behavior."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 11,
+      "nodes": [
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-04T03:26:01Z",
+        "actor": {
+         "login": "hirorocky"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 7308,
+         "url": "https://github.com/stablyai/orca/pull/7308",
+         "createdAt": "2026-07-04T03:21:12Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-04T14:37:01Z",
+        "actor": {
+         "login": "nmggithub"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52262,
+         "url": "https://github.com/electron/electron/pull/52262",
+         "createdAt": "2026-07-04T14:37:00Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-04T20:09:59Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-04T20:09:59Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/BrowserWindow"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-04T20:09:59Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-04T20:10:06Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-04T20:10:13Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-04T20:10:17Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-06T21:38:01Z",
+        "actor": {
+         "login": "MarshallOfSound"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52271,
+         "url": "https://github.com/electron/electron/pull/52271",
+         "createdAt": "2026-07-06T21:38:00Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-13T15:37:42Z",
+        "actor": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 52262,
+         "url": "https://github.com/electron/electron/pull/52262"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-22T18:42:09Z",
+        "actor": {
+         "login": "pcodedynamics"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 85,
+         "url": "https://github.com/Funput/Funput/pull/85",
+         "createdAt": "2026-07-22T18:42:08Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52255,
+     "title": "Windows 11 (build 26200) + AMD RX 9070: Chromium GPU process fails during startup (`GPU process isn't usable. Goodbye.`)",
+     "url": "https://github.com/electron/electron/issues/52255",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-03T10:57:47Z",
+     "closedAt": "2026-08-11T07:56:10Z",
+     "updatedAt": "2026-08-11T07:56:10Z",
+     "author": {
+      "login": "NeytirX",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\nElectron 39.8.3\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\n25H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nElectron applications should launch normally.\n\n\nMaybe duplicate of : https://github.com/electron/electron/issues/52098\nhttps://github.com/electron/electron/issues/51761\n\nAffected applications:\n\n* Obsidian 1.12.7\n* Signal Desktop 8.17.0\n* Discord (latest)\n\nNot affected:\n\n* Visual Studio Code 1.126.0\n\n## Environment\n\n* OS: Windows 11 Pro\n* Build: 26200.8737\n* GPU: AMD Radeon RX 9070\n* Driver: 32.0.31021.5001\n* Secondary GPU: AMD Radeon(TM) Graphics\n\n\n\n\n\n\n### Actual Behavior\n\n## Actual Behavior\n\nMultiple Electron applications terminate during startup.\n\nThe logs consistently end with:\n\n```text\n[FATAL:content\\browser\\gpu\\gpu_data_manager_impl_private.cc:415]\nGPU process isn't usable. Goodbye.\n```\n\nSignal additionally reports repeated GPU process failures before aborting:\n\n```text\nGPU process exited unexpectedly: exit_code=-2147483645\n```\n\nWindows Event Viewer records Application Error (Event ID 1000) with exception code:\n\n```\n0x80000003\n```\n\nThe faulting module is the application executable itself (e.g. `Obsidian.exe`, `Signal.exe`).\n\n## Reproduction\n\nLaunching Obsidian normally:\n\n```powershell\n& \"C:\\Users\\<user>\\AppData\\Local\\Programs\\Obsidian\\Obsidian.exe\"\n```\n\nResults in:\n\n* application exits almost immediately\n* log ends with `GPU process isn't usable. Goodbye.`\n\nThe same behavior is observed with Signal Desktop and Discord.\n\n## Startup Flag Testing\n\n### `--in-process-gpu`\n\nLaunching with:\n\n```text\n--in-process-gpu\n```\n\nchanges the behavior:\n\n* the process no longer exits immediately\n* however, the application window is not rendered correctly (GUI is missing / blank)\n\n### Four-flag combination\n\nLaunching with:\n\n```text\n--disable-gpu\n--disable-gpu-compositing\n--disable-software-rasterizer\n--in-process-gpu\n```\n\nchanges the behavior further.\n\nIn Safe Mode, this combination allows the UI to render instead of immediately terminating.\n\nOutside Safe Mode, startup behavior changes, but rendering is still incomplete or absent.\n\nThe fact that `--in-process-gpu` consistently changes the failure mode suggests the issue is related to Chromium's GPU process initialization.\n\n## Diagnostics Already Performed\n\n* Updated AMD driver to latest available version\n* `sfc /scannow`\n* Windows Defender scan\n* Malwarebytes scan\n* HDR disabled\n* Safe Mode testing\n* AMD Radeon Software terminated\n* DxDiag reports no display or DirectX problems\n\nNone of the above resolved the issue.\n\nIf there are additional Chromium or Electron logging flags that would help diagnose why the GPU process exits, I would be happy to collect and provide them.\n\n### Testcase Gist URL\n\n`npx electron`\n\n### Additional Information\n\nVisual Studio Code launches normally on the same machine.\n\nThis suggests the issue is not a complete Electron failure, but may depend on the Electron/Chromium version or GPU initialization path used by different applications.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "crash :boom:"
+       },
+       {
+        "name": "blocked/need-info \u274c"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-comment"
+       },
+       {
+        "name": "component/gpu"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-03T10:58:05Z",
+        "body": "<!-- end-of-life -->\n\nHello @NeytirX. Thanks for reporting this and helping to make Electron better!\n\nThe version of Electron reported in this issue has reached end-of-life and is [no longer supported](https://www.electronjs.org/docs/latest/tutorial/electron-timelines#timeline). If you're still experiencing this issue on a [supported version](https://www.electronjs.org/releases/stable) of Electron, please update this issue to reflect that version of Electron.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-info%20%E2%9D%8C label for this reason. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-03T11:39:14Z",
+        "body": "Does running `npx electron` crash for you, too?"
+       },
+       {
+        "author": {
+         "login": "NeytirX",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-04T10:43:31Z",
+        "body": "> npx electron\n\nyes, same issue\n"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-04T20:01:49Z",
+        "body": "Thanks for the feedback!\n\nWhat happens when you run Google Chrome on your machine?"
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-11T07:56:10Z",
+        "body": "Same `-2147483645` sandbox exit as #51761 (and #52098), closing in favour of that one. If fixing the ACLs on the install dir per that thread doesn't sort it plz reopen with a supported version."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 12,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T10:57:48Z",
+        "actor": {
+         "login": "NeytirX",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-03T10:57:49Z",
+        "actor": {
+         "login": "NeytirX",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T10:58:04Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T10:58:04Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T11:39:23Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "crash :boom:"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-04T10:43:42Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-04T20:02:08Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-comment"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-04T20:02:13Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/gpu"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-04T20:02:19Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-11T07:56:11Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-08-22T12:38:48Z",
+        "actor": {
+         "login": "Javis603"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 487,
+         "url": "https://github.com/Javis603/token-monitor/issues/487",
+         "createdAt": "2026-08-22T07:02:52Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-29T13:06:58Z",
+        "actor": {
+         "login": "tiancaixiaoxi"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 54552,
+         "url": "https://github.com/electron/electron/issues/54552",
+         "createdAt": "2026-09-29T13:06:57Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52253,
+     "title": "fs.rmSync fails on read-only file with EPERM",
+     "url": "https://github.com/electron/electron/issues/52253",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-03T08:28:53Z",
+     "closedAt": "2026-09-21T20:14:54Z",
+     "updatedAt": "2026-09-21T20:14:54Z",
+     "author": {
+      "login": "xmedeko",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\n`fs.rmSync` should delete the file even if it's read-only.\n\n### Actual Behavior\n\n`fs.rmSync` in Electron preload (nodeIntegration: true) fails to delete read-only file with: EPERM, Permission denied (Note: Windows 11). See the Gits Fiddle. Press \"Create RO file\" and then \"Remove RO file\".\n\nWhile `fsPromises.rm` removes the file OK.\n\nNode.version in Electron 43.0.0 is 24.17.0. When I try it with standalone Node.js 24.17.0 from command line, then the file is deleted OK.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/5042e7e0b320461ca0bb86908239bd5b\n\n### Additional Information\n\nNote:\n- I have not tried it in electron main process without nodeIntegration. This is not used in public code, just internal one and we want to keep it KISS.\n- It was working with some older Electron version.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "tracking-upstream"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-03T11:41:44Z",
+        "body": "Thanks for reporting!\n\n> I have not tried it in electron main process without nodeIntegration.\n\nCould you please test if that works and report back?\n\n> It was working with some older Electron version.\n\nWould you be able to bisect which version broke it? That will help us find the problematic commit."
+       },
+       {
+        "author": {
+         "login": "xmedeko",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-03T12:02:41Z",
+        "body": "Last good: v39.8.10\nFirst bad: v40.0.0\n\nSame problem when using ipcRenderer and fs.rmSync in the main process. I've updated the Gist and added one more button \"Remove RO file in main sync\".\n\n"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-06T22:16:01Z",
+        "body": "Thanks for testing!\n\nWould you be able to check which v40 alpha/beta/nightly version introduced the issue? You can switch Electron versions easily in Electron Fiddle. You can also bisect in Fiddle: `View > Toggle Bisect Helper`. (You might need to enable nightly versions in the Electron Fiddle settings.) "
+       },
+       {
+        "author": {
+         "login": "xmedeko",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-07T07:09:34Z",
+        "body": "Bisect complete. Check the range [40.0.0-alpha.2...40.0.0-alpha.4](https://github.com/electron/electron/compare/v40.0.0-alpha.2...v40.0.0-alpha.4). (40.0.0-alpha.3 is not in the Fiddle list).\n\n(BTW. I was aware about Fiddle Bisect, but I fist tried If major version upgrade like x.0.0 could cause such breaking change and it worked.)"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 17,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T08:28:54Z",
+        "actor": {
+         "login": "xmedeko",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-03T08:28:54Z",
+        "actor": {
+         "login": "xmedeko",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T08:29:09Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T08:29:09Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T08:29:09Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T11:41:50Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-03T12:02:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-08T20:40:57Z",
+        "actor": {
+         "login": "claude"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52291,
+         "url": "https://github.com/electron/electron/pull/52291",
+         "createdAt": "2026-07-08T20:40:55Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-08T21:10:32Z",
+        "actor": {
+         "login": "nmggithub"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 64374,
+         "url": "https://github.com/nodejs/node/issues/64374",
+         "createdAt": "2026-07-08T21:10:31Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-15T16:53:46Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "tracking-upstream"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-18T06:16:07Z",
+        "actor": {
+         "login": "coderabbitai"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 120,
+         "url": "https://github.com/unbraind/pm-brief/pull/120",
+         "createdAt": "2026-09-18T05:25:49Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-21T17:19:07Z",
+        "actor": {
+         "login": "ckerr"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54180,
+         "url": "https://github.com/electron/electron/pull/54180",
+         "createdAt": "2026-09-21T17:19:06Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-21T20:14:54Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 54180,
+         "url": "https://github.com/electron/electron/pull/54180"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-28T17:31:26Z",
+        "actor": {
+         "login": "Micka420-collab"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 538,
+         "url": "https://github.com/Micka420-collab/hive/pull/538",
+         "createdAt": "2026-09-28T17:31:25Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-30T23:14:31Z",
+        "actor": {
+         "login": "dougseven"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 1,
+         "url": "https://github.com/liamdarmody/rundock-investment-partner/issues/1",
+         "createdAt": "2026-09-30T23:14:30Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-02T08:27:07Z",
+        "actor": {
+         "login": "liamdarmody"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 343,
+         "url": "https://github.com/liamdarmody/rundock/issues/343",
+         "createdAt": "2026-10-02T08:27:06Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-02T08:46:26Z",
+        "actor": {
+         "login": "liamdarmody"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 344,
+         "url": "https://github.com/liamdarmody/rundock/pull/344",
+         "createdAt": "2026-10-02T08:46:25Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52247,
+     "title": "Replacing menu while open causes segfault on Windows",
+     "url": "https://github.com/electron/electron/issues/52247",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-03T01:02:38Z",
+     "closedAt": "2026-07-07T00:08:40Z",
+     "updatedAt": "2026-07-07T00:08:41Z",
+     "author": {
+      "login": "rf-figma",
+      "__typename": "User"
+     },
+     "authorAssociation": "MEMBER",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 10.0.19045 (6466)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n41.2.0\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nCalling `Menu.setApplicationMenu()` while the user interacts with an open menu should not crash the app.\n\n### Actual Behavior\n\nIf the application menu is replaced while being displayed, and a GC triggers before the menu closes, the relevant `Menu` object will be garbage-collected, causing various kinds of segfaults in menu-related UI code.\n\nFor example:\n```\nOS Version: Windows 10.0.19045 (6466)\nReport Version: 104\n\nCrashed Thread: 38224\n\nApplication Specific Information:\nFatal Error: EXCEPTION_ACCESS_VIOLATION_READ / 0x0\n\nThread 38224 Crashed:\n0   Figma.exe                       0x7ff6274073c7      ui::MenuModel::GetModelAndIndexForCommandId (menu_model.cc:49)\n1   Figma.exe                       0x7ff62a4fd728      views::MenuModelAdapter::GetLabelFontList (menu_model_adapter.cc:225)\n2   Figma.exe                       0x7ff62a507cdf      views::MenuItemView::GetFontList (menu_item_view.cc:1005)\n3   Figma.exe                       0x7ff62a505f35      views::MenuItemView::OnPaintImpl (menu_item_view.cc:1115)\n4   Figma.exe                       0x7ff620987cfb      views::View::Paint (view.cc:1475)\n5   Figma.exe                       0x7ff620988261      views::View::RecursivePaintHelper (view.cc:3114)\n6   Figma.exe                       0x7ff62098811f      views::View::PaintChildren (view.cc:2436)\n7   Figma.exe                       0x7ff62a502328      views::SubmenuView::PaintChildren (submenu_view.cc:316)\n8   Figma.exe                       0x7ff620987d6f      views::View::Paint (view.cc:1481)\n9   Figma.exe                       0x7ff620988261      views::View::RecursivePaintHelper (view.cc:3114)\n10  Figma.exe                       0x7ff62098811f      views::View::PaintChildren (view.cc:2436)\n11  Figma.exe                       0x7ff620987d6f      views::View::Paint (view.cc:1481)\n12  Figma.exe                       0x7ff620988261      views::View::RecursivePaintHelper (view.cc:3114)\n13  Figma.exe                       0x7ff62098811f      views::View::PaintChildren (view.cc:2436)\n14  Figma.exe                       0x7ff620987d6f      views::View::Paint (view.cc:1481)\n15  Figma.exe                       0x7ff620988261      views::View::RecursivePaintHelper (view.cc:3114)\n16  Figma.exe                       0x7ff62098811f      views::View::PaintChildren (view.cc:2436)\n17  Figma.exe                       0x7ff620987d6f      views::View::Paint (view.cc:1481)\n18  Figma.exe                       0x7ff620988261      views::View::RecursivePaintHelper (view.cc:3114)\n19  Figma.exe                       0x7ff62098811f      views::View::PaintChildren (view.cc:2436)\n20  Figma.exe                       0x7ff620987d6f      views::View::Paint (view.cc:1481)\n21  Figma.exe                       0x7ff622ce48fe      views::View::PaintFromPaintRoot (view.cc:3122)\n22  Figma.exe                       0x7ff622d60191      ui::Layer::PaintContentsToDisplayList (layer.cc:1599)\n```\n\n### Testcase Gist URL\n\nhttps://gist.github.com/rf-figma/103e9c2d491975cbefe183bfa5ca3cc5\n\n### Additional Information\n\nTo trigger the issue in Fiddle, you need to run the app with `--js-flags=--expose-gc`, open the File menu, and mouse over the menu a bit.\n\nThis issue was introduced in 41.2.1, almost definitely in #50915 (the backport of #50465).\n\nThat PR contains a bunch of GC-related changes, one of which was the removal of a `gin_helper::SelfKeepAlive` property from `Menu`. I think [the premise of the change was that this was redundant](https://github.com/electron/electron/pull/50806#pullrequestreview-4079112260), since `Menu` instances are all owned by other objects that should retain them properly.\n\nThe problem with this is that the owner of a `Menu` will only retain it as long as it hasn't been replaced. If you replace the menu while it's open, and the `Menu` object gets garbage-collected as a result, its destructor will clear all of the delegate pointers that are still being used by the rendered views.\n\nI tried just restoring the `SelfKeepAlive` and it did fix the issue for me, although I'm not sure if there's some reason that we would need to do this differently now. I'll put up a PR in a second.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "crash :boom:"
+       },
+       {
+        "name": "component/menu"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "41-x-y"
+       },
+       {
+        "name": "42-x-y"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 11,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T01:02:39Z",
+        "actor": {
+         "login": "rf-figma",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-03T01:02:39Z",
+        "actor": {
+         "login": "rf-figma",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T01:02:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T01:02:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T01:02:55Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-03T01:21:38Z",
+        "actor": {
+         "login": "rf-figma"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52248,
+         "url": "https://github.com/electron/electron/pull/52248",
+         "createdAt": "2026-07-03T01:21:36Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T01:33:05Z",
+        "actor": {
+         "login": "rf-figma",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "41-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T01:33:05Z",
+        "actor": {
+         "login": "rf-figma",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T11:44:06Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/menu"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-03T11:44:09Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "crash :boom:"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-07T00:08:41Z",
+        "actor": {
+         "login": "ckerr",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 52248,
+         "url": "https://github.com/electron/electron/pull/52248"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52232,
+     "title": "desktopCapturer returns sources with empty `display_id` on Windows",
+     "url": "https://github.com/electron/electron/issues/52232",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-07-02T09:15:30Z",
+     "closedAt": null,
+     "updatedAt": "2026-10-01T02:03:09Z",
+     "author": {
+      "login": "michalzaq12",
+      "__typename": "User"
+     },
+     "authorAssociation": "CONTRIBUTOR",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nSources returned by desktopCapturer should have a valid `display_id` property when using a capturer other than DirectX on Windows. There is a bug in code https://github.com/electron/electron/blob/57cc00ce06d2a1dc222bb2c358dcd82cfd57ab13/shell/browser/api/electron_api_desktop_capturer.cc#L485 for Windows path `display_id` is only initlialized when `using_directx_capturer_ = true `. Moreover `using_directx_capturer_` should be set based on actual usage, now it only checks if DirectX capturer is supported, while GDI Capturer can be used as a fallback. This will also cause errors in the future for the WGC capturer. \n\n### Actual Behavior\n\n`display_id = ''`\n\n### Testcase Gist URL\n\nhttps://gist.github.com/michalzaq12/52be3585397f508a3c4c67f5c14f8004\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "component/desktopcapturer"
+       },
+       {
+        "name": "stale"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-02T11:09:57Z",
+        "body": "Thanks for reporting and for the great repro!"
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-10-01T02:03:08Z",
+        "body": "This issue has been automatically marked as stale. **If this issue is still affecting you, please leave any comment** (for example, \"bump\"), and we'll keep it open. If you have any new additional information\u2014in particular, if this is still reproducible in the [latest version of Electron](https://releases.electronjs.org/) or in the [beta](https://www.electronjs.org/releases/beta)\u2014please include it with your comment!"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 9,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-02T09:15:32Z",
+        "actor": {
+         "login": "michalzaq12",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-02T09:15:33Z",
+        "actor": {
+         "login": "michalzaq12",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-02T09:15:44Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-02T09:15:44Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-02T09:15:44Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-02T11:10:00Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/desktopcapturer"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-18T05:51:39Z",
+        "actor": {
+         "login": "elio-Wang"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52388,
+         "url": "https://github.com/electron/electron/pull/52388",
+         "createdAt": "2026-07-18T05:51:38Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-21T02:31:37Z",
+        "actor": {
+         "login": "coderabbitai"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 203,
+         "url": "https://github.com/gbyo/tilecast/pull/203",
+         "createdAt": "2026-07-21T02:28:13Z"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-10-01T02:03:09Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "stale"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52223,
+     "title": "[Bug]: globalShortcut portal path collapses F-key and punctuation accelerators to the same command id",
+     "url": "https://github.com/electron/electron/issues/52223",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-07-01T21:04:40Z",
+     "closedAt": null,
+     "updatedAt": "2026-09-23T23:14:15Z",
+     "author": {
+      "login": "VerteDinde",
+      "__typename": "User"
+     },
+     "authorAssociation": "MEMBER",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the issue tracker for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0 (any version with the Wayland GlobalShortcuts portal path)\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nAny Linux Wayland session using the org.freedesktop.portal.GlobalShortcuts path\n\n### What arch are you using?\n\nx64\n\n### Expected Behavior\n\nRegistering two shortcuts like `Ctrl+F9` and `Ctrl+F10` on the Wayland portal path binds two distinct portal shortcuts.\n\n### Actual Behavior\n\n`GlobalShortcut::Register` builds the portal command id from `extensions::Command::AcceleratorToString(accelerator)`, which only supports A\u2013Z, 0\u20139, comma, period, arrows, Home/End/PgUp/PgDn, Space, Tab, Insert/Delete, and the media keys \u2014 everything else (all F-keys, Escape, Enter, most punctuation, numpad) returns an empty string. All such accelerators therefore collapse to the same empty command id and the same fake extension id, colliding in `command_callback_map_` and in the portal session: only the last registered shortcut of that class is actually bound, and its activation runs the last-registered callback.\n\nObserved empirically: registering `Control+Shift+F9` produces a portal command whose id is derived from an empty accelerator string.\n\n### Additional Information\n\nTwo possible directions: extend the stringification used for portal command ids to cover all registrable accelerators (needs to stay stable across versions, since the portal persists binds keyed by these ids), or key commands by something independent of the accelerator (with a migration for existing persisted binds). Related plumbing work: #52218.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "component/globalShortcut"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-01T23:26:05Z",
+        "body": "Do you think it makes sense to fix this [upstream](https://source.chromium.org/chromium/chromium/src/+/main:ui/base/accelerators/command.cc;l=109;drc=44a8870df7a35fbb96ac69e14108317b95259ce4)? Do you think Chrome would want to support those keys, too?"
+       },
+       {
+        "author": {
+         "login": "VirSanctus",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-23T23:14:15Z",
+        "body": "One more collapse case this doesn't list yet: `AcceleratorToString` also returns `\"\"` when `HasValidModifierCombination` fails ([command.cc L110](https://source.chromium.org/chromium/chromium/src/+/refs/tags/150.0.7871.250:ui/base/accelerators/command.cc;l=110)), so accelerators with no modifier, or with Shift as the only modifier, collapse into the same id as well.\n\nTested on Electron 43.5.0 (Hyprland 0.56.2, xdg-desktop-portal 1.22.1, `--enable-features=GlobalShortcutsPortal`): registering `Control+Shift+X`, `Control+Alt+A`, `Control+F10`, `Shift+A` and `A` returns `true` for all five, but `BindShortcuts` carries only three shortcuts. `Control+F10`, `Shift+A` and `A` end up as one `<prefix>-` entry with `preferred_trigger` `\"a\"`, and triggering it runs the callback for `A` (the last one registered). The command-id code is unchanged on `main`.\n\nOn @nikwen's question: I don't think this is Chromium's to fix. `AcceleratorToString` is the inverse of `Command::ParseImpl` (the keys at L275-285 match the switch at L141-205), i.e. the extension `commands` grammar ([documented rules](https://developer.chrome.com/docs/extensions/reference/api/commands)), and Chrome never uses it for portal ids: the Linux listener builds ids from `command.command_name()` ([L181](https://source.chromium.org/chromium/chromium/src/+/refs/tags/150.0.7871.250:ui/base/accelerators/global_accelerator_listener/global_accelerator_listener_linux.cc;l=181), [L195](https://source.chromium.org/chromium/chromium/src/+/refs/tags/150.0.7871.250:ui/base/accelerators/global_accelerator_listener/global_accelerator_listener_linux.cc;l=195)), and the only Chrome caller of `OnCommandsChanged` passes the extension's named commands ([extension_commands_global_registry.cc L181](https://source.chromium.org/chromium/chromium/src/+/refs/tags/150.0.7871.250:chrome/browser/extensions/extension_commands_global_registry.cc;l=181)), even ones with no accelerator.\n\nThe collapse comes from Electron using `AcceleratorToString` as the command name. Keeping that name whenever it is non-empty and only falling back to an Electron-side string for `\"\"` would fix it without changing ids for existing persisted binds.\n"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 7,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T21:04:41Z",
+        "actor": {
+         "login": "VerteDinde",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T21:04:41Z",
+        "actor": {
+         "login": "VerteDinde",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T21:04:41Z",
+        "actor": {
+         "login": "VerteDinde",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/globalShortcut"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T21:04:53Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-07-08T17:06:27Z",
+        "actor": {
+         "login": "VerteDinde"
+        },
+        "assignee": {
+         "login": "VerteDinde"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-28T03:42:41Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-07T05:46:57Z",
+        "actor": {
+         "login": "vitalyiegorov"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 378,
+         "url": "https://github.com/react-native-linux/react-native-linux/issues/378",
+         "createdAt": "2026-09-07T05:46:56Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52219,
+     "title": "A configurable build system using a file like electron.config.js",
+     "url": "https://github.com/electron/electron/issues/52219",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-01T20:25:13Z",
+     "closedAt": "2026-08-11T08:19:30Z",
+     "updatedAt": "2026-08-11T08:19:30Z",
+     "author": {
+      "login": "eonder87",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Enhancement"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nWhile working on several Electron projects, I noticed that many desktop applications don't actually use a large portion of the Chromium features that are included by default.\n\nApplications such as launchers, utilities, configuration tools, local dashboards, media managers, or internal business software often only need the rendering engine and a few web APIs. Features like the built-in PDF viewer, Wallet, Translate, Media Router, and similar browser functionality may never be used, yet they are still bundled with every application.\n\nIt would be nice if developers had a way to avoid shipping optional Chromium features that their application doesn't need.\n\n### Proposed Solution\n\nOne possible approach would be to introduce a build configuration file, something similar to `electron.config.js`, where developers could enable or disable supported Chromium components before packaging.\n\nFor example:\n\n```js\nmodule.exports = {\n  chromium: {\n    pdfViewer: false,\n    wallet: false,\n    translate: false,\n    mediaRouter: false,\n    autofill: false\n  }\n};\n```\n\nIf no configuration file is present, Electron would continue to behave exactly as it does today.\n\nOnly components that are considered optional and safe to exclude would be configurable. Anything required by Electron or Chromium would simply remain enabled.\n\n### Alternatives Considered\n\nI also thought about having separate Electron distributions, such as a \"minimal\" build and a \"full\" build.\n\nHowever, I think a configuration-based approach would be more flexible. Different applications have different requirements, so allowing developers to choose which optional features they need seems more practical than maintaining multiple Electron distributions.\n\n### Additional Information\n\nI understand that Chromium has many internal dependencies and that not every feature can simply be removed.\n\nThe goal isn't to make every Chromium component optional, but to provide a supported way to exclude features that are already considered optional.\n\nEven if only a small number of components could be configured this way, it could still help reduce application size and avoid shipping functionality that some applications will never use.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "enhancement :sparkles:"
+       },
+       {
+        "name": "component/build"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-01T23:21:45Z",
+        "body": "Building Electron takes hours even on modern machines and requires hundreds of gigabytes of storage space.\n\nYou can use https://github.com/electron/build-tools to make your own builds and various build flags to reduce the build size. (You'll need to dig through the code to find them though.)\n\nI don't think it's realistic for the project to provide multiple distributions. It's difficult (and expensive) enough to make all of our current builds. I don't think we have the capacity to add more complexity there.\n\nI'll leave the issue open though to see if other maintainers disagree. I definitely understand why the features would be useful. I just don't think they're feasible at the moment, unfortunately."
+       },
+       {
+        "author": {
+         "login": "eonder87",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-02T10:38:45Z",
+        "body": "Thanks for the response!\n\nI think I may not have explained the idea very well.\n\nI wasn't suggesting another official build variation or asking Electron to maintain multiple distributions.\n\nWhat I had in mind was a feature in the existing build system. For example, a specific config.js, the build could check that configuration and exclude supported optional Chromium features. If no configuration is provided, the build would behave exactly as it does today and include everything. Maybe there aren't any optional features. I don't know, but if there are, it could be useful for Electron.\n\nIt's just an idea because the Electron developers know the Chromium codebase much better than I do.\n\nI will look at the build tools too. Thanks again."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-02T11:07:35Z",
+        "body": "You can find some build flags in the Electron and Chromium source code that can do that, e.g., one to disable the extension logic or one to disable the printing code. build-tools places config files on your computer where you can persist those variables. You'll need to recompile Electron though, which takes hours and requires hundreds of GB of disk space. I believe it's not really feasible to exclude features when an app is packaged."
+       },
+       {
+        "author": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-08-11T08:19:30Z",
+        "body": "Closing per @nikwen's comments, excluding features at package time isn't something we can realistically support."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-01T20:25:14Z",
+        "actor": {
+         "login": "eonder87",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T20:25:15Z",
+        "actor": {
+         "login": "eonder87",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "enhancement :sparkles:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T23:21:48Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/build"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-11T08:19:31Z",
+        "actor": {
+         "login": "MarshallOfSound",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52218,
+     "title": "[Bug]: globalShortcut.register() returns true before the Wayland portal bind resolves",
+     "url": "https://github.com/electron/electron/issues/52218",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-01T20:23:05Z",
+     "closedAt": "2026-09-25T08:38:56Z",
+     "updatedAt": "2026-09-25T08:38:56Z",
+     "author": {
+      "login": "VerteDinde",
+      "__typename": "User"
+     },
+     "authorAssociation": "MEMBER",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the issue tracker for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0 (also 42.5.1 with the portal path enabled via flags)\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 26.04 LTS (GNOME Wayland, gnome-shell 50.1, xdg-desktop-portal 1.21.1)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Expected Behavior\n\nOn the Linux Wayland portal path, an app can find out whether a `globalShortcut.register()` call actually resulted in a bound shortcut \u2014 or at minimum, `register()`/`isRegistered()` should not report success when the portal denied the bind.\n\n### Actual Behavior\n\nOn Wayland, `globalShortcut` goes through the `org.freedesktop.portal.GlobalShortcuts` portal (`GlobalAcceleratorListenerLinux`). The portal's `BindShortcuts` call is asynchronous and consent-gated (GNOME shows a dialog before binding), so the synchronous boolean returned by `register()` cannot be truthful on this path: `GlobalShortcut::Register()` returns `true` as soon as the command set is handed to the listener via `OnCommandsChanged()`, before the bind resolves. `isRegistered()` is equally misleading \u2014 it only consults the local command map.\n\nIf the portal later replies with an error \u2014 e.g. GNOME 50.0/50.1 rejects `BindShortcuts` for any app id that fails `g_application_id_is_valid()` (see gnome-control-center `global-shortcuts-provider`; relaxed in 50.2), or the user dismisses the consent dialog \u2014 the result dies in `GlobalAcceleratorListenerLinux::OnBindShortcuts()` as a `LOG(ERROR)`. Nothing reaches `ui::GlobalAcceleratorListener` observers, so Electron has no way to surface it even if it wanted to.\n\nObserved on an Ubuntu 26.04 VM with stock Electron binaries (`GlobalShortcutsPortal` + `GlobalShortcutsPortalPreferredTrigger` enabled):\n\n```\n# invalid app id (dashed desktopName, no dot): register() lies, portal denies\n20:32:28 REGISTER Control+Shift+F9 -> true\ndbus: error_name=org.freedesktop.portal.Error.NotAllowed reply_serial=23\n(shortcut never fires, no dialog shown)\n\n# valid reverse-DNS desktopName (com.example.MyApp.desktop): works end to end\n20:41:49 REGISTER Control+Shift+F9 -> true\n20:44:34 FIRED Control+Shift+F10        # after one consent dialog\n20:46:38 REGISTER ... -> true            # relaunch: silent re-bind, persists\n```\n\nApps cannot distinguish three genuinely different states: **bound**, **pending consent**, and **denied**. That matters in practice \u2014 \"shortcut silently doesn't work\" is indistinguishable from \"user hasn't clicked the consent dialog yet\".\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nSurfacing the bind result needs a small Chromium patch: `OnBindShortcuts()` receives the response but `ui::GlobalAcceleratorListener` has no observer/callback for it today.\n\nProposed minimal API (shape open for discussion): keep `register()` synchronous \u2014 its boolean means \"request submitted\" on this path \u2014 and add a module event that fires when the portal resolves the bind:\n\n```js\nglobalShortcut.on('registration-resolved', (accelerator, bound) => {\n  // bound === false: portal denied (invalid app id, user dismissed dialog, ...)\n})\n```\n\nAlternatives considered: a promise-returning `registerAsync()`, or a callback in an options object. On non-portal platforms the event could fire immediately with the `register()` result, keeping it usable cross-platform.\n\nDraft PR with plumbing to follow; API shape needs API WG input.\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "component/globalShortcut"
+       },
+       {
+        "name": "42-x-y"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-01T23:28:04Z",
+        "body": "@VerteDinde Assigned you given that you have a PR open already."
+       },
+       {
+        "author": {
+         "login": "codebytere",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-09-25T08:38:56Z",
+        "body": "#52224 added a `registration-resolved` event on `globalShortcut` for exactly this (main / 46, not backported), so apps can tell a bound shortcut from a denied one on the portal path. closing this out."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 14,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T20:23:06Z",
+        "actor": {
+         "login": "VerteDinde",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T20:23:07Z",
+        "actor": {
+         "login": "VerteDinde",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T20:23:07Z",
+        "actor": {
+         "login": "VerteDinde",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/globalShortcut"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T20:23:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-01T20:23:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-01T20:52:15Z",
+        "actor": {
+         "login": "VerteDinde"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52222,
+         "url": "https://github.com/electron/electron/pull/52222",
+         "createdAt": "2026-07-01T20:52:14Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-01T21:04:41Z",
+        "actor": {
+         "login": "VerteDinde"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 52223,
+         "url": "https://github.com/electron/electron/issues/52223",
+         "createdAt": "2026-07-01T21:04:40Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-01T21:10:43Z",
+        "actor": {
+         "login": "VerteDinde"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52224,
+         "url": "https://github.com/electron/electron/pull/52224",
+         "createdAt": "2026-07-01T21:10:42Z"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-07-01T23:27:52Z",
+        "actor": {
+         "login": "nikwen"
+        },
+        "assignee": {
+         "login": "VerteDinde"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-28T03:42:41Z",
+        "actor": {
+         "login": "dsanders11",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-05T20:01:16Z",
+        "actor": {
+         "login": "pendo324"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 1324,
+         "url": "https://github.com/Vencord/Vesktop/pull/1324",
+         "createdAt": "2026-09-05T20:01:15Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-07T05:46:57Z",
+        "actor": {
+         "login": "vitalyiegorov"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 378,
+         "url": "https://github.com/react-native-linux/react-native-linux/issues/378",
+         "createdAt": "2026-09-07T05:46:56Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-09-25T08:38:57Z",
+        "actor": {
+         "login": "codebytere",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-10-15T18:09:31Z",
+        "actor": {
+         "login": "Player07x"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 24,
+         "url": "https://github.com/Player07x/Runas-Codex/pull/24",
+         "createdAt": "2026-10-15T17:30:30Z"
+        }
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

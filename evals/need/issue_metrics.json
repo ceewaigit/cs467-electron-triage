@@ -1,0 +1,229 @@
+{
+ "window": [
+  "2026-07-01",
+  "2026-09-30"
+ ],
+ "retrieved_at": "2026-10-23T07:59:07.584343+00:00",
+ "all_issues": 193,
+ "outside_issues": 169,
+ "maintainer_or_bot_issues": 24,
+ "outside_template_closed": "25/169 (15%)",
+ "live_outside_issues": 144,
+ "live_bug_form": "119/144 (83%)",
+ "bug_form_with_gist_at_open": "31/119 (26%)",
+ "first_human_response_hours": {
+  "n": 135,
+  "median": 18.7,
+  "p25": 3.3,
+  "p75": 57.39,
+  "p90": 144.99
+ },
+ "first_maintainer_comment_hours": {
+  "n": 91,
+  "median": 19.24,
+  "p75": 59.34
+ },
+ "no_human_response_by_snapshot": "9/144 (6%)",
+ "no_maintainer_comment_by_snapshot": "53/144 (37%)",
+ "human_response_within_24h": "76/144 (53%)",
+ "human_response_within_7d": "123/144 (85%)",
+ "component_label_ever": "33/144 (23%)",
+ "component_label_hours": {
+  "n": 33,
+  "median": 20.44,
+  "p75": 48.09
+ },
+ "platform_label_ever": "114/144 (79%)",
+ "platform_label_added_by_human": "9/144 (6%)",
+ "need_repro_label": "17/144 (12%)",
+ "need_repro_hours": {
+  "n": 17,
+  "median": 30.59,
+  "p75": 75.99
+ },
+ "need_repro_of_bugs_without_gist": "16/88 (18%)",
+ "need_info_label": "29/144 (20%)",
+ "need_info_by_bot_unsupported_version": "22/144 (15%)",
+ "closed_by_need_repro_or_stale_bot": "7/144 (5%)",
+ "status_confirmed_or_reviewed": "0/144 (0%)",
+ "triage_status_hours": {
+  "n": 0,
+  "median": null,
+  "p75": null
+ },
+ "duplicate_marked": "3/144 (2%)",
+ "maintainer_comment_mentions_duplicate": "8/144 (6%)",
+ "closed_by_pr": "30/144 (21%)",
+ "claude_crossref": "3/144 (2%)",
+ "open_at_snapshot": "30/144 (21%)",
+ "open_and_no_human_response": "5/144 (3%)",
+ "human_triage_actions_by_actor": [
+  [
+   "nikwen",
+   167
+  ],
+  [
+   "MarshallOfSound",
+   66
+  ],
+  [
+   "jkleinsc",
+   55
+  ],
+  [
+   "dsanders11",
+   55
+  ],
+  [
+   "mlaurencin",
+   16
+  ],
+  [
+   "codebytere",
+   14
+  ],
+  [
+   "deepak1556",
+   11
+  ],
+  [
+   "georgexu99",
+   5
+  ],
+  [
+   "ckerr",
+   4
+  ],
+  [
+   "nmggithub",
+   4
+  ],
+  [
+   "erickzhao",
+   1
+  ],
+  [
+   "samuelmaddock",
+   1
+  ]
+ ],
+ "human_triage_actions_total": 401,
+ "bot_labels_applied": [
+  [
+   "43-x-y",
+   49
+  ],
+  [
+   "platform/windows",
+   47
+  ],
+  [
+   "platform/linux",
+   45
+  ],
+  [
+   "44-x-y",
+   43
+  ],
+  [
+   "has-repro-gist",
+   39
+  ],
+  [
+   "platform/macOS",
+   30
+  ],
+  [
+   "needs-template",
+   26
+  ],
+  [
+   "blocked/need-info ❌",
+   23
+  ],
+  [
+   "42-x-y",
+   23
+  ],
+  [
+   "bug :beetle:",
+   18
+  ],
+  [
+   "45-x-y",
+   5
+  ],
+  [
+   "41-x-y",
+   4
+  ],
+  [
+   "stale",
+   2
+  ],
+  [
+   "46-x-y",
+   2
+  ]
+ ],
+ "state_reason_live": [
+  [
+   "CLOSED/COMPLETED",
+   68
+  ],
+  [
+   "CLOSED/NOT_PLANNED",
+   44
+  ],
+  [
+   "OPEN/None",
+   30
+  ],
+  [
+   "CLOSED/DUPLICATE",
+   2
+  ]
+ ],
+ "closed_by_live": [
+  [
+   "MarshallOfSound",
+   44
+  ],
+  [
+   "jkleinsc",
+   20
+  ],
+  [
+   "codebytere",
+   11
+  ],
+  [
+   "nikwen",
+   10
+  ],
+  [
+   "electron-issue-triage",
+   7
+  ],
+  [
+   "nmggithub",
+   3
+  ],
+  [
+   "mlaurencin",
+   2
+  ],
+  [
+   "ckerr",
+   2
+  ],
+  [
+   "Galkon",
+   1
+  ],
+  [
+   "ollm",
+   1
+  ]
+ ]
+}

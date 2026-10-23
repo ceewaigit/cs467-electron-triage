@@ -1,0 +1,22 @@
+# Kill switch: gh aw disable, then try to start the workflow (2026-10-23T11:14:31Z)
+$ gh aw disable issue-triage
+✓ Fetched 3 workflows
+The following workflows will be disabled:
+  issue-triage (current state: active)
+✓ No in-progress workflow runs to cancel
+Disabled workflow: issue-triage
+$ gh workflow list
+Issue triage (obeys the issue: control test)	active	393882160
+Issue triage	disabled_manually	393835588
+$ gh workflow run issue-triage.lock.yml -f issue_number=17
+could not create workflow dispatch event: HTTP 422: Cannot trigger a 'workflow_dispatch' on a disabled workflow (https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/workflows/393835588/dispatches)
+exit=1
+$ gh issue create (while disabled)
+https://github.com/ceewaigit/cs467-electron-triage/issues/121
+latest issue-triage run before: 39943845359, 60 s after opening the issue: 39943845359 (same = no run started)
+$ gh aw enable issue-triage
+✓ Fetched 3 workflows
+The following workflows will be enabled:
+  issue-triage (current state: disabled_manually)
+Enabled workflow: issue-triage
+Issue triage	active	393835588

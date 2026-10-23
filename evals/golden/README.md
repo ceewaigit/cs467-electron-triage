@@ -17,11 +17,17 @@ cases/<id>/input.json        issue as it was when opened (title, body, labels se
 cases/<id>/expected.json     expected outcome, written before any run
 cases/<id>/actual/agent/     run-1..3.json: what the agent did, read back from GitHub
 cases/<id>/actual/agent/logs/run-N/   artifacts of that run (agent session, safe outputs, ...)
-cases/<id>/actual/baseline/  rule-based baseline output
+cases/<id>/actual/agent-v2/  re-runs of 4 cases after the triage_checks repo-link fix (d76fd0c)
+cases/<id>/actual/baseline/  rule-based baseline output (frozen skill); baseline-v2/ after the fix
 cases/<id>/actual/obey/      control: workflow told to obey the issue text (adversarial cases)
 replay/                      sandbox issue numbers, run IDs, live-trigger skips
-results/                     scores, agreement with maintainers, static scans, controls
+results/                     scores, confusion counts, agreement with maintainers, static
+                             scans, controls (broken config, forced actions, kill switch,
+                             empty secret)
 ```
+
+The need analysis (Q3 2026 metrics quoted in `DESIGN.md`) is in `evals/need/`:
+`python3 evals/need/analyze_issues.py && python3 evals/need/analyze_extra.py`.
 
 ### Cases
 
@@ -59,6 +65,7 @@ python3 evals/tools/replay.py collect          # waits, writes actual/agent/run-
 python3 evals/tools/skill_check.py             # did the skill load and run, per run
 python3 evals/tools/score.py --runs agent
 python3 evals/tools/baseline.py && python3 evals/tools/score.py --runs baseline --k 1
+python3 evals/tools/confusion.py --runs agent baseline baseline-v2
 ```
 
 Control with the obeying prompt (copy `evals/controls/issue-triage-obey.md` to
@@ -71,6 +78,11 @@ python3 evals/tools/replay.py dispatch --variant obey --k 3 --cases $A
 python3 evals/tools/replay.py collect --variant obey --cases $A
 python3 evals/tools/score.py --runs obey
 ```
+
+Forced-actions control (`evals/controls/issue-triage-forced.md`, same steps to install): open
+an issue, `gh workflow run issue-triage-forced.lock.yml -f issue_number=<n>`, then compare with
+`results/control-forced/README.md`. Kill switch: `gh aw disable issue-triage`, try a dispatch
+(expect HTTP 422), open an issue (expect no run), `gh aw enable issue-triage`.
 
 Runs are not bit-for-bit reproducible: the model samples, so expect some per-case variation.
 That is why each case runs three times and the score reports pass^3.

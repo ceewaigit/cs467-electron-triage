@@ -1,0 +1,984 @@
+{
+ "data": {
+  "rateLimit": {
+   "remaining": 4799,
+   "resetAt": "2026-10-23T08:09:07Z",
+   "cost": 1
+  },
+  "search": {
+   "issueCount": 6,
+   "pageInfo": {
+    "hasNextPage": false,
+    "endCursor": "Y3Vyc29yOjY="
+   },
+   "nodes": [
+    {
+     "number": 52385,
+     "title": "Detached/undocked DevTools is a blank/empty window",
+     "url": "https://github.com/electron/electron/issues/52385",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-17T20:29:16Z",
+     "closedAt": "2026-08-08T01:00:11Z",
+     "updatedAt": "2026-08-08T01:00:34Z",
+     "author": {
+      "login": "Galkon",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.1.1\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS Sonoma 14.7.3\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n39.8.10\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nOpening dev tools in `detach` or `undock` mode should show dev tools.\n\n### Actual Behavior\n\nOn any electron version newer than 39.8.10, dev tools in detach/undocked mode is a blank/empty window, nothing loads. Only downgrading to electron 39.8.10 fixes it.\n\n<img width=\"1265\" height=\"880\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2785f3c4-cf9d-45e6-aeb3-b7e54ad1c805\" />\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nWorth noting: This is happening for a frameless transparent window. Opening it in any mode besides `detach` or `undocked` works, but is not usable in this case (and overlay window w/ click-through transparency).\n\nAlso worth noting: disabling all extensions does not fix it either.\n\nScreenshot of 39.8.10 electron:\n<img width=\"1265\" height=\"878\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7c0a3b80-a47a-4ac2-aea6-97d7ee336d21\" />",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "component/devtools"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "termyanen",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-07-19T10:45:51Z",
+        "body": "Likely a duplicate of #51718 \u2014 fixed by #52365, this issue just wasn't linked in the PR. Note the fix merged July 18, so the current electron-nightly (45.0.0-nightly.20260716) doesn't include it yet \u2014 worth verifying on the next nightly. Backports to 42/43/44 are in flight."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-19T23:18:42Z",
+        "body": "Thanks for reporting!\n\n1. Would you be able to download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows maintainers to reproduce this issue, and upload it as a GitHub gist from Fiddle?\n2. Would you be able to check which Electron alpha/beta/nightly version introduced the issue? You can switch Electron versions easily in Electron Fiddle. You can also bisect in Fiddle: `View > Toggle Bisect Helper`. (You might need to enable nightly versions in the Electron Fiddle settings.)\n\nAlso potentially related: https://github.com/electron/electron/pull/52205"
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-19T23:18:56Z",
+        "body": "<!-- blocked/need-repro -->\n\nHello @Galkon. Thanks for reporting this and helping to make Electron better!\n\nWould it be possible for you to make a standalone testcase with only the code necessary to reproduce the issue? For example, [Electron Fiddle](https://www.electronjs.org/fiddle) is a great tool for making small test cases and makes it easy to publish your test case to a [gist](https://gist.github.com) that Electron maintainers can use.\n\nStand-alone test cases make fixing issues go more smoothly: it ensure everyone's looking at the same issue, it removes all unnecessary variables from the equation, and it can also provide the basis for automated regression tests.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-repro label for this reason. After you make a test case, please link to it in a followup comment. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "Galkon",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-08-08T01:00:11Z",
+        "body": "I believe this is fixed, closing now. Thank you to the contributors \ud83d\ude4f\ud83c\udffc "
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 8,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T20:29:17Z",
+        "actor": {
+         "login": "Galkon",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-17T20:29:18Z",
+        "actor": {
+         "login": "Galkon",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T20:29:29Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T20:29:29Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-19T23:18:45Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/devtools"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-19T23:18:48Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-08-08T01:00:11Z",
+        "actor": {
+         "login": "Galkon",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-08-08T01:00:34Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52383,
+     "title": "[Bug]: navigator.usb.requestDevice() crashes the browser process (SIGSEGV) on a named session partition",
+     "url": "https://github.com/electron/electron/issues/52383",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-17T19:48:41Z",
+     "closedAt": "2026-10-01T07:42:13Z",
+     "updatedAt": "2026-10-01T07:42:13Z",
+     "author": {
+      "login": "boutetnico",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.1.1\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS Tahoe 26.5.2 (25F84)\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\nUnknown \u2014 every version I tested reproduces (41.10.0, 41.10.2, 43.1.1); not bisected further back.\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nCalling `navigator.usb.requestDevice({ filters: [] })` from a window whose `webPreferences.partition` is a **named session** should reject with `NotFoundError` \u2014 exactly as it does with the default session \u2014 when no device is selected / no `select-usb-device` handler is registered.\n\n### Actual Behavior\n\nThe **browser process** crashes with `SIGSEGV` (`EXC_BAD_ACCESS` on `CrBrowserMain`).\n\nThe trigger is the named session partition: with the **default** session the identical call rejects cleanly with `NotFoundError: No device selected`. `navigator.bluetooth.requestDevice()` crashes the same way. Registering a `select-usb-device` handler that cancels the request (`event.preventDefault(); callback()`) does **not** prevent the crash \u2014 the fault happens in native code before the JS handler resolves.\n\n```\nException Type:    EXC_BAD_ACCESS (SIGSEGV)\nException Subtype: KERN_INVALID_ADDRESS at 0x0000000000000100\nTriggered by Thread: 0  CrBrowserMain\n\nThread 0 Crashed:: CrBrowserMain\n0  Electron Framework  v8::CppHeap::Create(...)\n1  Electron Framework  node::PrincipalRealm::...\n```\n\n(Symbol names are nearest-export approximations from a release build; the fault is inside V8 / cppgc internals during device-chooser setup.)\n\nRegarding the Chromium question above: the trigger is an Electron-specific `webPreferences.partition` (named session), which has no web-page-settable equivalent in stock Chrome, so I can't reproduce it directly there. The crash itself is in the Chromium-layer device-chooser path, so a Chromium root cause is still possible.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/boutetnico/cd2005b668f680b47abab2056b3fccc6\n\n### Additional Information\n\nThe only difference between the crashing and non-crashing runs is a single `webPreferences.partition` value. In the gist, `main.js` calls `requestDevice()` from the main process via `webContents.executeJavaScript(code, /* userGesture */ true)` on `did-finish-load`; flipping the `USE_DEFAULT_SESSION` constant to `true` gives the non-crashing control case. No device or hardware is required \u2014 the crash happens while opening the device chooser.\n\nReproduced identically on:\n\n| Electron | Chromium | Result |\n| --- | --- | --- |\n| 41.10.0 | 146 | SIGSEGV |\n| 41.10.2 | 146 | SIGSEGV |\n| 43.1.1 | 150 | SIGSEGV |\n",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/macOS"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "component/deviceAccess"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 0,
+      "nodes": []
+     },
+     "timelineItems": {
+      "totalCount": 11,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-19T23:21:00Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-19T23:21:00Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/deviceAccess"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-19T23:21:00Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-19T23:21:02Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-19T23:21:13Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "platform/macOS"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-19T23:21:13Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-07-22T16:41:21Z",
+        "actor": {
+         "login": "dsanders11"
+        },
+        "assignee": {
+         "login": "dsanders11"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-07T08:28:08Z",
+        "actor": {
+         "login": "MarshallOfSound"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53661,
+         "url": "https://github.com/electron/electron/pull/53661",
+         "createdAt": "2026-09-07T08:28:07Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-07T08:28:35Z",
+        "actor": {
+         "login": "MarshallOfSound"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53657,
+         "url": "https://github.com/electron/electron/pull/53657",
+         "createdAt": "2026-09-07T07:22:32Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-30T20:03:13Z",
+        "actor": {
+         "login": "codebytere"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 54608,
+         "url": "https://github.com/electron/electron/pull/54608",
+         "createdAt": "2026-09-30T20:03:12Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-10-01T07:42:14Z",
+        "actor": {
+         "login": "codebytere",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 54608,
+         "url": "https://github.com/electron/electron/pull/54608"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52376,
+     "title": "opening docked devtools hides all page elements in 44.0.0-alpha.4",
+     "url": "https://github.com/electron/electron/issues/52376",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-17T12:20:49Z",
+     "closedAt": "2026-07-24T08:45:29Z",
+     "updatedAt": "2026-07-24T08:45:29Z",
+     "author": {
+      "login": "Kilian",
+      "__typename": "User"
+     },
+     "authorAssociation": "MEMBER",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n 44.0.0-alpha.4\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\n23.10\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n 44.0.0-alpha.3\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nOpening the docked devtools keeps the rest of the UI visible\n\n### Actual Behavior\n\nVisible in Fiddle with the default template, provided you uncomment the open devtools line:\n\nhttps://github.com/user-attachments/assets/fc4cac0b-8057-457c-a491-25e87d9f9772\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nWhen you undock the devtools, the main page becomes visible again. The background of the main page also stays intact.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/linux"
+       },
+       {
+        "name": "component/devtools"
+       },
+       {
+        "name": "blocked/need-info \u274c"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-gist"
+       },
+       {
+        "name": "44-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 5,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-17T16:07:17Z",
+        "body": "Thanks for reporting!\n\nObservation: this seems to be a Linux-only issue. macOS is fine.\n\nQuestion: does this also happen on a supported Ubuntu release? 23.10 has been unsupported by Canonical for two years."
+       },
+       {
+        "author": {
+         "login": "Kilian",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-18T11:12:10Z",
+        "body": "just confirmed that Windows is also fine. I don't have a more modern linux available atm, but maybe someone else does."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-19T23:22:51Z",
+        "body": "It would be great if you could upgrade to 24.04 LTS. I don't think we should look into it further until we confirm it's happening on a release that's still supported by Canonical."
+       },
+       {
+        "author": {
+         "login": "jkleinsc",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-23T21:16:21Z",
+        "body": "@Kilian I just tested this on Ubuntu 26.04 / Electron 44.0.0-alpha.4 and it worked properly (page elements are visible with devtools)."
+       },
+       {
+        "author": {
+         "login": "Kilian",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-24T08:45:29Z",
+        "body": "It no longer replicates for me in 44.0.0-alpha.6 so lets close this"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 9,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T12:20:51Z",
+        "actor": {
+         "login": "Kilian",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-17T12:20:51Z",
+        "actor": {
+         "login": "Kilian",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T12:21:05Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "44-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T12:21:05Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/linux"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T12:21:36Z",
+        "actor": {
+         "login": "Kilian",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-gist"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T16:07:22Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/devtools"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-17T16:07:22Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-info \u274c"
+        }
+       },
+       {
+        "__typename": "AssignedEvent",
+        "createdAt": "2026-07-22T16:37:28Z",
+        "actor": {
+         "login": "dsanders11"
+        },
+        "assignee": {
+         "login": "jkleinsc"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-24T08:45:29Z",
+        "actor": {
+         "login": "Kilian",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": null
+       }
+      ]
+     }
+    },
+    {
+     "number": 52356,
+     "title": "Add XRGB8888 and XBGR8888 support to sharedTexture API",
+     "url": "https://github.com/electron/electron/issues/52356",
+     "state": "OPEN",
+     "stateReason": null,
+     "createdAt": "2026-07-15T14:18:28Z",
+     "closedAt": null,
+     "updatedAt": "2026-09-15T11:06:01Z",
+     "author": {
+      "login": "xushengfeng",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Enhancement"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nI'm developing a Wayland compositor using Electron, and I greatly appreciate that the sharedTexture API enables DMA-BUF protocol support, providing GPU acceleration for software rendering in the compositor. However, some applications like Blender prefer XRGB8888 and XBGR8888 formats, while the current sharedTexture API only supports ARGB formats, which doesn't meet these applications' requirements. Considering that Chrome officially already supports XRGB/XBGR formats, adding support for these formats should not be difficult. If implemented, the compatibility of my Electron-based Wayland compositor would be significantly improved.\n\n### Proposed Solution\n\nAdd support for xrgb and xbgr formats.\n\n### Alternatives Considered\n\nRender XRGB content using ARGB format directly, but most X channels are set to 0, resulting in transparent/blank window rendering.\n\nUse Node modules to handle texture format conversion manually, which is obviously less efficient and reliable than official Electron support.\n\n### Additional Information\n\n_No response_",
+     "labels": {
+      "nodes": [
+       {
+        "name": "enhancement :sparkles:"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 4,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-16T18:02:27Z",
+        "body": "PRs welcome!"
+       },
+       {
+        "author": {
+         "login": "xushengfeng",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-17T05:04:28Z",
+        "body": "My current network environment and device performance are insufficient to install the dependencies required for testing, such as Chromium :(\nAlso, for some reason, I cannot start GitHub Codespaces.\nSo I'm very sorry, but I may not be able to submit a PR :( :("
+       },
+       {
+        "author": {
+         "login": "Samyra312007",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-25T17:36:42Z",
+        "body": "Respected Maintainers, If this issue is open then i would like to work on this issue."
+       },
+       {
+        "author": {
+         "login": "Jia-ben00",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-09-15T11:06:01Z",
+        "body": "I've opened PR #53945 to add XRGB8888 and XBGR8888 support to the sharedTexture API.\n\nChromium's `media::VideoPixelFormatToSharedImageFormat` already supports `PIXEL_FORMAT_XRGB` (`kBGRX_8888`) and `PIXEL_FORMAT_XBGR` (`kRGBX_8888`), so this PR only adds the string conversion layer in Electron:\n\n- `TransferVideoPixelFormatToString`: `PIXEL_FORMAT_XRGB` -> `\"xrgb\"`, `PIXEL_FORMAT_XBGR` -> `\"xbgr\"`\n- `SharedTextureImportTextureInfo::FromValue`: `\"xrgb\"` -> `PIXEL_FORMAT_XRGB`, `\"xbgr\"` -> `PIXEL_FORMAT_XBGR`\n\nAlso updated the docs in `shared-texture-import-texture-info.md`.\n\nThe sharedTexture spec tests require macOS arm64 with GPU, which isn't available in my environment, but the changes follow the exact same pattern as the existing `bgra`/`rgba`/`nv12` formats. CI will run the full test suite.\n\nCloses #52356"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 3,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-15T14:18:30Z",
+        "actor": {
+         "login": "xushengfeng",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "enhancement :sparkles:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-15T14:18:31Z",
+        "actor": {
+         "login": "xushengfeng",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-09-15T11:05:48Z",
+        "actor": {
+         "login": "Jia-ben00"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 53945,
+         "url": "https://github.com/electron/electron/pull/53945",
+         "createdAt": "2026-09-15T11:05:47Z"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52354,
+     "title": "Electron creates temporary icon files and does not delete them after use",
+     "url": "https://github.com/electron/electron/issues/52354",
+     "state": "CLOSED",
+     "stateReason": "COMPLETED",
+     "createdAt": "2026-07-15T11:25:16Z",
+     "closedAt": "2026-07-27T23:40:09Z",
+     "updatedAt": "2026-07-27T23:40:09Z",
+     "author": {
+      "login": "ygguser",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": {
+      "name": "Bug"
+     },
+     "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.5.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 25H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nAfter the application is shut down, the application icon remains in the temporary files directory, and each time the application is launched again, the same icon with a new file name is saved in the temporary files directory.\n\n### Actual Behavior\n\nIt would be better if, during the shutdown of the application, all its temporary files were deleted.\n\n### Testcase Gist URL\n\nhttps://github.com/electron/electron/issues/52354#issuecomment-5006151451\n\n### Additional Information\n\nInitially, I created the issue here: https://github.com/deltachat/deltachat-desktop/issues/6545\nThe developers there told me that the problem is probably related to electron.\n\nAfter calling `tray.setImage()`, Electron saves the icon-file in the temporary files directory, and after shutdown, this icon is not deleted from this directory.\n\nThe user's temporary file directory is not cleared automatically by Windows unless it is specially configured. And over time, a large number of files may accumulate there, which in some cases may affect system performance.\nI understand that the problem is not critical at all, but it would probably be better if applications cleaned up temporary files after themselves when they become no longer needed.\n\nThis only happens if ASAR is used.",
+     "labels": {
+      "nodes": [
+       {
+        "name": "platform/windows"
+       },
+       {
+        "name": "component/tray"
+       },
+       {
+        "name": "bug :beetle:"
+       },
+       {
+        "name": "has-repro-comment"
+       },
+       {
+        "name": "42-x-y"
+       },
+       {
+        "name": "43-x-y"
+       }
+      ]
+     },
+     "comments": {
+      "totalCount": 6,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-16T18:00:12Z",
+        "body": "Thanks for reporting!\n\nWould you be able to download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows maintainers to reproduce this issue, and upload it as a GitHub gist from Fiddle? "
+       },
+       {
+        "author": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-16T18:00:40Z",
+        "body": "<!-- blocked/need-repro -->\n\nHello @ygguser. Thanks for reporting this and helping to make Electron better!\n\nWould it be possible for you to make a standalone testcase with only the code necessary to reproduce the issue? For example, [Electron Fiddle](https://www.electronjs.org/fiddle) is a great tool for making small test cases and makes it easy to publish your test case to a [gist](https://gist.github.com) that Electron maintainers can use.\n\nStand-alone test cases make fixing issues go more smoothly: it ensure everyone's looking at the same issue, it removes all unnecessary variables from the equation, and it can also provide the basis for automated regression tests.\n\nNow adding the https://github.com/electron/electron/labels/blocked%2Fneed-repro label for this reason. After you make a test case, please link to it in a followup comment. This issue will be closed in 10 days if the above is not addressed.\n"
+       },
+       {
+        "author": {
+         "login": "ygguser",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-17T18:12:18Z",
+        "body": "After several experiments, I managed to fully reproduce the issue with a minimal Electron application.\n\nIt turns out that the issue is related to **ASAR packaging**. When the application is not packaged with ASAR, the problem does **not** occur.\n\nFirst I created this minimal project (tray1):\n\nhttps://gist.github.com/ygguser/f9cae63f38cbbb6112436d916f58d888\n\n(Save the attached `myico.ico` and `myico2.ico` files into the `images` directory)\n[icons.zip](https://github.com/user-attachments/files/30134315/icons.zip)\n\nThe issue reproduces.\n\nLater I simplified the project even further (tray2):\n\nhttps://gist.github.com/ygguser/f1278d1668473e1ae9205fca2400834c\n\n(Save the attached `myico.ico` file into the `images` directory.)\n\nThe issue still reproduces.\n\n**Steps to reproduce**\n1. Save the project to disk. Project structure:\n```\ntray2\n\u2502\n\u251c\u2500\u2500 main.js\n\u251c\u2500\u2500 index.html\n\u251c\u2500\u2500 package.json\n\u2514\u2500\u2500 images\n    \u2514\u2500\u2500 myico.ico\n```\n2. Install Node.js.\n3. Install electron-packager:\n```\nnpm install -g electron-packager\n```\n4. Install asar:\n```\nnpm install -g asar\n```\n5. Install the project dependencies:\n```\ncd tray2\nnpm install\n```\n6. Package the application with ASAR:\n```\nelectron-packager . tray2 --platform=win32 --arch=x64 --overwrite --asar\n```\n7. Open the `%TEMP%` directory (for example, `C:\\Users\\<username>\\AppData\\Local\\Temp`) and make sure there are no `.ico` files left from previous runs.\n8. Run `tray2-win32-x64\\tray2.exe`.\n9. Verify that the tray icon appears.\n10. Close the application.\n11. Open the `%TEMP%` directory again.\n\n**Actual result**\n\nA randomly named `.ico` file remains in the `%TEMP%` directory after the application exits.\n\nEach subsequent launch creates another temporary `.ico` file, and none of the previously created files are removed.\n\n<img width=\"816\" height=\"200\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6faee3b7-239e-4d86-ba9e-2c573d6f82f4\" />\n\n**Expected result**\n\nThe temporary icon file created by Electron should be deleted after the application exits (or after the tray icon is destroyed).\n\n**Additional information**\n\nThe issue only reproduces when the application is packaged with **ASAR** (`--asar`).\n\nIf the exact same application is packaged without `--asar`, no temporary `.ico` files are created and the issue does not occur.\n\nThe tray icon is created from an `.ico` file located inside `app.asar`. Electron appears to extract this icon into `%TEMP%` using a randomly generated filename, but the extracted file is never removed.\n\n[icons.zip](https://github.com/user-attachments/files/30134315/icons.zip)"
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-20T14:24:21Z",
+        "body": "Thank you for the detailed repro! Just to make sure, does it still happen if you use Electron 43.1.1?"
+       },
+       {
+        "author": {
+         "login": "ygguser",
+         "__typename": "User"
+        },
+        "authorAssociation": "NONE",
+        "createdAt": "2026-07-20T16:57:36Z",
+        "body": "> Thank you for the detailed repro! Just to make sure, does it still happen if you use Electron 43.1.1?\n\nYes, the issue is fully reproducible with Electron version 43.1.1.\n\n```\n{\n  \"name\": \"tray2\",\n  \"productName\": \"tray2\",\n  \"keywords\": [],\n  \"main\": \"./main.js\",\n  \"version\": \"1.0.0\",\n  \"author\": \"YggUser\",\n  \"scripts\": {\n    \"start\": \"electron .\"\n  },\n  \"devDependencies\": {\n    \"electron\": \"^43.1.1\"\n  }\n}\n```\n\n```\nelectron-packager . tray2 --platform=win32 --arch=x64 --overwrite --asar\nPackaging app for platform win32 x64 using electron v43.1.1\nWrote new app to: C:\\Users\\ygguser\\Desktop\\tray2\\tray2-win32-x64\n```\n\nIcons remain in `%temp%` after launching and closing the application.\n\nhttps://gist.github.com/ygguser/d4faaa21acaaad595e44c5741d419571"
+       },
+       {
+        "author": {
+         "login": "huangfanglong",
+         "__typename": "User"
+        },
+        "authorAssociation": "CONTRIBUTOR",
+        "createdAt": "2026-07-22T06:25:11Z",
+        "body": "Seems this issue dates back to 2017:\n\nhttps://github.com/electron/electron/issues/10796\nhttps://github.com/mullvad/mullvadvpn-app/issues/2636\nhttps://github.com/docker/for-win/issues/13826\nhttps://github.com/electron/electron/issues/22500"
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 15,
+      "nodes": [
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-15T11:25:18Z",
+        "actor": {
+         "login": "ygguser",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "bug :beetle:"
+        }
+       },
+       {
+        "__typename": "IssueTypeAddedEvent",
+        "createdAt": "2026-07-15T11:25:18Z",
+        "actor": {
+         "login": "ygguser",
+         "__typename": "User"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-15T11:25:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "42-x-y"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-15T11:25:32Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "platform/windows"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-16T18:00:15Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "component/tray"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-16T18:00:25Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-16T19:39:57Z",
+        "actor": {
+         "login": "ygguser"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 6545,
+         "url": "https://github.com/deltachat/deltachat-desktop/issues/6545",
+         "createdAt": "2026-07-14T19:15:05Z"
+        }
+       },
+       {
+        "__typename": "UnlabeledEvent",
+        "createdAt": "2026-07-17T18:12:30Z",
+        "actor": {
+         "login": "electron-issue-triage",
+         "__typename": "Bot"
+        },
+        "label": {
+         "name": "blocked/need-repro"
+        }
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-20T14:24:26Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "has-repro-comment"
+        }
+       },
+       {
+        "__typename": "RenamedTitleEvent",
+        "createdAt": "2026-07-20T14:25:32Z",
+        "actor": {
+         "login": "nikwen"
+        },
+        "previousTitle": "Electron creates temporary files and does not delete them after use",
+        "currentTitle": "Electron creates temporary icon files and does not delete them after use"
+       },
+       {
+        "__typename": "LabeledEvent",
+        "createdAt": "2026-07-20T20:26:09Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "label": {
+         "name": "43-x-y"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-22T03:59:28Z",
+        "actor": {
+         "login": "huangfanglong"
+        },
+        "source": {
+         "__typename": "Issue",
+         "number": 10,
+         "url": "https://github.com/huangfanglong/CK3-Character-Gallery/issues/10",
+         "createdAt": "2026-07-20T11:50:45Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-22T21:19:34Z",
+        "actor": {
+         "login": "huangfanglong"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 52424,
+         "url": "https://github.com/electron/electron/pull/52424",
+         "createdAt": "2026-07-22T21:19:33Z"
+        }
+       },
+       {
+        "__typename": "CrossReferencedEvent",
+        "createdAt": "2026-07-23T02:09:23Z",
+        "actor": {
+         "login": "huangfanglong"
+        },
+        "source": {
+         "__typename": "PullRequest",
+         "number": 12,
+         "url": "https://github.com/huangfanglong/CK3-Character-Gallery/pull/12",
+         "createdAt": "2026-07-23T02:08:55Z"
+        }
+       },
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-27T23:40:10Z",
+        "actor": {
+         "login": "ckerr",
+         "__typename": "User"
+        },
+        "stateReason": "COMPLETED",
+        "closer": {
+         "__typename": "PullRequest",
+         "number": 52424,
+         "url": "https://github.com/electron/electron/pull/52424"
+        }
+       }
+      ]
+     }
+    },
+    {
+     "number": 52349,
+     "title": "dialog.showSaveDialog / dialog.showOpenDialog appears behind parent window on GNOME Wayland",
+     "url": "https://github.com/electron/electron/issues/52349",
+     "state": "CLOSED",
+     "stateReason": "NOT_PLANNED",
+     "createdAt": "2026-07-15T01:26:03Z",
+     "closedAt": "2026-07-15T02:28:49Z",
+     "updatedAt": "2026-07-15T02:29:08Z",
+     "author": {
+      "login": "Dr-Shoznum",
+      "__typename": "User"
+     },
+     "authorAssociation": "NONE",
+     "issueType": null,
+     "body": "\n\n## Environment\n\n- Electron version: 28.x\n- OS: Linux (GNOME Wayland)\n- GPU: Intel Haswell (workaround: --disable-gpu, --in-process-gpu)\n\n## Bug Description\n\nWhen calling `dialog.showSaveDialog()` or `dialog.showOpenDialog()` on Linux with GNOME Wayland, the dialog window consistently appears **behind** the parent BrowserWindow instead of on top of it.\n\n## Steps to Reproduce\n\n1. Create a minimal Electron app with a BrowserWindow\n2. Call `dialog.showSaveDialog(mainWindow, {...})` or `dialog.showOpenDialog(mainWindow, {...})` from the main process\n3. Observe that the dialog appears behind the main window\n\n## Expected Behavior\n\nThe dialog should appear on top of / in front of the calling BrowserWindow, as it does on Windows and macOS.\n\n## Actual Behavior\n\nThe dialog appears behind the parent window. The user must minimize the app window or Alt+Tab to reach the dialog.\n\n## Workaround\n\nUsing `zenity` (the system GTK file picker) via `child_process.execFileSync` works correctly \u2014 the dialog appears on top. This confirms the issue is with Electron's dialog implementation on Wayland, not with the underlying toolkit.\n\n```js\nconst { execFileSync } = require('child_process');\nconst filePath = execFileSync('zenity', ['--file-selection', '--save', ...], { encoding: 'utf8', timeout: 30000 }).trim();\n```\n\n## Notes\n\n- Setting `mainWindow.setAlwaysOnTop(true)` before opening the dialog does NOT fix the issue\n- Hiding or minimizing the parent window before showing the dialog works but causes jarring UX (window disappears/reappears)\n- The issue occurs with both parented (`dialog.showSaveDialog(mainWindow, options)`) and unparented (`dialog.showSaveDialog(options)`) calls\n- Occurs with both XWayland and native Wayland backends\n",
+     "labels": {
+      "nodes": []
+     },
+     "comments": {
+      "totalCount": 2,
+      "nodes": [
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-15T02:28:49Z",
+        "body": "Thanks for opening an issue!\n\nThe issue does not follow our issue template. Could you please refile the issue using the [correct template](https://github.com/electron/electron/issues/new?template=bug_report.yml)? We need that information to investigate."
+       },
+       {
+        "author": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "authorAssociation": "MEMBER",
+        "createdAt": "2026-07-15T02:29:08Z",
+        "body": "Also, Electron 28 is no longer supported."
+       }
+      ]
+     },
+     "timelineItems": {
+      "totalCount": 1,
+      "nodes": [
+       {
+        "__typename": "ClosedEvent",
+        "createdAt": "2026-07-15T02:28:49Z",
+        "actor": {
+         "login": "nikwen",
+         "__typename": "User"
+        },
+        "stateReason": "NOT_PLANNED",
+        "closer": null
+       }
+      ]
+     }
+    }
+   ]
+  }
+ }
+}

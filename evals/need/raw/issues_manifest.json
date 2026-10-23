@@ -1,0 +1,80 @@
+{
+ "repo": "electron/electron",
+ "window": [
+  "2026-07-01",
+  "2026-09-30"
+ ],
+ "retrieved_at": "2026-10-23T07:59:07.584343+00:00",
+ "slices": [
+  {
+   "query": "repo:electron/electron is:issue created:2026-07-01..2026-07-07",
+   "issueCount": 12,
+   "fetched": 12
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-07-08..2026-07-14",
+   "issueCount": 11,
+   "fetched": 11
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-07-15..2026-07-21",
+   "issueCount": 6,
+   "fetched": 6
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-07-22..2026-07-28",
+   "issueCount": 19,
+   "fetched": 19
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-07-29..2026-08-04",
+   "issueCount": 15,
+   "fetched": 15
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-08-05..2026-08-11",
+   "issueCount": 12,
+   "fetched": 12
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-08-12..2026-08-18",
+   "issueCount": 17,
+   "fetched": 17
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-08-19..2026-08-25",
+   "issueCount": 14,
+   "fetched": 14
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-08-26..2026-09-01",
+   "issueCount": 16,
+   "fetched": 16
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-09-02..2026-09-08",
+   "issueCount": 16,
+   "fetched": 16
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-09-09..2026-09-15",
+   "issueCount": 17,
+   "fetched": 17
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-09-16..2026-09-22",
+   "issueCount": 16,
+   "fetched": 16
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-09-23..2026-09-29",
+   "issueCount": 21,
+   "fetched": 21
+  },
+  {
+   "query": "repo:electron/electron is:issue created:2026-09-30..2026-09-30",
+   "issueCount": 1,
+   "fetched": 1
+  }
+ ]
+}

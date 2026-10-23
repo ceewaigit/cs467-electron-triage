@@ -4,7 +4,7 @@
 This checks the gold labels, not the agent. Maintainers' actions are post-event information, so
 they were never shown to the agent and were not used to write expected.json.
 
-    python3 evals/tools/agreement.py --raw ../research/data/raw/issues   # extract + report
+    python3 evals/tools/agreement.py --raw evals/need/raw/issues          # extract + report
     python3 evals/tools/agreement.py                                     # report from the extract
 
 The first form reads the GraphQL timeline pages saved by the research fetch and writes
