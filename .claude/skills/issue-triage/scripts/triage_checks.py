@@ -17,7 +17,7 @@ import re
 import sys
 from collections import Counter
 
-VERSION = "issue-triage/triage_checks v1"
+VERSION = "issue-triage/triage_checks v2"
 SKILL = pathlib.Path(__file__).resolve().parents[1]
 REPO = SKILL.parents[2]
 CORPUS = REPO / "data" / "issue-corpus.jsonl"
@@ -119,7 +119,10 @@ def main():
 
     gist = section(body, "Testcase Gist URL") or ""
     has_gist = bool(re.match(r"https://gist\.github\.com/\S+", gist))
-    repo_link = bool(re.search(r"https://github\.com/(?!electron/)[\w.-]+/[\w.-]+(?!/issues|/pull)", body))
+    # A link to another repository's code, not an image upload or an issue/PR elsewhere.
+    # (?![\w.-]) stops the name from backtracking, so the /issues check sees the whole path.
+    repo_link = bool(re.search(r"https://github\.com/(?!electron/|user-attachments/)[\w.-]+/[\w.-]+"
+                               r"(?![\w.-])(?!/(?:issues|pull|discussions)\b)", body))
     code_blocks = body.count("```") // 2
     linked = sorted({int(n) for n in re.findall(r"(?:electron/electron/issues/|#)(\d{4,6})\b", body)})
 

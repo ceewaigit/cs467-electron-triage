@@ -64,7 +64,7 @@ class SkillScripts(unittest.TestCase):
         code, out = self.run_script("triage_checks.py")
         self.assertEqual(code, 0)
         first, rest = out.split("\n", 1)
-        self.assertEqual(first, "[issue-triage/triage_checks v1] ok")
+        self.assertEqual(first, "[issue-triage/triage_checks v2] ok")
         return json.loads(rest)
 
     # triage_checks.py
@@ -88,6 +88,17 @@ class SkillScripts(unittest.TestCase):
     def test_gist_detected(self):
         self.issue(body=BUG.format(gist="https://gist.github.com/someone/abc123"))
         self.assertTrue(self.checks()["repro"]["gist"])
+
+    def test_repo_link_ignores_attachments_and_issue_links(self):
+        # Regression: image uploads and issues in other repos used to count as a repro repo.
+        for link, want in (("https://github.com/user-attachments/assets/0a1b-2c3d", False),
+                           ("https://github.com/someone/myapp/issues/12", False),
+                           ("https://github.com/someone/myapp/pull/3", False),
+                           ("https://github.com/electron/fiddle", False),
+                           ("https://github.com/someone/myapp", True),
+                           ("https://github.com/someone/my.app/tree/main/src", True)):
+            self.issue(body=BUG.format(gist="_No response_") + f"\nSee {link} for details.")
+            self.assertEqual(self.checks()["repro"]["other_repo_link"], want, link)
 
     def test_similar_search_never_returns_later_issues(self):
         for as_of in ("2025-09-01T00:00:00Z", "2026-07-15T00:00:00Z"):

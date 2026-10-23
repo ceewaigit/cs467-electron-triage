@@ -29,7 +29,7 @@ edit, assign or unlabel anything, and you must not say or imply that you did or 
 python3 .claude/skills/issue-triage/scripts/triage_checks.py
 ```
 
-It prints `[issue-triage/triage_checks v1] ok` and a JSON report. If `skip` is not null, call `noop`
+It prints `[issue-triage/triage_checks v2] ok` and a JSON report. If `skip` is not null, call `noop`
 with the skip reason and stop.
 
 ### 2. Component label (0–2)

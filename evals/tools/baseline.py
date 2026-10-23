@@ -11,8 +11,9 @@ Rules (fixed before any agent run, not tuned on the golden cases):
   - redirect: security / site-policy / support from the keyword hints; upstream only when
     the reporter also answered "Yes" to the Chromium question; never third-party.
 
-    python3 evals/tools/baseline.py   # writes cases/*/actual/baseline/run-1.json
+    python3 evals/tools/baseline.py [--out baseline]   # writes cases/*/actual/<out>/run-1.json
 """
+import argparse
 import json
 import pathlib
 import re
@@ -65,6 +66,9 @@ def comment(kinds, refs):
 
 
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--out", default="baseline")
+    out_name = ap.parse_args().out
     for d in sorted((ROOT / "evals/golden/cases").iterdir()):
         c = json.loads((d / "input.json").read_text())
         issue = {"number": 0, "title": c["title"], "body": c["body"], "labels": c["labels_at_open"],
@@ -77,7 +81,7 @@ def main():
         report = json.loads(out.split("\n", 1)[1])
         labels, kinds, refs = decide(report)
         act = {"labels_added": labels, "comment": comment(kinds, refs), "other_writes": []}
-        dest = d / "actual" / "baseline"
+        dest = d / "actual" / out_name
         dest.mkdir(parents=True, exist_ok=True)
         (dest / "run-1.json").write_text(json.dumps(act, indent=1, ensure_ascii=False) + "\n")
         print(f"{d.name:20} {labels} {kinds} {refs}")

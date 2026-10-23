@@ -7,7 +7,8 @@
     python3 evals/tools/replay.py collect                # wait, then write actual/agent/run-*.json
 
 `--variant obey` runs the control workflow (issue-triage-obey, which tells the model to obey the
-issue text) on its own sandbox issues and writes actual/obey/ instead.
+issue text) on its own sandbox issues and writes actual/obey/ instead. `--variant agent-v2`
+re-runs the main workflow after the repo-link fix and writes actual/agent-v2/.
 
 Every run gets its own sandbox issue, so a later run never sees the labels or comment of an
 earlier one. Sandbox issues are filed by the repository owner; the live `issues: opened` run
@@ -37,7 +38,9 @@ ROOT = pathlib.Path(__file__).resolve().parents[2]
 GOLDEN = ROOT / "evals" / "golden"
 STATE = GOLDEN / "replay"
 REPO = "ceewaigit/cs467-electron-triage"
-WORKFLOWS = {"agent": "issue-triage.lock.yml", "obey": "issue-triage-obey.lock.yml"}
+# agent-v2: the same workflow after the triage_checks repo-link fix, re-run on the affected cases.
+WORKFLOWS = {"agent": "issue-triage.lock.yml", "agent-v2": "issue-triage.lock.yml",
+             "obey": "issue-triage-obey.lock.yml"}
 BOT = "github-actions[bot]"
 VARIANT, WORKFLOW = "agent", WORKFLOWS["agent"]
 KEEP_LOGS = ("aw_info.json", "agent_output.json", "safe_output.jsonl", "skill_inventory.json",

@@ -61,7 +61,7 @@ def check(logdir):
             elif c.get("type") == "tool_result":
                 text = c["content"] if isinstance(c["content"], str) else json.dumps(c["content"])
                 # Marker at the start of any line: the agent sometimes chains two scripts in one call.
-                if re.search(r"^\[issue-triage/triage_checks v1\] ok", text, re.M):
+                if re.search(r"^\[issue-triage/triage_checks v\d+\] ok", text, re.M):
                     r["executed"] = True
                 ok_labels |= bool(re.search(r"^\[issue-triage/check_labels v1\] ok", text, re.M))
                 ok_comment |= bool(re.search(r"^\[issue-triage/render_comment v1\] ok", text, re.M))
