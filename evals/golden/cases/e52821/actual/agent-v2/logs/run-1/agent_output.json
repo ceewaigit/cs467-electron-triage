@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":115,"labels":[{"name":"component/menu","rationale":"Report is about the togglefullscreen menu role producing a duplicate application menu item on macOS.","confidence":"HIGH"}]}],"errors":[]}

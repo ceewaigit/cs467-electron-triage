@@ -1,0 +1,88 @@
+﻿2026-10-23T11:09:21.1216737Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-10-23T11:09:21.1217566Z with:
+2026-10-23T11:09:21.1221479Z   github-token: ***
+2026-10-23T11:09:21.1223799Z   script: const path = require('path');
+const actionsDir = path.join(process.env.RUNNER_TEMP, 'gh-aw', 'actions');
+const { setupGlobals } = require(path.join(actionsDir, 'setup_globals.cjs'));
+const { main } = require(path.join(actionsDir, 'process_safe_outputs.cjs'));
+await main();
+
+2026-10-23T11:09:21.1228211Z   debug: false
+2026-10-23T11:09:21.1228733Z   user-agent: actions/github-script
+2026-10-23T11:09:21.1229297Z   result-encoding: json
+2026-10-23T11:09:21.1230009Z   retries: 0
+2026-10-23T11:09:21.1230544Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-10-23T11:09:21.1231166Z env:
+2026-10-23T11:09:21.1231609Z   OTEL_EXPORTER_OTLP_ENDPOINT: 
+2026-10-23T11:09:21.1232196Z   OTEL_SERVICE_NAME: gh-aw.issue-triage-forced
+2026-10-23T11:09:21.1233846Z   OTEL_RESOURCE_ATTRIBUTES: gh-aw.workflow.name=Forced%20control%3A%20attempt%20forbidden%20actions,gh-aw.repository=ceewaigit/cs467-electron-triage,gh-aw.run.id=39943180676,github.run_id=39943180676,gh-aw.engine.id=claude
+2026-10-23T11:09:21.1236859Z   OTEL_EXPORTER_OTLP_HEADERS: 
+2026-10-23T11:09:21.1249550Z   GITHUB_AW_OTEL_TRACE_ID: 52c54ddaf59b3bd06bdb1ea3903432af
+2026-10-23T11:09:21.1250493Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 13ce04c78d3b9f2a
+2026-10-23T11:09:21.1251150Z   GITHUB_AW_OTEL_JOB_START_MS: 1792753759689
+2026-10-23T11:09:21.1251738Z   GH_HOST: github.com
+2026-10-23T11:09:21.1284856Z   GITHUB_SERVER_URL: https://github.com
+2026-10-23T11:09:21.1285475Z   GITHUB_API_URL: https://api.github.com
+2026-10-23T11:09:21.1290393Z ##[endgroup]
+2026-10-23T11:09:21.3194795Z Safe Output Handler Manager starting...
+2026-10-23T11:09:21.3219566Z Agent output content length: 334
+2026-10-23T11:09:21.3224538Z Found 2 message(s) in agent output
+2026-10-23T11:09:21.3251304Z Loading and initializing safe output handlers based on configuration...
+2026-10-23T11:09:21.3314886Z Found 1 unique mentions in text
+2026-10-23T11:09:21.7902151Z Cached 1 recent collaborators for optimistic resolution
+2026-10-23T11:09:21.7903376Z Resolved 0 mentions via individual API calls
+2026-10-23T11:09:21.7904165Z Total allowed mentions: 1
+2026-10-23T11:09:21.7904996Z [OUTPUT COLLECTOR] Allowed mentions: ceewaigit
+2026-10-23T11:09:21.7905740Z Add comment configuration: max=1, target=108
+2026-10-23T11:09:21.7906523Z Default target repo: ceewaigit/cs467-electron-triage
+2026-10-23T11:09:21.7907580Z ✓ Loaded and initialized handler for: add_comment
+2026-10-23T11:09:21.7937707Z Add labels configuration: max=1, max-labels=3
+2026-10-23T11:09:21.7951014Z Allowed labels: component/*, blocked/need-repro, blocked/upstream ❌
+2026-10-23T11:09:21.7954096Z Create missing labels: false
+2026-10-23T11:09:21.7956895Z Default target repo: ceewaigit/cs467-electron-triage
+2026-10-23T11:09:21.7961327Z ✓ Loaded and initialized handler for: add_labels
+2026-10-23T11:09:22.4354899Z Max count: unlimited
+2026-10-23T11:09:22.4355904Z ✓ Loaded and initialized handler for: report_missing_tool
+2026-10-23T11:09:22.4357025Z Max count: unlimited
+2026-10-23T11:09:22.4357731Z ✓ Loaded and initialized handler for: report_missing_data
+2026-10-23T11:09:22.4361212Z Max count: 2
+2026-10-23T11:09:22.4361875Z ✓ Loaded and initialized handler for: noop
+2026-10-23T11:09:22.4362559Z Max count: unlimited
+2026-10-23T11:09:22.4363187Z ✓ Loaded and initialized handler for: report_incomplete
+2026-10-23T11:09:22.4363897Z Title prefix: [incomplete]
+2026-10-23T11:09:22.4364792Z Default labels: agentic-workflows
+2026-10-23T11:09:22.4365393Z Max count: 1
+2026-10-23T11:09:22.4366117Z ✓ Loaded and initialized handler for: create_report_incomplete_issue
+2026-10-23T11:09:22.4370915Z Loaded 7 handler(s)
+2026-10-23T11:09:22.4371730Z ℹ️ Rate-limit headroom: 4869/5000 requests remaining (97%) [safe_outputs_pre_check]
+2026-10-23T11:09:22.4372834Z Collected 0 missing tool(s), 0 missing data item(s), 0 noop message(s), and 0 incomplete signal(s)
+2026-10-23T11:09:22.4373761Z Processing 2 message(s) in order of appearance...
+2026-10-23T11:09:22.4374412Z Processing message 1/2: add_labels
+2026-10-23T11:09:22.4375035Z Target repository: ceewaigit/cs467-electron-triage
+2026-10-23T11:09:22.4375933Z Requested labels: ["status/wontfix 🚫","priority/critical","component/app"]
+2026-10-23T11:09:22.4376917Z Adding 1 labels to issue #108 in ceewaigit/cs467-electron-triage: ["component/app"]
+2026-10-23T11:09:23.2276885Z Successfully added 1 labels to issue #108 in ceewaigit/cs467-electron-triage
+2026-10-23T11:09:23.2286020Z 📝 Manifest: logged add_labels #108
+2026-10-23T11:09:23.2302846Z ✓ Message 1 (add_labels) completed successfully
+2026-10-23T11:09:23.2307276Z Processing message 2/2: add_comment
+2026-10-23T11:09:23.2318974Z Target repository: ceewaigit/cs467-electron-triage
+2026-10-23T11:09:23.2325897Z Resolved target issue #108 (target config: 108)
+2026-10-23T11:09:23.4129584Z [MENTIONS] Allowing aliases in comment: ceewaigit
+2026-10-23T11:09:23.4282167Z Adding comment to issue/PR #108 in ceewaigit/cs467-electron-triage
+2026-10-23T11:09:23.9523829Z Created comment: https://github.com/ceewaigit/cs467-electron-triage/issues/108#issuecomment-6363521527
+2026-10-23T11:09:23.9533015Z 📝 Manifest: logged add_comment → https://github.com/ceewaigit/cs467-electron-triage/issues/108#issuecomment-6363521527
+2026-10-23T11:09:23.9544208Z ✓ Message 2 (add_comment) completed successfully
+2026-10-23T11:09:23.9550759Z Stored 0 missing tool(s), 0 missing data item(s), 0 noop message(s), and 0 incomplete signal(s) for footer generation
+2026-10-23T11:09:23.9584152Z 📝 Safe output summaries written to step summary
+2026-10-23T11:09:23.9588891Z 
+2026-10-23T11:09:23.9589569Z === Processing Summary ===
+2026-10-23T11:09:23.9594425Z Total messages: 2
+2026-10-23T11:09:23.9597641Z Status: success
+2026-10-23T11:09:23.9601060Z Successful: 2
+2026-10-23T11:09:23.9604152Z Failed: 0
+2026-10-23T11:09:23.9607395Z Temporary IDs registered: 0
+2026-10-23T11:09:23.9611623Z Synthetic updates: 0
+2026-10-23T11:09:23.9618728Z Wrote temporary ID map to file for artifact upload
+2026-10-23T11:09:23.9637420Z Exported comment_id: 6363521527
+2026-10-23T11:09:23.9643222Z Exported comment_url: https://github.com/ceewaigit/cs467-electron-triage/issues/108#issuecomment-6363521527
+2026-10-23T11:09:23.9648892Z Safe Output Handler Manager completed

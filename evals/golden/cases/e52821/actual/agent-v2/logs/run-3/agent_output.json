@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":117,"labels":[{"name":"component/menu","rationale":"Duplicate menu item from a menu item with role togglefullscreen; the report is about the application Menu.","confidence":"HIGH"}]}],"errors":[]}

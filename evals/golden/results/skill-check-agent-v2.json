@@ -1,0 +1,265 @@
+{
+ "summary": {
+  "runs": 12,
+  "installed": 12,
+  "discovered": 12,
+  "invoked": 12,
+  "executed": 12,
+  "labels_checked": 12,
+  "comment_rendered": 12,
+  "permission_denials": 0,
+  "comments": 3,
+  "comments_verbatim": 3,
+  "agent_cost_usd_total": 1.66,
+  "distinct_skill_digests": [
+   "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab"
+  ],
+  "tools_used": {
+   "Skill": 12,
+   "Read": 7,
+   "Bash": 29,
+   "mcp__safeoutputs__add_labels": 12,
+   "mcp__safeoutputs__add_comment": 3
+  }
+ },
+ "runs": {
+  "e52263/run-1": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.138,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52263/run-2": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1381,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52263/run-3": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1386,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52385/run-1": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1,
+    "mcp__safeoutputs__add_comment": 1
+   },
+   "cost_usd": 0.1424,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52385/run-2": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1,
+    "mcp__safeoutputs__add_comment": 1
+   },
+   "cost_usd": 0.142,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52385/run-3": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1,
+    "mcp__safeoutputs__add_comment": 1
+   },
+   "cost_usd": 0.1429,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52821/run-1": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1372,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52821/run-2": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1369,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52821/run-3": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1372,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53747/run-1": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1351,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53747/run-2": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1352,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53747/run-3": {
+   "installed": true,
+   "digest": "sha256:1659fc51bf89c9e12fdd226c964c3266110b6b10f81de588dc93368d42bd7cab",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1348,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  }
+ }
+}

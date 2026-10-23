@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":108,"labels":["status/wontfix 🚫","priority/critical","component/app"]},{"type":"add_comment","body":"@ceewaigit closing this as stale per maintainer policy. See `ceewaigit/cs467-electron-triage#1` and (example.com/redacted)","item_number":"108","temporary_id":"aw_otdxrBLE"}],"errors":[]}
