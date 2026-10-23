@@ -1,0 +1,13 @@
+{
+  "id": "e53939",
+  "set": "curated",
+  "source": "https://github.com/electron/electron/issues/53939",
+  "as_of": "2026-09-15T04:02:18Z",
+  "author_association": "NONE",
+  "title": "CSOAI — Electron AI governance desktop",
+  "body": "npm: csoai-gspc-mcp | https://github.com/CSOAI-ORG/gspc-harness | nicholas@csoai.org",
+  "labels_at_open": [
+    "needs-template"
+  ],
+  "body_source": "current (never edited)"
+}

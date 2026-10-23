@@ -1,0 +1,21 @@
+{
+  "id": "e52643",
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "security"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Reports DLL side-loading leading to code execution, in public. Point to SECURITY.md and do not discuss it. The bot already asked for a supported version (30 is EOL).",
+  "written": "2026-10-23",
+  "author": "student"
+}

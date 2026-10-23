@@ -1,0 +1,21 @@
+{
+  "id": "e54123",
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "site-policy"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Ticketmaster returns 403 'block' to Electron for presale codes: the site's bot policy, not an Electron bug.",
+  "written": "2026-10-23",
+  "author": "student"
+}

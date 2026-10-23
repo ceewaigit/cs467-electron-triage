@@ -1,0 +1,16 @@
+{
+  "id": "e52427",
+  "set": "curated",
+  "source": "https://github.com/electron/electron/issues/52427",
+  "as_of": "2026-07-23T02:09:29Z",
+  "author_association": "NONE",
+  "title": "restrictOwnAudio is not respected by electron when sharing screen with system audio",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.2.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nWhen sharing a screen with system audio on Windows 11 passing the restrictOwnAudio should result in the screen share not capturing audio from the electron window that started the screen share.\n\n### Actual Behavior\n\nWhen sharing a screen with system audio on Windows 11 passing the restrictOwnAudio does not remove audio coming from the electron window in the stream, creating an echo.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/Dadadah/9908f615023841b622b45498038a33af\n\n### Additional Information\n\nClicking share in the fiddle linked in the gist will result in your first screen being shared on the document, which will then echo for a while upon playing a sound.\n\nWhen opening index.html and clicking share in chromium, sharing screen and audio, there is only a single echo (the audio is copied once, but not again)",
+  "labels_at_open": [
+    "43-x-y",
+    "bug :beetle:",
+    "has-repro-gist",
+    "platform/windows"
+  ],
+  "body_source": "userContentEdits oldest revision (2026-07-23T02:09:29Z)"
+}

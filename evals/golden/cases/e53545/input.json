@@ -1,0 +1,13 @@
+{
+  "id": "e53545",
+  "set": "curated",
+  "source": "https://github.com/electron/electron/issues/53545",
+  "as_of": "2026-09-04T19:43:59Z",
+  "author_association": "NONE",
+  "title": "Stem Download Via Plugin",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nCannot download any stems through the plugin\n\n### Proposed Solution\n\nAdd a \"Stems\" option in the three dot drop down on a song.\n\n### Alternatives Considered\n\nAlternativly, bring up the stems as an option when clicking the \"download\" button. \n\n### Additional Information\n\nI pretty much always download all the stems to a song. This gives me flixiblity to bring in and out diffrent parts of the song instead of just one raw song. \n\nWould love it if the plug in allowed for this as the website does.",
+  "labels_at_open": [
+    "enhancement :sparkles:"
+  ],
+  "body_source": "current (never edited)"
+}

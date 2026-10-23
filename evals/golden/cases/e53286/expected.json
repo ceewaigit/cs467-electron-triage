@@ -1,0 +1,30 @@
+{
+  "id": "e53286",
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/pdf-viewer"
+      ]
+    ],
+    "acceptable": [
+      "blocked/need-repro"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "need-repro",
+      "similar"
+    ],
+    "refs_any": [
+      51041
+    ],
+    "must_not_match": []
+  },
+  "rationale": "PDF viewer save-with-changes regression; steps are concrete (any PDF), so a gist request is optional. Reporter already links #51041.",
+  "written": "2026-10-23",
+  "author": "student"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "e53175",
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [
+      "blocked/upstream ❌"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "upstream"
+    ],
+    "acceptable_kinds": [
+      "similar"
+    ],
+    "refs_any": [
+      52463
+    ],
+    "must_not_match": []
+  },
+  "rationale": "Asks Electron to send a Wayland text-input preedit rectangle; that is Chromium's Ozone/Wayland input code, so it belongs upstream. #52463 is the user-visible symptom and may be linked.",
+  "written": "2026-10-23",
+  "author": "student"
+}

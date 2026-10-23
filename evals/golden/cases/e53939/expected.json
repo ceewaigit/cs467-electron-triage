@@ -1,0 +1,19 @@
+{
+  "id": "e53939",
+  "decision": "skip",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Carries needs-template at opening: Electron's template check has already closed it.",
+  "written": "2026-10-23",
+  "author": "student"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "e54123",
+  "set": "curated",
+  "source": "https://github.com/electron/electron/issues/54123",
+  "as_of": "2026-09-19T23:08:22Z",
+  "author_association": "NONE",
+  "title": "Ticketmaster - blocks electron browserfrom entering presale code",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\nlatest\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 latest\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nn/a\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nhaving an issue with ticketmaster on electron \n\nif you go to this page - https://www.ticketmaster.com/dylan-scott-philadelphia-pennsylvania-02-04-2027/event/0200652AE3A47089\n\nand click unlock and enter any presale code, you get a message stating browsing activity paused, i dont get this at all on other browsers, it seems to be detecting something different with electron\n\n### Actual Behavior\n\nit should say invalid/valid presale code\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nA minimal sandboxed BrowserWindow using a fresh in-memory session, no preload, no proxy, no request interception and no automation receives HTTP 403 {\"response\":\"block\"} from Ticketmaster’s offer-code validation endpoint. The same account, network, event and code work in Chrome and Edge. Tested with Electron 44.4.1 / Chromium 152.0.7977.78.",
+  "labels_at_open": [
+    "blocked/need-info ❌",
+    "bug :beetle:",
+    "platform/windows"
+  ],
+  "body_source": "current (never edited)"
+}

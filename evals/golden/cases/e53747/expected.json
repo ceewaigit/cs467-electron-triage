@@ -1,0 +1,29 @@
+{
+  "id": "e53747",
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/BrowserWindow",
+        "component/BaseWindow"
+      ]
+    ],
+    "acceptable": [
+      "component/gpu",
+      "blocked/upstream ❌"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "upstream"
+    ],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Feature request to create windows with WS_EX_NOREDIRECTIONBITMAP to save memory. Window creation is shared with Chromium, so an upstream note is acceptable.",
+  "written": "2026-10-23",
+  "author": "student"
+}

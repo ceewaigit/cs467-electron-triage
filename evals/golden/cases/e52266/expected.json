@@ -1,0 +1,24 @@
+{
+  "id": "e52266",
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/printing",
+      "blocked/need-repro"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "need-repro"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Printing regression 42->43 on Linux with no gist and only a prose description of the call; a Fiddle is needed to reproduce.",
+  "written": "2026-10-23",
+  "author": "student"
+}

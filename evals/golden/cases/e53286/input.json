@@ -1,0 +1,17 @@
+{
+  "id": "e53286",
+  "set": "random",
+  "source": "https://github.com/electron/electron/issues/53286",
+  "as_of": "2026-08-28T22:02:21Z",
+  "author_association": "NONE",
+  "title": "PDF viewer window.showSaveFilePicker NotAllowedError",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0-alpha.3, 43.4.1, 44.0.0, 45.0.0-alpha.1\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 Enterprise 23H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n43.0.0-alpha.2\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nDownloading PDFs with changes should work.\n\n### Actual Behavior\n\nWhen trying to download a modified PDF \"with your changes\" the following error is thrown:\nwindow.showSaveFilePicker failed: NotAllowedError: Failed to execute 'showSaveFilePicker' on 'Window': Third party iframes are not allowed to show a file picker.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nThis bug was already present in earlier electron versions and was fixed, see [issue](https://github.com/electron/electron/issues/51041) and [pr](https://github.com/electron/electron/pull/51042). The bug is reproducible with the gist of the original issue. \nWith version 43.0.0-alpha.3 chromium was updated to 150.0.7834.0 [pr](https://github.com/electron/electron/pull/51609). In chromium 150.0.7833.0, the logic for IsFilePickerAllowedForCrossOriginSubframe changed, see this [pr](https://github.com/chromium/chromium/commit/3fd5e2cb1ef275dfe83f63d84d604ededba6ccb1).\nAdditional note: With electron 43.0.0-alpha.2 the save dialog will open, but if the dialog gets closed via cancel or x button, the electron window cannot be closed and the process has to be killed.",
+  "labels_at_open": [
+    "43-x-y",
+    "44-x-y",
+    "45-x-y",
+    "bug :beetle:",
+    "platform/windows"
+  ],
+  "body_source": "userContentEdits oldest revision (2026-08-28T22:02:21Z)"
+}

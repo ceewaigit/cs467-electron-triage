@@ -1,0 +1,16 @@
+{
+  "id": "e53024",
+  "set": "curated",
+  "source": "https://github.com/electron/electron/issues/53024",
+  "as_of": "2026-08-19T17:35:00Z",
+  "author_association": "CONTRIBUTOR",
+  "title": "Apps launched with external electron 43.4.1 executable have no tray icon",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.4.1\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\nLinux DamgladorPC 6.18.44-1-lts #1 SMP PREEMPT_DYNAMIC Tue, 11 Aug 2026 21:10:19 +0000 x86_64 GNU/Linux DE: KDE Plasma (Wayland)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n43.4.0\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nTray icon should appear whether an app is launched with generic Electron or bundled.\n\n### Actual Behavior\n\nApps have tray icons if they're launched with bundled electron, but not when they're launched with a generic electron build.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/Damglador/4c7a647a3465de5b7933bc32d7c2dd92\n\n### Additional Information\n\n_No response_",
+  "labels_at_open": [
+    "43-x-y",
+    "bug :beetle:",
+    "has-repro-gist",
+    "platform/linux"
+  ],
+  "body_source": "userContentEdits oldest revision (2026-08-19T17:35:00Z)"
+}

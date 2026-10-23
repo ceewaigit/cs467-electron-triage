@@ -1,0 +1,21 @@
+{
+  "id": "e52232",
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/desktopcapturer"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Well-formed desktopCapturer bug with a gist; the bot already set version, platform and has-repro-gist. Only the component is missing.",
+  "written": "2026-10-23",
+  "author": "student"
+}
