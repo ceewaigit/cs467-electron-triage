@@ -198,13 +198,12 @@ def cmd_collect(a):
         print(f"{r['case']} run {r['run']}: {v['conclusion']} labels={result['labels_added']} "
               f"comment={'yes' if result['comment'] else 'no'} other={result['other_writes']}")
     # The issues: opened run each sandbox issue triggered must have been skipped (owner).
-    for cid, entry in issues.items():
-        for n in entry["issues"]:
-            if str(n) in live:
-                continue
-            found = [x for x in json.loads(gh("run", "list", "-R", REPO, "-w", WORKFLOWS["agent"], "-e", "issues",
-                     "-L", "200", "--json", "databaseId,conclusion,displayTitle"))
-                     if x["displayTitle"] == entry["title"]]
+    pending = [(cid, entry, n) for cid, entry in issues.items() for n in entry["issues"] if str(n) not in live]
+    if pending:
+        all_runs = json.loads(gh("run", "list", "-R", REPO, "-w", WORKFLOWS["agent"], "-e", "issues",
+                                 "-L", "500", "--json", "databaseId,conclusion,displayTitle"))
+        for cid, entry, n in pending:
+            found = [x for x in all_runs if x["displayTitle"] == entry["title"]]
             live[str(n)] = {"case": cid, "runs": [(x["databaseId"], x["conclusion"]) for x in found]}
     save("live-skips.json", live)
 

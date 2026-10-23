@@ -1,0 +1,8 @@
+Smoke run 39932252924 (sandbox issue #17, case e52232), before safe-outputs targets were pinned.
+The agent emitted add_labels [component/desktopcapturer] (correct), but the safe_outputs job skipped it:
+2026-10-23T09:33:13.4721120Z Allowed labels: component/*, blocked/need-repro, blocked/upstream ❌
+2026-10-23T09:33:13.6252010Z ##[warning]Target is "triggering" but not running in issue or pull request context, skipping add_labels
+2026-10-23T09:33:13.6289203Z ⏭ Message 1 (add_labels) skipped — Target is "triggering" but not running in issue or pull request context, skipping add_labels
+2026-10-23T09:33:13.6329982Z Status: completed_with_skips
+2026-10-23T09:33:13.6335188Z Skipped (no context or limit reached): 1
+Fix: target: ${{ github.event.issue.number || inputs.issue_number }} on add-labels and add-comment (not "*").
