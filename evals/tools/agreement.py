@@ -1,0 +1,136 @@
+#!/usr/bin/env python3
+"""How far do the frozen expected outcomes agree with what Electron's maintainers did first?
+
+This checks the gold labels, not the agent. Maintainers' actions are post-event information, so
+they were never shown to the agent and were not used to write expected.json.
+
+    python3 evals/tools/agreement.py --raw ../research/data/raw/issues   # extract + report
+    python3 evals/tools/agreement.py                                     # report from the extract
+
+The first form reads the GraphQL timeline pages saved by the research fetch and writes
+evals/golden/results/maintainer_first_actions.json (actors replaced by roles). Both forms write
+evals/golden/results/agreement.md.
+
+A maintainer action is a label added by a person other than the author or a bot, or a comment by
+a MEMBER/OWNER/COLLABORATOR, within 14 days of opening.
+"""
+import argparse
+import datetime as dt
+import json
+import pathlib
+
+ROOT = pathlib.Path(__file__).resolve().parents[2]
+GOLDEN = ROOT / "evals" / "golden"
+EXTRACT = GOLDEN / "results" / "maintainer_first_actions.json"
+WINDOW = dt.timedelta(days=14)
+MAINTAINER = {"MEMBER", "OWNER", "COLLABORATOR"}
+
+
+def ts(s):
+    return dt.datetime.fromisoformat(s.replace("Z", "+00:00"))
+
+
+def extract(raw_dir, numbers):
+    out = {}
+    for f in sorted(pathlib.Path(raw_dir).glob("*.json")):
+        for n in json.loads(f.read_text())["data"]["search"]["nodes"]:
+            if n["number"] not in numbers:
+                continue
+            opened, author = ts(n["createdAt"]), (n.get("author") or {}).get("login")
+            labels, first_comment = [], None
+            for e in n["timelineItems"]["nodes"]:
+                actor = e.get("actor") or {}
+                if (e["__typename"] == "LabeledEvent" and actor.get("__typename") == "User"
+                        and actor.get("login") != author and ts(e["createdAt"]) - opened <= WINDOW):
+                    labels.append({"label": e["label"]["name"], "hours": round((ts(e["createdAt"]) - opened).total_seconds() / 3600, 1)})
+            for c in n["comments"]["nodes"]:
+                if c["authorAssociation"] in MAINTAINER and ts(c["createdAt"]) - opened <= WINDOW:
+                    first_comment = {"hours": round((ts(c["createdAt"]) - opened).total_seconds() / 3600, 1),
+                                     "excerpt": " ".join(c["body"].split())[:160]}
+                    break
+            out[str(n["number"])] = {"maintainer_labels": labels, "first_maintainer_comment": first_comment,
+                                     "closed_as": n.get("stateReason")}
+    return out
+
+
+def kappa(pairs):
+    n = len(pairs)
+    if not n:
+        return None
+    po = sum(a == b for a, b in pairs) / n
+    pa, pb = sum(a for a, _ in pairs) / n, sum(b for _, b in pairs) / n
+    pe = pa * pb + (1 - pa) * (1 - pb)
+    return round((po - pe) / (1 - pe), 2) if pe < 1 else 1.0
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--raw")
+    a = ap.parse_args()
+    cases = {}
+    for d in sorted((GOLDEN / "cases").iterdir()):
+        inp = json.loads((d / "input.json").read_text())
+        if inp["set"] != "adversarial":
+            cases[d.name] = (inp, json.loads((d / "expected.json").read_text()))
+    if a.raw:
+        nums = {int(c[0]["source"].rsplit("/", 1)[1]) for c in cases.values()}
+        EXTRACT.write_text(json.dumps(extract(a.raw, nums), indent=1, ensure_ascii=False) + "\n")
+    actions = json.loads(EXTRACT.read_text())
+
+    rows, repro, comp, upstream, comp_match = [], [], [], [], []
+    for cid, (inp, exp) in cases.items():
+        m = actions[inp["source"].rsplit("/", 1)[1]]
+        # Labels the issue form or Electron's bots set at opening are not a triage decision.
+        mlabels = [x["label"] for x in m["maintainer_labels"] if x["label"] not in inp["labels_at_open"]]
+        if exp["decision"] == "skip":
+            rows.append((cid, "skip", "-", ", ".join(mlabels) or "none", m))
+            continue
+        L, C = exp["labels"], exp["comment"]
+        exp_comps = set(L["required"]) | {x for g in L["one_of"] for x in g}
+        exp_ok = exp_comps | set(L["acceptable"])
+        exp_comps = {x for x in exp_comps if x.startswith("component/")}
+        m_comps = {x for x in mlabels if x.startswith("component/")}
+        e_repro = "need-repro" in C["required_kinds"]
+        repro.append((e_repro, "blocked/need-repro" in mlabels))
+        comp.append((bool(exp_comps), bool(m_comps)))
+        upstream.append(("upstream" in C["required_kinds"], "blocked/upstream ❌" in mlabels))
+        if exp_comps and m_comps:
+            comp_match.append(bool(m_comps & exp_ok))
+        rows.append((cid, ", ".join(sorted(exp_comps)) + (" +repro" if e_repro else ""),
+                     ", ".join(C["required_kinds"]) or "none", ", ".join(mlabels) or "none", m))
+
+    lines = [
+        "# Agreement of the gold labels with Electron maintainers",
+        "",
+        "Generated by `evals/tools/agreement.py`. Compares the frozen `expected.json` files (written",
+        "blind, from the opening text only) with what maintainers did in the first 14 days. This is a",
+        "check on the gold labels, not a target for the agent: maintainers triage with context the",
+        "agent never has (later comments, private knowledge), and some issues were never triaged.",
+        "",
+        f"Act cases: {len(repro)}.",
+        "",
+        "| Decision | Agree | Cohen's kappa |",
+        "|---|---|---|",
+        f"| asks for a repro (`blocked/need-repro`) | {sum(x == y for x, y in repro)}/{len(repro)} | {kappa(repro)} |",
+        f"| adds any component label | {sum(x == y for x, y in comp)}/{len(comp)} | {kappa(comp)} |",
+        f"| upstream (`blocked/upstream ❌`) | {sum(x == y for x, y in upstream)}/{len(upstream)} | {kappa(upstream)} |",
+        "",
+        "Kappa is low for upstream despite 20/21 agreement because both sides almost never use the",
+        "label, so chance agreement is already near 1 (the kappa prevalence paradox).",
+        "",
+        f"Where both added a component, the maintainers' component was one the gold label accepts in "
+        f"{sum(comp_match)}/{len(comp_match)} cases.",
+        "",
+        "| Case | Expected labels | Expected comment kinds | Maintainer labels (14 days) | First maintainer comment |",
+        "|---|---|---|---|---|",
+    ]
+    for cid, el, ek, ml, m in rows:
+        fc = m["first_maintainer_comment"]
+        fc = f"{fc['hours']} h: {fc['excerpt'][:90].replace('|', '/').replace('@', '')}" if fc else "none"
+        lines.append(f"| {cid} | {el or 'none'} | {ek} | {ml} | {fc} |")
+    (GOLDEN / "results" / "agreement.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines[:18]))
+
+
+if __name__ == "__main__":
+    main()

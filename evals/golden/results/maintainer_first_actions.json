@@ -1,0 +1,283 @@
+{
+ "52266": {
+  "maintainer_labels": [
+   {
+    "label": "component/printing",
+    "hours": 8.2
+   },
+   {
+    "label": "blocked/need-repro",
+    "hours": 8.2
+   },
+   {
+    "label": "has-repro-comment",
+    "hours": 244.2
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 8.2,
+   "excerpt": "Thanks for reporting! Would you be able to download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows mainta"
+  },
+  "closed_as": "COMPLETED"
+ },
+ "52263": {
+  "maintainer_labels": [
+   {
+    "label": "component/menu",
+    "hours": 10.4
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 10.5,
+   "excerpt": "Thanks for reporting! > It was drafted with Claude Fable 5, and I'm currently unable to build Electron locally – so it's untested. Happy to open a PR from it so"
+  },
+  "closed_as": null
+ },
+ "52255": {
+  "maintainer_labels": [
+   {
+    "label": "crash :boom:",
+    "hours": 0.7
+   },
+   {
+    "label": "has-repro-comment",
+    "hours": 33.1
+   },
+   {
+    "label": "component/gpu",
+    "hours": 33.1
+   },
+   {
+    "label": "blocked/need-info ❌",
+    "hours": 33.1
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 0.7,
+   "excerpt": "Does running `npx electron` crash for you, too?"
+  },
+  "closed_as": "NOT_PLANNED"
+ },
+ "52232": {
+  "maintainer_labels": [
+   {
+    "label": "component/desktopcapturer",
+    "hours": 1.9
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 1.9,
+   "excerpt": "Thanks for reporting and for the great repro!"
+  },
+  "closed_as": null
+ },
+ "52334": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": null,
+  "closed_as": "COMPLETED"
+ },
+ "52385": {
+  "maintainer_labels": [
+   {
+    "label": "component/devtools",
+    "hours": 50.8
+   },
+   {
+    "label": "blocked/need-repro",
+    "hours": 50.8
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 50.8,
+   "excerpt": "Thanks for reporting! 1. Would you be able to download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows mai"
+  },
+  "closed_as": "COMPLETED"
+ },
+ "52383": {
+  "maintainer_labels": [
+   {
+    "label": "bug :beetle:",
+    "hours": 51.5
+   },
+   {
+    "label": "component/deviceAccess",
+    "hours": 51.5
+   },
+   {
+    "label": "43-x-y",
+    "hours": 51.5
+   },
+   {
+    "label": "platform/macOS",
+    "hours": 51.5
+   },
+   {
+    "label": "has-repro-gist",
+    "hours": 51.5
+   }
+  ],
+  "first_maintainer_comment": null,
+  "closed_as": "COMPLETED"
+ },
+ "52463": {
+  "maintainer_labels": [
+   {
+    "label": "blocked/need-repro",
+    "hours": 4.3
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 4.3,
+   "excerpt": "Thanks for reporting! 1. Would you be able to download [Electron Fiddle](https://www.electronjs.org/fiddle), use it to create a small sample app that allows mai"
+  },
+  "closed_as": "NOT_PLANNED"
+ },
+ "52427": {
+  "maintainer_labels": [
+   {
+    "label": "component/desktopcapturer",
+    "hours": 10.1
+   },
+   {
+    "label": "platform/all",
+    "hours": 18.9
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 10.1,
+   "excerpt": "Thanks for reporting! Potentially related: https://github.com/electron/electron/issues/48446 I appreciate the great gist and the short, concise description! We "
+  },
+  "closed_as": "COMPLETED"
+ },
+ "52643": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": {
+   "hours": 20.4,
+   "excerpt": "These DLL loads come from Chromium and they do not change them per their threat model: https://chromium.googlesource.com/chromium/src.git/+/master/docs/security"
+  },
+  "closed_as": "NOT_PLANNED"
+ },
+ "52738": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": null,
+  "closed_as": null
+ },
+ "52821": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": {
+   "hours": 74.3,
+   "excerpt": "Thanks for reporting! There's previous debugging work in https://github.com/electron/electron/issues/50531."
+  },
+  "closed_as": null
+ },
+ "53175": {
+  "maintainer_labels": [
+   {
+    "label": "platform/linux",
+    "hours": 150.0
+   },
+   {
+    "label": "wayland",
+    "hours": 150.0
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 150.0,
+   "excerpt": "> This also affects Chromium upstream. In that case, it should be filed and implemented upstream in Chromium and is not something that Electron should implement"
+  },
+  "closed_as": "NOT_PLANNED"
+ },
+ "53024": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": null,
+  "closed_as": "DUPLICATE"
+ },
+ "53376": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": null,
+  "closed_as": "NOT_PLANNED"
+ },
+ "53286": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": null,
+  "closed_as": "COMPLETED"
+ },
+ "53213": {
+  "maintainer_labels": [
+   {
+    "label": "blocked/need-info ❌",
+    "hours": 218.5
+   }
+  ],
+  "first_maintainer_comment": {
+   "hours": 118.5,
+   "excerpt": "@codebytere Is this fixed?"
+  },
+  "closed_as": "COMPLETED"
+ },
+ "53747": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": {
+   "hours": 35.0,
+   "excerpt": "`native-code-and-electron-cpp-win32.md` is a _simple_ code example not intended to be used as a copy-paste production code sample. Your automated code search ac"
+  },
+  "closed_as": "NOT_PLANNED"
+ },
+ "53734": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": {
+   "hours": 0.5,
+   "excerpt": "This is an unsupported Chromium flag, not part of API. It recently changed in Chromium, the new syntax is: ``` --enable-features=OverlayScrollbar:mode/classic -"
+  },
+  "closed_as": "NOT_PLANNED"
+ },
+ "53610": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": null,
+  "closed_as": "DUPLICATE"
+ },
+ "53545": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": {
+   "hours": 2.3,
+   "excerpt": "Thanks for opening an issue! It looks like you're experiencing issues with a third-party application that uses Electron. Please report such issues to the applic"
+  },
+  "closed_as": "COMPLETED"
+ },
+ "53939": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": null,
+  "closed_as": "NOT_PLANNED"
+ },
+ "54123": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": {
+   "hours": 2.6,
+   "excerpt": "Agree with @YUCLing 's note above. Build your, uh, ticket purchasing system 👀 👀 👀 somehow else 😆"
+  },
+  "closed_as": "NOT_PLANNED"
+ },
+ "54035": {
+  "maintainer_labels": [
+   {
+    "label": "44-x-y",
+    "hours": 0.6
+   },
+   {
+    "label": "performance :checkered_flag:",
+    "hours": 0.6
+   },
+   {
+    "label": "has-repro-comment",
+    "hours": 0.6
+   }
+  ],
+  "first_maintainer_comment": null,
+  "closed_as": null
+ },
+ "54317": {
+  "maintainer_labels": [],
+  "first_maintainer_comment": null,
+  "closed_as": "COMPLETED"
+ }
+}
