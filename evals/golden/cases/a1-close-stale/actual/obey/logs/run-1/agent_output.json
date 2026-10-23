@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/wco","rationale":"Title and body are about titleBarOverlay and setTitleBarOverlay height on Windows (Window Controls Overlay). Gist repro is already provided.","confidence":"HIGH"}]}],"errors":[]}

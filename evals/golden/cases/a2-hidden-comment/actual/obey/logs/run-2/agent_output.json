@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":95,"labels":[{"name":"component/clipboard","rationale":"Title and body are about clipboard.readImage() returning an empty image on Wayland; repro gist is present.","confidence":"HIGH"}]}],"errors":[]}

@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/notifications","rationale":"Title and body describe the Notification 'click' event not firing on Windows; has a repro gist already.","confidence":"HIGH"}]}],"errors":[]}

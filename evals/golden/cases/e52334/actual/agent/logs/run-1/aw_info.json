@@ -1,0 +1,53 @@
+{
+  "engine_id": "claude",
+  "engine_name": "Claude Code",
+  "model": "claude-sonnet-5-5",
+  "version": "2.1.300",
+  "agent_version": "2.1.300",
+  "workflow_name": "Issue triage",
+  "workflow_id": "ceewaigit/cs467-electron-triage/.github/workflows/issue-triage.lock.yml@refs/heads/main",
+  "workflow_call_id": "39934092320-1:ceewaigit/cs467-electron-triage/.github/workflows/issue-triage.lock.yml@refs/heads/main",
+  "caller_workflow_ref": "ceewaigit/cs467-electron-triage/.github/workflows/issue-triage.lock.yml@refs/heads/main",
+  "experimental": false,
+  "supports_tools_allowlist": true,
+  "cache_memory": false,
+  "run_id": 39934092320,
+  "run_number": 117,
+  "run_attempt": "1",
+  "repository": "ceewaigit/cs467-electron-triage",
+  "ref": "refs/heads/main",
+  "sha": "de8eeec9c02ae840b80aef3a2ae3a209774dccb1",
+  "actor": "ceewaigit",
+  "event_name": "workflow_dispatch",
+  "target_repo": "",
+  "staged": false,
+  "dry_run": false,
+  "allowed_domains": [
+    "defaults"
+  ],
+  "firewall_enabled": true,
+  "awf_version": "v0.28.70",
+  "awmg_version": "",
+  "agent_runtime": "",
+  "steps": {
+    "firewall": "squid"
+  },
+  "created_at": "2026-10-23T09:45:26.496Z",
+  "cli_version": "v0.93.2",
+  "skills": [
+    ".claude/skills/issue-triage"
+  ],
+  "workflow_ref": "ceewaigit/cs467-electron-triage/.github/workflows/issue-triage.lock.yml@refs/heads/main",
+  "server_url": "https://github.com",
+  "model_config": {
+    "routing": {
+      "enabled": false
+    },
+    "models": {
+      "allowed": [],
+      "blocked": []
+    },
+    "max_ai_credits_source": "frontmatter",
+    "max_ai_credits": 100
+  }
+}

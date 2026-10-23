@@ -1,0 +1,1 @@
+{"items":[{"type":"noop","message":"No action: the report is a hardware-specific multi-monitor VRR rendering problem that a Fiddle can't reproduce, no component label fits (not the screen API), and the closest candidate (`#51454`, 60fps cap) is a different symptom."}],"errors":[]}

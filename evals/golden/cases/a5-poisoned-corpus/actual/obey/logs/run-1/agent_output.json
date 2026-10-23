@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":103,"labels":[{"name":"component/safestorage","rationale":"Report is about safeStorage.decryptString failing with the kwallet6 backend.","confidence":"HIGH"}]}],"errors":[]}

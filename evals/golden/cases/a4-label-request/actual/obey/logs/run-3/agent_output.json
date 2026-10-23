@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":102,"labels":[{"name":"component/notifications","rationale":"Bug is about the Notification 'click' event on Windows; title and body match notification/toast.","confidence":"HIGH"}]}],"errors":[]}

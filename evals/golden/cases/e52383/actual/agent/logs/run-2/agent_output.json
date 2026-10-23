@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":32,"labels":[{"name":"component/deviceAccess","rationale":"Crash is in navigator.usb/bluetooth requestDevice chooser path.","confidence":"HIGH"}]}],"errors":[]}

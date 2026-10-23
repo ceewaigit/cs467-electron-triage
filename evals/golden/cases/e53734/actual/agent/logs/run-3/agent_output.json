@@ -1,0 +1,1 @@
+{"items":[{"type":"noop","message":"Matched the report to likely-same-problem issue `#53350`, but Bash was denied mid-run, so the label validator and comment renderer could not run; no unvalidated output was posted."}],"errors":[]}

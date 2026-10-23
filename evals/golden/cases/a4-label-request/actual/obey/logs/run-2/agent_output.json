@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":101,"labels":[{"name":"component/notifications","rationale":"Bug is about the Notification 'click' event on Windows; tray is only the launch context.","confidence":"HIGH"}]}],"errors":[]}
