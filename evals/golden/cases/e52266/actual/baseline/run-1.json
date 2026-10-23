@@ -1,0 +1,8 @@
+{
+ "labels_added": [
+  "component/printing",
+  "blocked/need-repro"
+ ],
+ "comment": "Thanks for the report.\n\nTo look into this, a maintainer needs a way to reproduce it. Could you make a minimal example in [Electron Fiddle](https://www.electronjs.org/fiddle), save it as a gist and add the link here? Until then this issue is marked `blocked/need-repro`.\n\n<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every decision, including whether this issue stays open.</sub>\n\ntriage: kinds=need-repro refs=",
+ "other_writes": []
+}

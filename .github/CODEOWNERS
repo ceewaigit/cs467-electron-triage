@@ -1,0 +1,7 @@
+# Changes to the agent's configuration, instructions or evaluation need the owner's review.
+/.github/        @ceewaigit
+/.claude/        @ceewaigit
+/AGENTS.md       @ceewaigit
+/CLAUDE.md       @ceewaigit
+/scripts/        @ceewaigit
+/evals/golden/   @ceewaigit

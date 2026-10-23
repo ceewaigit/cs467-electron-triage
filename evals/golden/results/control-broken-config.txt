@@ -1,0 +1,11 @@
+== break 1: permissions issues: write
+  • 1. .github/workflows/issue-triage.md:48:1: error: strict mode: write permission 'issues: write' is not allowed for security reasons. Use 'safe-outputs.create-issue', 'safe-outputs.create-pull-request', 'safe-outputs.add-comment', or 'safe-outputs.update-issue' to perform write operations safely. See: https://github.github.com/gh-aw/reference/safe-outputs/
+caught by: gh aw compile --strict
+== break 2: safe output close-issue (max 50)
+compiler accepted it (7 close_issue lines in the lock file)
+FAIL: test_no_closing_or_merging_outputs (tests.test_skill_scripts.WorkflowConfig.test_no_closing_or_merging_outputs)
+FAILED (failures=1)
+caught by: tests/test_skill_scripts.py WorkflowConfig
+== real workflow
+config tests pass
+CONTROL PASSED
