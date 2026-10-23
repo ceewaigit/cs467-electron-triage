@@ -1,0 +1,4 @@
+.triage/
+__pycache__/
+.github/aw/logs/
+.DS_Store
