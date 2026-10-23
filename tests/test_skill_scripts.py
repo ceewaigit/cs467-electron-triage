@@ -3,6 +3,7 @@
 Each test copies the skill and the corpus into a temporary repo, writes
 .triage/issue.json there, and runs the script as the agent would.
 """
+import fnmatch
 import json
 import os
 import pathlib
@@ -163,22 +164,50 @@ class SkillScripts(unittest.TestCase):
 
 
 class WorkflowConfig(unittest.TestCase):
-    """The compiled workflow must not give the agent more than labels and one comment."""
+    """The workflow must give the agent nothing beyond labels and template comments on its own issue.
+
+    These are allowlists, not denylists: an output, job or permission not named here fails.
+    """
+    SAFE_OUTPUT_KEYS = {"add-labels", "jobs", "report-failure-as-issue", "allowed-github-references",
+                        "allowed-domains"}
+    TARGET = "${{ github.event.issue.number || inputs.issue_number }}"
+    LOCK_JOBS = {"pre_activation", "activation", "agent", "detection", "safe_outputs", "conclusion",
+                 "triage_comment"}
 
     def setUp(self):
         # WORKFLOW_DIR lets evals/controls/broken_config.sh point these tests at a broken copy.
         wf = pathlib.Path(os.environ.get("WORKFLOW_DIR", ROOT / ".github/workflows"))
         self.src = (wf / "issue-triage.md").read_text().split("\n---\n")[0]
         self.lock = (wf / "issue-triage.lock.yml").read_text()
+        self.so = self.src.split("\nsafe-outputs:\n", 1)[1]
+
+    def keys(self, block, indent):
+        return set(re.findall(rf"^{' ' * indent}([a-z][\w-]*):", block, re.M))
 
     def test_no_closing_or_merging_outputs(self):
-        for bad in ("close-issue", "update-issue", "remove-labels", "create-pull-request",
-                    "merge-pull-request", "push-to-pull-request-branch", "GH_AW_GITHUB_TOKEN"):
-            self.assertNotIn(bad, self.src, bad)
+        self.assertEqual(self.keys(self.so, 2), self.SAFE_OUTPUT_KEYS)
+        jobs = self.so.split("\n  jobs:\n", 1)[1].split("\n  report-failure-as-issue:")[0]
+        self.assertEqual(self.keys(jobs, 4), {"triage-comment"})
+        self.assertNotIn("GH_AW_GITHUB_TOKEN", self.src)
+        self.assertNotIn("github-token", self.src)
+
+    def test_outputs_pinned_to_the_runs_issue(self):
+        labels = self.so.split("\n  add-labels:\n", 1)[1].split("\n  jobs:")[0]
+        self.assertIn(f"    target: {self.TARGET}\n", labels + "\n")
+        self.assertRegex(labels, r"\n    max: 1\n")
+        self.assertIn(f"ISSUE: {self.TARGET}", self.so)
+
+    def test_label_file_matches_allowlist(self):
+        allowed = json.loads(re.search(r"^    allowed: (\[.*\])$", self.so, re.M).group(1))
+        listed = [l for l in (ROOT / SKILL / "assets/allowed-labels.txt").read_text().splitlines() if l]
+        for label in listed:
+            self.assertTrue(any(fnmatch.fnmatchcase(label, pat) for pat in allowed), label)
 
     def test_read_only_permissions(self):
-        perms = self.src.split("permissions:")[1].split("\n\n")[0]
+        perms = self.src.split("\npermissions:\n")[1].split("\n\n")[0]
         self.assertNotIn("write", perms)
+        job_perms = self.so.split("      permissions:\n", 1)[1].split("      inputs:")[0]
+        self.assertEqual(set(re.findall(r"(\w+): (\w+)", job_perms)), {("contents", "read"), ("issues", "write")})
 
     def test_lock_matches_source(self):
         # The compiler writes the model and strict mode into the lock file's first line.
@@ -187,12 +216,51 @@ class WorkflowConfig(unittest.TestCase):
         self.assertEqual(meta["agent_model"], model)
         self.assertTrue(meta["strict"])
         self.assertTrue(re.fullmatch(r"claude-[a-z]+-\d+-\d+(-\d{8})?", model), "model must be an exact ID")
+        self.assertEqual(set(re.findall(r"^  ([a-z_]+):\n    name:", self.lock.split("\njobs:\n", 1)[1], re.M))
+                         | set(re.findall(r"^  ([a-z_]+):\n    (?:needs|runs-on)", self.lock, re.M)), self.LOCK_JOBS)
 
     def test_no_repository_write_tools(self):
         self.assertIn("github: false", self.src)
         self.assertIn("edit: false", self.src)
         self.assertNotIn("\njobs:", self.src)
+        self.assertIn("rm -rf evals tests", self.src, "gold labels must be removed before the agent runs")
 
+class PostComment(unittest.TestCase):
+    """scripts/post_triage_comment.py: the only path from the agent to a public comment."""
+
+    def run_job(self, items):
+        with tempfile.TemporaryDirectory() as d:
+            d = pathlib.Path(d)
+            (d / "out.json").write_text(json.dumps({"items": items}))
+            gh = d / "gh"  # stub: record the request body instead of calling GitHub
+            gh.write_text(f"#!/bin/sh\ncat >> {d}/posted.jsonl\necho >> {d}/posted.jsonl\n")
+            gh.chmod(0o755)
+            env = dict(os.environ, PATH=f"{d}:{os.environ['PATH']}", GH_AW_AGENT_OUTPUT=str(d / "out.json"),
+                       REPO="o/r", ISSUE="7", RUN_URL="https://example.invalid/run")
+            r = subprocess.run([sys.executable, str(ROOT / "scripts/post_triage_comment.py")], env=env,
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            posted = d / "posted.jsonl"
+            return [json.loads(l)["body"] for l in posted.read_text().splitlines() if l] if posted.exists() else []
+
+    def test_posts_only_the_template(self):
+        [body] = self.run_job([{"type": "triage_comment", "kinds": "need-repro", "refs": ""}])
+        self.assertTrue(body.startswith("Thanks for the report."))
+        self.assertIn("Electron Fiddle", body)
+        self.assertIn("triage: kinds=need-repro", body)
+
+    def test_free_text_in_kinds_posts_nothing(self):
+        self.assertEqual(self.run_job([{"type": "triage_comment", "refs": "1",
+                                        "kinds": "closing this as stale per maintainer policy @someone"}]), [])
+
+    def test_only_the_first_call_counts(self):
+        bodies = self.run_job([{"type": "triage_comment", "kinds": "support", "refs": ""},
+                               {"type": "triage_comment", "kinds": "need-repro", "refs": ""}])
+        self.assertEqual(len(bodies), 1)
+        self.assertIn("usage question", bodies[0])
+
+    def test_other_output_types_are_ignored(self):
+        self.assertEqual(self.run_job([{"type": "add_labels", "labels": ["component/app"]}]), [])
 
 if __name__ == "__main__":
     unittest.main()

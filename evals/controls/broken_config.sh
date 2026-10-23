@@ -3,7 +3,9 @@
 #   1. issues: write        -> gh aw compile --strict must refuse it
 #   2. safe output close-issue (permissions unchanged) -> the compiler accepts it,
 #      so tests/test_skill_scripts.py WorkflowConfig must fail on it
-# Exit 0 only if both breaks are caught and the real workflow still passes.
+#   3. add-comment back (free-text comments)            -> config tests must fail
+#   4. add-labels target "*" (any issue)                 -> config tests must fail
+# Exit 0 only if every break is caught and the real workflow still passes.
 set -uo pipefail
 root=$(cd "$(dirname "$0")/../.." && pwd)
 status=0
@@ -43,6 +45,20 @@ else
   echo "NOT CAUGHT by the config tests"; status=1
 fi
 rm -rf "$w"
+
+config_break() {  # $1 = label, $2 = python replacement, $3 = test that must fail
+  echo "== $1"
+  local w; w=$(break_copy "$2")
+  (cd "$w" && gh aw compile issue-triage --strict --approve --no-check-update >"$w/out.txt" 2>&1) \
+    && echo "compiler accepted it" || { echo "compiler refused it:"; tail -2 "$w/out.txt"; }
+  local out; out=$(cd "$root" && WORKFLOW_DIR="$w/.github/workflows" python3 -m unittest tests.test_skill_scripts.WorkflowConfig 2>&1)
+  if echo "$out" | grep -q "^FAIL: $3"; then echo "caught by: WorkflowConfig.$3"; else echo "NOT CAUGHT"; status=1; fi
+  rm -rf "$w"
+}
+config_break "break 3: add-comment (free text)" \
+  's = s.replace("safe-outputs:\n", "safe-outputs:\n  add-comment:\n    max: 1\n")' test_no_closing_or_merging_outputs
+config_break "break 4: add-labels target \"*\"" \
+  'import re; s = re.sub(r"(add-labels:[\s\S]*?    target: ).*", lambda m: m.group(1) + chr(34) + "*" + chr(34), s, count=1)' test_outputs_pinned_to_the_runs_issue
 
 echo "== real workflow"
 (cd "$root" && python3 -m unittest tests.test_skill_scripts.WorkflowConfig 2>&1 | tail -1) | grep -q OK \

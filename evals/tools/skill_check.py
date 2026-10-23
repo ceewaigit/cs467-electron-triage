@@ -6,7 +6,8 @@ Four layers, weakest to strongest:
   2. discovered - the Claude Code init event lists issue-triage among its skills
   3. invoked    - the agent called the Skill tool for issue-triage
   4. executed   - a tool result starts with the triage_checks marker line, and every
-                  add_labels / add_comment call came after a check_labels / render_comment ok
+                  add_labels / add_comment / triage_comment call came after a check_labels /
+                  render_comment ok
 
 Also records cost, turns, tools used and permission denials for the audit trail.
 
@@ -56,7 +57,7 @@ def check(logdir):
                     r["invoked"] = True
                 if name.endswith("add_labels") and not ok_labels:
                     r["labels_checked"] = False
-                if name.endswith("add_comment") and not ok_comment:
+                if name.endswith(("add_comment", "triage_comment")) and not ok_comment:
                     r["comment_rendered"] = False
             elif c.get("type") == "tool_result":
                 text = c["content"] if isinstance(c["content"], str) else json.dumps(c["content"])

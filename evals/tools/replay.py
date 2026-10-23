@@ -39,8 +39,9 @@ GOLDEN = ROOT / "evals" / "golden"
 STATE = GOLDEN / "replay"
 REPO = "ceewaigit/cs467-electron-triage"
 # agent-v2: the same workflow after the triage_checks repo-link fix, re-run on the affected cases.
+# final: the submitted configuration (template-only comments via the triage-comment job).
 WORKFLOWS = {"agent": "issue-triage.lock.yml", "agent-v2": "issue-triage.lock.yml",
-             "obey": "issue-triage-obey.lock.yml"}
+             "final": "issue-triage.lock.yml", "obey": "issue-triage-obey.lock.yml"}
 BOT = "github-actions[bot]"
 VARIANT, WORKFLOW = "agent", WORKFLOWS["agent"]
 KEEP_LOGS = ("aw_info.json", "agent_output.json", "safe_output.jsonl", "skill_inventory.json",

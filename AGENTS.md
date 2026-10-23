@@ -18,6 +18,7 @@ here may write to `electron/electron`.
 | `.github/workflows/issue-triage.lock.yml` | compiled workflow. Generated; never edit by hand |
 | `.claude/skills/issue-triage/` | the skill: `SKILL.md`, three scripts, label allowlist, component hints |
 | `scripts/prepare_issue.py` | pre-agent step that saves the triggering issue to `.triage/issue.json` |
+| `scripts/post_triage_comment.py` | safe-output job: renders the chosen templates and posts the comment |
 | `data/` | frozen issue corpus for the similar-issue search, and Electron's label list |
 | `evals/golden/` | rubric, 30 cases (`input.json`, `expected.json`, `actual/`), results |
 | `evals/tools/` | fetch, case builder, replay, collector, baseline and scorer |
@@ -41,11 +42,16 @@ inside the agent's sandbox, which has no package install step.
   `evals/golden/RUBRIC.md` after commit `4baa2cb`. If one is wrong, leave it and record the
   disagreement in `DESIGN.md` under test findings.
 - **Do not widen the agent's power.** Do not add permissions beyond `read`, a `github` tool, more
-  `bash` commands, `jobs:`, or any safe output other than `add-labels`, `add-comment` and `noop`.
-  In particular never add `close-issue`, `update-issue`, `remove-labels`, `create-pull-request`,
-  `merge-pull-request` or `GH_AW_GITHUB_TOKEN`. Such changes need review from the code owner.
-- **Labels the agent may add** are listed twice, in `safe-outputs.add-labels.allowed` and in
-  `assets/allowed-labels.txt`. Change both together.
+  `bash` commands, top-level `jobs:`, or any safe output other than `add-labels` and the
+  `triage-comment` job. Never add `add-comment` (it lets the model write free text), `close-issue`,
+  `update-issue`, `remove-labels`, `create-pull-request`, `merge-pull-request` or
+  `GH_AW_GITHUB_TOKEN`. `tests/test_skill_scripts.py` fails on any of these. Such changes need
+  review from the code owner.
+- **Labels the agent may add** are listed twice: as patterns in `safe-outputs.add-labels.allowed`
+  (gh-aw allows at most 50 entries) and in full in `assets/allowed-labels.txt`. Change both
+  together; a test checks that every listed label matches a pattern.
+- **Comments come from templates only.** To change wording, edit `render_comment.py`; the
+  `triage-comment` job (`scripts/post_triage_comment.py`) renders and posts it.
 - **Do not tune the skill on the golden cases.** Examples in `SKILL.md` must stay unlike the eval
   cases. Use Q2 2026 issues from `evals/data/` for development.
 - **Replayed issues must not reach Electron.** `evals/tools/replay.py` breaks `@mentions` and

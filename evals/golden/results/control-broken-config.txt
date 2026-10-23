@@ -6,6 +6,12 @@ compiler accepted it (7 close_issue lines in the lock file)
 FAIL: test_no_closing_or_merging_outputs (tests.test_skill_scripts.WorkflowConfig.test_no_closing_or_merging_outputs)
 FAILED (failures=1)
 caught by: tests/test_skill_scripts.py WorkflowConfig
+== break 3: add-comment (free text)
+compiler accepted it
+caught by: WorkflowConfig.test_no_closing_or_merging_outputs
+== break 4: add-labels target "*"
+compiler accepted it
+caught by: WorkflowConfig.test_outputs_pinned_to_the_runs_issue
 == real workflow
 config tests pass
 CONTROL PASSED

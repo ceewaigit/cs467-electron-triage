@@ -1,6 +1,6 @@
 ---
 name: issue-triage
-description: First-pass triage of one newly opened Electron issue. Use when asked to triage an issue. Runs the deterministic checks, then decides a component label, whether to ask for an Electron Fiddle repro, whether an earlier issue reports the same problem, and whether the report belongs elsewhere (security, a third-party app, a website, Chromium/Node, a usage question). Output is at most one add_labels call and one comment, or a noop.
+description: First-pass triage of one newly opened Electron issue. Use when asked to triage an issue. Runs the deterministic checks, then decides a component label, whether to ask for an Electron Fiddle repro, whether an earlier issue reports the same problem, and whether the report belongs elsewhere (security, a third-party app, a website, Chromium/Node, a usage question). Output is at most one add_labels call and one triage_comment call, or a noop.
 allowed-tools: Bash(python3 .claude/skills/issue-triage/scripts/triage_checks.py), Bash(python3 .claude/skills/issue-triage/scripts/check_labels.py:*), Bash(python3 .claude/skills/issue-triage/scripts/render_comment.py:*)
 ---
 
@@ -81,12 +81,13 @@ With `security`, add no other comment kind and no `blocked/need-repro`.
    python3 .claude/skills/issue-triage/scripts/check_labels.py "component/tray" "blocked/need-repro"
    ```
    Drop every label it rejects.
-2. If you chose comment kinds, render the comment:
+2. If you chose comment kinds, check them by rendering the comment:
    ```bash
    python3 .claude/skills/issue-triage/scripts/render_comment.py --kinds need-repro,similar --refs 51761
    ```
-   Copy the text between `-----BEGIN COMMENT-----` and `-----END COMMENT-----` into `add_comment`
-   exactly. Do not add or change words; the last line is read by the evaluation.
+   If it prints `rejected`, fix or drop the kinds. If it prints `ok`, call `triage_comment` once
+   with the same `kinds` and `refs`. You do not write the comment: the workflow renders the same
+   templates and posts them.
 3. Call `add_labels` once with the validated labels, if any.
 4. If you added no labels and no comment, call `noop` with one sentence saying why (for example
    "Complete bug report with a gist; no component label fits").

@@ -20,3 +20,12 @@ The following workflows will be enabled:
   issue-triage (current state: disabled_manually)
 Enabled workflow: issue-triage
 Issue triage	active	393835588
+
+# Cancel a running execution (2026-10-23T12:02:09Z)
+$ gh workflow run issue-triage.lock.yml -f issue_number=121 -f author_association=NONE
+https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39950334071
+run 39950334071: agent job in_progress at 12:03:03
+$ gh run cancel 39950334071
+✓ Request to cancel workflow 39950334071 submitted.
+conclusion=cancelled | pre_activation=success, activation=success, agent=cancelled, detection=success, conclusion=success, safe_outputs=cancelled
+issue #121 after: {"comments":0,"labels":[],"state":"open"}
