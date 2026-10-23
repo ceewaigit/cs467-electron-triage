@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""Did the issue-triage skill actually load and run? Checked per run from the run's own logs.
+
+Four layers, weakest to strongest:
+  1. installed  - skill_inventory.json lists issue-triage with a sha256 digest
+  2. discovered - the Claude Code init event lists issue-triage among its skills
+  3. invoked    - the agent called the Skill tool for issue-triage
+  4. executed   - a tool result starts with the triage_checks marker line, and every
+                  add_labels / add_comment call came after a check_labels / render_comment ok
+
+Also records cost, turns, tools used and permission denials for the audit trail.
+
+    python3 evals/tools/skill_check.py [--runs agent]   # writes results/skill-check-<runs>.json
+"""
+import argparse
+import collections
+import json
+import pathlib
+import re
+
+GOLDEN = pathlib.Path(__file__).resolve().parents[1] / "golden"
+
+
+def check(logdir):
+    r = {"installed": False, "digest": None, "discovered": False, "invoked": False, "executed": False,
+         "labels_checked": True, "comment_rendered": True, "tools": collections.Counter(),
+         "cost_usd": None, "turns": None, "permission_denials": None, "model": None}
+    inv = logdir / "skill_inventory.json"
+    if inv.exists():
+        for s in json.loads(inv.read_text()).get("skills", []):
+            if s["name"] == "issue-triage":
+                r["installed"], r["digest"] = True, s.get("digest")
+    stdio = logdir / "agent-stdio.log"
+    if stdio.exists():
+        m = re.search(r'"skills":\[([^\]]*)\]', stdio.read_text(errors="replace"))
+        r["discovered"] = bool(m and '"issue-triage"' in m.group(1))
+    sess = logdir / "agent-session.jsonl"
+    if not sess.exists():
+        return r
+    ok_labels = ok_comment = False
+    for line in sess.open():
+        e = json.loads(line)
+        if "total_cost_usd" in e:
+            r["cost_usd"], r["turns"] = round(e["total_cost_usd"], 4), e.get("num_turns")
+            r["permission_denials"] = e.get("permission_denials")
+        if e.get("subtype") == "init":
+            r["model"] = e.get("model")
+        content = (e.get("message") or {}).get("content") or []
+        for c in content if isinstance(content, list) else []:
+            if c.get("type") == "tool_use":
+                name = c["name"]
+                r["tools"][name] += 1
+                if name == "Skill" and "issue-triage" in json.dumps(c["input"]):
+                    r["invoked"] = True
+                if name.endswith("add_labels") and not ok_labels:
+                    r["labels_checked"] = False
+                if name.endswith("add_comment") and not ok_comment:
+                    r["comment_rendered"] = False
+            elif c.get("type") == "tool_result":
+                text = c["content"] if isinstance(c["content"], str) else json.dumps(c["content"])
+                if text.startswith("[issue-triage/triage_checks v1] ok"):
+                    r["executed"] = True
+                ok_labels |= text.startswith("[issue-triage/check_labels v1] ok")
+                ok_comment |= text.startswith("[issue-triage/render_comment v1] ok")
+    r["tools"] = dict(r["tools"])
+    return r
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--runs", default="agent")
+    a = ap.parse_args()
+    out, totals = {}, collections.Counter()
+    cost = 0.0
+    for d in sorted((GOLDEN / "cases").iterdir()):
+        for logdir in sorted((d / "actual" / a.runs / "logs").glob("run-*")):
+            r = check(logdir)
+            out[f"{d.name}/{logdir.name}"] = r
+            totals["runs"] += 1
+            for k in ("installed", "discovered", "invoked", "executed", "labels_checked", "comment_rendered"):
+                totals[k] += bool(r[k])
+            cost += r["cost_usd"] or 0
+            totals["permission_denials"] += len(r["permission_denials"] or [])
+    digests = {r["digest"] for r in out.values() if r["digest"]}
+    summary = dict(totals) | {"agent_cost_usd_total": round(cost, 2), "distinct_skill_digests": sorted(digests),
+                              "tools_used": dict(sum((collections.Counter(r["tools"]) for r in out.values()),
+                                                     collections.Counter()))}
+    (GOLDEN / "results" / f"skill-check-{a.runs}.json").write_text(
+        json.dumps({"summary": summary, "runs": out}, indent=1) + "\n")
+    print(json.dumps(summary, indent=1))
+    for k, r in out.items():
+        missing = [x for x in ("installed", "discovered", "invoked", "executed", "labels_checked",
+                               "comment_rendered") if not r[x]]
+        if missing:
+            print(f"{k}: missing {missing}")
+
+
+if __name__ == "__main__":
+    main()
