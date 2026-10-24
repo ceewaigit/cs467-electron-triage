@@ -27,10 +27,12 @@ MAINTAINER = {"MEMBER", "OWNER", "COLLABORATOR"}
 
 
 def ts(s):
+    """Convert a GitHub UTC timestamp into a timezone-aware datetime."""
     return dt.datetime.fromisoformat(s.replace("Z", "+00:00"))
 
 
 def extract(raw_dir, numbers):
+    """Extract labels by non-author humans and the first maintainer comment within 14 days."""
     out = {}
     for f in sorted(pathlib.Path(raw_dir).glob("*.json")):
         for n in json.loads(f.read_text())["data"]["search"]["nodes"]:
@@ -54,6 +56,7 @@ def extract(raw_dir, numbers):
 
 
 def kappa(pairs):
+    """Measure binary agreement after subtracting agreement expected by chance."""
     n = len(pairs)
     if not n:
         return None
@@ -64,6 +67,7 @@ def kappa(pairs):
 
 
 def main():
+    """Compare frozen expectations with later maintainer actions, keeping those roles separate."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw")
     a = ap.parse_args()

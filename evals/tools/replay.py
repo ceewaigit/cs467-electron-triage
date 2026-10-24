@@ -22,6 +22,15 @@ Issue bodies are neutralised before filing so nothing reaches another repository
 The text the agent saw is saved in replay/issues.json next to the original.
 
 `--cases e52232,a1-close-stale` limits any step to some cases. Needs `gh` logged in as the owner.
+The default variant is the historical name `agent`; use `--variant final` for
+the template-only workflow. The variant selects filenames, not a Git revision:
+dispatch runs the default branch unless --ref selects a branch or tag. New
+run records retain the requested ref and GitHub's actual head SHA/branch.
+
+Collection keeps successful executions in actual/<variant>/run-N.json. Failed,
+cancelled or skipped executions go in actual/<variant>/failures/ with their own
+logs, so the scorer cannot mistake a billing failure for a correct no-action
+decision. Observed actions are retained in both kinds of record for audit.
 """
 import argparse
 import datetime as dt
@@ -39,16 +48,18 @@ GOLDEN = ROOT / "evals" / "golden"
 STATE = GOLDEN / "replay"
 REPO = "ceewaigit/cs467-electron-triage"
 # agent-v2: the same workflow after the triage_checks repo-link fix, re-run on the affected cases.
-# final: the submitted configuration (template-only comments via the triage-comment job).
+# final: the historical template-only configuration; hardened: the audited successor.
 WORKFLOWS = {"agent": "issue-triage.lock.yml", "agent-v2": "issue-triage.lock.yml",
-             "final": "issue-triage.lock.yml", "obey": "issue-triage-obey.lock.yml"}
+             "final": "issue-triage.lock.yml", "hardened": "issue-triage.lock.yml",
+             "obey": "issue-triage-obey.lock.yml"}
 BOT = "github-actions[bot]"
 VARIANT, WORKFLOW = "agent", WORKFLOWS["agent"]
 KEEP_LOGS = ("aw_info.json", "agent_output.json", "safe_output.jsonl", "skill_inventory.json",
-             "agent-stdio.log", "agent-session.jsonl", "prompt.txt", "detection.log")
+             "agent-stdio.log", "agent-session.jsonl", "agent-errors.jsonl", "prompt.txt", "detection.log")
 
 
 def gh(*args, input=None, check=True):
+    """Run the GitHub CLI and stop on failure unless the caller allows a missing artifact."""
     p = subprocess.run(["gh", *args], capture_output=True, text=True, input=input)
     if check and p.returncode:
         sys.exit(f"gh {' '.join(args[:3])} failed: {p.stderr.strip()}")
@@ -56,6 +67,7 @@ def gh(*args, input=None, check=True):
 
 
 def api(path, *args, method="GET", paginate=False):
+    """Decode one REST response, or flatten all pages into one list."""
     extra = ["--paginate", "--slurp"] if paginate else []
     out = gh("api", "-X", method, path, *extra, *args)
     data = json.loads(out) if out.strip() else None
@@ -63,6 +75,7 @@ def api(path, *args, method="GET", paginate=False):
 
 
 def neutralise(text):
+    """Keep issue references readable while preventing mentions and cross-repository notifications."""
     text = re.sub(r"https?://(?:www\.)?github\.com/([\w.-]+)/([\w.-]+)/(?:issues|pull|discussions)/(\d+)[^\s)\]>]*",
                   r"`\1/\2#\3`", text)
     text = re.sub(r"(?<![\w/`])([\w.-]+/[\w.-]+#\d+)", r"`\1`", text)
@@ -70,6 +83,7 @@ def neutralise(text):
 
 
 def cases(selected):
+    """Read the selected golden inputs in a stable order."""
     out = []
     for d in sorted((GOLDEN / "cases").iterdir()):
         if not selected or d.name in selected:
@@ -78,16 +92,19 @@ def cases(selected):
 
 
 def load(name, default):
+    """Read replay state for this variant, or return the supplied initial value."""
     p = STATE / name.replace(".json", f"-{VARIANT}.json")
     return json.loads(p.read_text()) if p.exists() else default
 
 
 def save(name, data):
+    """Persist variant-specific replay state after each successful remote operation."""
     STATE.mkdir(exist_ok=True)
     (STATE / name.replace(".json", f"-{VARIANT}.json")).write_text(json.dumps(data, indent=1, ensure_ascii=False) + "\n")
 
 
 def cmd_labels(a):
+    """Create missing sandbox labels from the allowlist and opening issue labels."""
     allowed = (ROOT / ".claude/skills/issue-triage/assets/allowed-labels.txt").read_text().split("\n")
     meta = {l["name"]: l for l in json.loads((ROOT / "data" / "labels.json").read_text())}
     wanted = {l for l in allowed if l} | {l for _, c in cases(a.cases) for l in c["labels_at_open"]}
@@ -100,6 +117,7 @@ def cmd_labels(a):
 
 
 def cmd_file(a):
+    """Create one independent sandbox issue per repetition and save its issue number."""
     issues = load("issues.json", {})
     for cid, c in cases(a.cases):
         entry = issues.setdefault(cid, {"title": neutralise(c["title"]), "body": neutralise(c["body"]),
@@ -116,6 +134,7 @@ def cmd_file(a):
 
 
 def cmd_dispatch(a):
+    """Dispatch each unrecorded repetition and associate it with the newly appearing run."""
     issues, runs = load("issues.json", {}), load("runs.json", {})
     for cid, c in cases(a.cases):
         for k, n in enumerate(issues.get(cid, {}).get("issues", [])[:a.k], 1):
@@ -125,18 +144,22 @@ def cmd_dispatch(a):
             seen = {r["databaseId"] for r in json.loads(gh(
                 "run", "list", "-R", REPO, "-w", WORKFLOW, "-e", "workflow_dispatch", "-L", "20",
                 "--json", "databaseId"))}
-            gh("workflow", "run", WORKFLOW, "-R", REPO, "-f", f"issue_number={n}",
+            requested_ref = getattr(a, "ref", None)
+            ref_args = ["--ref", requested_ref] if requested_ref else []
+            gh("workflow", "run", WORKFLOW, "-R", REPO, *ref_args, "-f", f"issue_number={n}",
                "-f", f"as_of={c['as_of']}", "-f", f"author_association={c['author_association']}")
             for _ in range(30):
                 time.sleep(3)
                 new = [r for r in json.loads(gh("run", "list", "-R", REPO, "-w", WORKFLOW, "-e",
-                       "workflow_dispatch", "-L", "20", "--json", "databaseId"))
+                       "workflow_dispatch", "-L", "20", "--json", "databaseId,headSha,headBranch"))
                        if r["databaseId"] not in seen]
                 if new:
                     break
             else:
                 sys.exit(f"no run appeared for #{n}")
             runs[key] = {"case": cid, "run": k, "run_id": new[0]["databaseId"],
+                         "requested_ref": requested_ref, "head_sha": new[0]["headSha"],
+                         "head_branch": new[0]["headBranch"],
                          "dispatched_at": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")}
             save("runs.json", runs)
             print(f"{cid} run {k}: issue #{n} -> run {new[0]['databaseId']}")
@@ -171,6 +194,7 @@ def outcome(n, labels_at_open):
 
 
 def cmd_collect(a):
+    """Separate completed model evaluations from execution failures before scoring."""
     issues, runs = load("issues.json", {}), load("runs.json", {})
     selected = {cid for cid, _ in cases(a.cases)}
     live = load("live-skips.json", {})
@@ -179,20 +203,30 @@ def cmd_collect(a):
             continue
         out_dir = GOLDEN / "cases" / r["case"] / "actual" / VARIANT
         dest = out_dir / f"run-{r['run']}.json"
-        if dest.exists() and not a.force:
+        failure_dest = out_dir / "failures" / dest.name
+        if (dest.exists() or failure_dest.exists()) and not a.force:
             continue
         while True:
-            v = json.loads(gh("run", "view", str(r["run_id"]), "-R", REPO, "--json", "status,conclusion"))
+            v = json.loads(gh("run", "view", str(r["run_id"]), "-R", REPO, "--json",
+                              "status,conclusion,headSha,headBranch"))
             if v["status"] == "completed":
                 break
             print(f"waiting for run {r['run_id']} ({v['status']})")
             time.sleep(20)
         result = outcome(int(key), issues[r["case"]]["labels_at_open"])
         result |= {"issue": int(key), "run_id": r["run_id"], "conclusion": v["conclusion"],
+                   "requested_ref": r.get("requested_ref"), "head_sha": v["headSha"],
+                   "head_branch": v["headBranch"],
                    "run_url": f"https://github.com/{REPO}/actions/runs/{r['run_id']}"}
-        out_dir.mkdir(parents=True, exist_ok=True)
+        # An unsuccessful execution has no valid decision to score, even when
+        # the expected decision was to do nothing. Preserve any partial writes.
+        if v["conclusion"] != "success":
+            result |= {"scored": False,
+                       "exclusion_reason": "Unsuccessful workflow execution; no valid triage result."}
+            dest = failure_dest
+        dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(json.dumps(result, indent=1, ensure_ascii=False) + "\n")
-        logs = out_dir / "logs" / f"run-{r['run']}"
+        logs = dest.parent / "logs" / f"run-{r['run']}"
         with tempfile.TemporaryDirectory() as tmp:
             gh("run", "download", str(r["run_id"]), "-R", REPO, "-D", tmp, check=False)
             for f in pathlib.Path(tmp).rglob("*"):
@@ -200,7 +234,8 @@ def cmd_collect(a):
                     logs.mkdir(parents=True, exist_ok=True)
                     shutil.copy(f, logs / f.name)
         print(f"{r['case']} run {r['run']}: {v['conclusion']} labels={result['labels_added']} "
-              f"comment={'yes' if result['comment'] else 'no'} other={result['other_writes']}")
+              f"comment={'yes' if result['comment'] else 'no'} other={result['other_writes']} "
+              f"{'(excluded from scoring)' if v['conclusion'] != 'success' else ''}")
     # The issues: opened run each sandbox issue triggered must have been skipped (owner).
     pending = [(cid, entry, n) for cid, entry in issues.items() for n in entry["issues"] if str(n) not in live]
     if pending:
@@ -213,12 +248,14 @@ def cmd_collect(a):
 
 
 def main():
+    """Select a replay variant and execute one explicit stage of its lifecycle."""
     ap = argparse.ArgumentParser()
     ap.add_argument("step", choices=["labels", "file", "dispatch", "collect"])
     ap.add_argument("--k", type=int, default=3)
     ap.add_argument("--cases", type=lambda s: set(s.split(",")), default=None)
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--variant", choices=sorted(WORKFLOWS), default="agent")
+    ap.add_argument("--ref", help="Branch or tag to dispatch; defaults to the repository's default branch")
     a = ap.parse_args()
     global VARIANT, WORKFLOW
     VARIANT, WORKFLOW = a.variant, WORKFLOWS[a.variant]

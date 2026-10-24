@@ -16,6 +16,7 @@ from score import KINDS, ROOT, parse_comment
 
 
 def counts(runs_name):
+    """Count component and comment decisions across the saved real-case outputs for one variant."""
     kinds = {k: {"TP": 0, "FN": 0, "FP": 0, "TN": 0} for k in sorted(KINDS)}
     comp = {"right": 0, "wrong": 0, "missed": 0, "rightly none": 0}
     n = 0
@@ -53,6 +54,7 @@ def counts(runs_name):
 
 
 def main():
+    """Write a diagnostic action-level table; case pass/fail remains the frozen scorer’s job."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--runs", nargs="+", default=["agent", "baseline-v2"])
     a = ap.parse_args()

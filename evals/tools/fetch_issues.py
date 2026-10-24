@@ -44,6 +44,7 @@ query($q: String!, $after: String) {
 
 
 def gql(q, after):
+    """Fetch one read-only GraphQL search page for a dated issue query."""
     args = ["gh", "api", "graphql", "-f", f"query={QUERY}", "-f", f"q={q}"]
     if after:
         args += ["-f", f"after={after}"]
@@ -51,6 +52,7 @@ def gql(q, after):
 
 
 def months(start, end):
+    """Split an inclusive date range into monthly search slices."""
     d = start
     while d <= end:
         nxt = (d.replace(day=1) + timedelta(days=32)).replace(day=1)
@@ -59,6 +61,7 @@ def months(start, end):
 
 
 def opening_state(n):
+    """Reconstruct opening text and early form/bot labels from a saved GraphQL node."""
     created = n["createdAt"]
     edits = n["userContentEdits"]
     body = n["body"] or ""
@@ -94,12 +97,14 @@ def opening_state(n):
 
 
 def seconds_between(a, b):
+    """Return elapsed seconds between two GitHub UTC timestamps."""
     from datetime import datetime
     f = lambda s: datetime.fromisoformat(s.replace("Z", "+00:00"))
     return (f(b) - f(a)).total_seconds()
 
 
 def main(start, end):
+    """Save raw pages and cleaned opening-state rows, checking each search slice is complete."""
     RAW.mkdir(parents=True, exist_ok=True)
     rows = []
     for a, b in months(date.fromisoformat(start), date.fromisoformat(end)):

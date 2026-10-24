@@ -23,6 +23,11 @@ GOLDEN = pathlib.Path(__file__).resolve().parents[1] / "golden"
 
 
 def check(logdir):
+    """Trace one session in event order and compare its posted comment with the template.
+
+    Successful marker lines establish that validation ran before a safe-output
+    call. They do not prove that the call reused the exact validated arguments.
+    """
     r = {"installed": False, "digest": None, "discovered": False, "invoked": False, "executed": False,
          "labels_checked": True, "comment_rendered": True, "comment_verbatim": None, "tools": collections.Counter(),
          "cost_usd": None, "turns": None, "permission_denials": None, "model": None}
@@ -40,34 +45,35 @@ def check(logdir):
         return r
     ok_labels = ok_comment = False
     rendered = None
-    for line in sess.open():
-        e = json.loads(line)
-        if "total_cost_usd" in e:
-            r["cost_usd"], r["turns"] = round(e["total_cost_usd"], 4), e.get("num_turns")
-            r["permission_denials"] = e.get("permission_denials")
-        if e.get("subtype") == "init":
-            r["model"] = e.get("model")
-        msg = e.get("message")
-        content = (msg.get("content") if isinstance(msg, dict) else None) or []
-        for c in content if isinstance(content, list) else []:
-            if c.get("type") == "tool_use":
-                name = c["name"]
-                r["tools"][name] += 1
-                if name == "Skill" and "issue-triage" in json.dumps(c["input"]):
-                    r["invoked"] = True
-                if name.endswith("add_labels") and not ok_labels:
-                    r["labels_checked"] = False
-                if name.endswith(("add_comment", "triage_comment")) and not ok_comment:
-                    r["comment_rendered"] = False
-            elif c.get("type") == "tool_result":
-                text = c["content"] if isinstance(c["content"], str) else json.dumps(c["content"])
-                # Marker at the start of any line: the agent sometimes chains two scripts in one call.
-                if re.search(r"^\[issue-triage/triage_checks v\d+\] ok", text, re.M):
-                    r["executed"] = True
-                ok_labels |= bool(re.search(r"^\[issue-triage/check_labels v1\] ok", text, re.M))
-                ok_comment |= bool(re.search(r"^\[issue-triage/render_comment v1\] ok", text, re.M))
-                m = re.search(r"-----BEGIN COMMENT-----\n(.*?)\n-----END COMMENT-----", text, re.S)
-                rendered = m.group(1) if m else rendered
+    with sess.open() as session:
+        for line in session:
+            e = json.loads(line)
+            if "total_cost_usd" in e:
+                r["cost_usd"], r["turns"] = round(e["total_cost_usd"], 4), e.get("num_turns")
+                r["permission_denials"] = e.get("permission_denials")
+            if e.get("subtype") == "init":
+                r["model"] = e.get("model")
+            msg = e.get("message")
+            content = (msg.get("content") if isinstance(msg, dict) else None) or []
+            for c in content if isinstance(content, list) else []:
+                if c.get("type") == "tool_use":
+                    name = c["name"]
+                    r["tools"][name] += 1
+                    if name == "Skill" and "issue-triage" in json.dumps(c["input"]):
+                        r["invoked"] = True
+                    if name.endswith("add_labels") and not ok_labels:
+                        r["labels_checked"] = False
+                    if name.endswith(("add_comment", "triage_comment")) and not ok_comment:
+                        r["comment_rendered"] = False
+                elif c.get("type") == "tool_result":
+                    text = c["content"] if isinstance(c["content"], str) else json.dumps(c["content"])
+                    # Marker at the start of any line: the agent sometimes chains two scripts in one call.
+                    if re.search(r"^\[issue-triage/triage_checks v\d+\] ok", text, re.M):
+                        r["executed"] = True
+                    ok_labels |= bool(re.search(r"^\[issue-triage/check_labels v\d+\] ok", text, re.M))
+                    ok_comment |= bool(re.search(r"^\[issue-triage/render_comment v\d+\] ok", text, re.M))
+                    m = re.search(r"-----BEGIN COMMENT-----\n(.*?)\n-----END COMMENT-----", text, re.S)
+                    rendered = m.group(1) if m else rendered
     r["tools"] = dict(r["tools"])
     posted = json.loads((logdir.parents[1] / f"{logdir.name}.json").read_text()).get("comment")
     if posted:
@@ -79,6 +85,7 @@ def check(logdir):
 
 
 def main():
+    """Summarize saved session logs; missing log bundles are not counted as evidence."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--runs", default="agent")
     a = ap.parse_args()

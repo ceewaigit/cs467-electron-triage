@@ -169,7 +169,8 @@ class WorkflowConfig(unittest.TestCase):
     These are allowlists, not denylists: an output, job or permission not named here fails.
     """
     SAFE_OUTPUT_KEYS = {"add-labels", "jobs", "report-failure-as-issue", "allowed-github-references",
-                        "allowed-domains"}
+                        "allowed-domains", "report-incomplete", "report-missing-tool",
+                        "report-missing-data", "threat-detection"}
     TARGET = "${{ github.event.issue.number || inputs.issue_number }}"
     LOCK_JOBS = {"pre_activation", "activation", "agent", "detection", "safe_outputs", "conclusion",
                  "triage_comment"}
@@ -190,12 +191,25 @@ class WorkflowConfig(unittest.TestCase):
         self.assertEqual(self.keys(jobs, 4), {"triage-comment"})
         self.assertNotIn("GH_AW_GITHUB_TOKEN", self.src)
         self.assertNotIn("github-token", self.src)
+        self.assertIn("  report-incomplete:\n    create-issue: false\n", self.so)
 
     def test_outputs_pinned_to_the_runs_issue(self):
         labels = self.so.split("\n  add-labels:\n", 1)[1].split("\n  jobs:")[0]
         self.assertIn(f"    target: {self.TARGET}\n", labels + "\n")
         self.assertRegex(labels, r"\n    max: 1\n")
         self.assertIn(f"ISSUE: {self.TARGET}", self.so)
+
+    def test_diagnostic_reports_cannot_publish_tracking_issues(self):
+        for kind in ("report-incomplete", "report-missing-tool", "report-missing-data"):
+            self.assertIn(f"  {kind}:\n    create-issue: false\n", self.so)
+        self.assertIn("  threat-detection:\n    report-as-issue: false\n", self.so)
+        for variable in ("GH_AW_MISSING_TOOL_CREATE_ISSUE", "GH_AW_REPORT_INCOMPLETE_CREATE_ISSUE",
+                         "GH_AW_FAILURE_REPORT_AS_ISSUE", "GH_AW_NOOP_REPORT_AS_ISSUE"):
+            self.assertIn(f'{variable}: "false"', self.lock)
+            self.assertNotIn(f'{variable}: "true"', self.lock)
+        self.assertNotIn("handle_detection_runs.cjs", self.lock)
+        manifest = json.loads(self.lock.splitlines()[1].split("gh-aw-manifest: ", 1)[1])
+        self.assertEqual(manifest["threat_detection"]["mode"], "enabled")
 
     def test_label_file_matches_allowlist(self):
         allowed = json.loads(re.search(r"^    allowed: (\[.*\])$", self.so, re.M).group(1))
@@ -220,10 +234,24 @@ class WorkflowConfig(unittest.TestCase):
                          | set(re.findall(r"^  ([a-z_]+):\n    (?:needs|runs-on)", self.lock, re.M)), self.LOCK_JOBS)
 
     def test_no_repository_write_tools(self):
-        self.assertIn("github: false", self.src)
-        self.assertIn("edit: false", self.src)
+        tools = self.src.split("\ntools:\n", 1)[1].split("\npre-agent-steps:\n", 1)[0]
+        self.assertEqual(self.keys(tools, 2), {"github", "edit", "bash"})
+        self.assertEqual(re.findall(r"^  github: (.+)$", tools, re.M), ["false"])
+        self.assertEqual(re.findall(r"^  edit: (.+)$", tools, re.M), ["false"])
+        # Every non-comment line in the Bash block must be one of these three
+        # commands. A new shell command must not silently expand the boundary.
+        bash = tools.split("  bash:\n", 1)[1]
+        command_lines = [line for line in bash.splitlines() if line.strip() and not line.lstrip().startswith("#")]
+        self.assertTrue(all(line.startswith("    - ") for line in command_lines))
+        commands = [json.loads(line.removeprefix("    - ")) for line in command_lines]
+        self.assertCountEqual(commands, [
+            "python3 .claude/skills/issue-triage/scripts/triage_checks.py",
+            "python3 .claude/skills/issue-triage/scripts/check_labels.py:*",
+            "python3 .claude/skills/issue-triage/scripts/render_comment.py:*",
+        ])
         self.assertNotIn("\njobs:", self.src)
-        self.assertIn("rm -rf evals tests", self.src, "gold labels must be removed before the agent runs")
+        self.assertIn("run: python3 scripts/prepare_agent_context.py", self.src,
+                      "grading material and future corpus rows must be removed before the agent runs")
 
 class PostComment(unittest.TestCase):
     """scripts/post_triage_comment.py: the only path from the agent to a public comment."""
@@ -236,7 +264,8 @@ class PostComment(unittest.TestCase):
             gh.write_text(f"#!/bin/sh\ncat >> {d}/posted.jsonl\necho >> {d}/posted.jsonl\n")
             gh.chmod(0o755)
             env = dict(os.environ, PATH=f"{d}:{os.environ['PATH']}", GH_AW_AGENT_OUTPUT=str(d / "out.json"),
-                       REPO="o/r", ISSUE="7", RUN_URL="https://example.invalid/run")
+                       REPO="o/r", ISSUE="7", RUN_URL="https://example.invalid/run",
+                       GH_AW_DETECTION_CONCLUSION="success")
             r = subprocess.run([sys.executable, str(ROOT / "scripts/post_triage_comment.py")], env=env,
                                capture_output=True, text=True)
             self.assertEqual(r.returncode, 0, r.stderr)
