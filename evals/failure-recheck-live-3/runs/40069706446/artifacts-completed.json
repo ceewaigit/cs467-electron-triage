@@ -1,0 +1,145 @@
+{
+  "total_count": 7,
+  "artifacts": [
+    {
+      "id": 12551160737,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU1MTE2MDczNw==",
+      "name": "usage",
+      "size_in_bytes": 23292,
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12551160737",
+      "archive_download_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12551160737/zip",
+      "expired": false,
+      "digest": "sha256:5bf6e5965672eade0f8b8d1f4ded452ff45de91f2657e508d59cfdb90ba4cd89",
+      "created_at": "2026-10-24T06:22:56Z",
+      "updated_at": "2026-10-24T06:22:56Z",
+      "expires_at": "2027-01-22T06:18:52Z",
+      "workflow_run": {
+        "id": 40069706446,
+        "repository_id": 1430782496,
+        "head_repository_id": 1430782496,
+        "head_branch": "main",
+        "head_sha": "117346362d6f0123926b430597a1277e5a6f44de"
+      }
+    },
+    {
+      "id": 12551155664,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU1MTE1NTY2NA==",
+      "name": "safe-outputs-items",
+      "size_in_bytes": 790,
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12551155664",
+      "archive_download_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12551155664/zip",
+      "expired": false,
+      "digest": "sha256:398cd40382430934468063da1481755e07354d5af8772ae2685b582b4b3a4474",
+      "created_at": "2026-10-24T06:22:26Z",
+      "updated_at": "2026-10-24T06:22:26Z",
+      "expires_at": "2027-01-22T06:18:52Z",
+      "workflow_run": {
+        "id": 40069706446,
+        "repository_id": 1430782496,
+        "head_repository_id": 1430782496,
+        "head_branch": "main",
+        "head_sha": "117346362d6f0123926b430597a1277e5a6f44de"
+      }
+    },
+    {
+      "id": 12551125320,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU1MTEyNTMyMA==",
+      "name": "info",
+      "size_in_bytes": 740,
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12551125320",
+      "archive_download_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12551125320/zip",
+      "expired": false,
+      "digest": "sha256:a02fddaf586332497ce49bc5e9de71bf7ff3986ef652db2c3dd0d92b45c96825",
+      "created_at": "2026-10-24T06:19:22Z",
+      "updated_at": "2026-10-24T06:19:22Z",
+      "expires_at": "2027-01-22T06:18:52Z",
+      "workflow_run": {
+        "id": 40069706446,
+        "repository_id": 1430782496,
+        "head_repository_id": 1430782496,
+        "head_branch": "main",
+        "head_sha": "117346362d6f0123926b430597a1277e5a6f44de"
+      }
+    },
+    {
+      "id": 12550901309,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU1MDkwMTMwOQ==",
+      "name": "activation",
+      "size_in_bytes": 109485,
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12550901309",
+      "archive_download_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12550901309/zip",
+      "expired": false,
+      "digest": "sha256:c3d9fc7c5abc6af7e16939d60db6678c1df67c44419870e051c0f3b4afe97df7",
+      "created_at": "2026-10-24T06:19:24Z",
+      "updated_at": "2026-10-24T06:19:24Z",
+      "expires_at": "2026-10-25T06:19:22Z",
+      "workflow_run": {
+        "id": 40069706446,
+        "repository_id": 1430782496,
+        "head_repository_id": 1430782496,
+        "head_branch": "main",
+        "head_sha": "117346362d6f0123926b430597a1277e5a6f44de"
+      }
+    },
+    {
+      "id": 12550711791,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU1MDcxMTc5MQ==",
+      "name": "detection",
+      "size_in_bytes": 20563,
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12550711791",
+      "archive_download_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12550711791/zip",
+      "expired": false,
+      "digest": "sha256:b56357d1a876e3fe7a49ec01e3d455ce126e8027bca2a93be25b0042e60881f0",
+      "created_at": "2026-10-24T06:22:09Z",
+      "updated_at": "2026-10-24T06:22:09Z",
+      "expires_at": "2027-01-22T06:18:52Z",
+      "workflow_run": {
+        "id": 40069706446,
+        "repository_id": 1430782496,
+        "head_repository_id": 1430782496,
+        "head_branch": "main",
+        "head_sha": "117346362d6f0123926b430597a1277e5a6f44de"
+      }
+    },
+    {
+      "id": 12550628338,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU1MDYyODMzOA==",
+      "name": "agent",
+      "size_in_bytes": 98695,
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12550628338",
+      "archive_download_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12550628338/zip",
+      "expired": false,
+      "digest": "sha256:7698b1b2a96b5b16d2c9a79a3e05d06a7af5e3115e303981127caa1a9df4f2f2",
+      "created_at": "2026-10-24T06:20:50Z",
+      "updated_at": "2026-10-24T06:20:50Z",
+      "expires_at": "2027-01-22T06:18:52Z",
+      "workflow_run": {
+        "id": 40069706446,
+        "repository_id": 1430782496,
+        "head_repository_id": 1430782496,
+        "head_branch": "main",
+        "head_sha": "117346362d6f0123926b430597a1277e5a6f44de"
+      }
+    },
+    {
+      "id": 12550334869,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU1MDMzNDg2OQ==",
+      "name": "agent-output-fallback",
+      "size_in_bytes": 1978,
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12550334869",
+      "archive_download_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/artifacts/12550334869/zip",
+      "expired": false,
+      "digest": "sha256:c9f830e78577903e81bbc02ec38a8e15e5388e9a0cd22d682d8cfe2bfd1a7ec4",
+      "created_at": "2026-10-24T06:20:49Z",
+      "updated_at": "2026-10-24T06:20:49Z",
+      "expires_at": "2027-01-22T06:18:52Z",
+      "workflow_run": {
+        "id": 40069706446,
+        "repository_id": 1430782496,
+        "head_repository_id": 1430782496,
+        "head_branch": "main",
+        "head_sha": "117346362d6f0123926b430597a1277e5a6f44de"
+      }
+    }
+  ]
+}

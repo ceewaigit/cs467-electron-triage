@@ -5,11 +5,13 @@ five adversarial inputs. Each case has an input and an expected outcome. The pla
 evaluation repeats every case three times. [RUBRIC.md](RUBRIC.md) defines correctness and
 weighted error cost; a successful GitHub workflow does not establish a correct triage decision.
 
-The owner has deferred further paid evaluation. Use the
+The five authorized [targeted live runs](../failure-recheck-live-3/README.md) are complete:
+3/5 pass at source `1173463`, for a combined agent/detector estimate of $1.2526727.
+The separate 90-run plan remains pending. Use the
 [offline reproduction steps](#reproduce-the-analysis-offline) to check the code and saved
 evidence. Live replay below is an optional future decision; no further runs are needed to
 reproduce the reports already present. The [coding-assistant fallback](#latest-configuration-coding-assistant-dry-run)
-exercises the latest runtime locally and retains its transcripts.
+records historical source `7ef6696` locally and retains its transcripts.
 
 ## What was fixed before the runs
 
@@ -41,7 +43,8 @@ A missing output file is unavailable evidence, not a successful no-action decisi
 
 | Location | Meaning |
 |---|---|
-| `cases/<id>/actual/assistant-dry-run/` | One proposed outcome per case from the latest-source coding-assistant fallback, with recorded context and helper transcripts |
+| `cases/<id>/actual/assistant-dry-run/` | One proposed outcome per case from the coding-assistant fallback at `7ef6696`, with recorded context and helper transcripts |
+| `../failure-recheck-live-3/` | Five selected live cases at `1173463`, with independent scores, native artifacts and costs; separate from full-suite results |
 | `cases/<id>/actual/final/` | Template-comment experiment: 79 collected outputs and log directories |
 | `cases/<id>/actual/hardened/` | Reserved for the audited successor; 0 of 90 planned valid outputs are present |
 | `cases/e52232/actual/preflight/failures/` | One unsuccessful provider-credit check, excluded from scoring |
@@ -68,20 +71,23 @@ credit error are recorded in [the preflight report](results/credit-check-2026-10
 The current source has one further template change after those manifests: renderer version 3
 removes the reproduction request's claim that the issue has already been labelled. The label
 and comment jobs are independent, and `final/e52266/run-3` posted the comment without the
-label. This wording correction has offline verification only. Preserve the candidate manifests
-as records of their commits; they do not describe the newer renderer.
+label. The five targeted live runs at `1173463` now exercise this renderer and the later
+reproduction instruction. Preserve the candidate manifests as records of their commits;
+they do not describe these newer runtime files or establish their acceptance.
 
 Historical files are evidence of the code that ran at their recorded commit. Regenerating a
 baseline with today's scripts changes the experiment. Save new output under a new name or
 use a disposable copy; do not replace earlier results and present them as historical runs.
 
-## Latest-configuration coding-assistant dry run
+<a id="latest-configuration-coding-assistant-dry-run"></a>
+
+## Historical coding-assistant dry run
 
 The assignment permits a coding-assistant fallback when end-to-end execution is unavailable.
 After the provider-credit failure, all 30 cases were exercised once with the runtime from
 commit `7ef6696a5f7f56112db829287c2d776e40411a57`, including renderer version 3. Six Codex
 subagents started without the parent chat history, each handling five cases. Their prepared
-checkouts contained the current instructions and helper scripts, an opening-time-filtered
+checkouts contained that source's instructions and helper scripts, an opening-time-filtered
 corpus and one case input. Expected outcomes, historical outputs and `.git` were absent.
 Cases within a batch shared that assistant's session, so trials were not independent sessions.
 

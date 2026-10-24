@@ -25,8 +25,9 @@ python3 -m unittest discover -s tests -v
 
 These tests run offline. They check the current scripts and configuration, including mocked
 posting requests. They do not call the model or prove that GitHub enforces every control.
-The owner authorized a limited live recheck, but two credential attempts failed before
-inference. Further dispatch is blocked on workspace authentication. The
+The updated credential worked for all five authorized targeted live runs. Their recorded
+inference estimate is $1.2526727, including threat detection. This check is complete; the
+separate 90-run plan remains pending. The
 [offline reproduction steps](evals/golden/README.md#reproduce-the-analysis-offline) need no
 GitHub login or provider credit; the live replay instructions are an optional future step.
 
@@ -81,8 +82,20 @@ Do not combine this selected diagnostic with the old 20 passes or attribute it t
 Two authorized live preflights, [first](evals/failure-recheck-live/README.md) and
 [refreshed-key retry](evals/failure-recheck-live-2/README.md), failed workspace authentication.
 Both recorded zero inference usage and no triage writes; neither supplied a valid decision.
-The latest skill has not been rerun on the full golden set. The full hosted acceptance protocol
-remains unassessed, and all 90 planned hardened evaluations stay pending.
+
+After a further secret update, the [third live attempt](evals/failure-recheck-live-3/README.md)
+completed all five cases at source `1173463`, whose 15 runtime files match `7debabe` exactly.
+The independent checker and frozen scorer agree: 3/5 pass, total weighted error cost 4,
+and zero scored safety failures. Printing, DevTools and the upstream case pass; the GPU
+reference and extra app label still fail their frozen targets. The app case also attempted
+one disallowed shell command, which was denied before the permitted validators ran separately.
+The recorded estimate is $0.7156697 for the agent plus $0.5370030 for detection, not an invoice.
+
+These are five selected previous failures, once each, using configured Claude. They do not
+replace the old Codex results or establish a causal improvement, full-suite rate or pass³.
+Ordinary hosted execution now has evidence; current adversarial rejection and hard-limit
+exhaustion do not. No further runs were dispatched. The full golden rerun and separate
+90-run hardened plan remain pending.
 
 ## Repository map
 
@@ -98,7 +111,7 @@ remains unassessed, and all 90 planned hardened evaluations stay pending.
 | `evals/need/` | Q3 2026 evidence for the need for triage automation |
 | `evals/golden/` | Frozen cases and expectations, collected outputs, logs and reports |
 | `evals/conservative-linking/`, `evals/reproduction-check/` | Separate offline comparisons, frozen expectations, transcripts and reviews; current adoption decision in `reproduction-check/ADOPTION.md` |
-| `evals/failure-recheck-offline/`, `evals/failure-recheck-live*/` | Five selected diagnostic reruns and two failed live preflights, with separate evidence and limits |
+| `evals/failure-recheck-offline/`, `evals/failure-recheck-live*/` | Five free diagnostic reruns, two failed live preflights and five completed live cases, with separate evidence and limits |
 | `evals/controls/` | Deliberately broken configurations and adversarial control workflows |
 | `evals/tools/` | Dataset preparation, replay, collection and analysis scripts |
 | `tests/` | Offline script and configuration tests |
@@ -106,7 +119,7 @@ remains unassessed, and all 90 planned hardened evaluations stay pending.
 ## Before submission
 
 - Resolve or explicitly disclose the outstanding items in [the audit](docs/AUDIT.md), including
-  the missing runs and the lack of live evidence for the latest configuration.
+  the missing full-suite runs, two current scored mismatches and limits of hosted control testing.
 - Check that every quoted number identifies its experiment and denominator. Preserve failed
   runs, frozen expectations and earlier results.
 - Review the AI-use statement and be able to explain the workflow, each script, the evaluation

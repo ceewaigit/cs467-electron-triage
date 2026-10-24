@@ -1,0 +1,11 @@
+[
+  {
+    "engine": "claude",
+    "role": "main",
+    "configured_model": "claude-sonnet-5-5",
+    "resolved_model": "claude-sonnet-5-5",
+    "provider": "anthropic",
+    "status": "exact",
+    "cause": null
+  }
+]

@@ -5,9 +5,10 @@ issue and suggest first-pass triage. It does not contain Electron's source or bu
 Python handles deterministic checks, data preparation and evaluation; the model decides what
 the report means. GitHub Actions controls which decisions can become repository writes.
 
-The limited live recheck is blocked by workspace authentication; both attempts failed before
-inference. The [five-case diagnostic](../evals/failure-recheck-offline/README.md) saves the
-new free reruns and independent review. The
+The updated credential completed the [five-case live recheck](../evals/failure-recheck-live-3/README.md):
+3/5 pass the frozen rubric, with a combined agent/detector estimate of $1.2526727. The two
+earlier authentication failures and [free diagnostic](../evals/failure-recheck-offline/README.md)
+remain separate historical records. The 90-run plan remains pending. The
 [offline reproduction guide](../evals/golden/README.md#reproduce-the-analysis-offline) checks
 the current scripts and saved evidence without calling GitHub or the model provider.
 The [coding-assistant fallback](../evals/golden/results/assistant-dry-run/README.md) records
@@ -127,6 +128,10 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/failure-recheck-offline/check.py` | Prepares or reconstructs five selected input-only sessions, exports sealed first decisions and scores them; no model or network calls |
 | `evals/failure-recheck-offline/evidence/independent-*-source.py`, `live-review-source.py` in that directory | Saved independent checks for runtime/input integrity, helper/export replay, historical comparison and live-failure evidence; preserve their first reports |
 | `evals/failure-recheck-live*/run.py` | Wraps the sandbox replay helper for one explicit case at k=1; `file` creates an issue, `dispatch` can incur provider cost, and `collect` reads and saves GitHub results |
+| `evals/failure-recheck-live-3/collect_artifacts.py`, `check_trigger.py` | Read GitHub and save complete run artifacts or verify the automatic issue-event run skipped; neither dispatches inference |
+| `evals/failure-recheck-live-3/check_cost.py` | Offline checkpoint: reconcile agent and detector request ledgers, tokens and saved rates; stop on incomplete evidence or spending thresholds; no in-flight dollar cap |
+| `evals/failure-recheck-live-3/summarize.py` | Offline frozen scoring, independent-score and cost reconciliation; refuses to overwrite its saved result |
+| `evals/failure-recheck-live-3/evidence/*source.py`, `check_cost-before-float-tolerance.py` | Archived audits and accounting code; the attempt README identifies authoritative versions, two non-runnable aggregate drafts, and fixture/parser/numeric/line-ending corrections |
 
 The copies under each experiment's `evidence/frozen/` and `known-regression/collection-source.py`
 are archived execution sources. Keep them unchanged when editing maintained code. Follow each
@@ -203,9 +208,10 @@ current repairs; full acceptance remains unassessed, and paid replay is deferred
 
 Renderer version 3 is newer than both candidate manifests. It removes the reproduction
 template's assertion that a label has already been added, because label and comment jobs
-can finish independently. That wording correction has offline verification only. A future
-evaluation of current source needs a new commit/ref and source manifest; the existing
-candidate hashes must continue to describe their original runtime files.
+can finish independently. The five-case live recheck at `1173463` exercises the current
+renderer, skill and constrained output path; the earlier candidate manifests remain unchanged.
+Its new manifest records the evaluated runtime, and its README maps every saved outcome,
+cost checkpoint and independent review. Five ordinary cases do not complete acceptance testing.
 
 ## Follow the coding-assistant fallback
 

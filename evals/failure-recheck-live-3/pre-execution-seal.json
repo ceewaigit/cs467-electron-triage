@@ -1,0 +1,7 @@
+{
+  "manifest.json": "0e40a5c9435ed20d9f5d0601ad1db8b21c67ccb55dc7cbf45a9198fef57fd5b7",
+  "run.py": "b7e18ad76bcb01976998d78b049a6f18c1c5cb556118d8dfec584e11f50bf279",
+  "PROTOCOL.md": "27808300d5e3c41bb96a1769c1b87f9b064723dccf204c8d39915bfdd0b8ecc1",
+  "secret-metadata.json": "e9da75702697971dab2de608295f6bda6940b7fb2a9dfc0f791bd9a42f55e62a",
+  "budget-stop-rule.json": "23dedea521fbd70e9f35d64e865ef8e3bf099cccbdb78f79c22ceefdb49b14c9"
+}

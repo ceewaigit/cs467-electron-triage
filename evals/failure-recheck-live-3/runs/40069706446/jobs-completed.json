@@ -1,0 +1,1409 @@
+{
+  "total_count": 7,
+  "jobs": [
+    {
+      "id": 120800307911,
+      "run_id": 40069706446,
+      "workflow_name": "Issue triage",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/runs/40069706446",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVUgCIM8AAAAcIEJqxw",
+      "head_sha": "117346362d6f0123926b430597a1277e5a6f44de",
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/jobs/120800307911",
+      "html_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446/job/120800307911",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-24T06:18:52Z",
+      "started_at": "2026-10-24T06:18:55Z",
+      "completed_at": "2026-10-24T06:19:04Z",
+      "name": "pre_activation",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-24T06:18:56Z",
+          "completed_at": "2026-10-24T06:18:58Z"
+        },
+        {
+          "name": "Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-24T06:18:58Z",
+          "completed_at": "2026-10-24T06:19:01Z"
+        },
+        {
+          "name": "Check user rate limit",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-24T06:19:01Z",
+          "completed_at": "2026-10-24T06:19:01Z"
+        },
+        {
+          "name": "Check stop-time limit",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-24T06:19:01Z",
+          "completed_at": "2026-10-24T06:19:02Z"
+        },
+        {
+          "name": "Post Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-24T06:19:02Z",
+          "completed_at": "2026-10-24T06:19:02Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-24T06:19:02Z",
+          "completed_at": "2026-10-24T06:19:02Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/check-runs/120800307911",
+      "labels": [
+        "ubuntu-slim"
+      ],
+      "runner_id": 1000003829,
+      "runner_name": "GitHub Actions 1000003829",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 120800346189,
+      "run_id": 40069706446,
+      "workflow_name": "Issue triage",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/runs/40069706446",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVUgCIM8AAAAcIEMATQ",
+      "head_sha": "117346362d6f0123926b430597a1277e5a6f44de",
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/jobs/120800346189",
+      "html_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446/job/120800346189",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-24T06:19:04Z",
+      "started_at": "2026-10-24T06:19:07Z",
+      "completed_at": "2026-10-24T06:19:28Z",
+      "name": "activation",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-24T06:19:09Z",
+          "completed_at": "2026-10-24T06:19:12Z"
+        },
+        {
+          "name": "Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-24T06:19:12Z",
+          "completed_at": "2026-10-24T06:19:15Z"
+        },
+        {
+          "name": "Mask OTLP telemetry headers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-24T06:19:15Z",
+          "completed_at": "2026-10-24T06:19:15Z"
+        },
+        {
+          "name": "Generate agentic run info",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-24T06:19:15Z",
+          "completed_at": "2026-10-24T06:19:15Z"
+        },
+        {
+          "name": "Restore daily AIC scan observations",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-24T06:19:15Z",
+          "completed_at": "2026-10-24T06:19:15Z"
+        },
+        {
+          "name": "Check daily workflow token guardrail",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-24T06:19:15Z",
+          "completed_at": "2026-10-24T06:19:15Z"
+        },
+        {
+          "name": "Publish daily AIC scan observations",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-24T06:19:15Z",
+          "completed_at": "2026-10-24T06:19:15Z"
+        },
+        {
+          "name": "Validate ANTHROPIC_API_KEY secret",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-24T06:19:15Z",
+          "completed_at": "2026-10-24T06:19:15Z"
+        },
+        {
+          "name": "Check for OAuth tokens",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-24T06:19:15Z",
+          "completed_at": "2026-10-24T06:19:15Z"
+        },
+        {
+          "name": "Checkout .github and .agents folders",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-24T06:19:15Z",
+          "completed_at": "2026-10-24T06:19:17Z"
+        },
+        {
+          "name": "Save agent config folders for base branch restoration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-24T06:19:17Z",
+          "completed_at": "2026-10-24T06:19:17Z"
+        },
+        {
+          "name": "Check workflow lock file",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-24T06:19:17Z",
+          "completed_at": "2026-10-24T06:19:18Z"
+        },
+        {
+          "name": "Check compile-agentic version",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-24T06:19:18Z",
+          "completed_at": "2026-10-24T06:19:18Z"
+        },
+        {
+          "name": "Compute current body text",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-24T06:19:18Z",
+          "completed_at": "2026-10-24T06:19:19Z"
+        },
+        {
+          "name": "Upgrade gh CLI for frontmatter skills",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-24T06:19:19Z",
+          "completed_at": "2026-10-24T06:19:19Z"
+        },
+        {
+          "name": "Install frontmatter skill: .claude/skills/issue-triage",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-24T06:19:19Z",
+          "completed_at": "2026-10-24T06:19:19Z"
+        },
+        {
+          "name": "Collect skill install failures",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-24T06:19:19Z",
+          "completed_at": "2026-10-24T06:19:20Z"
+        },
+        {
+          "name": "Log runtime features",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18,
+          "started_at": "2026-10-24T06:19:20Z",
+          "completed_at": "2026-10-24T06:19:20Z"
+        },
+        {
+          "name": "Create prompt with built-in context",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-24T06:19:20Z",
+          "completed_at": "2026-10-24T06:19:20Z"
+        },
+        {
+          "name": "Interpolate variables and render templates",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-24T06:19:20Z",
+          "completed_at": "2026-10-24T06:19:20Z"
+        },
+        {
+          "name": "Substitute placeholders",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-24T06:19:20Z",
+          "completed_at": "2026-10-24T06:19:20Z"
+        },
+        {
+          "name": "Validate prompt placeholders",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-10-24T06:19:20Z",
+          "completed_at": "2026-10-24T06:19:20Z"
+        },
+        {
+          "name": "Print prompt",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-10-24T06:19:20Z",
+          "completed_at": "2026-10-24T06:19:20Z"
+        },
+        {
+          "name": "Inventory installed skills",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-10-24T06:19:20Z",
+          "completed_at": "2026-10-24T06:19:21Z"
+        },
+        {
+          "name": "Upload info artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-10-24T06:19:21Z",
+          "completed_at": "2026-10-24T06:19:22Z"
+        },
+        {
+          "name": "Stage prompt files for artifact upload",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-24T06:19:22Z",
+          "completed_at": "2026-10-24T06:19:22Z"
+        },
+        {
+          "name": "Upload activation artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-24T06:19:22Z",
+          "completed_at": "2026-10-24T06:19:24Z"
+        },
+        {
+          "name": "Post Checkout .github and .agents folders",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 53,
+          "started_at": "2026-10-24T06:19:24Z",
+          "completed_at": "2026-10-24T06:19:24Z"
+        },
+        {
+          "name": "Post Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 54,
+          "started_at": "2026-10-24T06:19:24Z",
+          "completed_at": "2026-10-24T06:19:24Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 55,
+          "started_at": "2026-10-24T06:19:24Z",
+          "completed_at": "2026-10-24T06:19:24Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/check-runs/120800346189",
+      "labels": [
+        "ubuntu-slim"
+      ],
+      "runner_id": 1000003830,
+      "runner_name": "GitHub Actions 1000003830",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 120800426211,
+      "run_id": 40069706446,
+      "workflow_name": "Issue triage",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/runs/40069706446",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVUgCIM8AAAAcIEQ44w",
+      "head_sha": "117346362d6f0123926b430597a1277e5a6f44de",
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/jobs/120800426211",
+      "html_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446/job/120800426211",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-24T06:19:28Z",
+      "started_at": "2026-10-24T06:19:31Z",
+      "completed_at": "2026-10-24T06:20:54Z",
+      "name": "agent",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-24T06:19:32Z",
+          "completed_at": "2026-10-24T06:19:35Z"
+        },
+        {
+          "name": "Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-24T06:19:35Z",
+          "completed_at": "2026-10-24T06:19:38Z"
+        },
+        {
+          "name": "Set runtime paths",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-24T06:19:38Z",
+          "completed_at": "2026-10-24T06:19:38Z"
+        },
+        {
+          "name": "Mask OTLP telemetry headers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-24T06:19:38Z",
+          "completed_at": "2026-10-24T06:19:38Z"
+        },
+        {
+          "name": "Check OTLP telemetry configuration",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-24T06:19:38Z",
+          "completed_at": "2026-10-24T06:19:38Z"
+        },
+        {
+          "name": "Checkout repository (gh-aw default)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-24T06:19:38Z",
+          "completed_at": "2026-10-24T06:19:40Z"
+        },
+        {
+          "name": "Initialize agent execution evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-24T06:19:40Z",
+          "completed_at": "2026-10-24T06:19:40Z"
+        },
+        {
+          "name": "Create gh-aw temp directory",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-24T06:19:40Z",
+          "completed_at": "2026-10-24T06:19:40Z"
+        },
+        {
+          "name": "Configure gh CLI for GitHub Enterprise",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-24T06:19:40Z",
+          "completed_at": "2026-10-24T06:19:40Z"
+        },
+        {
+          "name": "Download activation artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-24T06:19:40Z",
+          "completed_at": "2026-10-24T06:19:41Z"
+        },
+        {
+          "name": "Configure Git credentials",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-24T06:19:41Z",
+          "completed_at": "2026-10-24T06:19:41Z"
+        },
+        {
+          "name": "Checkout PR branch",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-24T06:19:41Z",
+          "completed_at": "2026-10-24T06:19:41Z"
+        },
+        {
+          "name": "Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-24T06:19:41Z",
+          "completed_at": "2026-10-24T06:19:42Z"
+        },
+        {
+          "name": "Install AWF binary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-24T06:19:42Z",
+          "completed_at": "2026-10-24T06:19:43Z"
+        },
+        {
+          "name": "Install Claude Code CLI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-24T06:19:43Z",
+          "completed_at": "2026-10-24T06:19:46Z"
+        },
+        {
+          "name": "Restore agent config folders from base branch",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-24T06:19:46Z",
+          "completed_at": "2026-10-24T06:19:47Z"
+        },
+        {
+          "name": "Restore inline sub-agents from activation artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-24T06:19:47Z",
+          "completed_at": "2026-10-24T06:19:47Z"
+        },
+        {
+          "name": "Restore inline skills from activation artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-24T06:19:47Z",
+          "completed_at": "2026-10-24T06:19:47Z"
+        },
+        {
+          "name": "Save the triggering issue for the skill",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-24T06:19:47Z",
+          "completed_at": "2026-10-24T06:19:47Z"
+        },
+        {
+          "name": "Limit the checkout to historical agent context",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-24T06:19:47Z",
+          "completed_at": "2026-10-24T06:19:47Z"
+        },
+        {
+          "name": "Download container images",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-24T06:19:47Z",
+          "completed_at": "2026-10-24T06:20:02Z"
+        },
+        {
+          "name": "Prepare Safe Outputs Directories",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-10-24T06:20:02Z",
+          "completed_at": "2026-10-24T06:20:02Z"
+        },
+        {
+          "name": "Generate Safe Outputs Config",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-10-24T06:20:02Z",
+          "completed_at": "2026-10-24T06:20:02Z"
+        },
+        {
+          "name": "Generate Safe Outputs Tools",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-10-24T06:20:02Z",
+          "completed_at": "2026-10-24T06:20:02Z"
+        },
+        {
+          "name": "Start MCP Gateway",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-10-24T06:20:02Z",
+          "completed_at": "2026-10-24T06:20:07Z"
+        },
+        {
+          "name": "Mount MCP servers as CLIs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-24T06:20:07Z",
+          "completed_at": "2026-10-24T06:20:08Z"
+        },
+        {
+          "name": "Clean credentials",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-24T06:20:08Z",
+          "completed_at": "2026-10-24T06:20:08Z"
+        },
+        {
+          "name": "Audit pre-agent workspace",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 28,
+          "started_at": "2026-10-24T06:20:08Z",
+          "completed_at": "2026-10-24T06:20:08Z"
+        },
+        {
+          "name": "Execute Claude Code CLI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 29,
+          "started_at": "2026-10-24T06:20:08Z",
+          "completed_at": "2026-10-24T06:20:45Z"
+        },
+        {
+          "name": "Detect agent errors",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 30,
+          "started_at": "2026-10-24T06:20:45Z",
+          "completed_at": "2026-10-24T06:20:45Z"
+        },
+        {
+          "name": "Configure Git credentials",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 31,
+          "started_at": "2026-10-24T06:20:45Z",
+          "completed_at": "2026-10-24T06:20:45Z"
+        },
+        {
+          "name": "Stop MCP Gateway",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 32,
+          "started_at": "2026-10-24T06:20:45Z",
+          "completed_at": "2026-10-24T06:20:46Z"
+        },
+        {
+          "name": "Redact secrets in logs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 33,
+          "started_at": "2026-10-24T06:20:46Z",
+          "completed_at": "2026-10-24T06:20:47Z"
+        },
+        {
+          "name": "Append agent step summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 34,
+          "started_at": "2026-10-24T06:20:47Z",
+          "completed_at": "2026-10-24T06:20:47Z"
+        },
+        {
+          "name": "Copy Safe Outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 35,
+          "started_at": "2026-10-24T06:20:47Z",
+          "completed_at": "2026-10-24T06:20:47Z"
+        },
+        {
+          "name": "Ingest agent output",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 36,
+          "started_at": "2026-10-24T06:20:47Z",
+          "completed_at": "2026-10-24T06:20:47Z"
+        },
+        {
+          "name": "Parse agent logs for step summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 37,
+          "started_at": "2026-10-24T06:20:47Z",
+          "completed_at": "2026-10-24T06:20:47Z"
+        },
+        {
+          "name": "Parse MCP Gateway logs for step summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 38,
+          "started_at": "2026-10-24T06:20:47Z",
+          "completed_at": "2026-10-24T06:20:47Z"
+        },
+        {
+          "name": "Print firewall logs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 39,
+          "started_at": "2026-10-24T06:20:47Z",
+          "completed_at": "2026-10-24T06:20:48Z"
+        },
+        {
+          "name": "Parse token usage for step summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 40,
+          "started_at": "2026-10-24T06:20:48Z",
+          "completed_at": "2026-10-24T06:20:48Z"
+        },
+        {
+          "name": "Print AWF reflect summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 41,
+          "started_at": "2026-10-24T06:20:48Z",
+          "completed_at": "2026-10-24T06:20:48Z"
+        },
+        {
+          "name": "Generate observability summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 42,
+          "started_at": "2026-10-24T06:20:48Z",
+          "completed_at": "2026-10-24T06:20:48Z"
+        },
+        {
+          "name": "Write agent output placeholder if missing",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 43,
+          "started_at": "2026-10-24T06:20:48Z",
+          "completed_at": "2026-10-24T06:20:48Z"
+        },
+        {
+          "name": "Upload agent output fallback artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 44,
+          "started_at": "2026-10-24T06:20:48Z",
+          "completed_at": "2026-10-24T06:20:49Z"
+        },
+        {
+          "name": "Upload agent artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 45,
+          "started_at": "2026-10-24T06:20:49Z",
+          "completed_at": "2026-10-24T06:20:51Z"
+        },
+        {
+          "name": "Post Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 88,
+          "started_at": "2026-10-24T06:20:51Z",
+          "completed_at": "2026-10-24T06:20:51Z"
+        },
+        {
+          "name": "Post Checkout repository (gh-aw default)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 89,
+          "started_at": "2026-10-24T06:20:51Z",
+          "completed_at": "2026-10-24T06:20:51Z"
+        },
+        {
+          "name": "Post Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 90,
+          "started_at": "2026-10-24T06:20:51Z",
+          "completed_at": "2026-10-24T06:20:51Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 91,
+          "started_at": "2026-10-24T06:20:51Z",
+          "completed_at": "2026-10-24T06:20:51Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/check-runs/120800426211",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000003831,
+      "runner_name": "GitHub Actions 1000003831",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 120800712125,
+      "run_id": 40069706446,
+      "workflow_name": "Issue triage",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/runs/40069706446",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVUgCIM8AAAAcIEiVvQ",
+      "head_sha": "117346362d6f0123926b430597a1277e5a6f44de",
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/jobs/120800712125",
+      "html_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446/job/120800712125",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-24T06:20:55Z",
+      "started_at": "2026-10-24T06:20:57Z",
+      "completed_at": "2026-10-24T06:22:13Z",
+      "name": "detection",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-24T06:20:58Z",
+          "completed_at": "2026-10-24T06:21:02Z"
+        },
+        {
+          "name": "Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-24T06:21:02Z",
+          "completed_at": "2026-10-24T06:21:07Z"
+        },
+        {
+          "name": "Download activation artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-24T06:21:07Z",
+          "completed_at": "2026-10-24T06:21:08Z"
+        },
+        {
+          "name": "Download agent output artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-24T06:21:08Z",
+          "completed_at": "2026-10-24T06:21:10Z"
+        },
+        {
+          "name": "Setup agent output environment variable",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-24T06:21:10Z",
+          "completed_at": "2026-10-24T06:21:10Z"
+        },
+        {
+          "name": "Checkout repository for patch context",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6,
+          "started_at": "2026-10-24T06:21:10Z",
+          "completed_at": "2026-10-24T06:21:10Z"
+        },
+        {
+          "name": "Initialize detection execution evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-24T06:21:10Z",
+          "completed_at": "2026-10-24T06:21:10Z"
+        },
+        {
+          "name": "Clear inherited Copilot session state",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-24T06:21:10Z",
+          "completed_at": "2026-10-24T06:21:10Z"
+        },
+        {
+          "name": "Clean stale firewall files from agent artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-24T06:21:10Z",
+          "completed_at": "2026-10-24T06:21:10Z"
+        },
+        {
+          "name": "Download container images",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-24T06:21:10Z",
+          "completed_at": "2026-10-24T06:21:30Z"
+        },
+        {
+          "name": "Check if detection needed",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-24T06:21:30Z",
+          "completed_at": "2026-10-24T06:21:30Z"
+        },
+        {
+          "name": "Clear MCP Config for detection",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-24T06:21:30Z",
+          "completed_at": "2026-10-24T06:21:30Z"
+        },
+        {
+          "name": "Prepare threat detection files",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-24T06:21:30Z",
+          "completed_at": "2026-10-24T06:21:30Z"
+        },
+        {
+          "name": "Setup threat detection",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-24T06:21:30Z",
+          "completed_at": "2026-10-24T06:21:30Z"
+        },
+        {
+          "name": "Ensure threat-detection directory and log",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-24T06:21:30Z",
+          "completed_at": "2026-10-24T06:21:30Z"
+        },
+        {
+          "name": "Install AWF binary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-24T06:21:30Z",
+          "completed_at": "2026-10-24T06:21:31Z"
+        },
+        {
+          "name": "Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-24T06:21:31Z",
+          "completed_at": "2026-10-24T06:21:36Z"
+        },
+        {
+          "name": "Install Claude Code CLI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-24T06:21:36Z",
+          "completed_at": "2026-10-24T06:21:40Z"
+        },
+        {
+          "name": "Install threat-detect binary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-24T06:21:40Z",
+          "completed_at": "2026-10-24T06:21:40Z"
+        },
+        {
+          "name": "Execute threat detection with AWF",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-24T06:21:40Z",
+          "completed_at": "2026-10-24T06:22:08Z"
+        },
+        {
+          "name": "Copy detection firewall logs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-24T06:22:08Z",
+          "completed_at": "2026-10-24T06:22:08Z"
+        },
+        {
+          "name": "Redact secrets in detection logs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-10-24T06:22:08Z",
+          "completed_at": "2026-10-24T06:22:08Z"
+        },
+        {
+          "name": "Parse threat detection token usage for step summary",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-10-24T06:22:08Z",
+          "completed_at": "2026-10-24T06:22:08Z"
+        },
+        {
+          "name": "Redact secrets in detection artifacts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24,
+          "started_at": "2026-10-24T06:22:08Z",
+          "completed_at": "2026-10-24T06:22:08Z"
+        },
+        {
+          "name": "Render detection log",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25,
+          "started_at": "2026-10-24T06:22:08Z",
+          "completed_at": "2026-10-24T06:22:08Z"
+        },
+        {
+          "name": "Upload threat detection artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 26,
+          "started_at": "2026-10-24T06:22:08Z",
+          "completed_at": "2026-10-24T06:22:10Z"
+        },
+        {
+          "name": "Conclude threat detection",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 27,
+          "started_at": "2026-10-24T06:22:10Z",
+          "completed_at": "2026-10-24T06:22:10Z"
+        },
+        {
+          "name": "Upload skipped detection execution evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 28,
+          "started_at": "2026-10-24T06:22:10Z",
+          "completed_at": "2026-10-24T06:22:10Z"
+        },
+        {
+          "name": "Post Setup Node.js",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 55,
+          "started_at": "2026-10-24T06:22:10Z",
+          "completed_at": "2026-10-24T06:22:10Z"
+        },
+        {
+          "name": "Post Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 56,
+          "started_at": "2026-10-24T06:22:10Z",
+          "completed_at": "2026-10-24T06:22:10Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 57,
+          "started_at": "2026-10-24T06:22:10Z",
+          "completed_at": "2026-10-24T06:22:10Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/check-runs/120800712125",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000003832,
+      "runner_name": "GitHub Actions 1000003832",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 120800974478,
+      "run_id": 40069706446,
+      "workflow_name": "Issue triage",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/runs/40069706446",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVUgCIM8AAAAcIEyWjg",
+      "head_sha": "117346362d6f0123926b430597a1277e5a6f44de",
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/jobs/120800974478",
+      "html_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446/job/120800974478",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-24T06:22:13Z",
+      "started_at": "2026-10-24T06:22:15Z",
+      "completed_at": "2026-10-24T06:22:20Z",
+      "name": "triage_comment",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-24T06:22:16Z",
+          "completed_at": "2026-10-24T06:22:17Z"
+        },
+        {
+          "name": "Download agent output artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-24T06:22:17Z",
+          "completed_at": "2026-10-24T06:22:17Z"
+        },
+        {
+          "name": "Check out the templates and the issue corpus",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-24T06:22:17Z",
+          "completed_at": "2026-10-24T06:22:18Z"
+        },
+        {
+          "name": "Render and post the comment",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-24T06:22:18Z",
+          "completed_at": "2026-10-24T06:22:19Z"
+        },
+        {
+          "name": "Post Check out the templates and the issue corpus",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-24T06:22:19Z",
+          "completed_at": "2026-10-24T06:22:19Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-24T06:22:19Z",
+          "completed_at": "2026-10-24T06:22:19Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/check-runs/120800974478",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000003834,
+      "runner_name": "GitHub Actions 1000003834",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 120800974519,
+      "run_id": 40069706446,
+      "workflow_name": "Issue triage",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/runs/40069706446",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVUgCIM8AAAAcIEyWtw",
+      "head_sha": "117346362d6f0123926b430597a1277e5a6f44de",
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/jobs/120800974519",
+      "html_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446/job/120800974519",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-24T06:22:13Z",
+      "started_at": "2026-10-24T06:22:16Z",
+      "completed_at": "2026-10-24T06:22:27Z",
+      "name": "safe_outputs",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-24T06:22:17Z",
+          "completed_at": "2026-10-24T06:22:19Z"
+        },
+        {
+          "name": "Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-24T06:22:19Z",
+          "completed_at": "2026-10-24T06:22:22Z"
+        },
+        {
+          "name": "Mask OTLP telemetry headers",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-24T06:22:22Z",
+          "completed_at": "2026-10-24T06:22:22Z"
+        },
+        {
+          "name": "Download agent output artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-24T06:22:22Z",
+          "completed_at": "2026-10-24T06:22:23Z"
+        },
+        {
+          "name": "Setup agent output environment variable",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-24T06:22:23Z",
+          "completed_at": "2026-10-24T06:22:23Z"
+        },
+        {
+          "name": "Configure GH_HOST for enterprise compatibility",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-24T06:22:23Z",
+          "completed_at": "2026-10-24T06:22:23Z"
+        },
+        {
+          "name": "Process Safe Outputs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-24T06:22:23Z",
+          "completed_at": "2026-10-24T06:22:25Z"
+        },
+        {
+          "name": "Upload Safe Outputs Items",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-24T06:22:25Z",
+          "completed_at": "2026-10-24T06:22:26Z"
+        },
+        {
+          "name": "Post Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-24T06:22:26Z",
+          "completed_at": "2026-10-24T06:22:26Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-24T06:22:26Z",
+          "completed_at": "2026-10-24T06:22:26Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/check-runs/120800974519",
+      "labels": [
+        "ubuntu-slim"
+      ],
+      "runner_id": 1000003833,
+      "runner_name": "GitHub Actions 1000003833",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    },
+    {
+      "id": 120801027783,
+      "run_id": 40069706446,
+      "workflow_name": "Issue triage",
+      "head_branch": "main",
+      "run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/runs/40069706446",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOVUgCIM8AAAAcIE1mxw",
+      "head_sha": "117346362d6f0123926b430597a1277e5a6f44de",
+      "url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/actions/jobs/120801027783",
+      "html_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446/job/120801027783",
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-10-24T06:22:28Z",
+      "started_at": "2026-10-24T06:22:32Z",
+      "completed_at": "2026-10-24T06:22:59Z",
+      "name": "conclusion",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-24T06:22:34Z",
+          "completed_at": "2026-10-24T06:22:39Z"
+        },
+        {
+          "name": "Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-24T06:22:39Z",
+          "completed_at": "2026-10-24T06:22:45Z"
+        },
+        {
+          "name": "Download agent output artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-24T06:22:45Z",
+          "completed_at": "2026-10-24T06:22:46Z"
+        },
+        {
+          "name": "Setup agent output environment variable",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-24T06:22:46Z",
+          "completed_at": "2026-10-24T06:22:46Z"
+        },
+        {
+          "name": "Warn if threat detection produced no verdict",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5,
+          "started_at": "2026-10-24T06:22:46Z",
+          "completed_at": "2026-10-24T06:22:46Z"
+        },
+        {
+          "name": "Download detection artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-24T06:22:46Z",
+          "completed_at": "2026-10-24T06:22:48Z"
+        },
+        {
+          "name": "Download Safe Outputs Items Manifest",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-24T06:22:48Z",
+          "completed_at": "2026-10-24T06:22:50Z"
+        },
+        {
+          "name": "Process no-op messages",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-24T06:22:50Z",
+          "completed_at": "2026-10-24T06:22:50Z"
+        },
+        {
+          "name": "Record missing tool",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-24T06:22:50Z",
+          "completed_at": "2026-10-24T06:22:51Z"
+        },
+        {
+          "name": "Record incomplete",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-24T06:22:51Z",
+          "completed_at": "2026-10-24T06:22:51Z"
+        },
+        {
+          "name": "Handle agent failure",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-24T06:22:51Z",
+          "completed_at": "2026-10-24T06:22:51Z"
+        },
+        {
+          "name": "Report failed jobs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-24T06:22:51Z",
+          "completed_at": "2026-10-24T06:22:53Z"
+        },
+        {
+          "name": "Collect usage artifact files",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-24T06:22:53Z",
+          "completed_at": "2026-10-24T06:22:53Z"
+        },
+        {
+          "name": "Generate usage activity summary and unified session",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-24T06:22:53Z",
+          "completed_at": "2026-10-24T06:22:55Z"
+        },
+        {
+          "name": "Upload usage artifact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-24T06:22:55Z",
+          "completed_at": "2026-10-24T06:22:57Z"
+        },
+        {
+          "name": "Wait before retrying usage artifact upload",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 16,
+          "started_at": "2026-10-24T06:22:57Z",
+          "completed_at": "2026-10-24T06:22:57Z"
+        },
+        {
+          "name": "Retry upload usage artifact",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17,
+          "started_at": "2026-10-24T06:22:57Z",
+          "completed_at": "2026-10-24T06:22:57Z"
+        },
+        {
+          "name": "Post Setup Scripts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 34,
+          "started_at": "2026-10-24T06:22:57Z",
+          "completed_at": "2026-10-24T06:22:57Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 35,
+          "started_at": "2026-10-24T06:22:57Z",
+          "completed_at": "2026-10-24T06:22:57Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/ceewaigit/cs467-electron-triage/check-runs/120801027783",
+      "labels": [
+        "ubuntu-slim"
+      ],
+      "runner_id": 1000003835,
+      "runner_name": "GitHub Actions 1000003835",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}

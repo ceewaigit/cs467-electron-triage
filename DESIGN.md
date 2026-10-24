@@ -75,9 +75,9 @@ After billing blocked replay, Codex dry-ran source `7ef6696` once: 20/25 real an
 Weighted cost .56 exceeded the rule baseline's .44; [transcripts](evals/golden/results/assistant-dry-run/README.md) retain all five mismatches.
 The [reproduction-only adoption](evals/reproduction-check/ADOPTION.md) fixed one known miss with no scored regression in 60 fresh pairs.
 Both policies met all repro requirements; six stricter experiment gates failed and remain recorded.
-A [five-case recheck](evals/failure-recheck-offline/README.md) at `7debabe` passed 1/5; the printing link remains a concern.
-Two authorized Claude preflights failed workspace authentication with zero recorded inference usage.
-Codex trials do not exercise hosted controls; all 90 hardened runs remain pending.
+A [free recheck](evals/failure-recheck-offline/README.md) passed 1/5; a [live recheck](evals/failure-recheck-live-3/README.md) then passed 3/5.
+Five live runs at `1173463` cost an estimated $1.253 including detection; GPU-reference and app-label mismatches remain.
+Both failed authentication attempts and all old outcomes are preserved. All 90 hardened runs remain pending.
 
 ## Governance
 
@@ -127,8 +127,8 @@ Agreement with maintainers is κ=.83 for repro requests and .44 for whether any 
 not exact component choice. Hints followed case selection; the 14/27 snapshot-text holdout is
 only a sanity check. Earlier runs could read DESIGN answers and future corpus rows outside the
 search helper; no such reads were found in inspected traces.
-Checkout filtering is not complete isolation. Further live dispatch is blocked on workspace authentication.
-The latest controls, daily-limit enforcement, mobile operation and provider weights lack live verification.
+Checkout filtering is not complete isolation. Five current live runs cover ordinary actions, with one denied shell call.
+Current adversarial rejection, limit exhaustion, daily limits, mobile operation and provider weights remain unverified.
 
 ## Agent bill of materials
 
@@ -147,4 +147,4 @@ I chose the project, workflow and permitted actions. Claude Code (`claude-opus-5
 and drafted most code, workflows, tests and prose under my direction. Codex and independent
 subagents audited this revision, corrected metrics and controls, and used Humanizer for readability.
 Verification includes offline tests, compilation, frozen-data checks, live logs and recorded dry runs.
-The latest edits still require my review and explanation; live attempts produced no valid decisions.
+The latest edits still require my review and explanation; five current live runs retain two scored failures.

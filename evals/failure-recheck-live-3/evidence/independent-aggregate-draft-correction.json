@@ -1,0 +1,26 @@
+{
+  "correction": "Two preserved aggregate drafts have a syntax error in prose construction. They cannot be executed as saved. The sealed final aggregate records v4 as its source; v4 parses. No earlier file was changed to hide the drafts.",
+  "files": [
+    {
+      "file": "independent-aggregate-v2-source.py",
+      "sha256": "313296d82a55f2a2e8e5199eb851e33a9e95ba66e47ec196b9502e223875c423",
+      "syntax_valid": false,
+      "error_line": 53,
+      "error": "invalid syntax. Perhaps you forgot a comma?"
+    },
+    {
+      "file": "independent-aggregate-v3-source.py",
+      "sha256": "1d255cb7620ef2b0a5cb319cd85a769a4fe9261aebdfe5c1f299921207ae33b6",
+      "syntax_valid": false,
+      "error_line": 53,
+      "error": "invalid syntax. Perhaps you forgot a comma?"
+    },
+    {
+      "file": "independent-aggregate-v4-source.py",
+      "sha256": "0baf016e3f1ecead1b46bddae5ce3faf9648052b7e8cd0cdbd5e2511e66c1e99",
+      "syntax_valid": true
+    }
+  ],
+  "successful_final_source": "independent-aggregate-v4-source.py",
+  "evidence_limit": "The final source hash establishes which source the aggregate attests. No successful v2/v3 output is identified. The syntax failure occurs before execution and does not indicate a model execution or scoring failure."
+}
