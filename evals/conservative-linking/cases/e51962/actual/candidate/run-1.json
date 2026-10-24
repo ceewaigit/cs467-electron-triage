@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/devtools"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d025",
+  "batch_id": "s006",
+  "repetition": 1,
+  "policy_sha256": "0911f393275f02acdd81929d992cb851079ced5639ec5a066a1e171c6f479e80",
+  "proposal_sha256": "d9bc3d52ae2c03566dfd898c96c8b347b3ef5e37b1d8a7b7e676a318723d0426",
+  "explanation": "The failure is popup UI inside detached DevTools. BrowserWindow and webContents only host it, a gist is present, and the clearly matching earlier issue is already linked by the reporter; other candidates lack matching trigger details.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

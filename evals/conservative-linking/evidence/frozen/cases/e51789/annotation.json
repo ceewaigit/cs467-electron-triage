@@ -1,0 +1,116 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Top content pixel is clipped by the window; a gist is present. Window geometry is direct. Extra borders on other edges, Linux white lines, and menu-icon offsets do not establish the same clipping defect.",
+  "candidate_evidence": [
+    {
+      "number": 51457,
+      "opened": "2026-05-02",
+      "score": 37.0,
+      "title": "Frameless window on Wayland has a white line on top",
+      "shared_terms": [
+        "top",
+        "line",
+        "img",
+        "alt",
+        "image",
+        "assets",
+        "src",
+        "width"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior <img width=\"1171\" height=\"834\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4c5f378b-5e46-473e-a9e5-6cd1742fec59\" /> ### Actual Behavior <img width=\"1171\" height=\"834\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e938b9ca-1512-40d8-88c6-734423b17de8\" /> ### Additional Information ",
+      "annotation": "unsupported",
+      "annotation_reason": "Top content pixel is clipped by the window; a gist is present. Window geometry is direct. Extra borders on other edges, Linux white lines, and menu-icon offsets do not establish the same clipping defect."
+    },
+    {
+      "number": 50221,
+      "opened": "2026-03-12",
+      "score": 36.6,
+      "title": "Border around app window (Linux Gnome)",
+      "shared_terms": [
+        "border",
+        "top",
+        "img",
+        "alt",
+        "image",
+        "assets",
+        "src",
+        "width"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Working as same as before v38.2.0 <img width=\"391\" height=\"450\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/d95aae47-cceb-4dfa-bd84-0614a48467f2\" /> ### Actual Behavior When launching an electron app window using the .AppImage or top panel widget, the window appears with a thick black (or white in light mode) border surrounding the entire window. The border di",
+      "annotation": "unsupported",
+      "annotation_reason": "Top content pixel is clipped by the window; a gist is present. Window geometry is direct. Extra borders on other edges, Linux white lines, and menu-icon offsets do not establish the same clipping defect."
+    },
+    {
+      "number": 48918,
+      "opened": "2025-11-12",
+      "score": 33.6,
+      "title": "Certain menu items are positioned 1 pixel off on macOS Tahoe",
+      "shared_terms": [
+        "off",
+        "first",
+        "img",
+        "alt",
+        "image",
+        "assets",
+        "src",
+        "width"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior When I set a menu item icon manually, it should be positioned exactly as if macOS added the same menu item automatically as a result of setting `menuItem.role`. ### Actual Behavior Menu item icons are positioned one pixel off vertically and/or horizontally when set manually. ### Examples <img width=\"256\" height=\"318\" alt=\"Image\" src=\"https://github.com/user-attachments/assets",
+      "annotation": "unsupported",
+      "annotation_reason": "Top content pixel is clipped by the window; a gist is present. Window geometry is direct. Extra borders on other edges, Linux white lines, and menu-icon offsets do not establish the same clipping defect."
+    },
+    {
+      "number": 51278,
+      "opened": "2026-04-23",
+      "score": 31.9,
+      "title": "Frameless window has left, bottom and right white border when fullscreen on Windows",
+      "shared_terms": [
+        "border",
+        "img",
+        "alt",
+        "image",
+        "assets",
+        "src",
+        "width",
+        "attachments"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Window has no border when fullscreen <img width=\"2940\" height=\"1846\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/27688664-ba58-4d12-97b7-ab1d0268ff88\" /> ### Actual Behavior Window has a white border on left, bottom and right side when fullscreen <img width=\"2940\" height=\"1846\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/aac9693c-1c70-4478-a289",
+      "annotation": "unsupported",
+      "annotation_reason": "Top content pixel is clipped by the window; a gist is present. Window geometry is direct. Extra borders on other edges, Linux white lines, and menu-icon offsets do not establish the same clipping defect."
+    },
+    {
+      "number": 51456,
+      "opened": "2026-05-02",
+      "score": 31.2,
+      "title": "Create a window before creating a frameless window on Wayland brings a strange border around shadows",
+      "shared_terms": [
+        "border",
+        "img",
+        "alt",
+        "image",
+        "assets",
+        "src",
+        "width",
+        "attachments"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior The window has no strange border around shadows <img width=\"1249\" height=\"1031\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/4f660e77-1e6b-4aad-85ab-3d2fe338651a\" /> ### Actual Behavior <img width=\"1248\" height=\"1036\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c811f9b0-f9ee-4591-aa1f-d92cc3d88ece\" /> ### Additional Information The distance of t",
+      "annotation": "unsupported",
+      "annotation_reason": "Top content pixel is clipped by the window; a gist is present. Window geometry is direct. Extra borders on other edges, Linux white lines, and menu-icon offsets do not establish the same clipping defect."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "38ff867e2727f6ceab38d24c2fe57f6dc26e9514a61dd38ed323b7289d50d504",
+    "rows": 742
+  }
+}

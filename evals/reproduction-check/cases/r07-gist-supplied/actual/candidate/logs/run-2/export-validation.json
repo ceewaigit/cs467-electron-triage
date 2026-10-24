@@ -1,0 +1,12 @@
+[
+  {
+    "command": [
+      "python3",
+      ".claude/skills/issue-triage/scripts/check_labels.py",
+      "component/globalShortcut"
+    ],
+    "exit_code": 0,
+    "stdout": "[issue-triage/check_labels v1] ok\n{\"labels\": [\"component/globalShortcut\"], \"valid\": true, \"errors\": []}\n",
+    "stderr": ""
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/devtools"
+      ]
+    }
+  ],
+  "explanation": "Listener dispatch is skipped specifically during debugger pause transitions while debugging with breakpoints; a reproduction repository is supplied, candidates differ, and the upstream cause remains speculative."
+}

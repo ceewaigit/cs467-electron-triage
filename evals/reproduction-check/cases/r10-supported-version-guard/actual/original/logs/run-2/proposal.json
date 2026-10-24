@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/webcontents"
+      ]
+    }
+  ],
+  "explanation": "The report concerns WebContents findInPage; the bot already requested a supported version, so no reproduction request is added."
+}

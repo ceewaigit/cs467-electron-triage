@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/webcontents"
+      ]
+    }
+  ],
+  "explanation": "The report concerns webContents.findInPage; despite the incomplete reproduction, the supported-version bot request is already pending, so no additional request is made."
+}

@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "This is a broken documentation link with no clear Electron API component; the bot has already requested a supported version, and no candidate reports the same broken link."
+    }
+  ],
+  "explanation": "This is a broken documentation link with no clear Electron API component; the bot has already requested a supported version, and no candidate reports the same broken link."
+}

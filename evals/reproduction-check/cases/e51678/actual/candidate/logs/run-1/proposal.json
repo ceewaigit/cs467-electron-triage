@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/build",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The native-module build regression is identified by an MSVC error, but only a header expression and diagnostic are supplied without a runnable build example; an upstream cause is only suggested."
+}

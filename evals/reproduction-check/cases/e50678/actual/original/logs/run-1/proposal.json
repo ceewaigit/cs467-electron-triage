@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/webRequest",
+        "component/webcontents"
+      ]
+    }
+  ],
+  "explanation": "The report concerns WebContents loading with request interception and webRequest listener interaction; a gist is supplied, while candidates have different failure triggers despite sharing ERR_FAILED."
+}

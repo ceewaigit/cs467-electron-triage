@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The reported regression adds dark lines to the left, right and bottom window borders; this supports BrowserWindow. The bug has no runnable reproduction or repository link, and the candidates do not establish the same failure."
+}

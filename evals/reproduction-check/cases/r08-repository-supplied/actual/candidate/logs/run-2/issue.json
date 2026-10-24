@@ -1,0 +1,12 @@
+{
+  "number": 800023,
+  "title": "contentTracing.stopRecording writes an empty trace after a successful capture",
+  "body": "### Electron Version\n\n42.2.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 14.7\n\n### Expected Behavior\n\nThe trace contains recorded events.\n\n### Actual Behavior\n\nstartRecording resolves, the sample generates activity for one second, and stopRecording resolves to a trace file that is zero bytes.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nMinimal runnable repository: https://github.com/reproduction-fixtures/empty-trace-minimal\nClone the repository, run npm install and npm start. It contains package.json, main.cjs and the local activity page. main.cjs starts tracing, runs the activity, stops tracing and prints the trace file size. No private assets or external services are required.",
+  "labels": [
+    "bug :beetle:"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-06-30T12:00:00Z",
+  "replay": true
+}

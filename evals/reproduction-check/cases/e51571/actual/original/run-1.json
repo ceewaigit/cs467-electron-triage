@@ -1,0 +1,28 @@
+{
+  "labels_added": [
+    "component/desktopcapturer",
+    "component/session"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d020",
+  "batch_id": "s005",
+  "repetition": 1,
+  "policy_sha256": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+  "proposal_sha256": "c69d5e5aaead4a9e53d518a5ceff85815756144c0c60b1b5d312a71d674cc18f",
+  "explanation": "The crash concerns switching display-capture handlers within one session and includes a runnable gist; the candidates describe different failures.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "51761,51767"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/gpu",
+        "component/sandbox"
+      ]
+    }
+  ],
+  "explanation": "The report concerns GPU and sandbox startup failures with the same GPU exit code as issues 51761 and 51767; the supported-version bot already asked for information, so no reproduction request is added."
+}

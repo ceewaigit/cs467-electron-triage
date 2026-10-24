@@ -1,0 +1,25 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/v8",
+        "component/build"
+      ]
+    ],
+    "acceptable": [
+      "blocked/upstream ❌"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "upstream"
+    ],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "NAN native-addon compilation fails on concrete v8::External signature changes, with binding.gyp, C++ source, package.json and build commands. Either V8 or build identifies the boundary; neither requires concluding V8 itself is defective. Upstream routing is optional. require('nan') is build setup, not node integration. Other native-build/types errors have different symbols and failure modes."
+}

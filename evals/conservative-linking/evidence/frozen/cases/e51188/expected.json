@@ -1,0 +1,25 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "blocked/need-repro"
+    ],
+    "one_of": [
+      [
+        "component/deviceAccess",
+        "component/session"
+      ]
+    ],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "need-repro"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "select-serial-port exposes device basenames and opening Web Serial fails; deviceAccess/session identify the actual surface. IPC is a description of event delivery, not an IPC defect. No gist or runnable code. Chrome works, so Chromium terminology alone does not justify upstream. ENOENT in ASAR copying is a different operation."
+}

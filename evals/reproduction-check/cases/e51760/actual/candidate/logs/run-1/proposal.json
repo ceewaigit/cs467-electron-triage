@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/dialog"
+      ]
+    }
+  ],
+  "explanation": "The caret problem follows a native confirmation dialog and has a supplied gist; the closest candidate involves showMessageBoxSync, which this report says works, so no additional match is established."
+}

@@ -1,0 +1,50 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "invented": true,
+  "rationale": "Invented positive control. Input and #810101 specify the same two clipboard APIs, selection buffer, X11 and empty-string result. #810102 is image-alpha loss, not empty selection text. Complete runnable code suppresses need-repro; app/require are setup. Similar remains optional in frozen outcome scoring; explicit positive-link coverage measures whether the clear opportunity is used.",
+  "constructed_reference_numbers": [
+    810101,
+    810102
+  ],
+  "acceptable_refs": [
+    810101
+  ],
+  "unsupported_or_already_linked_refs": [
+    810102
+  ],
+  "candidate_evidence": [
+    {
+      "number": 810101,
+      "opened": "2026-03-01",
+      "score": 10.9,
+      "title": "X11 selection clipboard readText returns empty immediately after writeText",
+      "shared_terms": [
+        "readtext",
+        "returns",
+        "empty",
+        "writetext",
+        "linux",
+        "x11",
+        "clipboard.writetext",
+        "immediately"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "On Linux/X11, clipboard.writeText('alpha', 'selection') completes but clipboard.readText('selection') immediately returns an empty string. The ordinary clipboard works. Expected: alpha."
+    },
+    {
+      "number": 810102,
+      "opened": "2026-03-01",
+      "score": 2.4,
+      "title": "Clipboard image loses alpha after writeImage",
+      "shared_terms": [
+        "followed",
+        "text",
+        "selection",
+        "alpha",
+        "clipboard"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "clipboard.writeImage(image) followed by clipboard.readImage() produces an opaque image; text and the selection clipboard work correctly."
+    }
+  ]
+}

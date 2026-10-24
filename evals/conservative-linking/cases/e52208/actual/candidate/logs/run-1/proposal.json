@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/wco"
+      ]
+    }
+  ],
+  "explanation": "The configured titleBarOverlay controls cover the renderer border at specific display scales, directly supporting window controls overlay. Other APIs only set up the reproduction, which includes both runnable code and a gist; candidate failures are unrelated."
+}

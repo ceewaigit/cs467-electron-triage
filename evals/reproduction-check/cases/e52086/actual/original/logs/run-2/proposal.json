@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/webcontents"
+      ]
+    }
+  ],
+  "explanation": "The report concerns WebContents zoom setters and includes runnable main-process and HTML code; no candidate matches the behavior and Chromium responsibility is not established."
+}

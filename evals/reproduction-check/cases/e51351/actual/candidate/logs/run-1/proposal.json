@@ -1,0 +1,20 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro,similar",
+      "refs": "50393,50776"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/v8",
+        "component/sandbox",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "MAS sandbox startup crash has V8 worker-thread signature matching 50393 and 50776; stack traces and conditions lack a runnable reproduction, and an upstream cause remains uncertain."
+}

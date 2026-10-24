@@ -1,0 +1,1 @@
+Completed s009: all ten cases, d021–d030, recorded in order with first decisions preserved. No procedural failures.

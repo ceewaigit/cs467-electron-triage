@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro,similar",
+      "refs": "76102"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/app",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The app badge API fails for positive counts, matching 76102. Repeated API calls without the app startup are fragments, so a complete reproduction is needed."
+}

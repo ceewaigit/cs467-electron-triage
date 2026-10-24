@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The supported-version bot has already requested information; no clear component, same-problem candidate or redirect is established."
+    }
+  ],
+  "explanation": "The supported-version bot has already requested information; no clear component, same-problem candidate or redirect is established."
+}

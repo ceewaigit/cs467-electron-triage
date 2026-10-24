@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "51761"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/gpu",
+        "component/sandbox"
+      ]
+    }
+  ],
+  "explanation": "The GPU sandbox startup crash matches the error and fatal signature in 51761; the bot already requested a supported version and upstream responsibility is not established."
+}

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/fullscreen"
+      ]
+    }
+  ],
+  "explanation": "The requested control changes the native tab bar height specifically in collapsed fullscreen and on fullscreen transitions. The body explicitly requests a new API, so no repro is requested; the earlier reports concern crashes, freezes or unrelated menu features."
+}

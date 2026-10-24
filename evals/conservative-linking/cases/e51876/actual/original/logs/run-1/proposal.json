@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report concerns BrowserWindow bounds with a reproduction gist; candidates describe different frame, resizing, or scaling behavior."
+}

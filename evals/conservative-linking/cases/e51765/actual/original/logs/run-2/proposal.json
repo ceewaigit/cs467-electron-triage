@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The helper-bundle lookup report includes a gist and runnable reproduction; no component fits confidently, and the candidates do not establish the same helper lookup failure."
+    }
+  ],
+  "explanation": "The helper-bundle lookup report includes a gist and runnable reproduction; no component fits confidently, and the candidates do not establish the same helper lookup failure."
+}

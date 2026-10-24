@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/accessibility",
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "BrowserWindow hide behavior strands accessibility focus; a gist is present and the matching earlier issue is already linked by the reporter."
+}

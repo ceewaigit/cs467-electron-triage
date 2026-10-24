@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/protocol"
+      ]
+    }
+  ],
+  "explanation": "The reported media failure centers on custom protocol handling and includes a gist; the available excerpts do not confirm the same playback failure or establish an upstream cause."
+}

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/wco"
+      ]
+    }
+  ],
+  "explanation": "The bug concerns Window Controls Overlay detection, with both a gist and reproduction repository supplied. The matching earlier issue is already linked by the reporter, and the evidence points to Electron integration rather than an upstream redirect."
+}

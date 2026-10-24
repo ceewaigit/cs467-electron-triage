@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/protocol"
+      ]
+    }
+  ],
+  "explanation": "The report isolates media playback through custom protocol handlers and provides a gist; the candidates do not clearly establish the same failure, and Chromium ownership is not established."
+}

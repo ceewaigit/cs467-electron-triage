@@ -1,0 +1,15 @@
+{
+  "id": "e51619",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/51619",
+  "as_of": "2026-05-13T23:01:58Z",
+  "author_association": "NONE",
+  "title": "install-electron fails running under nodejs v26.1.0",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.0.1\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\ndebian trixie\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nRunning `npx install-electron` should install the electron binaries under `node_modules/...`\n\n### Actual Behavior\n\nBinaries are not installed. The extraction of the zip file fails because of [this problem](https://github.com/max-mapper/extract-zip/issues/154) in the used `extract-zip` npm package.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nElectron v42.x installation fails on latest node v26.x version.",
+  "labels_at_open": [
+    "42-x-y",
+    "bug :beetle:",
+    "platform/linux"
+  ],
+  "body_source": "userContentEdits oldest revision (2026-05-13T23:01:58Z)"
+}

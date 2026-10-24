@@ -1,0 +1,15 @@
+{
+  "number": 800026,
+  "title": "Custom protocol via protocol.handle() not compatible with Chromium media playback",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n41.1.1\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\n15.7.4\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nA `<video>` element should be able to play a local MP4 file when served via `protocol.handle()` using a custom scheme, provided that:\n\n- The response includes a valid `Content-Type` (e.g., `video/mp4`)\n- Proper range request handling is implemented (`206 Partial Content`, `Content-Range`, `Accept-Ranges`, etc.)\n- The response body contains the correct byte ranges from the file\n\nThis should behave equivalently to other Electron-supported methods of serving local media, including:\n\n- `file://` URLs  \n- HTTP (`http://127.0.0.1`)  \n\n`protocol.handle()` should support media playback use cases in parity with other mechanisms for local file access.\n\n### Actual Behavior\n\nIn the attached repro, the videos play correctly via `file://`, HTTP, and blob URL methods, but fail when served through `protocol.handle()` with a manually constructed `Response` (Buffer or stream), even when headers and range handling appear correct. Video1 plays with a `net.fetch`, but video2 fails. Both fail with buffer and stream inside `handle()`. Both also fail with the deprecated `registerFileProtocol`.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/JamesHabben/c8790e32af88279fe8dfc7a67bb32f49\n\n### Additional Information\n\nCould be related to `electron/electron#38749`",
+  "labels": [
+    "41-x-y",
+    "bug :beetle:",
+    "has-repro-gist",
+    "platform/macOS"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-05-01T22:50:23Z",
+  "replay": true
+}

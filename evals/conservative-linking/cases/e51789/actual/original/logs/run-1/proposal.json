@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report concerns window content clipped at its top edge and includes a reproduction gist; the candidates describe different border or menu behavior."
+}

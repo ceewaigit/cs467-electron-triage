@@ -1,0 +1,2 @@
+{"number": 810601, "created_at": "2026-03-01T00:00:00Z", "title": "clearStorageData leaves target partition localstorage intact", "body": "session.fromPartition('persist:alpha').clearStorageData({storages:['localstorage']}) leaves alpha's own stored keys intact. Other partitions are unchanged."}
+{"number": 810602, "created_at": "2026-03-01T00:00:00Z", "title": "clearStorageData clears cookies despite selecting localstorage", "body": "Within the same persist:alpha partition, clearStorageData({storages:['localstorage']}) also removes cookies. Other partitions are unchanged."}

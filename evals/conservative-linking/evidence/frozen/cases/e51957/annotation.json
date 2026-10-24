@@ -1,0 +1,116 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "BrowserWindow constructor flags resizable:false/frame:false/fullscreen:true fail to enter fullscreen. Window/fullscreen are direct. Examples are parameterized constructor calls without a runnable app or gist, so the rubric's beyond-one-call reproduction requirement applies. Earlier framing/inset reports change geometry rather than preventing fullscreen entry and are not established same-problem links.",
+  "candidate_evidence": [
+    {
+      "number": 51240,
+      "opened": "2026-04-22",
+      "score": 35.3,
+      "title": "Full-screen shows a frame around the app,",
+      "shared_terms": [
+        "false.",
+        "screen.",
+        "resizable",
+        "frame",
+        "screen",
+        "browserwindow",
+        "false",
+        "true"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior The app renders as usual in full-screen mode, full-width and no gutters bellow either ### Actual Behavior The app starts and creates a window with frame prop set to false, full-screen shows a frame around the app, like a kind of padding or gutters bellow and on each side but not on top. If you try troubleshooting by trying passing different properties like `thickFrame: false`",
+      "annotation": "unsupported",
+      "annotation_reason": "BrowserWindow constructor flags resizable:false/frame:false/fullscreen:true fail to enter fullscreen. Window/fullscreen are direct. Examples are parameterized constructor calls without a runnable app or gist, so the rubric's beyond-one-call reproduction requirement applies. Earlier framing/inset reports change geometry rather than preventing fullscreen entry and are not established same-problem links."
+    },
+    {
+      "number": 51876,
+      "opened": "2026-06-04",
+      "score": 34.9,
+      "title": "Frameless non-resizable `BrowserWindow` reports incorrect bounds since v41.5.0.",
+      "shared_terms": [
+        "resizable",
+        "non",
+        "between",
+        "frame",
+        "browserwindow",
+        "false",
+        "true",
+        "width"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior `getBounds()` returns `{ width: 500, height: 75 }` matching the constructor values. ### Actual Behavior `getBounds()` returns `{ width: 484, height: 67 }` — 16px narrower, ~8px shorter. ### Additional Information ### Key Observations - Only affects `resizable: false` windows — `resizable: true` works correctly - Only affects `frame: false` windows — framed windows unaffected ",
+      "annotation": "unsupported",
+      "annotation_reason": "BrowserWindow constructor flags resizable:false/frame:false/fullscreen:true fail to enter fullscreen. Window/fullscreen are direct. Examples are parameterized constructor calls without a runnable app or gist, so the rubric's beyond-one-call reproduction requirement applies. Earlier framing/inset reports change geometry rather than preventing fullscreen entry and are not established same-problem links."
+    },
+    {
+      "number": 49902,
+      "opened": "2026-02-21",
+      "score": 30.6,
+      "title": "Wayland: some frame configurations still have incorrect bounds",
+      "shared_terms": [
+        "x600",
+        "resizable",
+        "frame",
+        "browserwindow",
+        "false",
+        "true",
+        "width",
+        "height"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior This configuration would produce an 800x600 window: ``` const WIDTH = 800; const HEIGHT = 600; const mainWindow = new BrowserWindow({ width: WIDTH, height: HEIGHT, minHeight: HEIGHT, minWidth: WIDTH, maxWidth: WIDTH, maxHeight: HEIGHT, resizable: false, maximizable: false, minimizable: false, frame: true // true on gnome in 41 beta, true or false on all Wayland configs in ele",
+      "annotation": "unsupported",
+      "annotation_reason": "BrowserWindow constructor flags resizable:false/frame:false/fullscreen:true fail to enter fullscreen. Window/fullscreen are direct. Examples are parameterized constructor calls without a runnable app or gist, so the rubric's beyond-one-call reproduction requirement applies. Earlier framing/inset reports change geometry rather than preventing fullscreen entry and are not established same-problem links."
+    },
+    {
+      "number": 51244,
+      "opened": "2026-04-22",
+      "score": 28.4,
+      "title": "Frameless BrowserWindow.getBounds() inflates by resize-hit insets after setResizable(true → false) on Windows (regression in 41.2.1 from #50863)",
+      "shared_terms": [
+        "equal",
+        "left",
+        "top",
+        "window.",
+        "between",
+        "browserwindow",
+        "false",
+        "true"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior On a frameless BrowserWindow, calling setResizable(false) should not change the values returned by getBounds() / getContentBounds(). The window's logical rect should remain equal to the rect passed to setBounds(). ### Actual Behavior After setResizable(true → false) on a frameless window, getBounds() and getContentBounds() both report a rect inflated by the resize-hit insets ",
+      "annotation": "unsupported",
+      "annotation_reason": "BrowserWindow constructor flags resizable:false/frame:false/fullscreen:true fail to enter fullscreen. Window/fullscreen are direct. Examples are parameterized constructor calls without a runnable app or gist, so the rubric's beyond-one-call reproduction requirement applies. Earlier framing/inset reports change geometry rather than preventing fullscreen entry and are not established same-problem links."
+    },
+    {
+      "number": 47640,
+      "opened": "2025-07-02",
+      "score": 28.3,
+      "title": "having a white background een if i set the window transparent",
+      "shared_terms": [
+        "resizable",
+        "creating",
+        "window.",
+        "frame",
+        "browserwindow",
+        "false",
+        "true",
+        "width"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior trying to get a transparent6 circular browsing window ### Actual Behavior Im having a white background when creating the window like below, i have a html file with css to style my window. Fascinating thing is its working as expected in laptop or retina display and has a white background in bigger displays floatingWindow = new BrowserWindow({ width: 60, height: 60, frame: fals",
+      "annotation": "unsupported",
+      "annotation_reason": "BrowserWindow constructor flags resizable:false/frame:false/fullscreen:true fail to enter fullscreen. Window/fullscreen are direct. Examples are parameterized constructor calls without a runnable app or gist, so the rubric's beyond-one-call reproduction requirement applies. Earlier framing/inset reports change geometry rather than preventing fullscreen entry and are not established same-problem links."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "c4e2e5a1916d8ed4f5f53f2e88fca1e6fb2a985e636267d3e88850e29f21f6bc",
+    "rows": 767
+  }
+}

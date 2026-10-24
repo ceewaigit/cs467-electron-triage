@@ -1,0 +1,25 @@
+{
+  "labels_added": [],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d008",
+  "batch_id": "s007",
+  "repetition": 2,
+  "policy_sha256": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+  "proposal_sha256": "2970548fa38fd0e4832366c7fd6ad2d3a56f493022c004e83cbc8510e60e9471",
+  "explanation": "This is a documentation glossary feature request; API names appear only as examples, no component label fits, and the candidate runtime failure is unrelated.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

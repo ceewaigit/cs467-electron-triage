@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/protocol"
+      ]
+    }
+  ],
+  "explanation": "Local videos fail specifically when served through protocol.handle or registerFileProtocol while file, HTTP and blob methods work. A gist is supplied; net.fetch is an alternate handler implementation, and no candidate excerpt establishes the same failure."
+}

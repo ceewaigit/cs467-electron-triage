@@ -1,0 +1,114 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "select-serial-port exposes device basenames and opening Web Serial fails; deviceAccess/session identify the actual surface. IPC is a description of event delivery, not an IPC defect. No gist or runnable code. Chrome works, so Chromium terminology alone does not justify upstream. ENOENT in ASAR copying is a different operation.",
+  "candidate_evidence": [
+    {
+      "number": 48217,
+      "opened": "2025-08-29",
+      "score": 32.7,
+      "title": "dialog.showOpenDialog with openDirectory property shows file picker instead of directory picker in Electron 37",
+      "shared_terms": [
+        "directory",
+        "select",
+        "correctly",
+        "fails",
+        "event",
+        "instead",
+        "open",
+        "file"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior When calling dialog.showOpenDialog() with properties: ['openDirectory'], the dialog should open as a directory/folder picker, allowing users to select directories only. This behavior worked correctly in Electron 36 and earlier versions. ### Actual Behavior In Electron 37.x, when calling dialog.showOpenDialog() with properties: ['openDirectory'], the dialog opens as a file pic",
+      "annotation": "unsupported",
+      "annotation_reason": "select-serial-port exposes device basenames and opening Web Serial fails; deviceAccess/session identify the actual surface. IPC is a description of event delivery, not an IPC defect. No gist or runnable code. Chrome works, so Chromium terminology alone does not justify upstream. ENOENT in ASAR copying is a different operation."
+    },
+    {
+      "number": 49571,
+      "opened": "2026-01-29",
+      "score": 31.2,
+      "title": "macOS: Cannot double-click to select package directories (e.g., .ufo) in open dialog with filters",
+      "shared_terms": [
+        "attempts",
+        "directory",
+        "select",
+        "etc.",
+        "e.g.",
+        "instead",
+        "open",
+        "file"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior There should be a way to allow package directories (like `.ufo`, `.bundle`, etc.) to be: - Visible and selectable when matching a filter extension - Selected via double-click (same as regular files) ### Actual Behavior I'm building a font editor where I need to load [ufo](https://en.wikipedia.org/wiki/Unified_Font_Object) files (which are directories). When using `dialog.show",
+      "annotation": "unsupported",
+      "annotation_reason": "select-serial-port exposes device basenames and opening Web Serial fails; deviceAccess/session identify the actual surface. IPC is a description of event delivery, not an IPC defect. No gist or runnable code. Chrome works, so Chromium terminology alone does not justify upstream. ENOENT in ASAR copying is a different operation."
+    },
+    {
+      "number": 49073,
+      "opened": "2025-11-25",
+      "score": 28.4,
+      "title": "Handling Relative Paths for Local File Loading via Custom Protocol after registerFileProtocol Deprecation",
+      "shared_terms": [
+        "relative",
+        "attempts",
+        "directory",
+        "web",
+        "correctly",
+        "e.g.",
+        "path",
+        "chromium"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Problem Description I am encountering an issue when attempting to load local files, particularly an index.html file, within an <iframe> using a custom protocol registered via protocol.handle. The context is the upcoming deprecation of protocol.registerFileProtocol(), prompting migration to protocol.handle(). Problem When a custom scheme is handled with protocol.handle, it is treated as a netwo",
+      "annotation": "unsupported",
+      "annotation_reason": "select-serial-port exposes device basenames and opening Web Serial fails; deviceAccess/session identify the actual surface. IPC is a description of event delivery, not an IPC defect. No gist or runnable code. Chrome works, so Chromium terminology alone does not justify upstream. ENOENT in ASAR copying is a different operation."
+    },
+    {
+      "number": 49012,
+      "opened": "2025-11-18",
+      "score": 26.8,
+      "title": "Node fs cp methods are not wrapped, don't work to copy out of an ASAR archive",
+      "shared_terms": [
+        "enoent",
+        "directory",
+        "fails",
+        "e.g.",
+        "node",
+        "file"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Using the Node fs module's [cp methods](https://nodejs.org/api/fs.html#fspromisescpsrc-dest-options) (`cp`, `promises.cp`, `cpSync`, stable as of Node 22.3.0) to copy folders out of an ASAR works correctly. ### Actual Behavior It fails with ENOENT, e.g. `Error: ENOENT: no such file or directory, opendir 'C:\\Users\\ben\\AppData\\Local\\MyApp\\app-3.32.0-r13901\\resources\\app.asar\\ne",
+      "annotation": "unsupported",
+      "annotation_reason": "select-serial-port exposes device basenames and opening Web Serial fails; deviceAccess/session identify the actual surface. IPC is a description of event delivery, not an IPC defect. No gist or runnable code. Chrome works, so Chromium terminology alone does not justify upstream. ENOENT in ASAR copying is a different operation."
+    },
+    {
+      "number": 50200,
+      "opened": "2026-03-11",
+      "score": 26.3,
+      "title": "`autoUpdater.quitAndInstall()` fails to apply update and app does not relaunch",
+      "shared_terms": [
+        "attempts",
+        "directory",
+        "failed",
+        "called",
+        "fails",
+        "e.g.",
+        "path",
+        "file"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior After `'update-downloaded'`, calling `autoUpdater.quitAndInstall()` will apply the update and restart the app. ### Actual Behavior I have privately received a report that `autoUpdater.quitAndInstall()` no longer consistently applies updates and restarts the app in a very popular Electron application on macOS. The new version is downloaded, but on `autoUpdater.quitAndInstall()",
+      "annotation": "unsupported",
+      "annotation_reason": "select-serial-port exposes device basenames and opening Web Serial fails; deviceAccess/session identify the actual surface. IPC is a description of event delivery, not an IPC defect. No gist or runnable code. Chrome works, so Chromium terminology alone does not justify upstream. ENOENT in ASAR copying is a different operation."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "175c11c2f3463913d8fda143b488a8050abf286969e1c9043d7b0ec9324b8f59",
+    "rows": 662
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report concerns the window mouse-event forwarding API and includes a gist; none of the earlier candidates reports the same stuck hover behavior."
+}

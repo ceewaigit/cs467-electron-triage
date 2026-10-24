@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/webcontents"
+      ]
+    }
+  ],
+  "explanation": "The report concerns webContents zoom setters. It supplies runnable main.js with app startup and zoom handling, complete index.html, and zoom-out/restart steps that reach the reported failure; no additional reproduction, matching earlier issue or clear upstream redirect is warranted."
+}

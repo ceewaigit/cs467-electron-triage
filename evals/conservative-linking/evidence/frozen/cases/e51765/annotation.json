@@ -1,0 +1,116 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Renamed packaged helper bundles cause a specific Unable to find helper app fatal error. Startup/app or packaging/build labels are optional; gist and concrete shell reproduction are present. Helper names containing GPU and an ASAR fuse check are incidental. #48972 has generic SIGTRAP without the helper-lookup signature and does not establish the same failure.",
+  "candidate_evidence": [
+    {
+      "number": 48972,
+      "opened": "2025-11-14",
+      "score": 68.2,
+      "title": "Electron 39.2.0 crashes with SIGTRAP when launched normally",
+      "shared_terms": [
+        "electron.app",
+        "removing",
+        "dist",
+        "node_modules",
+        "sigtrap",
+        "contents",
+        "launch",
+        "npm"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior After upgrading to Electron 39.2.0, running my Electron app from the command line or after compiling should launch the app. ### Actual Behavior After upgrading to Electron 39.2.0, running my Electron app from the command line crashes with this message: `...node_modules/electron/dist/Electron.app/Contents/MacOS/Electron exited with signal SIGTRAP` I have used breakpoints in de",
+      "annotation": "unsupported",
+      "annotation_reason": "Renamed packaged helper bundles cause a specific Unable to find helper app fatal error. Startup/app or packaging/build labels are optional; gist and concrete shell reproduction are present. Helper names containing GPU and an ASAR fuse check are incidental. #48972 has generic SIGTRAP without the helper-lookup signature and does not establish the same failure."
+    },
+    {
+      "number": 49801,
+      "opened": "2026-02-14",
+      "score": 56.5,
+      "title": "GPU process hangs on Linux when argv contains both spaces and multi-byte UTF-8 characters",
+      "shared_terms": [
+        "unmodified",
+        "byte",
+        "world",
+        "reading",
+        "suggested",
+        "bash",
+        "original",
+        "real"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "## Description On Linux, when an Electron app is launched with command-line arguments containing **both** a space and a multi-byte UTF-8 character (emoji, CJK, etc.), the GPU subprocess fails to initialize and the process hangs indefinitely. This does not occur on Windows. ## Reproduction ```bash # Works (no spaces in argument with emoji) /path/to/electron-app --no-sandbox some-command content=\"he",
+      "annotation": "unsupported",
+      "annotation_reason": "Renamed packaged helper bundles cause a specific Unable to find helper app fatal error. Startup/app or packaging/build labels are optional; gist and concrete shell reproduction are present. Helper names containing GPU and an ASAR fuse check are incidental. #48972 has generic SIGTRAP without the helper-lookup signature and does not establish the same failure."
+    },
+    {
+      "number": 49386,
+      "opened": "2026-01-14",
+      "score": 54.7,
+      "title": "[MAS Rejection]:",
+      "shared_terms": [
+        "myapp.app",
+        "myapp",
+        "names",
+        "additionally",
+        "frameworks",
+        "bash",
+        "binary",
+        "arm64"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Rejection Email ## Apple's Rejection Message ``` Guideline 2.5.1 - Performance - Software Requirements Additionally, we found your app uses or references the following non-public or deprecated APIs: _toolbarView _menuImpl _removeFromGroups: _isConsideredOpenForPersistentState _boundsIfOpen _resizeDirectionForMouseLocation: NSAppendToKillRing kCFBundleNumericVersionKey __NSNewKillRingSequence _",
+      "annotation": "unsupported",
+      "annotation_reason": "Renamed packaged helper bundles cause a specific Unable to find helper app fatal error. Startup/app or packaging/build labels are optional; gist and concrete shell reproduction are present. Helper names containing GPU and an ASAR fuse check are incidental. #48972 has generic SIGTRAP without the helper-lookup signature and does not establish the same failure."
+    },
+    {
+      "number": 49652,
+      "opened": "2026-02-04",
+      "score": 54.1,
+      "title": "SecCodeCheckValidity error -67062 on macOS 26 (Tahoe)",
+      "shared_terms": [
+        "codesign",
+        "signing",
+        "deep",
+        "failing",
+        "resolve",
+        "null",
+        "mac",
+        "shell"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Running an Electron app from the command line should not print code signing errors when the code signature is valid. ### Actual Behavior When running VS Code (or any Electron app) from the CLI, the following error is printed to stderr: ``` [0204/102237.819836:ERROR:electron/shell/common/mac/codesign_util.cc:109] SecCodeCheckValidity: Error Domain=NSOSStatusErrorDomain Code=-6",
+      "annotation": "unsupported",
+      "annotation_reason": "Renamed packaged helper bundles cause a specific Unable to find helper app fatal error. Startup/app or packaging/build labels are optional; gist and concrete shell reproduction are present. Helper names containing GPU and an ASAR fuse check are incidental. #48972 has generic SIGTRAP without the helper-lookup signature and does not establish the same failure."
+    },
+    {
+      "number": 49018,
+      "opened": "2025-11-19",
+      "score": 53.8,
+      "title": "Electron Module Initialization Failure on macOS 15.6.1",
+      "shared_terms": [
+        "electron.app",
+        "failing",
+        "bash",
+        "binary",
+        "dist",
+        "confirmed",
+        "node_modules",
+        "null"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior When launching an Electron application, the `require('electron')` statement should return the Electron API object with properties such as `app`, `BrowserWindow`, etc. The `process.type` property should be set to either `'browser'` or `'renderer'` depending on the process context. ### Actual Behavior On macOS 15.6.1, Electron's JavaScript bootstrap layer fails to initialize. T",
+      "annotation": "unsupported",
+      "annotation_reason": "Renamed packaged helper bundles cause a specific Unable to find helper app fatal error. Startup/app or packaging/build labels are optional; gist and concrete shell reproduction are present. Helper names containing GPU and an ASAR fuse check are incidental. #48972 has generic SIGTRAP without the helper-lookup signature and does not establish the same failure."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "57fe197eccb750c48698706aa0375a8c366b5b9891efb0adeb31b82647bac742",
+    "rows": 736
+  }
+}

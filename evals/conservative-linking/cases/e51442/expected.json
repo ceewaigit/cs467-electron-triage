@@ -1,0 +1,25 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/protocol"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/net"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "similar"
+    ],
+    "refs_any": [
+      48582,
+      47661
+    ],
+    "must_not_match": []
+  },
+  "rationale": "protocol.handle custom-scheme video playback fails despite range responses; gist supplied. net.fetch is part of the tested serving paths and net is optional. #48582 uses the same custom-scheme Response/range/video path and #47661 reports protocol-served video scrubbing failure. Both are acceptable tentative links, although terse seeking/error reports do not prove identical cause to failed playback. #38749 is already linked. Other candidates concern relative URLs, unsupported fetch scheme or fullscreen."
+}

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/devtools"
+      ]
+    }
+  ],
+  "explanation": "Detached DevTools popup menus fail, with a reproduction gist provided; the matching earlier issue is already linked, and the other candidates have different triggers or behavior."
+}

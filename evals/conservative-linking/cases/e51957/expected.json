@@ -1,0 +1,25 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "blocked/need-repro"
+    ],
+    "one_of": [
+      [
+        "component/BrowserWindow",
+        "component/fullscreen"
+      ]
+    ],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "need-repro"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "BrowserWindow constructor flags resizable:false/frame:false/fullscreen:true fail to enter fullscreen. Window/fullscreen are direct. Examples are parameterized constructor calls without a runnable app or gist, so the rubric's beyond-one-call reproduction requirement applies. Earlier framing/inset reports change geometry rather than preventing fullscreen entry and are not established same-problem links."
+}

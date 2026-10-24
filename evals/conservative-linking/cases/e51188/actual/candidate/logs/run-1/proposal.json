@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/deviceAccess",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "Incorrect serial-device path and failed Web Serial open support deviceAccess; the bug lacks gist, repository reproduction and runnable code, with no prior supported-version request, while candidates concern different operations."
+}

@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/build",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The report concerns native-module builds; the isolated builtin call and compiler diagnostic omit a buildable module and commands, while the possible upstream cause remains uncertain."
+}

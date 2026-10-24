@@ -1,0 +1,23 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/WebContentsView",
+      "blocked/need-repro"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/view"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "need-repro"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The failure is explicitly WebContentsView reattachment. One constructor, spread over multiple lines, supplies neither parent/reattach sequence nor the page that shows the transparency failure. It is not a runnable reproduction. The explicit empty corpus supplies no earlier candidate. No redirect is supported by the stated Electron API bug."
+}

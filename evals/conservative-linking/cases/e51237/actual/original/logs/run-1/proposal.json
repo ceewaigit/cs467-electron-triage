@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "New dark borders around the window identify BrowserWindow; the bug has no runnable reproduction or pending version request, and the candidates do not match this border regression."
+}

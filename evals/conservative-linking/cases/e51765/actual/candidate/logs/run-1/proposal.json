@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "Report provides a gist and runnable helper-renaming steps; no specific allowed API component or sufficiently matching earlier failure is established, and no redirect is justified."
+    }
+  ],
+  "explanation": "Report provides a gist and runnable helper-renaming steps; no specific allowed API component or sufficiently matching earlier failure is established, and no redirect is justified."
+}

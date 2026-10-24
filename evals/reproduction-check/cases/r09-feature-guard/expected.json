@@ -1,0 +1,18 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/session"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The requested event belongs to session; IPC appears only as an alternative. An explicit new session-event feature request is exempt from reproduction requests regardless of absent code. The explicit empty corpus provides no earlier match. The user proposes an API feature, not a support question or a third-party app request."
+}

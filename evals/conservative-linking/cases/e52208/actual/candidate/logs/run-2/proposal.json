@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/wco"
+      ]
+    }
+  ],
+  "explanation": "The native titleBarOverlay controls cover the renderer border at specific display scales, directly supporting the window controls overlay component. A gist and runnable code are supplied; no candidate describes the same overlay sizing failure."
+}

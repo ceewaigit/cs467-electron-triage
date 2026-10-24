@@ -1,0 +1,16 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Invented no-action control. General documentation feature has no supported component; named APIs are explicitly examples, not malfunctioning surfaces. Feature requests do not need a repro. Candidate API failures are not a request for a glossary."
+}

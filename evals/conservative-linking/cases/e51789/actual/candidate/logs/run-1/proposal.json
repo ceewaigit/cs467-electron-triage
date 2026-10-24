@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report describes the application window clipping its top pixel, supporting BrowserWindow. A gist is supplied; candidate excerpts do not establish the same clipping failure and no upstream cause is demonstrated."
+}

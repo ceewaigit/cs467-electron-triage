@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro,upstream",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "blocked/need-repro",
+        "blocked/upstream ❌"
+      ]
+    }
+  ],
+  "explanation": "Chromium connection allowlist behavior also reproduces in Chrome; the bug has only a one-line call and no runnable repro link, and no candidate reports the same behavior."
+}

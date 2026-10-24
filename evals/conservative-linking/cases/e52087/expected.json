@@ -1,0 +1,24 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [
+      "component/net",
+      "blocked/need-repro",
+      "blocked/upstream ❌"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "need-repro",
+      "security",
+      "upstream"
+    ],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "An enabled Connection-Allowlist guard allegedly fails to block network connections. Only a switch-setting line is supplied, so a repro request is defensible; a cautious security-only route is also defensible for a potentially ineffective security restriction. The form explicitly says it also happens in Chromium, making upstream an optional route. This ambiguity is not a positive control. app.commandLine is setup, not the failed component. Security must suppress other kinds and need-repro under the old skill. WebSocket redirectURL and unrelated API failures are not the same problem."
+}

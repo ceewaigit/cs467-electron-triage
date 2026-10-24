@@ -1,0 +1,2 @@
+{"number": 810401, "created_at": "2026-03-01T00:00:00Z", "title": "app.whenReady never resolves", "body": "Calling app.whenReady() never resolves and no BrowserWindow can be opened."}
+{"number": 810402, "created_at": "2026-03-01T00:00:00Z", "title": "session.clearCache leaves disk cache files", "body": "session.clearCache() resolves but disk cache entries remain."}

@@ -1,0 +1,24 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/webcontents",
+        "component/webframe"
+      ]
+    ],
+    "acceptable": [
+      "component/session",
+      "component/BrowserWindow"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The explicit setZoomFactor/setZoomLevel behavior is a webcontents/webframe concern; persisted session state and window loading are plausible secondary labels. The body supplies a complete main.js with imports, app readiness, BrowserWindow construction, loadFile and zoom hooks, plus the complete index.html and restart/persistence steps. Code fences and a package.json are not necessary to run those supplied files with Electron. This is sufficient runnable inline code. The retrieved layout, drag crash and accent-color reset reports do not describe zoom persistence overriding a reset. The reporter hypothesizes Chromium persistence but says Chrome is unaffected; a Chromium word alone does not establish an upstream issue."
+}

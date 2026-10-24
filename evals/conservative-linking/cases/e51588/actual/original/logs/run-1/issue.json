@@ -1,0 +1,14 @@
+{
+  "number": 800001,
+  "title": "Entrust code signing link 404s",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n32.0.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nN/A\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nN/A\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nThe Entrust code signing link should work.\n\n### Actual Behavior\n\nThe Entrust code signing link ([here](https://github.com/electron/electron/blob/main/docs/tutorial/code-signing.md?plain=1#L91)) does not work, it 404s.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+  "labels": [
+    "blocked/need-info ❌",
+    "bug :beetle:",
+    "platform/windows"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-05-11T23:41:16Z",
+  "replay": true
+}

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/fullscreen"
+      ]
+    }
+  ],
+  "explanation": "The window fails to enter fullscreen when frame and resizable are false. Fullscreen is the specific affected feature; multiple runnable constructor examples are supplied, and the candidates describe bounds or borders rather than the same fullscreen failure."
+}

@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "Broken documentation link has no clearly supported component or matching earlier failure; the bot already requested a supported version."
+    }
+  ],
+  "explanation": "Broken documentation link has no clearly supported component or matching earlier failure; the bot already requested a supported version."
+}

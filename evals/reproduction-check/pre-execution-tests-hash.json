@@ -1,0 +1,10 @@
+{
+  "recorded_at_utc": "2026-10-24T04:49:08.939405+00:00",
+  "command": "python3 -m unittest discover -s tests -v",
+  "result": "103 tests passed in 26.498 seconds",
+  "exit_code": 0,
+  "log_sha256": "bb21668409309581ebdb270d4db347958d128b95033f96a65d7a20c899dcab03",
+  "harness_sha256": "25899fc6115b595f91f47248a4209a4fa58e0e2294f8d3c84261382e38c90d9d",
+  "candidate_policy_sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+  "runtime_state": "Tracked runtime remains original; candidate used only in isolated checks."
+}

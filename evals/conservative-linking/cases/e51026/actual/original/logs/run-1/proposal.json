@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The internal deprecation-helper report includes a runnable code example; no component fits confidently, and no same-problem candidate or redirect is established."
+    }
+  ],
+  "explanation": "The internal deprecation-helper report includes a runnable code example; no component fits confidently, and no same-problem candidate or redirect is established."
+}

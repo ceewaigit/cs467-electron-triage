@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/session"
+      ]
+    }
+  ],
+  "explanation": "Feature request for a session network emulation event; IPC is only a proposed workaround and no reproduction request is warranted."
+}

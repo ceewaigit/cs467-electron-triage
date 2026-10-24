@@ -1,0 +1,24 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/devtools",
+        "component/node-integration"
+      ]
+    ],
+    "acceptable": [
+      "component/webcontents",
+      "component/v8"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Debugger pause transitions suppress DOM EventTarget listeners specifically when dispatched from Node socket callbacks in an integrated renderer; linked runnable repository exists. DevTools/node integration directly describe the boundary; webcontents.debugger and V8 are optional. contextIsolation, inspector.Session and suspend words do not identify context-bridge/session/powerMonitor problems. Wayland compositor input freezes are not the same JavaScript event-dispatch failure; Node controls differ, so no categorical upstream redirect."
+}

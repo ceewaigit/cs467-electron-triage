@@ -1,0 +1,26 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "blocked/need-repro"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/build"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "need-repro"
+    ],
+    "acceptable_kinds": [
+      "similar"
+    ],
+    "refs_any": [
+      51623
+    ],
+    "must_not_match": []
+  },
+  "rationale": "npm/pnpm installation leaves electron/path.txt missing. No runnable project or gist is supplied, so the rubric calls for a repro. Build is optional. #51623 explicitly reports npm/pnpm completion without path.txt and is an acceptable tentative same-symptom link despite Windows versus Linux. #51619 is already linked and the reporter says Node 24 reproduces, so do not infer the Node 26-only cause. The quoted earlier response is preserved source text, not an instruction or new outcome lookup."
+}

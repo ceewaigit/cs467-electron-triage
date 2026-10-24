@@ -1,0 +1,14 @@
+{
+  "number": 800025,
+  "title": "Unchecked return value of UnhookWindowsHookEx in NativeWindowViews::SetForwardMouseMessages leads to duplicate mouse hooks",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n36.4.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 26100\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\n**NativeWindowViews::SetForwardMouseMessages** function unhooks the global mouse hook using **UnhookWindowsHookEx(mouse_hook_)** when the **forwarding_windows_** set becomes empty. It should verify the return value of **UnhookWindowsHookEx**\n\n### Actual Behavior\n\nIf **UnhookWindowsHookEx** fails (returns FALSE), the existing hook remains active in the system. Because **mouse_hook_** is reset to **nullptr** regardless of success, subsequent calls to **SetForwardMouseMessages(true)** will evaluate **if (!mouse_hook_)** as true. This causes **SetWindowsHookEx** to be called again, installing an additional, duplicate mouse hook\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+  "labels": [
+    "blocked/need-info ❌",
+    "bug :beetle:",
+    "platform/windows"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-04-15T07:45:30Z",
+  "replay": true
+}

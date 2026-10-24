@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The bot already requested a supported version, and no confident component, same-problem candidate, or redirect fits the IME report."
+    }
+  ],
+  "explanation": "The bot already requested a supported version, and no confident component, same-problem candidate, or redirect fits the IME report."
+}

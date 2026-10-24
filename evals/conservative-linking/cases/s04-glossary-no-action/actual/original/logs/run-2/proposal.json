@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "This is a documentation glossary feature request; API names appear only as examples, no component label fits, and the candidate runtime failure is unrelated."
+    }
+  ],
+  "explanation": "This is a documentation glossary feature request; API names appear only as examples, no component label fits, and the candidate runtime failure is unrelated."
+}

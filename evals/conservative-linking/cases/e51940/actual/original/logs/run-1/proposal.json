@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/devtools",
+        "component/node-integration"
+      ]
+    }
+  ],
+  "explanation": "The failure involves debugger pauses during Node callbacks in a renderer and includes a testcase repository; no earlier candidate matches, and upstream ownership is not established."
+}

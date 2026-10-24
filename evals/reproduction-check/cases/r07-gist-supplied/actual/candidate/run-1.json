@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/globalShortcut"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d015",
+  "batch_id": "s002",
+  "repetition": 1,
+  "policy_sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+  "proposal_sha256": "960f69bfc3b3c27791ab8744486475c2ef09d0434f3e5d103488456f69fdaa80",
+  "explanation": "The report concerns globalShortcut registration state and already supplies a Fiddle gist, so no reproduction request is needed.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "76106"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/powerSaveBlocker"
+      ]
+    }
+  ],
+  "explanation": "The complete main.cjs example waits for readiness, starts a blocker and checks its ID before stopping; the earlier issue reports the same immediate false result."
+}

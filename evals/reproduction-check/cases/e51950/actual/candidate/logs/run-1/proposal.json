@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/node-integration"
+      ]
+    }
+  ],
+  "explanation": "The assertion occurs in the renderer Node WebAssembly integration and the body supplies an Electron Fiddle gist despite the empty form field; no candidate has the same crash signature and upstream ownership is unproven."
+}

@@ -1,0 +1,103 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "setIgnoreMouseEvents forwarding leaves body hover stuck after pointer exits; a gist is present. The window mouse-forwarding API is direct. Cursor-position APIs, accessibility and secure-storage cases do not have this hover-state behavior.",
+  "candidate_evidence": [
+    {
+      "number": 51325,
+      "opened": "2026-04-26",
+      "score": 28.2,
+      "title": "Add API to get cursor position relative to the window",
+      "shared_terms": [
+        "intended",
+        "outside",
+        "position",
+        "cursor",
+        "mouse"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Problem Description It's possible to get the position of the mouse cursor relative to the display with `screen.getCursorPoint()`. On Wayland, this function inadvertently gave the cursor position relative to the active _window_ rather than the display. While this was the intended behaviour, it is still a useful capability which Electron should support. ### Proposed Solution Add a `BaseWindow.ge",
+      "annotation": "unsupported",
+      "annotation_reason": "setIgnoreMouseEvents forwarding leaves body hover stuck after pointer exits; a gist is present. The window mouse-forwarding API is direct. Cursor-position APIs, accessibility and secure-storage cases do not have this hover-state behavior."
+    },
+    {
+      "number": 48039,
+      "opened": "2025-08-11",
+      "score": 22.7,
+      "title": "`accessibilitySupportEnabled` (screen reader detection) is broken since v37 (worked in v36)",
+      "shared_terms": [
+        "too",
+        "broken",
+        "tested",
+        "always",
+        "true",
+        "macos"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior * The `app.accessibilitySupportEnabled` boolean is false even when a screen reader is active (tested with VoiceOver on MacOS). * The `app.on(\"accessibility-support-changed\")` event handler always reports false too ### Actual Behavior * The `app.accessibilitySupportEnabled` boolean is true when a screen reader is active (used to work fine with VoiceOver on MacOS with Electron ",
+      "annotation": "unsupported",
+      "annotation_reason": "setIgnoreMouseEvents forwarding leaves body hover stuck after pointer exits; a gist is present. The window mouse-forwarding API is direct. Cursor-position APIs, accessibility and secure-storage cases do not have this hover-state behavior."
+    },
+    {
+      "number": 48935,
+      "opened": "2025-11-13",
+      "score": 20.8,
+      "title": "safeStorage does not seem to work without DBUS enabled - incomatible with proper secure sandboxing of applications",
+      "shared_terms": [
+        "outside",
+        "sure",
+        "enabled",
+        "tested",
+        "setting",
+        "desktop",
+        "out"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Problem Description Originating issue: Element Desktop https://github.com/element-hq/element-desktop/issues/2689 I was forwarded to upstream as this appears an Electron issue: About 1 1/2 years ago, I noticed that I could no longer launch Element Desktop with my tried & tested firejail configuration. While it launched, it failed to read the configuration / authentication data from the jail. It",
+      "annotation": "unsupported",
+      "annotation_reason": "setIgnoreMouseEvents forwarding leaves body hover stuck after pointer exits; a gist is present. The window mouse-forwarding API is direct. Cursor-position APIs, accessibility and secure-storage cases do not have this hover-state behavior."
+    },
+    {
+      "number": 51153,
+      "opened": "2026-04-19",
+      "score": 20.5,
+      "title": "Undocumented Breaking Change with screen.getCursorScreenPoint",
+      "shared_terms": [
+        "returning",
+        "intended",
+        "position",
+        "mouse"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior `screen.getCursorScreenPoint()` should return the correct screen location relative to window position on Wayland. ### Actual Behavior `screen.getCursorScreenPoint()` suddenly returning (0,0) on Wayland after upgrading with no documented breaking changes or announcements. According to the changes of the PR, this function could still work as intended, but it was intentional mad",
+      "annotation": "unsupported",
+      "annotation_reason": "setIgnoreMouseEvents forwarding leaves body hover stuck after pointer exits; a gist is present. The window mouse-forwarding API is direct. Cursor-position APIs, accessibility and secure-storage cases do not have this hover-state behavior."
+    },
+    {
+      "number": 47833,
+      "opened": "2025-07-20",
+      "score": 19.9,
+      "title": "Customize window border radius",
+      "shared_terms": [
+        "matter",
+        "sure",
+        "setting",
+        "always",
+        "true"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Be able to customize window corner radius ### Actual Behavior There's always a rounded corner background in the window, no matter if I tried disable/enable `transparent: true`, or setting `mainWindow.contentWindow.setBorderRadius(100)` in main.js <img width=\"661\" height=\"346\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/49b8ace6-b823-465d-9bac-6dfb6995acd9\" /> ",
+      "annotation": "unsupported",
+      "annotation_reason": "setIgnoreMouseEvents forwarding leaves body hover stuck after pointer exits; a gist is present. The window mouse-forwarding API is direct. Cursor-position APIs, accessibility and secure-storage cases do not have this hover-state behavior."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "a8531c12c5a3fedd3855f2fe61f2ccc63257d86bada3f94273a969d00ab9f58d",
+    "rows": 700
+  }
+}

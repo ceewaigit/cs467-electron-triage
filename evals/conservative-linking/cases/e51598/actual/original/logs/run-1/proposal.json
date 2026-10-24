@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The missing release archive has no clearly fitting component or same-problem candidate; the bot already requested a supported version."
+    }
+  ],
+  "explanation": "The missing release archive has no clearly fitting component or same-problem candidate; the bot already requested a supported version."
+}

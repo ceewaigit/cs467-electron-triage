@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/menu"
+      ]
+    }
+  ],
+  "explanation": "Right-arrow navigation fails while a native submenu is open, directly supporting menu; a gist is supplied and candidates describe different keyboard actions or window behavior."
+}

@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "No specific Electron component is established; the bot already requested a supported version, and no candidate clearly reports the same problem."
+    }
+  ],
+  "explanation": "No specific Electron component is established; the bot already requested a supported version, and no candidate clearly reports the same problem."
+}

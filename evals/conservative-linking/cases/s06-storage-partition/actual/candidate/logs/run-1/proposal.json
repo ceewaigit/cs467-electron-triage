@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/session"
+      ]
+    }
+  ],
+  "explanation": "Session clearStorageData incorrectly clears another partition, with runnable reproduction code; candidates explicitly leave other partitions unchanged and do not match."
+}

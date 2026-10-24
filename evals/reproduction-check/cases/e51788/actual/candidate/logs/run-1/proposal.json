@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The bot has already requested a supported version, no specific component is established, and the earlier candidates do not match the persistent development-mode mouse failure."
+    }
+  ],
+  "explanation": "The bot has already requested a supported version, no specific component is established, and the earlier candidates do not match the persistent development-mode mouse failure."
+}

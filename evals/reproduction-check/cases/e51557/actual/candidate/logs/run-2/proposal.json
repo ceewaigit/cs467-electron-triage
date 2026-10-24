@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The supported-version bot has already requested information; the GPU mention is only a failed workaround and no clear matching issue or redirect is established."
+    }
+  ],
+  "explanation": "The supported-version bot has already requested information; the GPU mention is only a failed workaround and no clear matching issue or redirect is established."
+}

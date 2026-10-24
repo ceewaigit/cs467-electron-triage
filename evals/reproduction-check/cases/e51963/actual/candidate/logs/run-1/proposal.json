@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The stated armhf environment and npx install-electron command directly reproduce the installer failure; no component label or same-problem candidate is established."
+    }
+  ],
+  "explanation": "The stated armhf environment and npx install-electron command directly reproduce the installer failure; no component label or same-problem candidate is established."
+}

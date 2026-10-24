@@ -1,0 +1,1 @@
+Completed s008: all ten cases d011–d020, in order, with first final decisions preserved. No tool or procedural failures occurred.

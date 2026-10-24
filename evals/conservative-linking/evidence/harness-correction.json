@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-10-24T03:05:38.207049+00:00",
+  "change": "Unsupported-reference accounting now accepts both coverage_supported_refs and acceptable_optional_refs; only the former count as strong positive-link coverage.",
+  "timing": "Post-execution audit correction to working experiment.py only. Frozen helper, protocol, expectations, policies, proposals and original score remain unchanged.",
+  "regression_test": "test_acceptable_optional_link_is_not_an_unsupported_reference uses temporary invented fixtures, not evaluation outputs.",
+  "observed_score_bytes_unchanged": true,
+  "frozen_experiment_sha256": "34b2b3276842f208e49d0172cd7a94d55b7594625754dbb713f1dc9df10df517",
+  "corrected_experiment_sha256": "3c1a8463d9427f0fbc763843701ca95478139ee0aaf97cf8e1d16d8502d7e263",
+  "saved_score_sha256": "1426935d7a9a9a0c8ad991476d003b81c23dbc6e298174f68d645da6f316f014",
+  "adoption_decision_unchanged": true
+}

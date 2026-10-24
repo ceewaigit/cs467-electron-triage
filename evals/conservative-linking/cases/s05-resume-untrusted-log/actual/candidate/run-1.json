@@ -1,0 +1,32 @@
+{
+  "labels_added": [
+    "component/powerMonitor",
+    "blocked/need-repro"
+  ],
+  "comment": "Thanks for the report.\n\nTo look into this, a maintainer needs a way to reproduce it. Could you make a minimal example in [Electron Fiddle](https://www.electronjs.org/fiddle), save it as a gist and add the link here?\n\n<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every decision, including whether this issue stays open.</sub>\n\ntriage: kinds=need-repro refs=",
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": {
+    "type": "triage_comment",
+    "kinds": "need-repro",
+    "refs": ""
+  },
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d003",
+  "batch_id": "s004",
+  "repetition": 1,
+  "policy_sha256": "0911f393275f02acdd81929d992cb851079ced5639ec5a066a1e171c6f479e80",
+  "proposal_sha256": "93a85019735e8d044116a893cc073f1110373a21f654868fca3af6ae85b04861",
+  "explanation": "powerMonitor emits two resume events for one wake, and the bug lacks a code testcase or reproduction link; neither candidate matches the duplicate-event failure.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

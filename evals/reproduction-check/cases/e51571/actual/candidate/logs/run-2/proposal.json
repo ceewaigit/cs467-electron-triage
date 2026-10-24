@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/desktopcapturer"
+      ]
+    }
+  ],
+  "explanation": "The failure concerns desktop capture when switching pickers, with a reproduction gist supplied; none of the earlier candidates establishes the same crash or behaviour."
+}

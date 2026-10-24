@@ -1,0 +1,29 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/webcontents",
+        "component/devtools",
+        "component/webRequest"
+      ]
+    ],
+    "acceptable": [
+      "component/net",
+      "component/session"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "similar"
+    ],
+    "refs_any": [
+      48912
+    ],
+    "must_not_match": []
+  },
+  "rationale": "CDP Fetch interception through WebContents/debugger and webRequest integration plausibly supports these alternative components. The Testcase Gist URL provides the reproduction. The stack trace is output, not the source of sufficiency. 48912 has the same ERR_FAILED (-2) loadURL navigation failure and is a plausible optional symptom link, but its beforeunload trigger differs, so it is not a strong coverage reference. 49199 concerns a fatal custom-build startup crash; the other candidates have different API behavior. No upstream redirect is established by a CDP name; the report says Chrome is unaffected and describes an Electron regression."
+}

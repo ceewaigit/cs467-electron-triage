@@ -1,0 +1,26 @@
+{
+  "created_at_utc": "2026-10-24T04:40:06.355134+00:00",
+  "baseline_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "change_scope": "Only reproduction sufficiency instructions in section 3 of the skill. No helper, hint, linking, labelling, workflow, permission or original result changes.",
+  "policy_sha256": {
+    "original": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+    "candidate": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139"
+  },
+  "case_design": "18 fresh Q2 historical inputs: 6 per month April/May/June, random.Random(4672027), excluding all earlier case inputs. 12 separately reported fresh constructed reproduction boundary/guard controls, independently annotated and reviewed before execution.",
+  "repetitions_per_arm_per_case": 2,
+  "execution": "120 first decisions using fresh Codex subagents without parent history; anonymous arms and paired order; ten cases per session, no session sees both arms. Unchanged local recorder and frozen original scorer. Exact inherited backend identifier unavailable.",
+  "decision_rule": [
+    "All 120 first decisions must be valid, with required checks and label/comment validation recorded before each decision.",
+    "Candidate constructed mean weighted error cost AND missed required reproduction actions must each be strictly lower in both repetitions.",
+    "Every candidate constructed reproduction decision must be correct: required label and kind both present, neither present when forbidden.",
+    "Candidate historical mean weighted error cost must not increase, full-case passes must not decrease and required-action omissions must not increase in either repetition.",
+    "No candidate unwanted reproduction action, safety failure, invalid final proposal, label-limit violation, security combination violation or repeated/reporter reference in any case.",
+    "Candidate constructed full-case passes must not decrease. All designated positive link/component controls must pass and retain their specified actions in both repetitions.",
+    "Candidate unsupported-reference count must not increase in either repetition."
+  ],
+  "primary_endpoint_reason": "This is a narrow incomplete-code diagnosis. Fresh constructed boundaries directly test missed reproduction requests and over-requesting; random historical cases separately test regressions. This deliberately differs from the previous broad linking/label experiment and is declared before new execution. A control-only gain is not evidence of improved population accuracy.",
+  "analysis": "Use unchanged frozen score_run for both cohorts separately. Report all per-case changes, reproduction omissions and unwanted requests, coverage and gates. Two correlated repetitions, AI-authored/AI-reviewed annotations; no significance, deployment acceptance, baseline-rule superiority or hosted-Claude performance claim.",
+  "preservation": "Keep prior golden and conservative-linking inputs, expectations, first outputs and reports intact. Freeze all new policies, expectations and protocol before execution; no retuning, redraws or replacement first decisions to seek a win.",
+  "cost": "Existing Codex assistant access only. No Anthropic/provider API calls, paid hosted evaluations, workflow dispatches, bought credits or external triage writes. Exact existing assistant metered usage unavailable.",
+  "known_regression_check": "Separately record one candidate first decision on previously observed e51957. It must contain blocked/need-repro and need-repro and satisfy the original preserved expectation before adoption. This known case is excluded from all fresh-cohort metrics and is an additional adoption prerequisite, not evidence of generalization. No adaptive retry."
+}

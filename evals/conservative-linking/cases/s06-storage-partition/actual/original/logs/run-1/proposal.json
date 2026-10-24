@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/session"
+      ]
+    }
+  ],
+  "explanation": "The defect concerns session partition storage clearing and includes runnable code; the earlier candidates describe different clearing failures within the target partition."
+}

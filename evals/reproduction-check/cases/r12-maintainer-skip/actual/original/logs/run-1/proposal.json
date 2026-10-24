@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "Author is a maintainer (MEMBER)."
+    }
+  ],
+  "explanation": "Author is a maintainer (MEMBER)."
+}

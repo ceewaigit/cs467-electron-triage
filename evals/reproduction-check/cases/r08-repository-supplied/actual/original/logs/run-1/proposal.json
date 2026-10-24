@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/contentTracing"
+      ]
+    }
+  ],
+  "explanation": "The contentTracing bug includes a minimal runnable repository, so no reproduction request is needed."
+}

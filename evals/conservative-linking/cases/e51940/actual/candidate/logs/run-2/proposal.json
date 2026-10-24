@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/node-integration"
+      ]
+    }
+  ],
+  "explanation": "DOM listeners are skipped when dispatching from a Node socket callback in a node-integrated renderer during an inspector pause transition. The reproduction repository is supplied; candidates do not match the failure, and the report does not establish an upstream-only cause."
+}

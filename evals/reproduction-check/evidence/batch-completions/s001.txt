@@ -1,0 +1,1 @@
+Completed d001–d010 in order using the unchanged recorder and helpers. Each first final decision is preserved. No tool failures or validation rejections occurred.

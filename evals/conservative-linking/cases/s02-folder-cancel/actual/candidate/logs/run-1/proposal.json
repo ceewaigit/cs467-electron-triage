@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "810201"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/dialog"
+      ]
+    }
+  ],
+  "explanation": "showOpenDialog incorrectly returns canceled:true and no paths after confirming an existing directory, matching 810201 specifically; 810202 is already linked, 810203 conflicts, and runnable code is provided."
+}

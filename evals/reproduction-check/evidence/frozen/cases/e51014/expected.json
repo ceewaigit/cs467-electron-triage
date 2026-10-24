@@ -1,0 +1,23 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/wco",
+        "component/BrowserWindow"
+      ]
+    ],
+    "acceptable": [
+      "component/transparent"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Transparent titleBarOverlay control backgrounds support WCO/BrowserWindow with transparent as an optional specific feature. A Testcase Gist URL is supplied; screenshots and a separate crash trace do not replace it as the reproduction evidence. 48193 preserves the transparent background and reports incorrect hover/accent feedback; this case loses the static transparent background through a default-color fallback. The shared titleBarOverlay/rgba setting does not establish the same wrong behavior. Other retrieved transparency/layout reports also have different triggers or objects, so no similar comment is supported. No confirmed Chromium/Node cause, public vulnerability, app-only report or how-to request is present."
+}

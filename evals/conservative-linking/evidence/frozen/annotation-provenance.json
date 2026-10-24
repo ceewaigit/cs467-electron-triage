@@ -1,0 +1,18 @@
+{
+  "runtime_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "temporary_input_only_directory": "/private/tmp/conservative-annotation-24krk2ri",
+  "scripts_unchanged": true,
+  "source_hashes": {
+    ".claude/skills/issue-triage/SKILL.md": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+    ".claude/skills/issue-triage/scripts/triage_checks.py": "890b3d3051b98b40a6bff042ad3be688aedde3036d3acde7e9e4ec338e505efe",
+    ".claude/skills/issue-triage/scripts/render_comment.py": "c9603072a424a8ba7956a6ab96a77931897e7e4ca00a028249818b2ce676234d",
+    ".claude/skills/issue-triage/scripts/check_labels.py": "4bc38e16b2f0ee0f64de2c62112351bb8138c8c54cce181ece099cb517311cf6",
+    ".claude/skills/issue-triage/references/components.json": "6a6f33d5e4fa6e65b5986723a87a4692a3f007feeafc105c9a23f083aff513b7",
+    ".claude/skills/issue-triage/assets/allowed-labels.txt": "5eea2a81aaeaeb3afcc5526d087a4091171d761cf60b31f4b0c86d53de41357e",
+    "data/issue-corpus.jsonl": "17f98b105cfa82f53f9162fcdb274faab69460fd9e64049cc9978cd4b2255c5c"
+  },
+  "candidate_inspection": "unchanged triage_checks.py executed on each selected opening input with strictly earlier corpus; no prior actual output or outcome read",
+  "annotation_authorship": "AI-authored with independent AI review; no claim of human verification",
+  "checked_cases": 30,
+  "triage_execution_runs_before_annotation": 0
+}

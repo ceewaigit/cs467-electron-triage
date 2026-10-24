@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow",
+        "component/fullscreen"
+      ]
+    }
+  ],
+  "explanation": "This explicitly requests a BrowserWindow API for native tab-bar sizing during fullscreen; feature requests need no reproduction, and the candidates concern different behavior."
+}

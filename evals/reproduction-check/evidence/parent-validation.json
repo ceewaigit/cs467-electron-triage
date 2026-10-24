@@ -1,0 +1,26 @@
+{
+  "checked_at_utc": "2026-10-24T05:04:55.146848+00:00",
+  "tracked_head": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "previous_files_verified": 3143,
+  "previous_files_changed": [],
+  "tracked_diff": "",
+  "candidate_policy_sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+  "transcript_events": {
+    "context": 120,
+    "script": 265,
+    "assistant_decision": 120
+  },
+  "export_validation_calls": 145,
+  "tests": {
+    "count": 103,
+    "status": "passed",
+    "log": "pre-execution-tests.txt"
+  },
+  "paid_provider_evals": 0,
+  "workflow_dispatches": 0,
+  "fresh_decisions": 120,
+  "known_regression_decisions": 1,
+  "committed": false,
+  "pushed": false,
+  "decision": "Do not adopt: primary gates failed. Await independent blind audit; original runtime is unchanged."
+}

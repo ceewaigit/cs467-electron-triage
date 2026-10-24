@@ -1,0 +1,51 @@
+{
+  "case_id": "r01-multiline-constructor",
+  "authorship": "Independent Codex dataset annotator, before policy executions; exact backend model identifier unavailable",
+  "created_at_utc": "2026-10-24T04:48:08.835798+00:00",
+  "basis": [
+    "frozen evals/golden/RUBRIC.md",
+    "baseline issue-triage SKILL.md at 962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "opening issue text",
+    "strictly earlier baseline corpus or explicitly fabricated control corpus"
+  ],
+  "reproduction": {
+    "expectation": "required",
+    "rationale": "One constructor, spread over multiple lines, supplies neither parent/reattach sequence nor the page that shows the transparency failure. It is not a runnable reproduction."
+  },
+  "components": {
+    "rationale": "The failure is explicitly WebContentsView reattachment.",
+    "accepted_required": [
+      "component/WebContentsView",
+      "blocked/need-repro"
+    ],
+    "accepted_one_of": [],
+    "accepted_optional": [
+      "component/view"
+    ]
+  },
+  "similarity": {
+    "rationale": "The explicit empty corpus supplies no earlier candidate.",
+    "reviewed_top_five": [],
+    "acceptable_refs": [],
+    "strong_coverage_refs": [],
+    "optional_noncoverage_refs": [],
+    "reporter_link_exclusion": "Earlier links already in opening body are ineligible; corpus matching asserts possible symptom overlap, not common root cause."
+  },
+  "redirects": {
+    "rationale": "No redirect is supported by the stated Electron API bug.",
+    "required_kinds": [
+      "need-repro"
+    ],
+    "acceptable_kinds": []
+  },
+  "attribution_limitations": [
+    "Single assistant annotation, not maintainer adjudication; independent pre-execution review is separate.",
+    "Historical fields and corpus are frozen reconstructed opening evidence; no remote URL, attachment or runtime reproduction was fetched or run."
+  ],
+  "construction": {
+    "category": "incomplete-multiline-single-constructor",
+    "fictional": true,
+    "corpus": "explicit per-case override; all rows invented for this control; empty means no candidate",
+    "artifact_links": "Any reproduction URL is a fictional offline fixture evaluated as a supplied artifact, not a claim that a live remote repository/gist exists."
+  }
+}

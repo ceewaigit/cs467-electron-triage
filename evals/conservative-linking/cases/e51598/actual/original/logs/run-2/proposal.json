@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The bot already requested a supported version; the missing release archive has no confident component match, matching earlier issue, or clearly applicable redirect."
+    }
+  ],
+  "explanation": "The bot already requested a supported version; the missing release archive has no confident component match, matching earlier issue, or clearly applicable redirect."
+}

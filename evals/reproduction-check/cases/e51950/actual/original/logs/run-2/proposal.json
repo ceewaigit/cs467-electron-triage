@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The report already includes an Electron Fiddle gist in its body; stack frames alone do not establish a component, upstream ownership, or a matching earlier crash."
+    }
+  ],
+  "explanation": "The report already includes an Electron Fiddle gist in its body; stack frames alone do not establish a component, upstream ownership, or a matching earlier crash."
+}

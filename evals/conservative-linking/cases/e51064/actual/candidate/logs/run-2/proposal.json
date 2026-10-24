@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report identifies faulty mouse-hook cleanup in native window mouse forwarding; the bot already requested a supported version, and candidate reports describe unrelated operations."
+}

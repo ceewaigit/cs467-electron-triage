@@ -1,0 +1,28 @@
+{
+  "labels_added": [
+    "component/devtools",
+    "component/node-integration"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d005",
+  "batch_id": "s001",
+  "repetition": 1,
+  "policy_sha256": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+  "proposal_sha256": "ea0cc7abcc9b3143396db5a6f78d349c981dfb368453ab771166d5b2fb625067",
+  "explanation": "The failure involves debugger pauses during Node callbacks in a renderer and includes a testcase repository; no earlier candidate matches, and upstream ownership is not established.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

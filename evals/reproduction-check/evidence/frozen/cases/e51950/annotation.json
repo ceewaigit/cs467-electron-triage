@@ -1,0 +1,67 @@
+{
+  "case_id": "e51950",
+  "authorship": "Independent Codex dataset annotator, before policy executions; exact backend model identifier unavailable",
+  "created_at_utc": "2026-10-24T04:48:08.835798+00:00",
+  "basis": [
+    "frozen evals/golden/RUBRIC.md",
+    "baseline issue-triage SKILL.md at 962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "opening issue text",
+    "strictly earlier baseline corpus or explicitly fabricated control corpus"
+  ],
+  "reproduction": {
+    "expectation": "forbidden",
+    "rationale": "The Actual Behavior section supplies an Electron Fiddle gist and asks to run it on 42.4.0. The empty dedicated field does not nullify the explicit gist elsewhere. Stack traces alone are not runnable code."
+  },
+  "components": {
+    "rationale": "The fatal Node WebAssembly compilation assertion in the renderer supports V8 or Node integration; broader startup/webcontents labels are plausible.",
+    "accepted_required": [],
+    "accepted_one_of": [
+      [
+        "component/v8",
+        "component/node-integration"
+      ]
+    ],
+    "accepted_optional": [
+      "component/webcontents",
+      "component/app"
+    ]
+  },
+  "similarity": {
+    "rationale": "No retrieved startup/MAS crash shares the specific node::wasm_web_api::StartStreamingCompilation assertion !impl.IsEmpty().",
+    "reviewed_top_five": [
+      {
+        "number": 49185,
+        "title": "TestFlight"
+      },
+      {
+        "number": 48003,
+        "title": "Assertion failed: (p->ai_socktype) == (1)"
+      },
+      {
+        "number": 49522,
+        "title": "[Bug]: EXC_BREAKPOINT crash on macOS 26.2 Tahoe during ElectronMain initialization"
+      },
+      {
+        "number": 51765,
+        "title": "[Bug] Helper app lookup uses hardcoded \"Electron Helper\" name — fatal crash when app is renamed by packager (macOS 26, arm64)"
+      },
+      {
+        "number": 50393,
+        "title": "App Crash"
+      }
+    ],
+    "acceptable_refs": [],
+    "strong_coverage_refs": [],
+    "optional_noncoverage_refs": [],
+    "reporter_link_exclusion": "Earlier links already in opening body are ineligible; corpus matching asserts possible symptom overlap, not common root cause."
+  },
+  "redirects": {
+    "rationale": "A Node assertion inside an Electron renderer does not prove a standalone Node defect. This is an Electron regression report, not merely a complaint about the named application.",
+    "required_kinds": [],
+    "acceptable_kinds": []
+  },
+  "attribution_limitations": [
+    "Single assistant annotation, not maintainer adjudication; independent pre-execution review is separate.",
+    "Historical fields and corpus are frozen reconstructed opening evidence; no remote URL, attachment or runtime reproduction was fetched or run."
+  ]
+}

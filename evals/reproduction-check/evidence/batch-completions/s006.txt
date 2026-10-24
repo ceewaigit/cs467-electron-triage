@@ -1,0 +1,1 @@
+Completed s006: d021–d030 in order, preserving each first final decision. No procedural failures or helper rejections.

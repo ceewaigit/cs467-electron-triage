@@ -1,0 +1,21 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/node-integration"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/webframe",
+      "component/webcontents"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "nodeIntegrationInSubFrames is the controlled setting in a renderer/subframe detach failure. The Testcase Gist URL field contains an explicitly identified minimal reproduction repository with step-by-step trigger details. A repository is valid evidence even though it is not a gist. The custom-build Illegal Access startup crash 49199 has a different trigger, location and error behavior; none of the retrieved candidates show this shadow-host removal/setImmediate combination. The exception text illegal access is not a vulnerability report. No upstream or other redirect follows from this Electron-specific Node integration behavior."
+}

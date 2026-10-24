@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/fullscreen"
+      ]
+    }
+  ],
+  "explanation": "Cursor misalignment occurs specifically in fullscreen and disappears in reduced mode; a gist is present, and the candidate excerpts describe different failures."
+}

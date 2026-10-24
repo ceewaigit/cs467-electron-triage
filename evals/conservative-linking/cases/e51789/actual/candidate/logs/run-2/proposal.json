@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report specifically describes clipping of the top pixel of the app window. A gist is supplied, and the candidate reports describe different borders or lack enough matching failure detail."
+}

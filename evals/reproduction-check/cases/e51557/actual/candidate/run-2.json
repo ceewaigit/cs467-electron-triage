@@ -1,0 +1,25 @@
+{
+  "labels_added": [],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d025",
+  "batch_id": "s009",
+  "repetition": 2,
+  "policy_sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+  "proposal_sha256": "8e8dc2511296a2f751b58c2201fb09e14c797533d7dc2ecfe03301539293c60d",
+  "explanation": "The supported-version bot has already requested information; the GPU mention is only a failed workaround and no clear matching issue or redirect is established.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

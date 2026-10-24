@@ -1,0 +1,20 @@
+{
+  "verified_at_utc": "2026-10-24T02:57:28.670915+00:00",
+  "frozen_files_verified": 123,
+  "event_counts": {
+    "context": 120,
+    "script": 251,
+    "assistant_decision": 120
+  },
+  "old_golden_and_scorer_tracked_diff": "empty against962fac7",
+  "local_document_links_resolved": 6,
+  "unit_test_command": "python3 -m unittest discover -s tests",
+  "unit_test_observed_result": "81 tests passed in 11.823 seconds during this task, after harness finalization",
+  "reconstruction": "experiment.py reproduce rebuilt all120 input-only contexts and checked their hashes in a new temporary directory",
+  "paid_provider_evaluations_invoked": 0,
+  "post_audit_check_utc": "2026-10-24T03:06:37.945482+00:00",
+  "post_audit_unit_test_result": "82 tests passed in 10.903 seconds after harness correction and restoration of original skill",
+  "post_audit_tracked_diff": "empty against962fac7 across all tracked files; only new experiment and regression-test file untracked",
+  "post_audit_rescore": "byte-identical; see harness-correction.json",
+  "commit_or_push_performed": false
+}

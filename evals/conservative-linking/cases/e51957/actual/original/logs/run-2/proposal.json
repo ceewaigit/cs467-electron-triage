@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow",
+        "component/fullscreen"
+      ]
+    }
+  ],
+  "explanation": "The failure concerns BrowserWindow fullscreen creation and includes runnable configuration examples; the candidate bounds and border reports do not establish the same failure to enter fullscreen."
+}

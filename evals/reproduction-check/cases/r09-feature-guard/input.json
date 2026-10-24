@@ -1,0 +1,13 @@
+{
+  "id": "r09-feature-guard",
+  "set": "constructed-reproduction-control",
+  "source": "constructed offline fixture; not a historical Electron report",
+  "title": "Add a session event when network emulation settings change",
+  "as_of": "2026-06-30T12:00:00Z",
+  "author_association": "NONE",
+  "labels_at_open": [
+    "enhancement :sparkles:"
+  ],
+  "body_source": "independently authored constructed opening; fictional scenario",
+  "body": "### Problem Description\n\nAn app has several windows sharing a session. When one window toggles network emulation, the others cannot observe that transition through an event.\n\n### Proposed Solution\n\nAdd a session network-emulation-changed event containing offline, latency and throughput values. This is a new API request.\n\n### Alternatives Considered\n\nForwarding a separate application IPC message manually."
+}

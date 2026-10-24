@@ -1,0 +1,16 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Broad performance-documentation feature request. app.getApplicationNameForProtocol is an example of why documentation is needed, not the proposed change's component; its earlier report #49727 is already linked. No runnable repro is required for a feature and no supported new link exists."
+}

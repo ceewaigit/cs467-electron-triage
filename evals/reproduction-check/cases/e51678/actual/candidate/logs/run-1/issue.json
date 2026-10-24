@@ -1,0 +1,14 @@
+{
+  "number": 800029,
+  "title": "Electron 42 Windows native-module build regression",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.x.y\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nGHA Windows 2022\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n41.5.0\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nNative modules rebuilt against Electron 42 headers on Windows with MSVC should not fail to build\n\n### Actual Behavior\n\nElectron 42 ships a `cppgc/heap.h` header that unconditionally calls:\n\n```cpp\n__builtin_frame_address(0)\n```\n\nMSVC does not support `__builtin_frame_address`, so the build fails with an error like:\n```\nerror C3861: '__builtin_frame_address': identifier not found\n```\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nThis may need fixing upstream in Node but thought I would open here first for visibility...",
+  "labels": [
+    "42-x-y",
+    "bug :beetle:",
+    "platform/windows"
+  ],
+  "state": "open",
+  "author_association": "CONTRIBUTOR",
+  "as_of": "2026-05-18T17:07:46Z",
+  "replay": true
+}

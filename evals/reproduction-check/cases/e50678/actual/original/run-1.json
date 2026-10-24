@@ -1,0 +1,28 @@
+{
+  "labels_added": [
+    "component/webRequest",
+    "component/webcontents"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d010",
+  "batch_id": "s004",
+  "repetition": 1,
+  "policy_sha256": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+  "proposal_sha256": "067b3173ea6a8b97f5116e62b1993d2b7178f8f08c6d1e5ce36203e8c354e479",
+  "explanation": "The report concerns WebContents loading with request interception and webRequest listener interaction; a gist is supplied, while candidates have different failure triggers despite sharing ERR_FAILED.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

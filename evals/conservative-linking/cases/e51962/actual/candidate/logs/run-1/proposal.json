@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/devtools"
+      ]
+    }
+  ],
+  "explanation": "The failure is popup UI inside detached DevTools. BrowserWindow and webContents only host it, a gist is present, and the clearly matching earlier issue is already linked by the reporter; other candidates lack matching trigger details."
+}

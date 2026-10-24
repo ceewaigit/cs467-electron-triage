@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/wco"
+      ]
+    }
+  ],
+  "explanation": "Window Controls Overlay detection mismatch has a linked reproduction. The matching earlier issue is already linked by the reporter, and the report identifies Electron-specific behavior."
+}

@@ -1,0 +1,22 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/dialog"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "similar"
+    ],
+    "refs_any": [
+      810201
+    ],
+    "must_not_match": []
+  },
+  "rationale": "Invented positive link plus already-linked exclusion control. #810201 exactly matches API, action and wrong canceled result; #810202 also matches but reporter already linked it. #810203 has correct cancellation result and wrong selection filtering. Runnable code supplied; app lifecycle is incidental. Similar remains optional in frozen scoring; positive-link coverage separately requires a supported link."
+}

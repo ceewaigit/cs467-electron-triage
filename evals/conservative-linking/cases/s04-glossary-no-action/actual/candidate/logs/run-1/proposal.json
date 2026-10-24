@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "This is a contributor-guide prose enhancement with no affected API behavior, so no component, reproduction request, matching failure link or redirect is justified."
+    }
+  ],
+  "explanation": "This is a contributor-guide prose enhancement with no affected API behavior, so no component, reproduction request, matching failure link or redirect is justified."
+}

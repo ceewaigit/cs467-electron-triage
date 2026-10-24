@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "This feature request concerns contributor-guide prose only; the API names are examples, no reproduction is needed, and the earlier API failure is not the same request."
+    }
+  ],
+  "explanation": "This feature request concerns contributor-guide prose only; the API names are examples, no reproduction is needed, and the earlier API failure is not the same request."
+}

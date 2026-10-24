@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/dialog"
+      ]
+    }
+  ],
+  "explanation": "Closing a native confirm dialog leaves the input caret unpainted; a gist is present. The closest candidate uses a different API that this report explicitly says works, so no similarity or upstream redirect is established."
+}

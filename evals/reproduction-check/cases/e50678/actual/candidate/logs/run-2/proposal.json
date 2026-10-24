@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/webRequest"
+      ]
+    }
+  ],
+  "explanation": "Request interception fails intermittently and changes with webRequest listener registration; a reproduction gist is supplied, while the candidate issues have different triggers and the report explicitly does not reproduce in Chromium."
+}

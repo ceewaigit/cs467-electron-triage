@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/build",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "Native-module compilation fails against Electron headers; the report provides only a one-line call and compiler error. No matching prior failure or confirmed upstream attribution is established."
+}

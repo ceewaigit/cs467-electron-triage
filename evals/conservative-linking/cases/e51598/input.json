@@ -1,0 +1,15 @@
+{
+  "id": "e51598",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/51598",
+  "as_of": "2026-05-13T07:59:43Z",
+  "author_association": "NONE",
+  "title": "GotError [HTTPError]: Response code 404 (Not Found) for https://github.com/electron/electron/releases/download/v8.5.5/electron-v8.5.5-darwin-arm64.zip",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n8.5.5\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nxxxx\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\n<img width=\"1529\" height=\"372\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/58020d5b-f0eb-4357-a958-4b56c9f6bfdf\" />\n\n### Actual Behavior\n\n这个包找不到了 \n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+  "labels_at_open": [
+    "blocked/need-info ❌",
+    "bug :beetle:",
+    "platform/macOS"
+  ],
+  "body_source": "current (never edited)"
+}

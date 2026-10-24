@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "upstream",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/v8",
+        "blocked/upstream ❌"
+      ]
+    }
+  ],
+  "explanation": "The report identifies changed V8 External signatures breaking NAN compilation and requests compatibility handling in NAN; complete runnable reproduction is supplied and candidates do not match."
+}

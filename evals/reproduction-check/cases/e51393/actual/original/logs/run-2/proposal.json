@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/wco"
+      ]
+    }
+  ],
+  "explanation": "The report concerns window controls overlay detection and supplies reproductions; its matching earlier issue is already linked by the reporter."
+}

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/native-image"
+      ]
+    }
+  ],
+  "explanation": "nativeImage.resize returns the wrong width. App calls only provide lifecycle setup, runnable reproduction code is included, and both candidate excerpts describe conflicting failures."
+}

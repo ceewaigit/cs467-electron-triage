@@ -1,0 +1,3 @@
+Completed and recorded, in order: d011, d012, d013, d014, d015, d016, d017, d018, d019, d020.
+
+No helper failures or validation rejections occurred. Each case was finished once; no frozen decisions were modified.

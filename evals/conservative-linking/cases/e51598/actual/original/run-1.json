@@ -1,0 +1,25 @@
+{
+  "labels_added": [],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d008",
+  "batch_id": "s001",
+  "repetition": 1,
+  "policy_sha256": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+  "proposal_sha256": "8ac797b886ca3caf31013af45888c13a3599ae1a507ea2fa5c93044b94b67060",
+  "explanation": "The missing release archive has no clearly fitting component or same-problem candidate; the bot already requested a supported version.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

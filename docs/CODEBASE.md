@@ -8,8 +8,10 @@ the report means. GitHub Actions controls which decisions can become repository 
 Further paid evaluation is deferred by the owner. The
 [offline reproduction guide](../evals/golden/README.md#reproduce-the-analysis-offline) checks
 the current scripts and saved evidence without calling GitHub or the model provider.
-The [coding-assistant fallback](../evals/golden/results/assistant-dry-run/README.md) also records
-one proposed decision for each case using the current instructions and helper scripts.
+The [coding-assistant fallback](../evals/golden/results/assistant-dry-run/README.md) records
+one proposed decision per golden case for source `7ef6696`. The current reproduction instruction
+was tested separately; its [adoption record](../evals/reproduction-check/ADOPTION.md) explains
+the change, paired comparison and limits. The earlier fallback is historical evidence.
 
 ## Follow one issue
 
@@ -115,6 +117,16 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/tools/hint_holdout.py` | Checks component keywords on non-golden Q3 issues with maintainer component labels; reads a supplied raw-data directory and prints counts |
 | `evals/need/analyze_issues.py` | Reads saved Q3 issue histories and opening-state records; writes `issues_table.csv` and `issue_metrics.json` |
 | `evals/need/analyze_extra.py` | Reads those histories and the issue table; writes `extra_metrics.json` for reproduction requests, an AI-authorship proxy and duplicate-link delay |
+| `evals/conservative-linking/select_cases.py`, `annotate_cases.py` | Reconstruct the first comparison's Q2 sample and expectations; preserve the frozen outputs after execution |
+| `evals/reproduction-check/select_cases.py` | Selects new Q2 opening inputs while excluding all earlier cases; records the seed, eligible IDs and exclusions |
+| `evals/{conservative-linking,reproduction-check}/experiment.py` | Separate comparison wrappers: prepare frozen workspaces, reconstruct them, export sealed decisions and score paired results; no model or network calls |
+| `evals/reproduction-check/known_regression.py` | Prepares and collects the separate known failure; never includes it in fresh-case metrics |
+| `evals/reproduction-check/evidence/independent-check-source.py` | Independently reconstructs contexts, replays helpers and scores evidence; exclusive output creation protects the saved first audit |
+
+The copies under each experiment's `evidence/frozen/` and `known-regression/collection-source.py`
+are archived execution sources. Keep them unchanged when editing maintained code. Follow each
+experiment's README for reconstruction or rescoring in a disposable copy. Its historical
+decision describes the protocol at experiment close; the later owner decision is in `ADOPTION.md`.
 
 `evals/controls/broken_config.sh` is the only shell helper. It changes temporary workflow
 copies to check that broad permissions and forbidden outputs fail compilation or configuration
@@ -134,6 +146,8 @@ control experiments, described in the evaluation guide.
 | `tests/test_skill_evidence.py` | Versioned script markers count as evidence without inventing a successful check |
 | `tests/test_replay_collection.py` | Successful no-action runs remain scorable; failures stay separate; forced refresh preserves evidence categories; dispatch filters refs and rejects ambiguous matches |
 | `tests/test_offline_dry_run.py` | Changed snapshots and alternate check inputs are rejected, the first proposal is preserved, and helper subprocesses do not inherit API credentials |
+| `tests/test_conservative_experiment.py` | Frozen context, paired exports, reference handling and comparison scoring for the first experiment |
+| `tests/test_reproduction_experiment.py` | Reproduction-specific decision criteria, frozen input integrity and strict validation of the separate known-case collector |
 | `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token |
 | `.github/workflows/issue-triage-forced.md` and `.lock.yml` | Source and compiled forced-actions control |
 | `.github/aw/actions-lock.json` | Action-version resolution used by the workflow compiler |

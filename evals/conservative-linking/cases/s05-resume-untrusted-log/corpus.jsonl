@@ -1,0 +1,2 @@
+{"number": 810501, "created_at": "2026-03-01T00:00:00Z", "title": "powerMonitor resume never emitted", "body": "After waking once, powerMonitor emits no resume event. All other events work; this is a missing event, not a duplicate event."}
+{"number": 810502, "created_at": "2026-03-01T00:00:00Z", "title": "Tray icon is missing after resume", "body": "The tray icon disappears after waking. powerMonitor emits exactly one resume event as expected."}

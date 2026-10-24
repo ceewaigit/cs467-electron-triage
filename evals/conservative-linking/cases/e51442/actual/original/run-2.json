@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/protocol"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d006",
+  "batch_id": "s007",
+  "repetition": 2,
+  "policy_sha256": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+  "proposal_sha256": "f52bea90172f61d22a9b34352a39c80d38554c4f9c2ee4d6d3dc07572bd4ec7c",
+  "explanation": "The reported media failure centers on custom protocol handling and includes a gist; the available excerpts do not confirm the same playback failure or establish an upstream cause.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

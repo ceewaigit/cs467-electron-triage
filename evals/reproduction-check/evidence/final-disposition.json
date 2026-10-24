@@ -1,0 +1,19 @@
+{
+  "completed_at_utc": "2026-10-24T05:12:19.791331+00:00",
+  "decision": "Retain original; no commit or push. Candidate passes known check but fails predeclared fresh comparison gates.",
+  "head": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "fresh_decisions": 120,
+  "known_regression_decisions": 1,
+  "old_files_preserved": 3143,
+  "tests_passed": 103,
+  "paid_provider_evaluations": 0,
+  "committed": false,
+  "pushed": false,
+  "audit_files_sha256": {
+    "blind-review.md": "f6adad496cde126d94df9bffbe36ea34a42478192e3e82f0006c1fe8d80a2108",
+    "independent-check-results.json": "7ef1b75377d4d2c56570e4dc8b7f092c88e093446bca1a0bdf5b969da52113ca",
+    "independent-check-source.py": "12a6171333e0ce0502d2152b6b2ae509fed5732e8dd387002d4f7c95f0201d42"
+  },
+  "score_sha256": "c5aaaa8b4e2fb10f6dbf3ce4acc65ff391267cb26daaad810292e1d58d3bb2d9",
+  "report_sha256": "cd3e75437a55376dc5a4c4b28f69aa633864b06b322f738c5044e32437047da5"
+}

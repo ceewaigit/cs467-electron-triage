@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The bug report lacks a gist, repository reproduction, and runnable code, with no prior supported-version request; the provided earlier issues do not establish another unlinked match."
+}

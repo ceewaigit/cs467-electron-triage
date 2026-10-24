@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "BrowserWindow always-on-top-changed fails to emit, without runnable code or a reproduction link. Candidates describe different APIs or failure behavior."
+}

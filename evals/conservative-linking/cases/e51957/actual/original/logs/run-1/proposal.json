@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow",
+        "component/fullscreen"
+      ]
+    }
+  ],
+  "explanation": "BrowserWindow fullscreen creation is the reported defect, with explicit constructor examples and working variants; candidate reports concern borders or bounds rather than failure to enter fullscreen."
+}

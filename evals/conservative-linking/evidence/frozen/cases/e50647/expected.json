@@ -1,0 +1,21 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/dialog"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/BrowserWindow",
+      "component/webcontents"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "showMessageBoxSync from will-prevent-unload leaves input focus unusable. Dialog is direct; the window/webContents integration is also defensible. Complete main.js, HTML and renderer.js provide runnable reproduction. Candidate focus-loss titlebar changes and accent-color issues are different symptoms."
+}

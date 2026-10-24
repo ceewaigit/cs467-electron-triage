@@ -1,0 +1,16 @@
+{
+  "id": "e51962",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/51962",
+  "as_of": "2026-06-11T06:51:05Z",
+  "author_association": "CONTRIBUTOR",
+  "title": "Regression in 42.4.0: setDevToolsWebContents() + detached DevTools breaks DevTools dropdown/popup/context menus again (previously fixed, see #49753)",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.4.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nMicrosoft Windows [Version 10.0.26200.6899]\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n42.3.3\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nDevTools popup UI should work normally inside the custom detached DevTools window, including:\n- Toolbar dropdowns (e.g. Console filters)\n- Overflow/chevron menus (e.g. >>)\n- Right-click context menus in panels\n\n\n### Actual Behavior\n\nThis is a regression of #49753, which was fixed and closed. In 42.4.0 the original behavior is back: DevTools renders, controls show hover/pressed/active states, but no popup menus ever appear when clicked (dropdowns, overflow chevrons, context menus).\n\n### Testcase Gist URL\n\nhttps://gist.github.com/6e3cb66842c73197073debfa83c98e27\n\n### Additional Information\n\nWhen hosting Chromium DevTools in a custom BrowserWindow using webContents.setDevToolsWebContents() and opening DevTools in detached mode, the DevTools UI renders and is mostly usable, but popup menus do not open (dropdowns, overflow chevrons, context menus, etc.).",
+  "labels_at_open": [
+    "42-x-y",
+    "bug :beetle:",
+    "has-repro-gist",
+    "platform/windows"
+  ],
+  "body_source": "current (never edited)"
+}

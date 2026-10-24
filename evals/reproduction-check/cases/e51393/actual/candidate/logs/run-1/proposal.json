@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/wco"
+      ]
+    }
+  ],
+  "explanation": "Window Controls Overlay detection is inconsistent; a gist and repository are supplied, and the matching earlier report is already linked by the reporter."
+}

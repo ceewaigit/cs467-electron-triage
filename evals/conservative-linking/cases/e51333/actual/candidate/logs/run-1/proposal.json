@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "This requests general cross-platform performance documentation; the app API is an illustrative already-linked example, no component is clearly targeted, and feature requests need no reproduction request."
+    }
+  ],
+  "explanation": "This requests general cross-platform performance documentation; the app API is an illustrative already-linked example, no component is clearly targeted, and feature requests need no reproduction request."
+}

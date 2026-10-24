@@ -1,0 +1,116 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Broad performance-documentation feature request. app.getApplicationNameForProtocol is an example of why documentation is needed, not the proposed change's component; its earlier report #49727 is already linked. No runnable repro is required for a feature and no supported new link exists.",
+  "candidate_evidence": [
+    {
+      "number": 49727,
+      "opened": "2026-02-09",
+      "score": 94.0,
+      "title": "Add documentation for `app.getApplicationNameForProtocol` performance disparity between Linux and macOS/Windows",
+      "shared_terms": [
+        "overlook",
+        "app.getapplicationnameforprotocol",
+        "performing",
+        "disparity",
+        "compared",
+        "performs",
+        "idea",
+        "macos."
+      ],
+      "already_linked_by_reporter": true,
+      "excerpt": "### Problem Description The `app.getApplicationNameForProtocol` API performs noticeably slower on Linux, as compared to Windows and macOS. This problem requires the API to be called repeatedly without caching to be visible, and can result in builds on Windows and macOS performing fine during testing, whilst Linux builds are disproportionately less performant. Yes, this only appears if a developer ",
+      "annotation": "already-linked",
+      "annotation_reason": "Reporter already supplied this reference; do not repeat it."
+    },
+    {
+      "number": 50367,
+      "opened": "2026-03-19",
+      "score": 49.1,
+      "title": "setBounds enforces aspect ratio on macOS but not on Windows (cross-platform inconsistency)",
+      "shared_terms": [
+        "platforms.",
+        "cross",
+        "documented",
+        "across",
+        "whether",
+        "documentation",
+        "case",
+        "cause"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior According to the [documentation](https://www.electronjs.org/docs/latest/api/browser-window#winsetaspectratioapspectratio-extrasize): > The aspect ratio is not respected when window is resized programmatically with APIs like `win.setSize`. `setBounds` is also a programmatic resize API, so calling `setBounds` after `setAspectRatio` should apply the exact bounds without aspect r",
+      "annotation": "unsupported",
+      "annotation_reason": "Broad performance-documentation feature request. app.getApplicationNameForProtocol is an example of why documentation is needed, not the proposed change's component; its earlier report #49727 is already linked. No runnable repro is required for a feature and no supported new link exists."
+    },
+    {
+      "number": 48789,
+      "opened": "2025-11-05",
+      "score": 44.9,
+      "title": "Replace Deprecated `.substr()` Method with `.substring()` or `.slice()`",
+      "shared_terms": [
+        "practices",
+        "codebase",
+        "best",
+        "development",
+        "across",
+        "cause",
+        "javascript",
+        "may"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior The codebase should use modern, non-deprecated string methods (`.substring()` or `.slice()`) instead of `.substr()`. This ensures: - No deprecation warnings in development tools - Better future compatibility with JavaScript engines - Adherence to current ECMAScript standards - Consistency with modern JavaScript best practices ### Actual Behavior The codebase currently uses th",
+      "annotation": "unsupported",
+      "annotation_reason": "Broad performance-documentation feature request. app.getApplicationNameForProtocol is an example of why documentation is needed, not the proposed change's component; its earlier report #49727 is already linked. No runnable repro is required for a feature and no supported new link exists."
+    },
+    {
+      "number": 48062,
+      "opened": "2025-08-13",
+      "score": 43.6,
+      "title": "more video formats",
+      "shared_terms": [
+        "although",
+        "others",
+        "best",
+        "much",
+        "believe",
+        "developer",
+        "performance",
+        "case"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Problem Description I have a use case where I need to \"natively\" play MKV, AVI, FLV, and other video formats that are usually unsupported by browsers, with support for audio tracks and subtitles. Due to the way Electron.js is built, and from what I have found over several days of research, I know that there is no native support for such formats and features. However, I believe this can be adde",
+      "annotation": "unsupported",
+      "annotation_reason": "Broad performance-documentation feature request. app.getApplicationNameForProtocol is an example of why documentation is needed, not the proposed change's component; its earlier report #49727 is already linked. No runnable repro is required for a feature and no supported new link exists."
+    },
+    {
+      "number": 48100,
+      "opened": "2025-08-18",
+      "score": 42.4,
+      "title": "`net.isOnline()`/`net.online` always returns `true` when called from module running as a utility process.",
+      "shared_terms": [
+        "disparity",
+        "device",
+        "result",
+        "www.electronjs.org",
+        "always",
+        "between",
+        "latest",
+        "running"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Using Electron's [`net`](https://www.electronjs.org/docs/latest/api/net) module, calling `net.isOnline()` or `net.online` within a module that's running as a utility process should reflect the actual state of the host device. ### Actual Behavior When I've disconnected wifi on the device and call `net.isOnline()` from within the utility process module, the result is `true`. ##",
+      "annotation": "unsupported",
+      "annotation_reason": "Broad performance-documentation feature request. app.getApplicationNameForProtocol is an example of why documentation is needed, not the proposed change's component; its earlier report #49727 is already linked. No runnable repro is required for a feature and no supported new link exists."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "6a342dff3b8e4a421070d57e4d728cb0e6f30de6f35f44440e8481d093115dc3",
+    "rows": 677
+  }
+}

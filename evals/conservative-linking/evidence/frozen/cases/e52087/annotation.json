@@ -1,0 +1,97 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "An enabled Connection-Allowlist guard allegedly fails to block network connections. Only a switch-setting line is supplied, so a repro request is defensible; a cautious security-only route is also defensible for a potentially ineffective security restriction. The form explicitly says it also happens in Chromium, making upstream an optional route. This ambiguity is not a positive control. app.commandLine is setup, not the failed component. Security must suppress other kinds and need-repro under the old skill. WebSocket redirectURL and unrelated API failures are not the same problem.",
+  "candidate_evidence": [
+    {
+      "number": 51505,
+      "opened": "2026-05-05",
+      "score": 20.9,
+      "title": "[Bug] webRequest.onBeforeRequest's redirectURL is ignored for WebSocket requests",
+      "shared_terms": [
+        "connection",
+        "websocket"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior In the Gist is a fiddle which sets a `webRequest.onBeforeRequest` handler to intercept the WebSocket connection which is made in `renderer.js`. The Electron main process logs should show these logs: ``` Proxying WebSocket from wss://echo.websocket.org/ to local server New WebSocket connection: ...... [client→server]Ping! [server→client]Ping! ``` The first log line is from whe",
+      "annotation": "unsupported",
+      "annotation_reason": "An enabled Connection-Allowlist guard allegedly fails to block network connections. Only a switch-setting line is supplied, so a repro request is defensible; a cautious security-only route is also defensible for a potentially ineffective security restriction. The form explicitly says it also happens in Chromium, making upstream an optional route. This ambiguity is not a positive control. app.commandLine is setup, not the failed component. Security must suppress other kinds and need-repro under the old skill. WebSocket redirectURL and unrelated API failures are not the same problem."
+    },
+    {
+      "number": 48067,
+      "opened": "2025-08-13",
+      "score": 19.0,
+      "title": "webauthn not working on macOS",
+      "shared_terms": [
+        "console",
+        "errors",
+        "feature",
+        "set",
+        "error"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Hey experts, I was playing with the webauthn feature, and I had not yet made it work on macOS. However, it's working in Chrome. Also, it was not clear why it was failing. The only errors that I see in the console are: ``` [76939:0813/232221.442231:ERROR:CONSOLE:1] \"Request Autofill.enable failed. {\"code\":-32601,\"message\":\"'Autofill.enable' wasn't found\"}\", source: devtools://",
+      "annotation": "unsupported",
+      "annotation_reason": "An enabled Connection-Allowlist guard allegedly fails to block network connections. Only a switch-setting line is supplied, so a repro request is defensible; a cautious security-only route is also defensible for a potentially ineffective security restriction. The form explicitly says it also happens in Chromium, making upstream an optional route. This ambiguity is not a positive control. app.commandLine is setup, not the failed component. Security must suppress other kinds and need-repro under the old skill. WebSocket redirectURL and unrelated API failures are not the same problem."
+    },
+    {
+      "number": 50220,
+      "opened": "2026-03-12",
+      "score": 18.9,
+      "title": "Some devtools feature are not working when opened in dedicated window",
+      "shared_terms": [
+        "fetch",
+        "features",
+        "etc.",
+        "errors",
+        "feature",
+        "error"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior After upgrading from Electron 39 to Electron 40, DevTools formatter workers fail to load when DevTools are displayed in a separate BrowserWindow using `setDevToolsWebContents()`. The DevTools UI loads and is partially functional, but features that depend on the formatter worker (like code formatting) do not work. The formatter worker fails to load with the following error: ``",
+      "annotation": "unsupported",
+      "annotation_reason": "An enabled Connection-Allowlist guard allegedly fails to block network connections. Only a switch-setting line is supplied, so a repro request is defensible; a cautious security-only route is also defensible for a potentially ineffective security restriction. The form explicitly says it also happens in Chromium, making upstream an optional route. This ambiguity is not a positive control. app.commandLine is setup, not the failed component. Security must suppress other kinds and need-repro under the old skill. WebSocket redirectURL and unrelated API failures are not the same problem."
+    },
+    {
+      "number": 49035,
+      "opened": "2025-11-21",
+      "score": 17.9,
+      "title": "options of webPreferences in overrideBrowserWindowOptions no effect",
+      "shared_terms": [
+        "effect",
+        "value",
+        "set",
+        "api"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior When use overrideBrowserWindowOptions to override the zoomFactor for a new opened window via window.open(), the zoomFactor value can effective. ### Actual Behavior The zoomFactor value not effective after opened a window. ### Additional Information I found that can only set the zoomFactor via the API after dom-ready as a workaround.",
+      "annotation": "unsupported",
+      "annotation_reason": "An enabled Connection-Allowlist guard allegedly fails to block network connections. Only a switch-setting line is supplied, so a repro request is defensible; a cautious security-only route is also defensible for a potentially ineffective security restriction. The form explicitly says it also happens in Chromium, making upstream an optional route. This ambiguity is not a positive control. app.commandLine is setup, not the failed component. Security must suppress other kinds and need-repro under the old skill. WebSocket redirectURL and unrelated API failures are not the same problem."
+    },
+    {
+      "number": 48166,
+      "opened": "2025-08-25",
+      "score": 17.6,
+      "title": "First Click after launch doesn't fire button on-click (windows)",
+      "shared_terms": [
+        "app.commandline.appendswitch",
+        "features",
+        "enable",
+        "doesn"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior I expect a newly created Electron window (on windows/linux) to accept and process clicks immediately, whether it is focused or not. ### Actual Behavior The \"first click on an electron window after launch\" does not fire on-click button events inside the window dom. This even happens if you reisize the window first (Which makes the window active). Curiously, the CSS click anima",
+      "annotation": "unsupported",
+      "annotation_reason": "An enabled Connection-Allowlist guard allegedly fails to block network connections. Only a switch-setting line is supplied, so a repro request is defensible; a cautious security-only route is also defensible for a potentially ineffective security restriction. The form explicitly says it also happens in Chromium, making upstream an optional route. This ambiguity is not a positive control. app.commandLine is setup, not the failed component. Security must suppress other kinds and need-repro under the old skill. WebSocket redirectURL and unrelated API failures are not the same problem."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "98b24c3436ecf4dd2ca06a3c1c7dcc5662d57680982e7106560e0e460c9407c5",
+    "rows": 791
+  }
+}

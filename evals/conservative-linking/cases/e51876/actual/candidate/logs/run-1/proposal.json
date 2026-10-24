@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "Frameless non-resizable BrowserWindow returns smaller bounds than requested; a gist is supplied, and candidates describe different sizing failures or lack matching details."
+}

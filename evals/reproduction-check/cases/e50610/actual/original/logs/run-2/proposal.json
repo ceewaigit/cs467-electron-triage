@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/webframe",
+        "component/extensions"
+      ]
+    }
+  ],
+  "explanation": "The feature request concerns webFrame discovery of extension content-script worlds; it needs no reproduction request and none of the candidates describes the same missing capability."
+}

@@ -1,0 +1,111 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Cursor misalignment occurs specifically in fullscreen under WSLg and a gist is supplied. Either fullscreen or BrowserWindow directly identifies the feature despite observations in Codium. GPU flags are unsuccessful workarounds, not evidence for GPU label or upstream redirect. Retrieved GPU startup/performance failures do not describe cursor coordinates.",
+  "candidate_evidence": [
+    {
+      "number": 50462,
+      "opened": "2026-03-24",
+      "score": 31.3,
+      "title": "GPU process on Wayland lacks --ozone-platform and DrmSyncobj flags (5x CPU overhead)",
+      "shared_terms": [
+        "acceleration",
+        "ozone",
+        "hardware",
+        "x11",
+        "gpu",
+        "platform",
+        "here",
+        "issues"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior The GPU process should receive the same Wayland/GPU acceleration flags as standalone Chromium 146, enabling zero-copy buffer sharing and hardware-accelerated compositing via DRM render nodes. ### Actual Behavior The GPU process spawns as a zygote child (`--type=zygote --no-sandbox`) without any Wayland or GPU acceleration flags. This produces the error on every launch: ``` '-",
+      "annotation": "unsupported",
+      "annotation_reason": "Cursor misalignment occurs specifically in fullscreen under WSLg and a gist is supplied. Either fullscreen or BrowserWindow directly identifies the feature despite observations in Codium. GPU flags are unsuccessful workarounds, not evidence for GPU label or upstream redirect. Retrieved GPU startup/performance failures do not describe cursor coordinates."
+    },
+    {
+      "number": 50455,
+      "opened": "2026-03-24",
+      "score": 31.1,
+      "title": "GPU process on Wayland lacks --ozone-platform and DrmSyncobj flags (5x CPU overhead)",
+      "shared_terms": [
+        "acceleration",
+        "ozone",
+        "hardware",
+        "x11",
+        "gpu",
+        "platform",
+        "here",
+        "issues"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### What operating system are you using? Linux ### Expected Behavior The GPU process should receive the same Wayland/GPU acceleration flags as standalone Chromium 146, enabling zero-copy buffer sharing and hardware-accelerated compositing via DRM render nodes. ### Actual Behavior The GPU process spawns as a zygote child (\\`--type=zygote --no-sandbox\\`) without any Wayland or GPU acceleration flags",
+      "annotation": "unsupported",
+      "annotation_reason": "Cursor misalignment occurs specifically in fullscreen under WSLg and a gist is supplied. Either fullscreen or BrowserWindow directly identifies the feature despite observations in Codium. GPU flags are unsuccessful workarounds, not evidence for GPU label or upstream redirect. Retrieved GPU startup/performance failures do not describe cursor coordinates."
+    },
+    {
+      "number": 50469,
+      "opened": "2026-03-24",
+      "score": 25.4,
+      "title": "Packaged Electron app is throttled by NVIDIA \"Background Application Max Frame Rate\" even when in foreground + `--disable-gpu` fails to switch to software rendering (causes massive GPU usage instead)",
+      "shared_terms": [
+        "acceleration",
+        "hardware",
+        "disable",
+        "gpu",
+        "appear",
+        "running",
+        "issues"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior - Packaged app should behave exactly like the unpacked electron . version regarding GPU acceleration. - NVIDIA “Background Application Max Frame Rate” should only affect background windows, not the active foreground app. - --disable-gpu (and --disable-gpu-compositing) should force software (CPU) rendering, causing CPU usage to rise and GPU usage to drop to near zero. ### Actu",
+      "annotation": "unsupported",
+      "annotation_reason": "Cursor misalignment occurs specifically in fullscreen under WSLg and a gist is supplied. Either fullscreen or BrowserWindow directly identifies the feature despite observations in Codium. GPU flags are unsuccessful workarounds, not evidence for GPU label or upstream redirect. Retrieved GPU startup/performance failures do not describe cursor coordinates."
+    },
+    {
+      "number": 49530,
+      "opened": "2026-01-26",
+      "score": 24.8,
+      "title": "Linux: app.whenReady got stuck with Error: GPU access not allowed. Reason: GPU access is disabled in chrome://settings",
+      "shared_terms": [
+        "swiftshader",
+        "angle",
+        "ozone",
+        "x11",
+        "created",
+        "gpu",
+        "platform",
+        "here"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Electron app starts and shows new `BrowserWindow`. ### Actual Behavior After upgrade from 39.2.3 to 40.0.0 **build** of our Electron app freezes with: ``` This error originated either by throwing inside of an async function without a catch block, or by rejecting a promise which was not handled with .catch(). The promise rejected with the reason: Error: GPU access not allowed.",
+      "annotation": "unsupported",
+      "annotation_reason": "Cursor misalignment occurs specifically in fullscreen under WSLg and a gist is supplied. Either fullscreen or BrowserWindow directly identifies the feature despite observations in Codium. GPU flags are unsuccessful workarounds, not evidence for GPU label or upstream redirect. Retrieved GPU startup/performance failures do not describe cursor coordinates."
+    },
+    {
+      "number": 48321,
+      "opened": "2025-09-15",
+      "score": 24.7,
+      "title": "electron-nightly Wayland window doesn't show up if GPU acceleration enabled",
+      "shared_terms": [
+        "acceleration",
+        "below",
+        "disable",
+        "gpu"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior See below ### Actual Behavior `npx electron` - no Wayland window shows up ``` Exiting GPU process due to errors during initialization ``` `npx electron --disable-gpu` - Wayland window shows up ### Additional Information ",
+      "annotation": "unsupported",
+      "annotation_reason": "Cursor misalignment occurs specifically in fullscreen under WSLg and a gist is supplied. Either fullscreen or BrowserWindow directly identifies the feature despite observations in Codium. GPU flags are unsuccessful workarounds, not evidence for GPU label or upstream redirect. Retrieved GPU startup/performance failures do not describe cursor coordinates."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "19d8b308edcea55816b10cf04564522fac37b72e234e86585c6b0c3aa3bad10b",
+    "rows": 650
+  }
+}

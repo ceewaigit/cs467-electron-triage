@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/menu"
+      ]
+    }
+  ],
+  "explanation": "Native menu navigation fails when pressing the right arrow with a submenu open. A gist is supplied, and the earlier reports concern different keyboard operations or failure behavior."
+}

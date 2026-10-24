@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "upstream",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/v8",
+        "blocked/upstream ❌"
+      ]
+    }
+  ],
+  "explanation": "The supplied runnable native-addon reproduction reports NAN incompatibility with changed V8 APIs; this identifies V8 and an upstream compatibility issue, with no matching earlier candidate."
+}

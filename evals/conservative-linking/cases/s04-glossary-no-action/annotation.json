@@ -1,0 +1,28 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "invented": true,
+  "rationale": "Invented no-action control. General documentation feature has no supported component; named APIs are explicitly examples, not malfunctioning surfaces. Feature requests do not need a repro. Candidate API failures are not a request for a glossary.",
+  "constructed_reference_numbers": [
+    810401,
+    810402
+  ],
+  "acceptable_refs": [],
+  "unsupported_or_already_linked_refs": [
+    810401,
+    810402
+  ],
+  "candidate_evidence": [
+    {
+      "number": 810401,
+      "opened": "2026-03-01",
+      "score": 2.0,
+      "title": "app.whenReady never resolves",
+      "shared_terms": [
+        "app.whenready",
+        "browserwindow"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "Calling app.whenReady() never resolves and no BrowserWindow can be opened."
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Unchecked UnhookWindowsHookEx return inside native window mouse forwarding; BrowserWindow/BaseWindow are defensible but optional because no public API is named. Bot already requested version information, so no extra repro request. Git-hook and unrelated return-value candidates are not the mouse-hook lifecycle bug.",
+  "candidate_evidence": [
+    {
+      "number": 50378,
+      "opened": "2026-03-19",
+      "score": 33.7,
+      "title": "Add block-no-verify PreToolUse hook to .claude/settings.json",
+      "shared_terms": [
+        "hooks",
+        "verify",
+        "hook",
+        "regardless",
+        "existing"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "## Feature: Add block-no-verify PreToolUse hook to .claude/settings.json Electron's `.claude/settings.json` has a well-configured permissions list — there's one enforcement gap worth closing: the git hook-bypass flag. When Claude Code runs `git commit` or `git push` with the hook-bypass flag, it silently skips pre-commit hooks, commit-msg validation, and pre-push test suites — regardless of any pe",
+      "annotation": "unsupported",
+      "annotation_reason": "Unchecked UnhookWindowsHookEx return inside native window mouse forwarding; BrowserWindow/BaseWindow are defensible but optional because no public API is named. Bot already requested version information, so no extra repro request. Git-hook and unrelated return-value candidates are not the mouse-hook lifecycle bug."
+    },
+    {
+      "number": 50381,
+      "opened": "2026-03-19",
+      "score": 29.2,
+      "title": "feat: add block-no-verify PreToolUse hook to .claude/settings.json",
+      "shared_terms": [
+        "hooks",
+        "verify",
+        "hook",
+        "existing"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "## Problem Claude Code agents can silently bypass git hooks by running git commit with the hook-skip flag. ## Solution Add [`block-no-verify@1.1.2`](https://github.com/tupe12334/block-no-verify) as a `PreToolUse` Bash hook. Existing permissions are preserved unchanged. --- _Disclosure: I am the author and maintainer of `block-no-verify`._",
+      "annotation": "unsupported",
+      "annotation_reason": "Unchecked UnhookWindowsHookEx return inside native window mouse forwarding; BrowserWindow/BaseWindow are defensible but optional because no public API is named. Bot already requested version information, so no extra repro request. Git-hook and unrelated return-value candidates are not the mouse-hook lifecycle bug."
+    },
+    {
+      "number": 50457,
+      "opened": "2026-03-24",
+      "score": 26.3,
+      "title": "Native Code and Electron Swift Example Needs Change to prevent Electron from hanging on quit",
+      "shared_terms": [
+        "nullptr",
+        "active",
+        "called",
+        "value",
+        "causes",
+        "return",
+        "because",
+        "function"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior This is a documentation issue. I'm not sure how to submit issues for this other than as a bug report. I apologise if this is the wrong way to do it. Documentation: https://www.electronjs.org/docs/latest/tutorial/native-code-and-electron-swift-macos#6-creating-a-javascript-wrapper Since Electron 40.5.0, there has been a change in how it closes down, due to a change in Node, an",
+      "annotation": "unsupported",
+      "annotation_reason": "Unchecked UnhookWindowsHookEx return inside native window mouse forwarding; BrowserWindow/BaseWindow are defensible but optional because no public API is named. Bot already requested version information, so no extra repro request. Git-hook and unrelated return-value candidates are not the mouse-hook lifecycle bug."
+    },
+    {
+      "number": 51026,
+      "opened": "2026-04-13",
+      "score": 24.9,
+      "title": "deprecate.removeFunction drops the wrapped function's return value",
+      "shared_terms": [
+        "regardless",
+        "calls",
+        "existing",
+        "returns",
+        "value",
+        "return",
+        "function"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior `deprecate.removeFunction(fn, name)` is an internal helper that wraps a function slated for removal so that calling it emits a deprecation warning exactly once. Like its siblings `deprecate.renameFunction` and `deprecate.moveAPI`, it is typed to preserve the wrapped function's signature (`<T extends Function>(fn: T, removedName: string): T`). Callers should therefore get back",
+      "annotation": "unsupported",
+      "annotation_reason": "Unchecked UnhookWindowsHookEx return inside native window mouse forwarding; BrowserWindow/BaseWindow are defensible but optional because no public API is named. Bot already requested version information, so no extra repro request. Git-hook and unrelated return-value candidates are not the mouse-hook lifecycle bug."
+    },
+    {
+      "number": 50851,
+      "opened": "2026-04-09",
+      "score": 22.8,
+      "title": "WindowOpenHandlerResponse.createWindow passes `BrowserWindowConstructorOptions` with an undocumented \"webContents\" property",
+      "shared_terms": [
+        "returns",
+        "called",
+        "return",
+        "because",
+        "function",
+        "set"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior I would expect that the type of the `options` passed to the `WindowOpenHandlerResponse.createWindow` function would include the `webContents` property. This property is set when `window.open` is called within a webview – and subsequently – the `setWindowOpenHandler` handler is called, which then returns a `createWindow` handler. ### Actual Behavior The `webContents` property ",
+      "annotation": "unsupported",
+      "annotation_reason": "Unchecked UnhookWindowsHookEx return inside native window mouse forwarding; BrowserWindow/BaseWindow are defensible but optional because no public API is named. Bot already requested version information, so no extra repro request. Git-hook and unrelated return-value candidates are not the mouse-hook lifecycle bug."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "93cc37cd01dc77d1ea8172e028ca9d99da04c0307a3702e4c961610d080676b3",
+    "rows": 647
+  }
+}

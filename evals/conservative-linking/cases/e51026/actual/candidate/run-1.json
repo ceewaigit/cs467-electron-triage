@@ -1,0 +1,25 @@
+{
+  "labels_added": [],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d014",
+  "batch_id": "s005",
+  "repetition": 1,
+  "policy_sha256": "0911f393275f02acdd81929d992cb851079ced5639ec5a066a1e171c6f479e80",
+  "proposal_sha256": "97e0eb0fcca94c21dd7c7c0485af421f349783aec4d03e786d25f85c79c865b8",
+  "explanation": "The internal deprecation-wrapper bug includes a multi-line reproduction, has no clear component label, and the retrieved candidates concern different operations or failures.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

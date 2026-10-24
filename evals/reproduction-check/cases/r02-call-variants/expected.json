@@ -1,0 +1,24 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/app",
+      "blocked/need-repro"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "need-repro",
+      "similar"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [
+      76102
+    ],
+    "must_not_match": []
+  },
+  "rationale": "The badge-count API is part of app. Several argument variants of app.setBadgeCount supply no app lifecycle or complete test program. More calls do not establish runnable sufficiency. Fabricated earlier 76102 reports the same setBadgeCount false result and empty dock badge for positive counts on macOS. 76122 instead describes a stale dock menu, not a badge. The corpus and opening describe an Electron API regression, not a how-to or third-party app issue."
+}

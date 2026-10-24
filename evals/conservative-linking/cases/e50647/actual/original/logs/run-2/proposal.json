@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/dialog"
+      ]
+    }
+  ],
+  "explanation": "Focus breaks after dismissing showMessageBoxSync, so dialog is the clear component; runnable main, renderer, and HTML code is included, and no candidate establishes the same dialog focus failure."
+}

@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/BrowserWindow"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d004",
+  "batch_id": "s010",
+  "repetition": 2,
+  "policy_sha256": "0911f393275f02acdd81929d992cb851079ced5639ec5a066a1e171c6f479e80",
+  "proposal_sha256": "19025e3f670e66ac7bd5feb09bb96e38dfa172a6ae9069c9b4b7d3c995586457",
+  "explanation": "BrowserWindow.getBounds returns dimensions smaller than the constructor request specifically for frameless non-resizable windows. A gist is provided; the candidate reports conflict in frame or resizable settings, dimension direction or scaling dependence, so no link is established.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

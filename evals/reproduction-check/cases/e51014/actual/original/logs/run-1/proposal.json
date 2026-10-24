@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/wco",
+        "component/transparent"
+      ]
+    }
+  ],
+  "explanation": "Transparent titleBarOverlay colors incorrectly fall back to an opaque background. A gist is supplied, and the candidates describe different hover, styling, or window-transparency failures."
+}

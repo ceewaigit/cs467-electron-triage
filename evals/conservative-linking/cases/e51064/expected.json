@@ -1,0 +1,19 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [
+      "component/BrowserWindow",
+      "component/BaseWindow"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Unchecked UnhookWindowsHookEx return inside native window mouse forwarding; BrowserWindow/BaseWindow are defensible but optional because no public API is named. Bot already requested version information, so no extra repro request. Git-hook and unrelated return-value candidates are not the mouse-hook lifecycle bug."
+}

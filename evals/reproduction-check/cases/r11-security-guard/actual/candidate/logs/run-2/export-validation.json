@@ -1,0 +1,15 @@
+[
+  {
+    "command": [
+      "python3",
+      ".claude/skills/issue-triage/scripts/render_comment.py",
+      "--kinds",
+      "security",
+      "--refs",
+      ""
+    ],
+    "exit_code": 0,
+    "stdout": "[issue-triage/render_comment v3] ok -- post the text between the markers exactly\n-----BEGIN COMMENT-----\nThanks for the report.\n\nThis report may describe a security vulnerability. Electron asks for these to be reported privately, not in public issues: see [SECURITY.md](https://github.com/electron/electron/blob/main/SECURITY.md) for how. Please don't add more details here.\n\n<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every decision, including whether this issue stays open.</sub>\n\ntriage: kinds=security refs=\n-----END COMMENT-----\n",
+    "stderr": ""
+  }
+]

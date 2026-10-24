@@ -1,0 +1,52 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "invented": true,
+  "rationale": "Invented direct-versus-incidental component and same-API boundary. The defect is cross-partition storage deletion. Candidate #810601 fails to remove target storage and #810602 removes a different storage type within the target partition; both explicitly preserve other partitions. app, BrowserWindow and webContents are reproduction scaffolding. Runnable app code supplied.",
+  "constructed_reference_numbers": [
+    810601,
+    810602
+  ],
+  "acceptable_refs": [],
+  "unsupported_or_already_linked_refs": [
+    810601,
+    810602
+  ],
+  "candidate_evidence": [
+    {
+      "number": 810602,
+      "opened": "2026-03-01",
+      "score": 2.7,
+      "title": "clearStorageData clears cookies despite selecting localstorage",
+      "shared_terms": [
+        "clears",
+        "clearstoragedata",
+        "partition",
+        "alpha",
+        "localstorage",
+        "persist",
+        "unchanged.",
+        "storages"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "Within the same persist:alpha partition, clearStorageData({storages:['localstorage']}) also removes cookies. Other partitions are unchanged."
+    },
+    {
+      "number": 810601,
+      "opened": "2026-03-01",
+      "score": 2.4,
+      "title": "clearStorageData leaves target partition localstorage intact",
+      "shared_terms": [
+        "session.frompartition",
+        "clearstoragedata",
+        "partition",
+        "alpha",
+        "localstorage",
+        "persist",
+        "unchanged.",
+        "storages"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "session.fromPartition('persist:alpha').clearStorageData({storages:['localstorage']}) leaves alpha's own stored keys intact. Other partitions are unchanged."
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Completed d001–d010 in order using recorder.py, preserving each first final decision. No procedural or helper failures occurred.

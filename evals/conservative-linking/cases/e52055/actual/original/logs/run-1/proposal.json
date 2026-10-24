@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/menu"
+      ]
+    }
+  ],
+  "explanation": "Native submenu keyboard navigation is a menu issue with a supplied gist; the candidates concern different key handling or menu visibility problems."
+}

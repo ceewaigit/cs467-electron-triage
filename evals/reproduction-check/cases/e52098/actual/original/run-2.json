@@ -1,0 +1,32 @@
+{
+  "labels_added": [
+    "component/gpu",
+    "component/sandbox"
+  ],
+  "comment": "Thanks for the report.\n\nThis looks like it may be the same problem as `electron/electron#51761`. If it is, adding your details there helps more than a separate issue. If it is different, a short note on what differs helps a maintainer decide.\n\n<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every decision, including whether this issue stays open.</sub>\n\ntriage: kinds=similar refs=#51761",
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": {
+    "type": "triage_comment",
+    "kinds": "similar",
+    "refs": "51761"
+  },
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d014",
+  "batch_id": "s011",
+  "repetition": 2,
+  "policy_sha256": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+  "proposal_sha256": "68c368c823fa71c0a928bed1a102980a135575cd06f20dc565f9455d81d5e694",
+  "explanation": "The GPU sandbox startup crash matches the error and fatal signature in 51761; the bot already requested a supported version and upstream responsibility is not established.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

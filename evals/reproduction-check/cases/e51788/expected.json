@@ -1,0 +1,19 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [
+      "component/BrowserWindow",
+      "component/webcontents"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The mouse delivery/renderer behavior can plausibly be labelled BrowserWindow or webcontents, but the report supplies no finer component isolation. blocked/need-info ❌ already asks for a supported version. Prose and one-line console diagnostics would otherwise leave a reproduction gap. The known 48311 report is already linked and explicitly described as different. Retrieved first-click loss, crash/reload click-through and fullscreen ghost-window reports have distinct triggers. The report is an Electron development-mode bug claim, not an app-only support request; no upstream reproduction is provided."
+}

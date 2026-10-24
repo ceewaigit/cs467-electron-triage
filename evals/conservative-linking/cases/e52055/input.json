@@ -1,0 +1,16 @@
+{
+  "id": "e52055",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/52055",
+  "as_of": "2026-06-17T21:49:32Z",
+  "author_association": "NONE",
+  "title": "[Windows] Left/right arrow keys do not navigate between open submenus",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.4.1\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 25H2\n\n### What arch are you using?\n\nOther (specify below)\n\n### Last Known Working Electron version\n\nn/a\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\n(Using windows 11 in emulated environment (parallels) on mac arm64 arch)\n\nSteps to reproduce:\n\nLaunch an Electron app with a native menu\nPress Alt to focus the menu bar — the first menu header is highlighted\nPress ↓ to open the File submenu\nPress →\n\nExpected: The File submenu closes, the Edit submenu opens, and its first item is selected.\n\nSee paint and notepad for examples of windows apps that behave this way.\n\n\n\n### Actual Behavior\n\nActual: Nothing happens. The → key has no effect while a submenu is open.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/marisademeglio/f11e87e1432956040f94e9070496dfa4\n\n### Additional Information\n\n_No response_",
+  "labels_at_open": [
+    "42-x-y",
+    "bug :beetle:",
+    "has-repro-gist",
+    "platform/windows"
+  ],
+  "body_source": "current (never edited)"
+}

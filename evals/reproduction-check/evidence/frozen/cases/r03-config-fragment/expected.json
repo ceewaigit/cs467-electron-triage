@@ -1,0 +1,23 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/spellcheck",
+      "blocked/need-repro"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/session"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "need-repro"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Dictionary and misspelling behavior is explicitly spellcheck; session dictionary handling is a plausible secondary component. A webPreferences configuration object alone does not create either window or the editable element and dictionary state. No runnable code, gist or repository is present. The explicit empty corpus provides no earlier issue to link. The stated inconsistent spellchecking behavior is a bug, not a usage question."
+}

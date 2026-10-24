@@ -1,0 +1,15 @@
+{
+  "id": "e51188",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/51188",
+  "as_of": "2026-04-20T21:33:26Z",
+  "author_association": "NONE",
+  "title": "select-serial-port: portName is device basename instead of full path on Linux, causing SerialPort.open() → NetworkError",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n41.0.3\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nLinux Mint 22.3 (Ubuntu 24.04, kernel 6.8.0-110-generic)\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\nUnknown\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nIn the `select-serial-port` IPC event, `portList[n].portName` should be the **full device node path**: `/dev/ttyUSB0` (or `/dev/ttyACM0`, `/dev/cu.usbserial-*` on macOS, etc.).\n\n### Actual Behavior\n\n`portName` contains the **device basename** (e.g. `ttyUSB0`) instead of the full device node path (`/dev/ttyUSB0`). Chromium uses this stored path when `port.open()` is subsequently called, so it attempts to open the file `ttyUSB0` relative to the working directory, which fails with `ENOENT` → `NetworkError: Failed to open serial port`.\n\nThe user is a member of `dialout`, the device exists at `/dev/ttyUSB0`, and the same Web Serial code works correctly in Chrome and Chromium browsers.\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n_No response_",
+  "labels_at_open": [
+    "41-x-y",
+    "bug :beetle:",
+    "platform/linux"
+  ],
+  "body_source": "userContentEdits oldest revision (2026-04-20T21:33:26Z)"
+}

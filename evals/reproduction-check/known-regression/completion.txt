@@ -1,0 +1,1 @@
+Completed case d001 and froze the first decision. All checks passed. Recorded BrowserWindow, fullscreen, and need-repro labels with a need-repro comment; no references. No external writes or tool failures.

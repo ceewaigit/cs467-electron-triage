@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro,upstream",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "blocked/need-repro",
+        "blocked/upstream ❌"
+      ]
+    }
+  ],
+  "explanation": "The connection feature also fails in Chrome, suggesting upstream behavior; only a one-line setup call is supplied, so a minimal reproduction is requested."
+}

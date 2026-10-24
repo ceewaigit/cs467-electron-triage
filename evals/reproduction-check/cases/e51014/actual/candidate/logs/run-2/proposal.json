@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/wco"
+      ]
+    }
+  ],
+  "explanation": "The report concerns titleBarOverlay window controls and supplies a reproduction gist; the candidates describe different behaviours and no redirect is established."
+}

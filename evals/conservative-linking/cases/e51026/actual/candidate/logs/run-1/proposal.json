@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The internal deprecation-wrapper bug includes a multi-line reproduction, has no clear component label, and the retrieved candidates concern different operations or failures."
+    }
+  ],
+  "explanation": "The internal deprecation-wrapper bug includes a multi-line reproduction, has no clear component label, and the retrieved candidates concern different operations or failures."
+}

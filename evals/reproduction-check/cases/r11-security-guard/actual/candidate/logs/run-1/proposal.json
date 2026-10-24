@@ -1,0 +1,12 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "security",
+      "refs": ""
+    }
+  ],
+  "explanation": "A possible vulnerability reported in public requires only the security reporting redirect."
+}

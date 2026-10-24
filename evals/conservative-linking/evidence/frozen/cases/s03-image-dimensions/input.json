@@ -1,0 +1,14 @@
+{
+  "id": "s03-image-dimensions",
+  "set": "constructed-boundary",
+  "source": "invented://conservative-linking/s03-image-dimensions",
+  "source_number": 820003,
+  "as_of": "2026-04-01T00:00:00Z",
+  "author_association": "NONE",
+  "title": "nativeImage.resize width remains 16 when 32 is requested",
+  "body": "### Electron Version\n\n42.0.0\n\n### What operating system(s) are you using?\n\nLinux\n\n### Expected Behavior\n\nnativeImage.resize({width:32}) should return width 32. Actual: getSize().width remains 16; alpha and all pixel colors remain correct. The app/window lifecycle is unchanged and no BrowserWindow is required.\n\n### Minimal reproduction\n\nSave as main.js and run `electron main.js`.\n\n```js\nconst { app, nativeImage } = require('electron');\napp.whenReady().then(() => {\n  const image = nativeImage.createFromBitmap(Buffer.alloc(16 * 16 * 4, 255), { width: 16, height: 16 });\n  console.log(image.resize({ width: 32 }).getSize());\n  app.quit();\n});\n```\n\n### Testcase Gist URL\n\n_No response_\n",
+  "labels_at_open": [
+    "bug :beetle:"
+  ],
+  "body_source": "invented boundary case authored before execution; not an Electron observation"
+}

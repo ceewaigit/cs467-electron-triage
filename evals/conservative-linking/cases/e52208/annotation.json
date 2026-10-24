@@ -1,0 +1,116 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Windows titleBarOverlay height obscures a CSS border at selected display scales; gist and runnable single-file code are supplied. WCO is direct and BrowserWindow is defensible. Draggable CSS, app lifecycle, require and loadURL are incidental setup. Candidate drag-region crashes and unrelated HTML demos do not describe overlay-height alignment.",
+  "candidate_evidence": [
+    {
+      "number": 48662,
+      "opened": "2025-10-25",
+      "score": 94.4,
+      "title": "Electron macos26 independent window video playback cannot trigger automatic screen lock",
+      "shared_terms": [
+        "encodeuricomponent",
+        "cover",
+        "doctype",
+        "margin",
+        "head",
+        "charset",
+        "win.loadurl",
+        "red"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Electron \":\" ^ 38.3.0 \"When playing a video in a separate window on macOS 26, the system cannot automatically lock the screen. If the video is paused and not played, the system's lock screen can be triggered. I have tried many ways but have not been able to solve this problem. However, playing a video in the main window Vue3 will trigger the automatic lock screen to sleep. I ",
+      "annotation": "unsupported",
+      "annotation_reason": "Windows titleBarOverlay height obscures a CSS border at selected display scales; gist and runnable single-file code are supplied. WCO is direct and BrowserWindow is defensible. Draggable CSS, app lifecycle, require and loadURL are incidental setup. Candidate drag-region crashes and unrelated HTML demos do not describe overlay-height alignment."
+    },
+    {
+      "number": 51576,
+      "opened": "2026-05-10",
+      "score": 93.1,
+      "title": "Crash (SIGSEGV) on right-click in -webkit-app-region: drag on macOS 26 (Tahoe)",
+      "shared_terms": [
+        "webkit",
+        "bar.",
+        "div",
+        "align",
+        "win.loadurl",
+        "region",
+        "titlebarstyle",
+        "npx"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Right-clicking on an element with -webkit-app-region: drag in a titleBarStyle: 'hidden' window should show a context menu or do nothing. It should not crash. ### Actual Behavior The app crashes with SIGSEGV (EXC_BAD_ACCESS, KERN_INVALID_ADDRESS at 0x0). The crash occurs inside [ElectronNSWindow sendEvent:] which temporarily disables draggable regions via SetDisableDraggableRe",
+      "annotation": "unsupported",
+      "annotation_reason": "Windows titleBarOverlay height obscures a CSS border at selected display scales; gist and runnable single-file code are supplied. WCO is direct and BrowserWindow is defensible. Draggable CSS, app lifecycle, require and loadURL are incidental setup. Candidate drag-region crashes and unrelated HTML demos do not describe overlay-height alignment."
+    },
+    {
+      "number": 47864,
+      "opened": "2025-07-23",
+      "score": 87.9,
+      "title": "Transparent window does not work in MX Linux Fluxbox",
+      "shared_terms": [
+        "solid",
+        "doctype",
+        "head",
+        "charset",
+        "red",
+        "utf",
+        "body",
+        "app.on"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Running this very simple example Electron app with a transparent window: <https://github.com/joeskeen/electron-transparency-demo> (based on <https://gitlab.com/doom-fr/electron-transparency-demo>) ```js const { app, BrowserWindow } = require('electron'); const path = require('path'); const MAIN_HTML = path.join('file://', __dirname, 'main.html'); const CHILD_PADDING = 50; con",
+      "annotation": "unsupported",
+      "annotation_reason": "Windows titleBarOverlay height obscures a CSS border at selected display scales; gist and runnable single-file code are supplied. WCO is direct and BrowserWindow is defensible. Draggable CSS, app lifecycle, require and loadURL are incidental setup. Candidate drag-region crashes and unrelated HTML demos do not describe overlay-height alignment."
+    },
+    {
+      "number": 51574,
+      "opened": "2026-05-09",
+      "score": 86.5,
+      "title": "Crash (SIGSEGV) on right-click in -webkit-app-region: drag on macOS 26",
+      "shared_terms": [
+        "webkit",
+        "div",
+        "align",
+        "win.loadurl",
+        "region",
+        "titlebarstyle",
+        "npx",
+        "main.js"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "## Description Right-clicking on an element with `-webkit-app-region: drag` in a `titleBarStyle: 'hidden'` window causes a SIGSEGV crash (null pointer dereference at address 0x0) on macOS 26 (Tahoe, build 25C56). The crash occurs inside `[ElectronNSWindow sendEvent:]` → `[super sendEvent:]` when processing `NSEventTypeRightMouseDown`. The `sendEvent` override temporarily disables draggable regions",
+      "annotation": "unsupported",
+      "annotation_reason": "Windows titleBarOverlay height obscures a CSS border at selected display scales; gist and runnable single-file code are supplied. WCO is direct and BrowserWindow is defensible. Draggable CSS, app lifecycle, require and loadURL are incidental setup. Candidate drag-region crashes and unrelated HTML demos do not describe overlay-height alignment."
+    },
+    {
+      "number": 48084,
+      "opened": "2025-08-15",
+      "score": 82.3,
+      "title": "a mouse selection in a webview-tag will casue a mouseover event in it's parent webContents",
+      "shared_terms": [
+        "head",
+        "charset",
+        "div",
+        "red",
+        "utf",
+        "body",
+        "scale",
+        "class"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior when did a text selection in a webview tag, the parent webContents won't trigger a mouseover event on document. ### Actual Behavior a.html: ` <html lang=\"en\"> <head> <meta charset=\"UTF-8\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <title>Document</title> <style> .test:hover { background-color: red; } </style> </head> <body> <div class=\"test\" s",
+      "annotation": "unsupported",
+      "annotation_reason": "Windows titleBarOverlay height obscures a CSS border at selected display scales; gist and runnable single-file code are supplied. WCO is direct and BrowserWindow is defensible. Draggable CSS, app lifecycle, require and loadURL are incidental setup. Candidate drag-region crashes and unrelated HTML demos do not describe overlay-height alignment."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "28f739d3ee43d921c920a7c85e9985362ff424802a0794f3283bc92def54cd48",
+    "rows": 802
+  }
+}

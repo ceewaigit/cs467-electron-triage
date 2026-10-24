@@ -1,0 +1,12 @@
+{
+  "number": 800002,
+  "title": "Spellchecker marks ordinary English words as misspelled after opening a second window",
+  "body": "### Electron Version\n\n42.2.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 14.7\n\n### Expected Behavior\n\nBoth editor windows accept the same standard English dictionary words.\n\n### Actual Behavior\n\nThe second editor underlines hello and world, although the first window accepts them. The configuration is:\n\n```js\nconst webPreferences = {\n  spellcheck: true,\n  contextIsolation: true,\n  sandbox: true\n};\n```\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nThe editor markup and the code that creates the two windows are omitted. No dictionary file or test project is attached.",
+  "labels": [
+    "bug :beetle:"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-06-30T12:00:00Z",
+  "replay": true
+}

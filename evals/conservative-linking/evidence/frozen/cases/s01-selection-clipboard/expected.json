@@ -1,0 +1,22 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/clipboard"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "similar"
+    ],
+    "refs_any": [
+      810101
+    ],
+    "must_not_match": []
+  },
+  "rationale": "Invented positive control. Input and #810101 specify the same two clipboard APIs, selection buffer, X11 and empty-string result. #810102 is image-alpha loss, not empty selection text. Complete runnable code suppresses need-repro; app/require are setup. Similar remains optional in frozen outcome scoring; explicit positive-link coverage measures whether the clear opportunity is used."
+}

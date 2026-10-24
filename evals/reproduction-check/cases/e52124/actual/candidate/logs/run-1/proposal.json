@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/accessibility",
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report concerns BrowserWindow hiding and accessibility focus; a gist is present and the matching earlier issue is already linked by the reporter."
+}

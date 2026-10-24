@@ -10,8 +10,29 @@ that the latest configuration passed the planned 90-run evaluation.
 
 The assignment's coding-assistant fallback has since been completed on all 30 cases using
 source `7ef6696`. Its transcripts and proposed actions are saved separately; see the
-[dry-run report](../evals/golden/results/assistant-dry-run/README.md). This adds current-procedure
-evidence while leaving the paid live evaluation deferred.
+[dry-run report](../evals/golden/results/assistant-dry-run/README.md). This records that version's
+procedure while leaving the paid live evaluation deferred.
+
+## Current adoption decision
+
+The owner subsequently approved the tested reproduction-only clarification if it fixed the
+known missed request without observed regressions. The separate known case passed, and the
+120 fresh decisions contain 60 paired comparisons with no scored regression. Both versions
+already made every required and forbidden reproduction decision correctly on the fresh cases.
+The current skill is the exact tested candidate; linking and component instructions are unchanged.
+The earlier broad linking/label candidate remains rejected.
+
+This is a decision made after seeing results. Six original adoption gates failed, so the
+experiment remains unsuccessful under its stricter predeclared protocol. Its README, failed
+decision, blind review, frozen expectations and transcripts retain their original contents.
+The [adoption record](../evals/reproduction-check/ADOPTION.md) explains the later decision and
+links the independent follow-up review. No result was repeated or relabelled to secure adoption.
+
+The five mismatches in the earlier golden dry run remain recorded; the new comparison does
+not establish that they are all fixed. The latest skill has fresh offline comparison evidence,
+but no full golden rerun or hosted Claude evaluation. All 90 planned hardened evaluations
+remain pending. This limits the accuracy and enforcement claims, while the assignment permits
+a documented coding-assistant fallback when end-to-end execution is unavailable.
 
 ## What was reviewed
 
@@ -66,7 +87,7 @@ cases after the repository-link detector fix. `final` names the template-comment
 commit `5ab516934e0aa64480f38b717beac41bf6eaa63f`; it is not an alias for arbitrary current edits.
 The frozen rule baseline and its corrected counterpart are separate records.
 
-### Latest candidate and spending decision
+### Historical hardened candidate and spending decision
 
 The audited candidate is commit `5af79d55215dda9e0610278c42c71a4365edb25d` on
 `audit-live-2026-10-24`. Its GitHub CI run 40049704920 passed all 62 offline tests. An earlier

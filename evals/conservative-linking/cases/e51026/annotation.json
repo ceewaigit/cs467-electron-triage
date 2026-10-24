@@ -1,0 +1,115 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Internal removeFunction wrapper loses its return value; source plus multi-line reproduction explains the defect. require() is incidental, not a node-integration problem. No specific component fits the internal deprecation helper, and retrieved initialization/deprecation cases describe different behavior.",
+  "candidate_evidence": [
+    {
+      "number": 49034,
+      "opened": "2025-11-20",
+      "score": 63.3,
+      "title": "Electron Bug Report: `require('electron')` Returns Executable Path Instead of API Objects on Windows",
+      "shared_terms": [
+        "typeof",
+        "undefined",
+        "minimal",
+        "reproduction",
+        "string",
+        "internal",
+        "returns",
+        "name"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior Se report under additional Information ### Actual Behavior Se report under additional Information ### Additional Information # Electron Bug Report: `require('electron')` Returns Executable Path Instead of API Objects on Windows ## Summary On Windows, when running Electron applications, `require('electron')` incorrectly resolves to the npm package's `node_modules/electron/inde",
+      "annotation": "unsupported",
+      "annotation_reason": "Internal removeFunction wrapper loses its return value; source plus multi-line reproduction explains the defect. require() is incidental, not a node-integration problem. No specific component fits the internal deprecation helper, and retrieved initialization/deprecation cases describe different behavior."
+    },
+    {
+      "number": 49018,
+      "opened": "2025-11-19",
+      "score": 59.1,
+      "title": "Electron Module Initialization Failure on macOS 15.6.1",
+      "shared_terms": [
+        "typeof",
+        "undefined",
+        "minimal",
+        "reproduction",
+        "string",
+        "result",
+        "test",
+        "console.log"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior When launching an Electron application, the `require('electron')` statement should return the Electron API object with properties such as `app`, `BrowserWindow`, etc. The `process.type` property should be set to either `'browser'` or `'renderer'` depending on the process context. ### Actual Behavior On macOS 15.6.1, Electron's JavaScript bootstrap layer fails to initialize. T",
+      "annotation": "unsupported",
+      "annotation_reason": "Internal removeFunction wrapper loses its return value; source plus multi-line reproduction explains the defect. require() is incidental, not a node-integration problem. No specific component fits the internal deprecation helper, and retrieved initialization/deprecation cases describe different behavior."
+    },
+    {
+      "number": 48789,
+      "opened": "2025-11-05",
+      "score": 41.5,
+      "title": "Replace Deprecated `.substr()` Method with `.substring()` or `.slice()`",
+      "shared_terms": [
+        "violates",
+        "future",
+        "deprecated",
+        "deprecation",
+        "removed",
+        "string",
+        "current"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior The codebase should use modern, non-deprecated string methods (`.substring()` or `.slice()`) instead of `.substr()`. This ensures: - No deprecation warnings in development tools - Better future compatibility with JavaScript engines - Adherence to current ECMAScript standards - Consistency with modern JavaScript best practices ### Actual Behavior The codebase currently uses th",
+      "annotation": "unsupported",
+      "annotation_reason": "Internal removeFunction wrapper loses its return value; source plus multi-line reproduction explains the defect. require() is incidental, not a node-integration problem. No specific component fits the internal deprecation helper, and retrieved initialization/deprecation cases describe different behavior."
+    },
+    {
+      "number": 48001,
+      "opened": "2025-08-08",
+      "score": 40.2,
+      "title": "Deprecate & remove `ELECTRON_OZONE_PLATFORM_HINT` env var",
+      "shared_terms": [
+        "deprecate",
+        "removal",
+        "deprecation",
+        "removed",
+        "back",
+        "value",
+        "change",
+        "however"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Confirmation - [x] I am a [maintainer](https://github.com/orgs/electron/people) of the Electron project. (If not, please create a [different issue type](https://github.com/electron/electron/issues/new/).) ### Description ## Timeline * **Deprecation**: Electron 38 * **Removal**: Electron 39 ## Background While working on the [main upgrade roll](https://github.com/electron/electron/pull/47983) f",
+      "annotation": "unsupported",
+      "annotation_reason": "Internal removeFunction wrapper loses its return value; source plus multi-line reproduction explains the defect. require() is incidental, not a node-integration problem. No specific component fits the internal deprecation helper, and retrieved initialization/deprecation cases describe different behavior."
+    },
+    {
+      "number": 50457,
+      "opened": "2026-03-24",
+      "score": 37.2,
+      "title": "Native Code and Electron Swift Example Needs Change to prevent Electron from hanging on quit",
+      "shared_terms": [
+        "wrapper",
+        "undefined",
+        "result",
+        "value",
+        "current",
+        "during",
+        "return",
+        "change"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior This is a documentation issue. I'm not sure how to submit issues for this other than as a bug report. I apologise if this is the wrong way to do it. Documentation: https://www.electronjs.org/docs/latest/tutorial/native-code-and-electron-swift-macos#6-creating-a-javascript-wrapper Since Electron 40.5.0, there has been a change in how it closes down, due to a change in Node, an",
+      "annotation": "unsupported",
+      "annotation_reason": "Internal removeFunction wrapper loses its return value; source plus multi-line reproduction explains the defect. require() is incidental, not a node-integration problem. No specific component fits the internal deprecation helper, and retrieved initialization/deprecation cases describe different behavior."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "41b775eef49097ca8a4252c94ea5a2f9366fd227ed08b8254547f0ecdc2d58e4",
+    "rows": 639
+  }
+}

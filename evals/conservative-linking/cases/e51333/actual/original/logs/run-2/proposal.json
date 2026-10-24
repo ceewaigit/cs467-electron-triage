@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "This is a general documentation feature request with no clear component label; the closest earlier report is already linked, and neither a repro request nor a redirect applies."
+    }
+  ],
+  "explanation": "This is a general documentation feature request with no clear component label; the closest earlier report is already linked, and neither a repro request nor a redirect applies."
+}

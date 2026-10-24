@@ -1,0 +1,21 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/BrowserWindow",
+        "component/fullscreen"
+      ]
+    ],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Explicit feature request for BrowserWindow native-tab minimum height in fullscreen. Both BrowserWindow and fullscreen are direct; at least one is required and both are allowed. No repro request on a feature. NSWindow class names, TypeScript example syntax and the menu bar comparison do not establish wco, typescript or menu defects."
+}

@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/wco"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d003",
+  "batch_id": "s007",
+  "repetition": 2,
+  "policy_sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+  "proposal_sha256": "9afe7f7bc95b0b9b3e812cdf2eed06c9843fee554cc283218b49320896354160",
+  "explanation": "The report concerns titleBarOverlay window controls and supplies a reproduction gist; the candidates describe different behaviours and no redirect is established.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

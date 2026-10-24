@@ -1,0 +1,13 @@
+{
+  "id": "r04-external-fixture",
+  "set": "constructed-reproduction-control",
+  "source": "constructed offline fixture; not a historical Electron report",
+  "title": "protocol.handle truncates the response for a binary record fixture",
+  "as_of": "2026-06-30T12:00:00Z",
+  "author_association": "NONE",
+  "labels_at_open": [
+    "bug :beetle:"
+  ],
+  "body_source": "independently authored constructed opening; fictional scenario",
+  "body": "### Electron Version\n\n42.2.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 14.7\n\n### Expected Behavior\n\nAll bytes in the local record fixture are returned.\n\n### Actual Behavior\n\nThe custom memo scheme returns only the first half of the binary record. This is the handler function:\n\n```js\nconst fs = require(\"node:fs/promises\");\nasync function serveRecord(request) {\n  const bytes = await fs.readFile(fixturePath);\n  return new Response(bytes, {\n    headers: { \"Content-Type\": \"application/octet-stream\" }\n  });\n}\n```\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nElsewhere the app registers serveRecord using protocol.handle(\"memo\", serveRecord). fixturePath points to a proprietary record file. I have not supplied that file, a substitute buffer, the registration setup or the requesting page."
+}

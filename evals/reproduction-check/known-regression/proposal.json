@@ -1,0 +1,20 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow",
+        "component/fullscreen",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "Fullscreen BrowserWindow bug supplies constructor fragments without app startup; request a runnable reproduction. Earlier candidates describe different behavior."
+}

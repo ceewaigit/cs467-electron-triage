@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The internal deprecation wrapper has a code reproduction, but no clearly supported component label or same-failure candidate is available, and no redirect is warranted."
+    }
+  ],
+  "explanation": "The internal deprecation wrapper has a code reproduction, but no clearly supported component label or same-failure candidate is available, and no redirect is warranted."
+}

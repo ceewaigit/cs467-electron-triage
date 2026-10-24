@@ -1,0 +1,116 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Report alleges native SysDragImage lifetime failure, with Windows HWND evidence and a cross-process drop trigger. Drag-and-drop is direct but optional because the source does not isolate Discord-specific behavior. Logs and a one-line cleanup call are not a runnable Electron reproduction; ask for one under the old skill's all-condition rule. Third-party routing is also acceptable because only Discord is demonstrated; no Electron versus Chromium isolation supports upstream. Wayland input freezes are distinct from a persistent Windows overlay.",
+  "candidate_evidence": [
+    {
+      "number": 49907,
+      "opened": "2026-02-22",
+      "score": 73.8,
+      "title": "Wayland: Drag and drop inside window can leave app unresponsive to input (Plasma 6, Electron 37.6.0)",
+      "shared_terms": [
+        "completing",
+        "continues",
+        "normally.",
+        "operation",
+        "drop",
+        "discord",
+        "remains",
+        "drag"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior After completing a drag and drop operation inside the application window, the app should continue working normally. I expect to still be able to click on UI elements, use keyboard shortcuts like Ctrl R, and interact with the window controls without any interruption. ### Actual Behavior After performing a drag and drop action inside the window, the application becomes unrespon",
+      "annotation": "unsupported",
+      "annotation_reason": "Report alleges native SysDragImage lifetime failure, with Windows HWND evidence and a cross-process drop trigger. Drag-and-drop is direct but optional because the source does not isolate Discord-specific behavior. Logs and a one-line cleanup call are not a runnable Electron reproduction; ask for one under the old skill's all-condition rule. Third-party routing is also acceptable because only Discord is demonstrated; no Electron versus Chromium isolation supports upstream. Wayland input freezes are distinct from a persistent Windows overlay."
+    },
+    {
+      "number": 49905,
+      "opened": "2026-02-21",
+      "score": 71.9,
+      "title": "[Wayland/Ozone] Per-window input freeze — events received on socket but not dispatched to affected window",
+      "shared_terms": [
+        "composited",
+        "receiving",
+        "passes",
+        "succeeds",
+        "continues",
+        "entirely",
+        "matches",
+        "pid"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Description When running Electron (via VSCode) on native Wayland with the COSMIC compositor, individual windows intermittently and permanently lose all mouse and keyboard input. The window continues to render normally — buffer updates are composited, animations play, terminal output scrolls — but the window accepts zero input. No recovery is possible; the affected window must be closed. Other ",
+      "annotation": "unsupported",
+      "annotation_reason": "Report alleges native SysDragImage lifetime failure, with Windows HWND evidence and a cross-process drop trigger. Drag-and-drop is direct but optional because the source does not isolate Discord-specific behavior. Logs and a one-line cleanup call are not a runnable Electron reproduction; ask for one under the old skill's all-condition rule. Third-party routing is also acceptable because only Discord is demonstrated; no Electron versus Chromium isolation supports upstream. Wayland input freezes are distinct from a persistent Windows overlay."
+    },
+    {
+      "number": 49160,
+      "opened": "2025-12-09",
+      "score": 71.7,
+      "title": "**[Critical] Electron v39 Fails to Render Styled UI on Fedora/Gnome (Renderer Process Failure)**",
+      "shared_terms": [
+        "functional",
+        "styles",
+        "preview",
+        "relaunch",
+        "persists",
+        "evidence",
+        "external",
+        "free"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior The application is expected to launch, initialize the Chromium renderer process successfully, and display the fully styled Graphical User Interface (GUI) as designed. The main Electron window should open and present the complete application UI, which includes the styled form fields, and correctly colored buttons (green for Save, indigo for Preview). The application should not",
+      "annotation": "unsupported",
+      "annotation_reason": "Report alleges native SysDragImage lifetime failure, with Windows HWND evidence and a cross-process drop trigger. Drag-and-drop is direct but optional because the source does not isolate Discord-specific behavior. Logs and a one-line cleanup call are not a runnable Electron reproduction; ask for one under the old skill's all-condition rule. Third-party routing is also acceptable because only Discord is demonstrated; no Electron versus Chromium isolation supports upstream. Wayland input freezes are distinct from a persistent Windows overlay."
+    },
+    {
+      "number": 48268,
+      "opened": "2025-09-06",
+      "score": 67.4,
+      "title": "Accessibility: Hidden windows present themselves as active to Linux screenreaders",
+      "shared_terms": [
+        "appropriate",
+        "focused.",
+        "reporting",
+        "against",
+        "pressing",
+        "switching",
+        "wayland.",
+        "fire"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior When calling the .hide() method on a BrowserWindow instance, the window disappears from the screen, and should also fire a window deactivate accessibility event to screenreaders through at-spi. When queried for its state by a running screenreader, the window should report itself as inactive until it's shown again. These mechanisms allow the screenreaders to determine which wi",
+      "annotation": "unsupported",
+      "annotation_reason": "Report alleges native SysDragImage lifetime failure, with Windows HWND evidence and a cross-process drop trigger. Drag-and-drop is direct but optional because the source does not isolate Discord-specific behavior. Logs and a one-line cleanup call are not a runnable Electron reproduction; ask for one under the old skill's all-condition rule. Third-party routing is also acceptable because only Discord is demonstrated; no Electron versus Chromium isolation supports upstream. Wayland input freezes are distinct from a persistent Windows overlay."
+    },
+    {
+      "number": 48396,
+      "opened": "2025-09-26",
+      "score": 62.1,
+      "title": "Too much memory usage building v38.1.2 on Ubuntu 22",
+      "shared_terms": [
+        "completes",
+        "succeeds",
+        "cancel",
+        "feel",
+        "free",
+        "process.",
+        "seem",
+        "successfully"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior \"e build electron\" succeeds after a couple of hours ### Actual Behavior My 24GB of memory usage skyrockets and my 10GB swap file fills up, eventually crashing the build process. There are way too many activate node and clang++ processes running and apparently not being shut down as their job completes, maybe. Normally there are only a few node and clang++ processes at any giv",
+      "annotation": "unsupported",
+      "annotation_reason": "Report alleges native SysDragImage lifetime failure, with Windows HWND evidence and a cross-process drop trigger. Drag-and-drop is direct but optional because the source does not isolate Discord-specific behavior. Logs and a one-line cleanup call are not a runnable Electron reproduction; ask for one under the old skill's all-condition rule. Third-party routing is also acceptable because only Discord is demonstrated; no Electron versus Chromium isolation supports upstream. Wayland input freezes are distinct from a persistent Windows overlay."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "403f805858c355e8d8e0e951c5c86cb84ae1c98e40682eb4a10b990bf759105a",
+    "rows": 704
+  }
+}

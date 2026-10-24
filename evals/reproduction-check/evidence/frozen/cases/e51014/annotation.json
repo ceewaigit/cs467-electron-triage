@@ -1,0 +1,73 @@
+{
+  "case_id": "e51014",
+  "authorship": "Independent Codex dataset annotator, before policy executions; exact backend model identifier unavailable",
+  "created_at_utc": "2026-10-24T04:48:08.835798+00:00",
+  "basis": [
+    "frozen evals/golden/RUBRIC.md",
+    "baseline issue-triage SKILL.md at 962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "opening issue text",
+    "strictly earlier baseline corpus or explicitly fabricated control corpus"
+  ],
+  "reproduction": {
+    "expectation": "forbidden",
+    "rationale": "A Testcase Gist URL is supplied; screenshots and a separate crash trace do not replace it as the reproduction evidence."
+  },
+  "components": {
+    "rationale": "Transparent titleBarOverlay control backgrounds support WCO/BrowserWindow with transparent as an optional specific feature.",
+    "accepted_required": [],
+    "accepted_one_of": [
+      [
+        "component/wco",
+        "component/BrowserWindow"
+      ]
+    ],
+    "accepted_optional": [
+      "component/transparent"
+    ]
+  },
+  "similarity": {
+    "rationale": "48193 preserves the transparent background and reports incorrect hover/accent feedback; this case loses the static transparent background through a default-color fallback. The shared titleBarOverlay/rgba setting does not establish the same wrong behavior. Other retrieved transparency/layout reports also have different triggers or objects, so no similar comment is supported.",
+    "reviewed_top_five": [
+      {
+        "number": 48193,
+        "title": "Wrong symbol hover background with transparent `titlebarOverlay`"
+      },
+      {
+        "number": 48440,
+        "title": "Acrylic backgroundMaterial doesn't work on Windows 10"
+      },
+      {
+        "number": 48033,
+        "title": "Close button style bug on overlay titlebar with `maximizable: false`"
+      },
+      {
+        "number": 48931,
+        "title": "Transparent background not preserved when reusing offscreen BrowserWindow in Electron 39"
+      },
+      {
+        "number": 48918,
+        "title": "Certain menu items are positioned 1 pixel off on macOS Tahoe"
+      }
+    ],
+    "acceptable_refs": [],
+    "strong_coverage_refs": [],
+    "optional_noncoverage_refs": [],
+    "reporter_link_exclusion": "Earlier links already in opening body are ineligible; corpus matching asserts possible symptom overlap, not common root cause."
+  },
+  "redirects": {
+    "rationale": "No confirmed Chromium/Node cause, public vulnerability, app-only report or how-to request is present.",
+    "required_kinds": [],
+    "acceptable_kinds": []
+  },
+  "attribution_limitations": [
+    "Single assistant annotation, not maintainer adjudication; independent pre-execution review is separate.",
+    "Historical fields and corpus are frozen reconstructed opening evidence; no remote URL, attachment or runtime reproduction was fetched or run."
+  ],
+  "pre_execution_review_corrections": [
+    {
+      "changed": "Removed optional similar kind/reference",
+      "basis": "Independent comparison found distinct API/behavior, rather than a same-symptom match under the unchanged rule.",
+      "before_any_fresh_policy_execution": true
+    }
+  ]
+}

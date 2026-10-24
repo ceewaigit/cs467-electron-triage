@@ -1,0 +1,14 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/devtools",
+        "component/node-integration"
+      ]
+    }
+  ],
+  "explanation": "Debugger pauses interact with Node callbacks in an integrated renderer; a reproduction repository is provided, no candidate matches, and an upstream cause is not established by the reported controls."
+}

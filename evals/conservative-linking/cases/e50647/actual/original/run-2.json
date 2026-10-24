@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/dialog"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+  "case_token": "d007",
+  "batch_id": "s007",
+  "repetition": 2,
+  "policy_sha256": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+  "proposal_sha256": "57245b712927009b2e4873c302afdb18361a8f6959195a38b10d525f40b51884",
+  "explanation": "Focus breaks after dismissing showMessageBoxSync, so dialog is the clear component; runnable main, renderer, and HTML code is included, and no candidate establishes the same dialog focus failure.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

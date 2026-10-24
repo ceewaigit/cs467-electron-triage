@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "810101"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/clipboard"
+      ]
+    }
+  ],
+  "explanation": "The clipboard selection APIs are the reported component, runnable reproduction code is present, and earlier issue 810101 describes the same X11 empty read immediately after a write."
+}

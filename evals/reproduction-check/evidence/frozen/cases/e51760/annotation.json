@@ -1,0 +1,72 @@
+{
+  "case_id": "e51760",
+  "authorship": "Independent Codex dataset annotator, before policy executions; exact backend model identifier unavailable",
+  "created_at_utc": "2026-10-24T04:48:08.835798+00:00",
+  "basis": [
+    "frozen evals/golden/RUBRIC.md",
+    "baseline issue-triage SKILL.md at 962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "opening issue text",
+    "strictly earlier baseline corpus or explicitly fabricated control corpus"
+  ],
+  "reproduction": {
+    "expectation": "forbidden",
+    "rationale": "An Electron Fiddle gist and explicit actions to exercise it are supplied."
+  },
+  "components": {
+    "rationale": "Native confirmation-dialog dismissal and renderer focus are the reported behavior.",
+    "accepted_required": [],
+    "accepted_one_of": [
+      [
+        "component/dialog",
+        "component/webcontents",
+        "component/BrowserWindow"
+      ]
+    ],
+    "accepted_optional": []
+  },
+  "similarity": {
+    "rationale": "50647 fails showMessageBoxSync, whereas this opening explicitly says showMessageBoxSync works and window.confirm fails. Related native-dialog focus symptoms do not establish the same API/behavior here. Reporter-linked 45165 and 14474 must not be repeated, and the other retrieved candidates concern different triggers; no similar comment is supported.",
+    "reviewed_top_five": [
+      {
+        "number": 50647,
+        "title": "Focus broken after closing out of sync showMessageBox in will-prevent-unload"
+      },
+      {
+        "number": 48268,
+        "title": "Accessibility: Hidden windows present themselves as active to Linux screenreaders"
+      },
+      {
+        "number": 49982,
+        "title": "setIgnoreMouseEvents causes mouseenter/mouseleave oscillation and stuck click-through after renderer crash + webContents.reload()"
+      },
+      {
+        "number": 49905,
+        "title": "[Wayland/Ozone] Per-window input freeze — events received on socket but not dispatched to affected window"
+      },
+      {
+        "number": 49762,
+        "title": "`webUtils.getNativeVideoFrameHandle(frame)` for Zero-Copy VideoFame GPU Handoff"
+      }
+    ],
+    "acceptable_refs": [],
+    "strong_coverage_refs": [],
+    "optional_noncoverage_refs": [],
+    "reporter_link_exclusion": "Earlier links already in opening body are ineligible; corpus matching asserts possible symptom overlap, not common root cause."
+  },
+  "redirects": {
+    "rationale": "The body says Chrome is unaffected; prior related upstream labels and a guessed internal path do not establish an upstream cause for this report.",
+    "required_kinds": [],
+    "acceptable_kinds": []
+  },
+  "attribution_limitations": [
+    "Single assistant annotation, not maintainer adjudication; independent pre-execution review is separate.",
+    "Historical fields and corpus are frozen reconstructed opening evidence; no remote URL, attachment or runtime reproduction was fetched or run."
+  ],
+  "pre_execution_review_corrections": [
+    {
+      "changed": "Removed optional similar kind/reference",
+      "basis": "Independent comparison found distinct API/behavior, rather than a same-symptom match under the unchanged rule.",
+      "before_any_fresh_policy_execution": true
+    }
+  ]
+}

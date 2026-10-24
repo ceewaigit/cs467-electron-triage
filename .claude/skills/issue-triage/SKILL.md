@@ -41,15 +41,30 @@ use `component/other`. The full list is in `assets/allowed-labels.txt`.
 
 ### 3. Reproduction
 
-Ask for a repro (label `blocked/need-repro` and comment kind `need-repro`) only when **all** hold:
+Ask for a repro (label `blocked/need-repro` and comment kind `need-repro`) when **all** hold:
 
 - `issue.form` is `bug`;
 - `repro.gist` is false and `repro.other_repo_link` is false;
-- the body has no runnable code beyond a one-line call;
+- the body does not provide a complete runnable reproduction, as described below;
 - `bot_already.asked_for_supported_version` is false (Electron's bot already asked; one request at a
   time).
 
-Never ask on a feature request.
+Judge whether the supplied code can reproduce the reported behaviour, not how many lines or code
+blocks it contains. `repro.code_blocks` counts formatting; it does not establish that code runs.
+
+- A constructor call, options object, configuration fragment, stack trace or several variations of
+  the same API call is not a complete reproduction by itself, even when it spans many lines.
+- Check that the example supplies the startup and inputs needed to reach the reported failure.
+  Do not invent a missing app lifecycle, page, preload, event handler, data file or dependency that
+  the failure depends on. Detailed expected/actual behaviour or a workaround does not fill that gap.
+- A short, self-contained working example can be enough. Do not demand extra files, packaging or
+  boilerplate that the example does not need, and do not request another reproduction when a gist
+  or runnable repository has already been supplied.
+
+Before omitting a request on a bug with no gist or repository, identify the supplied runnable
+example and how it reaches the failure. If the report only supplies fragments, request both the
+label and comment. Never ask on a feature request, after the supported-version bot request, or
+alongside a security redirect. Apply the skip rules first.
 
 ### 4. Similar earlier issues
 

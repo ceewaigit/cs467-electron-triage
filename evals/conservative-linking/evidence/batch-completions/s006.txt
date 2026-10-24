@@ -1,0 +1,3 @@
+Completed and froze decisions for d021, d022, d023, d024, d025, d026, d027, d028, d029, d030 in order.
+
+No tool failures or validation rejections. For d028, the helper classified the form as `bug`, but the report explicitly requested a feature; no repro request was made.

@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "810201"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/dialog"
+      ]
+    }
+  ],
+  "explanation": "The dialog API is the component and runnable reproduction is supplied; 810201 reports the same incorrect canceled result, while 810202 is already linked by the reporter."
+}

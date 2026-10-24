@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/devtools"
+      ]
+    }
+  ],
+  "explanation": "Detached DevTools popup controls fail and a repro gist is provided; the matching prior regression is already linked, while remaining candidates have distinct triggers or behavior."
+}

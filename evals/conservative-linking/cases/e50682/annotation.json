@@ -1,0 +1,116 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "Explicit feature request for BrowserWindow native-tab minimum height in fullscreen. Both BrowserWindow and fullscreen are direct; at least one is required and both are allowed. No repro request on a feature. NSWindow class names, TypeScript example syntax and the menu bar comparison do not establish wco, typescript or menu defects.",
+  "candidate_evidence": [
+    {
+      "number": 49347,
+      "opened": "2026-01-09",
+      "score": 62.3,
+      "title": "Window freezes on macOS when failing to enter fullscreen (regression)",
+      "shared_terms": [
+        "fullscreen.",
+        "enter",
+        "fixes",
+        "fullscreen",
+        "void",
+        "attached",
+        "cause",
+        "context"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior 1. User begins swiping between virtual desktops (see #43112 for some context). 2. Electron window requests fullscreen. 3. The window fails to enter fullscreen mode (due to being halfway between two virtual desktops), but remains usable. ### Actual Behavior Upon failing to enter fullscreen mode, the contents of the window freeze. In the attached example gist, this is visible i",
+      "annotation": "unsupported",
+      "annotation_reason": "Explicit feature request for BrowserWindow native-tab minimum height in fullscreen. Both BrowserWindow and fullscreen are direct; at least one is required and both are allowed. No repro request on a feature. NSWindow class names, TypeScript example syntax and the menu bar comparison do not establish wco, typescript or menu defects."
+    },
+    {
+      "number": 49819,
+      "opened": "2026-02-17",
+      "score": 61.9,
+      "title": "Crash on new tab button in macOS Tab Overview",
+      "shared_terms": [
+        "tabbingidentifier",
+        "nsview",
+        "manages",
+        "enables",
+        "tabs",
+        "tab",
+        "view",
+        "bar"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior My Electron app reliably crashes having enabled macOS native tabs support via [`tabbingIdentifier`](https://www.electronjs.org/docs/latest/api/browser-window#wintabbingidentifier-macos-readonly). **The setup** [Source code](https://github.com/facebook/react-native/blob/a175bff10a459005504ba037ab6eede0d2724e29/packages/debugger-shell/src/electron/MainInstanceEntryPoint.js) - E",
+      "annotation": "unsupported",
+      "annotation_reason": "Explicit feature request for BrowserWindow native-tab minimum height in fullscreen. Both BrowserWindow and fullscreen are direct; at least one is required and both are allowed. No repro request on a feature. NSWindow class names, TypeScript example syntax and the menu bar comparison do not establish wco, typescript or menu defects."
+    },
+    {
+      "number": 47960,
+      "opened": "2025-08-04",
+      "score": 53.9,
+      "title": "[Feature] Expose NSMenuItem.alternate in Menu API",
+      "shared_terms": [
+        "objective",
+        "objc",
+        "tabs",
+        "expose",
+        "class",
+        "tab",
+        "automatically",
+        "property"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Problem Description The NSMenuItem class on macOS supports an \"[alternate](https://developer.apple.com/documentation/appkit/nsmenuitem/isalternate?language=objc)\" property, allowing a pair of adjacent sibling menu items to be joined together into what the user perceives as a single visible item that changes its title, key-equivalent, and behavior depending on what modifier keys are held. For i",
+      "annotation": "unsupported",
+      "annotation_reason": "Explicit feature request for BrowserWindow native-tab minimum height in fullscreen. Both BrowserWindow and fullscreen are direct; at least one is required and both are allowed. No repro request on a feature. NSWindow class names, TypeScript example syntax and the menu bar comparison do not establish wco, typescript or menu defects."
+    },
+    {
+      "number": 48909,
+      "opened": "2025-11-12",
+      "score": 48.6,
+      "title": "Make it easy to use SF Symbols in macOS menu items",
+      "shared_terms": [
+        "apple",
+        "tahoe",
+        "developers",
+        "logic",
+        "etc.",
+        "correct",
+        "line",
+        "context"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Problem Description In macOS Tahoe, menu items for context menus, tray icon menus, application menus, etc. can have icons next to them. <img width=\"159\" height=\"172\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/a78f11a2-98d4-4e62-a41d-4d320b718de8\" /> Here are Apple's design docs for the feature: https://developer.apple.com/design/human-interface-guidelines/menus#Icons It would ",
+      "annotation": "unsupported",
+      "annotation_reason": "Explicit feature request for BrowserWindow native-tab minimum height in fullscreen. Both BrowserWindow and fullscreen are direct; at least one is required and both are allowed. No repro request on a feature. NSWindow class names, TypeScript example syntax and the menu bar comparison do not establish wco, typescript or menu defects."
+    },
+    {
+      "number": 48610,
+      "opened": "2025-10-21",
+      "score": 48.3,
+      "title": "`win.setFullscreen(false)` case A renderer BUG on macOS 26 Tahoe when apps has Tray menu on status bar",
+      "shared_terms": [
+        "enter",
+        "fullscreen",
+        "status",
+        "tahoe",
+        "bar",
+        "correct",
+        "menu",
+        "browserwindow"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior When users call `win.setFullscreen(false)`, The BrowserWindow should exit fullscreen and render correct after animation end. ### Actual Behavior When exit fullscreen (every times), There is two windows on my desktop. one is not clickable, and another one is clickable. I have test 3 times, you can see there is 4 window rendered. <img width=\"1403\" height=\"901\" alt=\"Image\" src=\"",
+      "annotation": "unsupported",
+      "annotation_reason": "Explicit feature request for BrowserWindow native-tab minimum height in fullscreen. Both BrowserWindow and fullscreen are direct; at least one is required and both are allowed. No repro request on a feature. NSWindow class names, TypeScript example syntax and the menu bar comparison do not establish wco, typescript or menu defects."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "2130335833ea44816e844b8afa48e7e501e5494ed537fd29131a3337cece0d7f",
+    "rows": 614
+  }
+}

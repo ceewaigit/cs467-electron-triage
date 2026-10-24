@@ -1,0 +1,17 @@
+{
+  "id": "e51096",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/51096",
+  "as_of": "2026-04-16T17:23:16Z",
+  "author_association": "NONE",
+  "title": "Wslg cursor misalignment when double screen and using electron app full screen",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n39.8.0\n\n### What operating system(s) are you using?\n\nUbuntu, Windows\n\n### Operating System Version\n\nWSL2 (2.6.3.0) wslg (1.0.71) Ubuntu 24.04 on Windows 11 Version 25H2 build 26200.8246\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nThe cursor in screen should reflect the position where wslg think the cursor is when using codium or other electron app\n\n### Actual Behavior\n\nThe cursor is misaligned (for my case wslg think it is a little below and to the right from the position of my cursor showing in screen)\n\n### Testcase Gist URL\n\nhttps://gist.github.com/GuillaumeSavin/1338eefe0c465ad229e5c6454006d2d1\n\n### Additional Information\n\nI try several thing, but to be clear this problem appear only in wslg when running vs codium in fullscreen, in reduced mode it work perfectly. I try several thing like putting ozone platform to x11, use gl to angle and swiftshader, disable gpu, disable hardware acceleration but none works.\nYou can also find here the tiicket i first created  in wslg for this problem but it seems that it is more an electron problem: https://github.com/microsoft/wslg/issues/1438",
+  "labels_at_open": [
+    "39-x-y",
+    "bug :beetle:",
+    "has-repro-gist",
+    "platform/linux",
+    "platform/windows"
+  ],
+  "body_source": "userContentEdits oldest revision (2026-04-16T17:23:16Z)"
+}

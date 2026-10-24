@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/fullscreen"
+      ]
+    }
+  ],
+  "explanation": "Cursor misalignment occurs specifically in fullscreen; a repro gist is present and no candidate establishes the same problem or an upstream cause."
+}

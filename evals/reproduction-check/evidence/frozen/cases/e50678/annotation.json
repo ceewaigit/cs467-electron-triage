@@ -1,0 +1,74 @@
+{
+  "case_id": "e50678",
+  "authorship": "Independent Codex dataset annotator, before policy executions; exact backend model identifier unavailable",
+  "created_at_utc": "2026-10-24T04:48:08.835798+00:00",
+  "basis": [
+    "frozen evals/golden/RUBRIC.md",
+    "baseline issue-triage SKILL.md at 962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "opening issue text",
+    "strictly earlier baseline corpus or explicitly fabricated control corpus"
+  ],
+  "reproduction": {
+    "expectation": "forbidden",
+    "rationale": "The Testcase Gist URL provides the reproduction. The stack trace is output, not the source of sufficiency."
+  },
+  "components": {
+    "rationale": "CDP Fetch interception through WebContents/debugger and webRequest integration plausibly supports these alternative components.",
+    "accepted_required": [],
+    "accepted_one_of": [
+      [
+        "component/webcontents",
+        "component/devtools",
+        "component/webRequest"
+      ]
+    ],
+    "accepted_optional": [
+      "component/net",
+      "component/session"
+    ]
+  },
+  "similarity": {
+    "rationale": "48912 has the same ERR_FAILED (-2) loadURL navigation failure and is a plausible optional symptom link, but its beforeunload trigger differs, so it is not a strong coverage reference. 49199 concerns a fatal custom-build startup crash; the other candidates have different API behavior.",
+    "reviewed_top_five": [
+      {
+        "number": 48912,
+        "title": "`loadURL` fails with `Error: ERR_FAILED (-2) loading 'https://example.org/'` when the current page has a `beforeunload` handler"
+      },
+      {
+        "number": 49199,
+        "title": "Crash on startup with Electron 40.x built with v8_enable_sandbox=false and v8_enable_pointer_compression=false (Illegal Access in IndirectBaseHandle::IsEmpty)"
+      },
+      {
+        "number": 50657,
+        "title": "Electron exited with signal SIGTRAP with PDF and disable-site-isolation-trials"
+      },
+      {
+        "number": 49840,
+        "title": "Usage of electron.net.request triggers url.parse deprecation warning"
+      },
+      {
+        "number": 48100,
+        "title": "`net.isOnline()`/`net.online` always returns `true` when called from module running as a utility process."
+      }
+    ],
+    "acceptable_refs": [
+      48912
+    ],
+    "strong_coverage_refs": [],
+    "optional_noncoverage_refs": [
+      48912
+    ],
+    "reporter_link_exclusion": "Earlier links already in opening body are ineligible; corpus matching asserts possible symptom overlap, not common root cause."
+  },
+  "redirects": {
+    "rationale": "No upstream redirect is established by a CDP name; the report says Chrome is unaffected and describes an Electron regression.",
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "similar"
+    ]
+  },
+  "attribution_limitations": [
+    "Single assistant annotation, not maintainer adjudication; independent pre-execution review is separate.",
+    "Historical fields and corpus are frozen reconstructed opening evidence; no remote URL, attachment or runtime reproduction was fetched or run."
+  ]
+}

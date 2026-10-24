@@ -1,0 +1,14 @@
+{
+  "number": 800018,
+  "title": "Electron package fails to install Electron",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.2.0\n\n### What operating system(s) are you using?\n\nOther Linux\n\n### Operating System Version\n\nArch, Wayland\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nElectron should install properly when using `pnpm i` or `npm i`\n\n### Actual Behavior\n\n`Error: ENOENT: no such file or directory, open '/home/aiden/electron/node_modules/electron/path.txt'`\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n> Nobody except for [@​savely-krasovsky](https://github.com/savely-krasovsky) has answered my question regarding the Node version.\n> \n> Thus, I'll mark it as a duplicate of [#51619](`electron/electron#51619`) for now to prevent more comments here.\n> \n> If you do not use Node.js 26, please open a new issue.\n\nI can reproduce this on the Node LTS 24",
+  "labels": [
+    "42-x-y",
+    "bug :beetle:",
+    "platform/linux"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-05-22T01:01:18Z",
+  "replay": true
+}

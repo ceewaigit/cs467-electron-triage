@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/menu"
+      ]
+    }
+  ],
+  "explanation": "Native submenu keyboard navigation identifies the menu component; a gist is supplied, and the candidates describe different keyboard or menu failures."
+}

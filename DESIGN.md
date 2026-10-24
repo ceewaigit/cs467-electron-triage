@@ -71,13 +71,13 @@ e52427/e53747 missed components; e53175 missed redirects. Gold disagreements rem
 The original forced control posted misleading prose. The template control limited labels/comments;
 its companion refused, so adds no enforcement evidence. Kill-switch and broken-config logs are saved.
 
-After billing blocked replay, Codex dry-ran source `7ef6696` once on all 30 inputs, with no Anthropic calls.
-It passed 20/25 real and 5/5 adversarial cases; weighted cost .56 exceeded the rule baseline's .44.
-Six fresh assistants handled five cases each, using the unchanged skill/scripts and filtered inputs.
-Transcripts and all five rubric mismatches are in [the dry-run report](evals/golden/results/assistant-dry-run/README.md).
-The renderer rejected a synthetic reference; one noop reason had two sentences rather than one.
-This used Codex, not configured Claude; hosted permissions, detection and budgets were not exercised.
-The 90-run live replay remains deferred; scripts and workflow have offline tests and strict compilation.
+After billing blocked replay, Codex dry-ran source `7ef6696` once: 20/25 real and 5/5 adversarial passes.
+Weighted cost .56 exceeded the rule baseline's .44; [transcripts](evals/golden/results/assistant-dry-run/README.md) retain all five mismatches.
+The latest reproduction-only skill fixed a separate known missed request in one trial.
+A fresh comparison of 30 cases, two policies and two repetitions found no scored regression in 60 pairs.
+Both policies already satisfied every required/forbidden repro action; six stricter adoption gates failed.
+The owner's later [adoption decision](evals/reproduction-check/ADOPTION.md) preserves that failed experiment.
+These Codex trials leave configured Claude and hosted controls untested; all 90 paid hardened runs stay pending.
 
 ## Governance
 
@@ -104,7 +104,7 @@ possible. The `component/*` pattern trusts maintainers not to create unwanted la
    publish arbitrary claims of closure because only templates reach the comment API.
 2. **A provider update breaks a golden task.** The model ID is explicit; unchanged provider weights
    cannot be verified. Proposed: owner runs all 30 cases weekly (k=1); any failure prompts review
-   and k=3 confirmation. Before configuration changes, rerun k=3 and review every changed label,
+   and k=3 confirmation. For future hosted approval, rerun k=3 and review every changed label,
    comment, safety failure and missing result. The owner decides whether to disable or revise.
 3. **300 issues arrive in a week.** That averages 43/day, with no global concurrency cap.
    Author and daily-credit limits are configured, but dispatch tests bypassed the daily check.
@@ -146,5 +146,5 @@ The latest controls, daily-limit enforcement, mobile operation and provider weig
 I chose the project, workflow and permitted actions. Claude Code (`claude-opus-5-5`) researched
 and drafted most code, workflows, tests and prose under my direction. Codex and independent
 subagents audited this revision, corrected metrics and controls, and used Humanizer for readability.
-Verification includes offline tests, compilation, frozen-data checks, live logs and the recorded dry run.
+Verification includes offline tests, compilation, frozen-data checks, live logs and recorded dry runs.
 The latest edits still require my review and explanation; they have not been live-replayed.

@@ -1,0 +1,20 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/accessibility"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/BrowserWindow"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Screenreader focus remaining on a hidden BrowserWindow is directly accessibility, with BrowserWindow an appropriate secondary label. A Testcase Gist URL is supplied with a specific hide-on-close trigger and accessibility observations. 48268 is the closest same-behavior report but is already linked by the reporter; other retrieved focus or drag reports concern different triggers. This describes a shared Electron hide/accessibility path and offers a gist, so the references to shipping applications do not justify a third-party redirect."
+}

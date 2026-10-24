@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/native-image"
+      ]
+    }
+  ],
+  "explanation": "nativeImage.resize returns incorrect dimensions; runnable reproduction code is supplied, and both candidate reports conflict on the affected operation or wrong behavior."
+}

@@ -1,0 +1,125 @@
+{
+  "annotated_at_utc": "2026-10-24T02:43:34.435195+00:00",
+  "basis": "opening input and pre-opening corpus only",
+  "rationale": "protocol.handle custom-scheme video playback fails despite range responses; gist supplied. net.fetch is part of the tested serving paths and net is optional. #48582 uses the same custom-scheme Response/range/video path and #47661 reports protocol-served video scrubbing failure. Both are acceptable tentative links, although terse seeking/error reports do not prove identical cause to failed playback. #38749 is already linked. Other candidates concern relative URLs, unsupported fetch scheme or fullscreen.",
+  "candidate_evidence": [
+    {
+      "number": 49073,
+      "opened": "2025-11-25",
+      "score": 77.4,
+      "title": "Handling Relative Paths for Local File Loading via Custom Protocol after registerFileProtocol Deprecation",
+      "shared_terms": [
+        "registerfileprotocol",
+        "served",
+        "protocol.handle",
+        "scheme",
+        "protocol",
+        "handling",
+        "local",
+        "handle"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Problem Description I am encountering an issue when attempting to load local files, particularly an index.html file, within an <iframe> using a custom protocol registered via protocol.handle. The context is the upcoming deprecation of protocol.registerFileProtocol(), prompting migration to protocol.handle(). Problem When a custom scheme is handled with protocol.handle, it is treated as a netwo",
+      "annotation": "unsupported",
+      "annotation_reason": "protocol.handle custom-scheme video playback fails despite range responses; gist supplied. net.fetch is part of the tested serving paths and net is optional. #48582 uses the same custom-scheme Response/range/video path and #47661 reports protocol-served video scrubbing failure. Both are acceptable tentative links, although terse seeking/error reports do not prove identical cause to failed playback. #38749 is already linked. Other candidates concern relative URLs, unsupported fetch scheme or fullscreen."
+    },
+    {
+      "number": 48582,
+      "opened": "2025-10-17",
+      "score": 61.4,
+      "title": "A JavaScript error occurred in the main process",
+      "shared_terms": [
+        "ranges",
+        "videos",
+        "protocol.handle",
+        "headers",
+        "range",
+        "play",
+        "scheme",
+        "accept"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior ``` protocol.registerSchemesAsPrivileged([ { scheme: 'play', privileges: { standard: true, secure: true, stream: true, bypassCSP: true, }, }, ]); protocol.handle('play', async (request) => { try { const u = new URL(request.url) const absPath = path.join(__dirname, u.hostname, u.pathname) let {start, end, isRange} = getRange(request.headers.get('Range')) const {size} = await p",
+      "annotation": "acceptable",
+      "annotation_reason": "Optional: same protocol.handle Response/range video-serving path; earlier symptom is terse and may be seeking-specific."
+    },
+    {
+      "number": 48297,
+      "opened": "2025-09-11",
+      "score": 46.3,
+      "title": "fetch api does not work with custom TypeError: Failed to fetch. URL scheme \"app\" is not supported.",
+      "shared_terms": [
+        "protocol.handle",
+        "headers",
+        "scheme",
+        "protocol",
+        "contains",
+        "url",
+        "custom",
+        "request"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior My custom scheme should also work with files loaded via a \"fetch\" call ### Actual Behavior I've registered a custom protocol handler: protocol.registerSchemesAsPrivileged([{ scheme: 'app', privileges: { secure: true, standard: true } }]); require('@electron/remote/main').initialize(); let createProtocol = (scheme, normalize = true) => { protocol.handle(scheme, async (request)",
+      "annotation": "unsupported",
+      "annotation_reason": "protocol.handle custom-scheme video playback fails despite range responses; gist supplied. net.fetch is part of the tested serving paths and net is optional. #48582 uses the same custom-scheme Response/range/video path and #47661 reports protocol-served video scrubbing failure. Both are acceptable tentative links, although terse seeking/error reports do not prove identical cause to failed playback. #38749 is already linked. Other candidates concern relative URLs, unsupported fetch scheme or fullscreen."
+    },
+    {
+      "number": 50842,
+      "opened": "2026-04-09",
+      "score": 40.2,
+      "title": "Electron macOS: setSimpleFullScreen Exits on requestFullscreen Events in Web Content",
+      "shared_terms": [
+        "mp4",
+        "videos",
+        "playback",
+        "video",
+        "manually",
+        "appear",
+        "content",
+        "via"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior After using `setSimpleFullScreen` to set with full screen, when display mp4 and enter fullscreen, 1. mp4 can quit fullscreen after manually quit fullscreen 2. electron should keep fullscreen when set mp4 as fullscreen mode. ### Actual Behavior **Problem Description** On macOS with Electron, when using `setSimpleFullScreen`, playing an MP4 video on a page and clicking the vide",
+      "annotation": "unsupported",
+      "annotation_reason": "protocol.handle custom-scheme video playback fails despite range responses; gist supplied. net.fetch is part of the tested serving paths and net is optional. #48582 uses the same custom-scheme Response/range/video path and #47661 reports protocol-served video scrubbing failure. Both are acceptable tentative links, although terse seeking/error reports do not prove identical cause to failed playback. #38749 is already linked. Other candidates concern relative URLs, unsupported fetch scheme or fullscreen."
+    },
+    {
+      "number": 48081,
+      "opened": "2025-08-14",
+      "score": 35.1,
+      "title": "File picker allows selecting directories if their name includes a file extension",
+      "shared_terms": [
+        "accept",
+        "includes",
+        "stream",
+        "custom",
+        "related",
+        "even",
+        "type",
+        "file"
+      ],
+      "already_linked_by_reporter": false,
+      "excerpt": "### Expected Behavior The file picker (`<input type=file>`, `showOpenFilePicker`) should not allow selecting directories, only files. ### Actual Behavior The file picker allows selecting directories if they match some of the given file extensions. The directory is exposed to JS as a File / FileSystemFileHandle, but fails to be read. For example, the following code: ``` window.showOpenFilePicker({ ",
+      "annotation": "unsupported",
+      "annotation_reason": "protocol.handle custom-scheme video playback fails despite range responses; gist supplied. net.fetch is part of the tested serving paths and net is optional. #48582 uses the same custom-scheme Response/range/video path and #47661 reports protocol-served video scrubbing failure. Both are acceptable tentative links, although terse seeking/error reports do not prove identical cause to failed playback. #38749 is already linked. Other candidates concern relative URLs, unsupported fetch scheme or fullscreen."
+    },
+    {
+      "number": 47661,
+      "title": "Can't scrub the video served over protocol handler",
+      "opened": "2025-07-03T21:30:07Z",
+      "excerpt": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n37.0.0-alpha.1\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS Tahoe\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\nv37.0.0-nightly.20250403\n\n### Expected Behavior\n\nScrubbing should work for the video.\n\n### Actual Behavior\n\nhttps://github.com/user-attachments/assets/b3f1eed8-8dbc-41f3-8a55-2d2af4132b28\n\nScrubbing doesn't work\n\n### Testcase Gist URL\n\nhttps://gist.github.com/indutny-signal/84d0341900f877e7cb16c266dd403c7b\n\n### Additional Information\n\n_No response_",
+      "annotation": "acceptable",
+      "retrieved_top_five": false,
+      "annotation_reason": "Optional expanded-source review: protocol-served video scrubbing fails; same media-serving surface but narrower symptom than failed playback."
+    }
+  ],
+  "corpus": {
+    "mode": "baseline-prefix",
+    "source_commit": "962fac774c7845bca0da2d310ca1bdcca09c50ea",
+    "source_path": "data/issue-corpus.jsonl",
+    "filter": "created_at < input.as_of",
+    "serialization": "Read old-commit source bytes; raw.splitlines(); retain original line bytes when parsed created_at < as_of; concatenate each retained line plus one ASCII LF byte. Preserve source row order.",
+    "sha256": "e1465fabf60bb739d3119717487077f4a0e3d1e2f7237e7a8b7fedd65cb9e685",
+    "rows": 691
+  }
+}
