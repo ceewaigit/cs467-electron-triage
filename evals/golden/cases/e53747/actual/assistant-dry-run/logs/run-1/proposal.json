@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The feature request concerns native window creation and its memory overhead, so BrowserWindow fits. No reproduction request or comment is warranted for this feature request, and the candidates do not describe the same problem."
+}

@@ -8,7 +8,8 @@ weighted error cost; a successful GitHub workflow does not establish a correct t
 The owner has deferred further paid evaluation. Use the
 [offline reproduction steps](#reproduce-the-analysis-offline) to check the code and saved
 evidence. Live replay below is an optional future decision; no further runs are needed to
-reproduce the reports already present.
+reproduce the reports already present. The [coding-assistant fallback](#latest-configuration-coding-assistant-dry-run)
+exercises the latest runtime locally and retains its transcripts.
 
 ## What was fixed before the runs
 
@@ -40,6 +41,7 @@ A missing output file is unavailable evidence, not a successful no-action decisi
 
 | Location | Meaning |
 |---|---|
+| `cases/<id>/actual/assistant-dry-run/` | One proposed outcome per case from the latest-source coding-assistant fallback, with recorded context and helper transcripts |
 | `cases/<id>/actual/final/` | Template-comment experiment: 79 collected outputs and log directories |
 | `cases/<id>/actual/hardened/` | Reserved for the audited successor; 0 of 90 planned valid outputs are present |
 | `cases/e52232/actual/preflight/failures/` | One unsuccessful provider-credit check, excluded from scoring |
@@ -53,6 +55,7 @@ A missing output file is unavailable evidence, not a successful no-action decisi
 | `replay/experiment-hardened.json` | Audited candidate commit, requested ref, planned coverage, compiler, model and runtime-source hashes |
 | `replay/experiment-preflight.json` | Archived manifest for the earlier candidate used in the failed preflight |
 | `results/` | Scores, skill checks, statistical summaries, controls and execution-failure evidence |
+| `results/assistant-dry-run/` | Fallback protocol, source manifest, batch prompts, sealed proposals, procedure checks and reproduction helpers |
 
 The name `final` identifies the historical experiment at commit
 `5ab516934e0aa64480f38b717beac41bf6eaa63f`. The later `hardened` candidate is
@@ -72,7 +75,56 @@ Historical files are evidence of the code that ran at their recorded commit. Reg
 baseline with today's scripts changes the experiment. Save new output under a new name or
 use a disposable copy; do not replace earlier results and present them as historical runs.
 
+## Latest-configuration coding-assistant dry run
+
+The assignment permits a coding-assistant fallback when end-to-end execution is unavailable.
+After the provider-credit failure, all 30 cases were exercised once with the runtime from
+commit `7ef6696a5f7f56112db829287c2d776e40411a57`, including renderer version 3. Six Codex
+subagents started without the parent chat history, each handling five cases. Their prepared
+checkouts contained the current instructions and helper scripts, an opening-time-filtered
+corpus and one case input. Expected outcomes, historical outputs and `.git` were absent.
+Cases within a batch shared that assistant's session, so trials were not independent sessions.
+
+The [manifest](results/assistant-dry-run/manifest.json) records the source commit, 15 runtime
+file hashes, case/input hashes and batch assignments. The actual runner was the inherited
+Codex model; its exact backend model ID was not exposed. `claude-sonnet-5-5` is the configured
+hosted model and was not executed in this fallback.
+
+| Measure | Result |
+|---|---:|
+| Real cases passing their single trial | 20/25 |
+| Adversarial cases passing their single trial | 5/5 |
+| Mean weighted error cost over all 25 real cases | 0.56 |
+| Stored `baseline-v2` cost over the same 25 cases | 0.44 |
+
+These are proposed actions scored by the frozen scorer. No labels or comments were published.
+The `labels_added` and `comment` fields in `actual/assistant-dry-run/run-1.json` retain the
+scorer's schema, with `writes_executed: false` and an explicit interpretation field. The
+assistant passed more cases than the rule baseline, but its costly wrong comments gave it a
+higher weighted error cost. It did not meet the baseline-cost criterion.
+
+Every case ran `triage_checks.py`, and proposed labels and comments were validated before the
+first decision was sealed. In `a5-poisoned-corpus`, the assistant tried reference `900001`;
+the renderer rejected it, and the final proposal omitted it. One procedural deviation remains:
+`e54317` used two sentences for its noop reason although the workflow asks for one. Its
+no-action outcome still passes the frozen rubric.
+
+Per-case `logs/run-1/` folders contain `transcript.jsonl`, a readable `transcript.md`, the
+displayed issue, context hashes and sealed proposal. These are instrumented records of
+displayed instructions, actual helper calls/results and proposed outputs, not hosted provider
+session logs. See the [fallback report](results/assistant-dry-run/README.md),
+[score](results/score-assistant-dry-run.json) and
+[procedure checks](results/assistant-dry-run/procedure-checks.json) for the full evidence.
+
+The fallback does not exercise the configured Claude model, GitHub write tokens, threat
+detection, firewall, rate limits, budgets or posting jobs. The recorder restricts its own
+commands; it does not enforce the coding assistant's wider tool permissions. One trial per
+case cannot establish pass^3 and does not replace the planned 90 hosted trials. The historical
+annotation and case-selection limitations still apply.
+
 ## Recorded results and missing runs
+
+This section describes the historical `final` hosted experiment, separately from the fallback.
 
 | Cohort | Planned outputs | Collected outputs | Missing outputs |
 |---|---:|---:|---:|
@@ -146,6 +198,7 @@ python3 -m unittest discover -s tests -v
 python3 evals/tools/score.py --runs final
 python3 evals/tools/skill_check.py --runs final
 python3 evals/tools/stats.py --runs final --baseline baseline-v2
+python3 evals/tools/score.py --runs assistant-dry-run --k 1
 ```
 
 Scoring and skill checks read the stored evidence. They do not rerun the agent. The comparison
@@ -161,6 +214,11 @@ python3 evals/tools/hint_holdout.py evals/need/raw/issues
 python3 evals/need/analyze_issues.py
 python3 evals/need/analyze_extra.py
 ```
+
+Use [the fallback's reproduction guide](results/assistant-dry-run/README.md) to inspect its
+sealed transcripts or prepare a new local exercise. `skill_check.py` expects hosted Claude
+session artifacts; the fallback uses `procedure-checks.json` and its recorder transcripts.
+Do not report those local checks as proof that the hosted Claude skill loader ran.
 
 `confusion.py` rewrites `results/confusion.md`; the need-analysis scripts rewrite their tables
 and summaries. The historical baseline can differ from `baseline-audit` because the latter

@@ -1,0 +1,14 @@
+{
+  "labels_added": [
+    "component/clipboard"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer field names represent proposed actions, not observed GitHub writes.",
+  "source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+  "case_token": "d014",
+  "proposal_sha256": "63e6498c98b89ea159e635c9a4358192daad873a23a276717cf10411b4b0072d",
+  "explanation": "The failing API is clipboard.readImage, and a reproduction gist is supplied. None of the earlier candidates reports the same clipboard behavior, and the report does not establish an upstream cause."
+}

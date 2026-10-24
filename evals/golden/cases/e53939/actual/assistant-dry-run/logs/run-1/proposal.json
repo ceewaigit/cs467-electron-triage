@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "Skipped because the template check returned a needs-template skip reason."
+    }
+  ],
+  "explanation": "Skipped because the template check returned a needs-template skip reason."
+}

@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro,similar",
+      "refs": "51047"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/devtools",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The report concerns a blank detached DevTools window and supplies no runnable reproduction, so label DevTools and request a Fiddle. Earlier issue 51047 reports a blank DevTools popup and may describe the same behavior."
+}

@@ -66,18 +66,18 @@ All 25 comments match the rendered templates. One run skipped revalidating a cor
 (e52232/run-2); two runs had denied commands. Recorded agent-only cost is $10.74, excluding
 threat detection and failed attempts (`results/skill-check-final.json`).
 
-Every final decision failure is listed in `results/score-final.json` and [the audit](docs/AUDIT.md):
-- e52255 0/3: linked #51767 rather than #51761/#52098. The matching exit code makes the gold
-  debatable, but its expectation remains frozen and the disagreement counts as failure.
-- e52266 0/3: weak links/missed repro label; v3 removes its false label claim. e52427 2/3: missed component.
-- e53175 1/3: missed upstream redirects twice; e53747 0/3: missed the required window component.
-Original e52385 exposed a repository-link bug (fixed; rerun 3/3); the audit lists earlier failures.
+The historical failures are in [the audit](docs/AUDIT.md): e52255/e52266 had link or label errors;
+e52427/e53747 missed components; e53175 missed redirects. Gold disagreements remain scored failures.
+The original forced control posted misleading prose. The template control limited labels/comments;
+its companion refused, so adds no enforcement evidence. Kill-switch and broken-config logs are saved.
 
-The original forced control posted misleading free text, motivating template-only comments.
-In the later forced run, only the allowed label and template posted; a second call was rejected.
-The other forced run refused, so proves no enforcement. `results/` also preserves broken-config,
-owner-skip, disable/cancel and empty-secret tests. Current audit fixes have offline tests and
-strict compilation; a new preflight hit a billing error, so further paid replay is deferred.
+After billing blocked replay, Codex dry-ran source `7ef6696` once on all 30 inputs, with no Anthropic calls.
+It passed 20/25 real and 5/5 adversarial cases; weighted cost .56 exceeded the rule baseline's .44.
+Six fresh assistants handled five cases each, using the unchanged skill/scripts and filtered inputs.
+Transcripts and all five rubric mismatches are in [the dry-run report](evals/golden/results/assistant-dry-run/README.md).
+The renderer rejected a synthetic reference; one noop reason had two sentences rather than one.
+This used Codex, not configured Claude; hosted permissions, detection and budgets were not exercised.
+The 90-run live replay remains deferred; scripts and workflow have offline tests and strict compilation.
 
 ## Governance
 
@@ -146,5 +146,5 @@ The latest controls, daily-limit enforcement, mobile operation and provider weig
 I chose the project, workflow and permitted actions. Claude Code (`claude-opus-5-5`) researched
 and drafted most code, workflows, tests and prose under my direction. Codex and independent
 subagents audited this revision, corrected metrics and controls, and used Humanizer for readability.
-Verification includes offline tests, strict compilation, frozen-data checks and saved run logs.
+Verification includes offline tests, compilation, frozen-data checks, live logs and the recorded dry run.
 The latest edits still require my review and explanation; they have not been live-replayed.

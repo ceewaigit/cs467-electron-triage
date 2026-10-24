@@ -1,0 +1,15 @@
+{
+ "number": 800009,
+ "title": "Tray icon missing on GNOME (Wayland) in 44.0.0 / 43.4.1+: StatusNotifierItem registration is rejected",
+ "body": "### Electron Version\n\n44.0.0 (also 44.0.0-beta.6, 43.4.1, 43.4.2)\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04, GNOME with the default ubuntu-appindicators extension, Wayland and Xorg sessions\n\n### What arch are you using?\n\nx64, arm64\n\n### Last Known Working Electron version\n\n44.0.0-beta.5 / 43.4.0 (icon registers; see #52674 for the separate menu problem those had), 42.x fully working\n\n### Expected Behavior\n\n`new Tray(image)` registers a StatusNotifierItem with `org.kde.StatusNotifierWatcher` and the icon shows in the GNOME top bar.\n\n### Actual Behavior\n\nNothing is registered with the watcher (`busctl --user get-property org.kde.StatusNotifierWatcher /StatusNotifierWatcher org.kde.StatusNotifierWatcher RegisteredStatusNotifierItems` never lists the app). On Wayland there is no tray icon at all; on Xorg the legacy XEmbed fallback icon appears instead.\n\nThe item calls `RegisterStatusNotifierItem(\"org.freedesktop.StatusNotifierItem-<pid>-1/StatusNotifierItem/1\")`, i.e. the well-known name with the object path appended. GNOME's watcher treats an argument that does not start with `/` as a bus name, `GetNameOwner` fails on that string, and the registration is refused, after which the SNI implementation is torn down. This came in with the cherry-pick of https://crrev.com/c/8250459 in #52951 (44-x-y) and #52952 (43-x-y); upstream fixed it a week later in https://crrev.com/c/8272040 (in Chromium 154.0.8016.0, so `main` already has it), which registers the plain well-known name and exports the item at `/StatusNotifierItem` again.\n\n### Testcase Gist URL\n\n```js\nconst { app, Tray, Menu, nativeImage } = require('electron');\napp.on('ready', () => {\n  const t = new Tray(nativeImage.createFromPath('icon.png'));\n  t.setContextMenu(Menu.buildFromTemplate([{ label: 'Quit', role: 'quit' }]));\n});\n```\n\nPer-version result against a watcher that resolves items the way the GNOME extension does:\n\n| version | RegisterStatusNotifierItem argument | result |\n|---|---|---|\n| 42.10.0 | `:1.1` | ok |\n| 43.4.0, 44.0.0-beta.5 | `org.freedesktop.StatusNotifierItem-<pid>-1` | registered (menu issue is #52674) |\n| 43.4.1, 44.0.0-beta.6, 44.0.0 | `org.freedesktop.StatusNotifierItem-<pid>-1/StatusNotifierItem/1` | `NameHasNoOwner`, registration refused |\n",
+ "labels": [
+  "43-x-y",
+  "44-x-y",
+  "bug :beetle:",
+  "platform/linux"
+ ],
+ "state": "open",
+ "author_association": "MEMBER",
+ "as_of": "2026-08-26T19:49:32Z",
+ "replay": true
+}

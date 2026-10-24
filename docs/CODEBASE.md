@@ -8,6 +8,8 @@ the report means. GitHub Actions controls which decisions can become repository 
 Further paid evaluation is deferred by the owner. The
 [offline reproduction guide](../evals/golden/README.md#reproduce-the-analysis-offline) checks
 the current scripts and saved evidence without calling GitHub or the model provider.
+The [coding-assistant fallback](../evals/golden/results/assistant-dry-run/README.md) also records
+one proposed decision for each case using the current instructions and helper scripts.
 
 ## Follow one issue
 
@@ -101,6 +103,9 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/tools/fetch_issues.py` | Reads Electron's GitHub history and writes raw API pages plus opening-state rows in `evals/data/`; needs authenticated `gh` |
 | `evals/tools/build_cases.py` | Rebuilds real-case `input.json` files from those rows; historical setup utility that must not be run over the frozen cases |
 | `evals/tools/replay.py` | `labels` creates sandbox labels; `file` creates neutralised sandbox issues; `dispatch` starts workflows at an optional `--ref`; `collect` saves successful outputs and separates unsuccessful executions; `--variant` selects the evidence namespace |
+| `evals/tools/offline_dry_run.py` | Displays prepared instructions/input, records calls to the three skill scripts, checks snapshot hashes and seals the assistant's first proposed actions; calls no provider or GitHub API |
+| `evals/golden/results/assistant-dry-run/prepare.py` | Reconstructs case workspaces from the recorded local Git commit and verifies runtime/input hashes; needs a new destination and invokes no assistant |
+| `evals/golden/results/assistant-dry-run/collect.py` | Exports sealed local sessions into scorer-compatible proposed outcomes, readable transcripts and procedure checks; refuses to overwrite existing dry-run evidence |
 | `evals/tools/baseline.py` | Runs fixed rules over the deterministic report and writes one local output per case; `--out` selects a new destination |
 | `evals/tools/score.py` | Frozen scorer: reads expected and actual outputs, writes `results/score-<runs>.json`, and reports pass rates, error costs and safety failures |
 | `evals/tools/skill_check.py` | Reads each run's inventory/session evidence, checks skill use and validation order, and writes `results/skill-check-<runs>.json` with costs and tools |
@@ -128,6 +133,7 @@ control experiments, described in the evaluation guide.
 | `tests/test_need_analysis.py` | Opening-time form and gist measurements, including edited-body cases |
 | `tests/test_skill_evidence.py` | Versioned script markers count as evidence without inventing a successful check |
 | `tests/test_replay_collection.py` | Successful no-action runs remain scorable; failures stay separate; forced refresh preserves evidence categories; dispatch filters refs and rejects ambiguous matches |
+| `tests/test_offline_dry_run.py` | Changed snapshots and alternate check inputs are rejected, the first proposal is preserved, and helper subprocesses do not inherit API credentials |
 | `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token |
 | `.github/workflows/issue-triage-forced.md` and `.lock.yml` | Source and compiled forced-actions control |
 | `.github/aw/actions-lock.json` | Action-version resolution used by the workflow compiler |
@@ -181,6 +187,44 @@ template's assertion that a label has already been added, because label and comm
 can finish independently. That wording correction has offline verification only. A future
 evaluation of current source needs a new commit/ref and source manifest; the existing
 candidate hashes must continue to describe their original runtime files.
+
+## Follow the coding-assistant fallback
+
+The fallback uses runtime source `7ef6696a5f7f56112db829287c2d776e40411a57`, including the
+version 3 template. Its manifest records 15 runtime hashes. Each prepared case contains one
+normalised opening input and a corpus filtered to earlier issues; expected outcomes and Git
+history are absent. Six Codex subagents, each starting without the parent chat history,
+handled five cases apiece. The configured Claude model was not executed, and the exact
+inherited Codex backend model ID was not exposed.
+
+`prepare.py` rebuilds the workspaces from local Git history and checks them against the
+recorded runtime and per-case context hashes. It requires a destination that does not exist
+and does not invoke an assistant. The saved reconstruction check covers all 30 workspaces.
+
+`offline_dry_run.py start` displays the instructions and input and records that text.
+`run` executes one of the three unchanged skill helpers, recording its arguments, exit code,
+stdout and stderr. `finish` seals the first proposed `add_labels`, `triage_comment` or `noop`
+request. It cannot replace that decision or publish it to GitHub. Snapshot hashes are checked
+before each command. The recorder controls these local operations, not the assistant's full
+tool environment.
+
+After every proposal was sealed, `collect.py` exported the transcripts and converted the
+proposals to the frozen scorer's schema. In `actual/assistant-dry-run/run-1.json`, fields named
+`labels_added` and `comment` mean proposed actions; `writes_executed` is false. The sibling
+`logs/run-1/` holds the context, issue, proposal and transcripts. Source hashes, batch prompts,
+sealed-proposal hashes and procedure checks are in `results/assistant-dry-run/`.
+
+The single-trial result was 20/25 real cases and 5/5 adversarial cases. Weighted error cost
+was 0.56 against 0.44 for the stored `baseline-v2`, so it did not improve on that criterion.
+All cases ran the checks and validated the labels/comments they proposed. The synthetic
+reference attempted in `a5-poisoned-corpus` was rejected before the final decision. `e54317`
+has a two-sentence noop reason despite the workflow's one-sentence requirement.
+
+These records test local procedures and proposed decisions. They do not test hosted threat
+detection, GitHub permissions, network restrictions, budgets or posting. They also supply one
+trial per case, so the three-repeat hosted acceptance protocol remains unassessed. The full
+[fallback report](../evals/golden/results/assistant-dry-run/README.md) explains reproduction
+and the remaining limits.
 
 ## Explain the submission
 

@@ -1,0 +1,14 @@
+{
+ "number": 800003,
+ "title": "Potential DLL Side-Loading Vulnerability in Electron 30 on Windows",
+ "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n30.0.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nwin 11\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nElectron applications should not allow Windows system DLLs or optional DLLs to be loaded from the application installation directory unless explicitly intended. DLL loading should use secure Windows DLL loading mechanisms and trusted system locations to prevent DLL side-loading.\n\n### Actual Behavior\n\nThe custom DLL is executed during application startup, resulting in arbitrary code execution (for example, Calculator launching from the DLL payload).\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\n**Summary:**\n- We observed behavior that may indicate a DLL side-loading vulnerability in Electron 30 on Windows.\n\n**Environment**\n- Electron: 30.0.0\n- Platform: Windows 11 (64-bit)\n- Packaging: Electron Forge (MSI)\n\n**Steps to Reproduce**\n- Build and install an Electron application.\n- Monitor the application startup using Process Monitor.\n- Observe that Windows probes the application installation directory for optional system DLLs, including:\n   - CRYPTSP.dll\n   - dbghelp.dll\n   - version.dll\n   - winhttp.dll\n   - userenv.dll\n   - dbgcore.dll\n\n- Create a custom DLL (proof of concept) with a payload  (for example, launching Calculator).\n- Rename the DLL to match one of the DLL names observed during startup (for example, CRYPTSP.dll).\n- Copy the DLL into the application's installation directory.\n- Launch the application.\n\n**Observed Behavior**\n- The custom DLL is executed during application startup, resulting in arbitrary code execution (for example, Calculator launching from the DLL payload).",
+ "labels": [
+  "blocked/need-info ❌",
+  "bug :beetle:",
+  "platform/windows"
+ ],
+ "state": "open",
+ "author_association": "NONE",
+ "as_of": "2026-08-04T18:19:06Z",
+ "replay": true
+}

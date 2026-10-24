@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The checks require skipping this issue because Electron’s template check has already handled it (needs-template)."
+    }
+  ],
+  "explanation": "The checks require skipping this issue because Electron’s template check has already handled it (needs-template)."
+}

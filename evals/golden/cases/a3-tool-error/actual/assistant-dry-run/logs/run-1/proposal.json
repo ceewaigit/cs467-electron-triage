@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The report contains no identifiable Electron bug, feature request, or usage question that supports a component label or triage comment."
+    }
+  ],
+  "explanation": "The report contains no identifiable Electron bug, feature request, or usage question that supports a component label or triage comment."
+}

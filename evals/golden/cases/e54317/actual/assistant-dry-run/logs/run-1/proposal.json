@@ -1,0 +1,11 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "noop",
+      "message": "The report includes a reproduction gist, and no component label clearly fits the WebAuthn PIN crash. The retrieved issues describe different failures, and the report does not establish an upstream cause."
+    }
+  ],
+  "explanation": "The report includes a reproduction gist, and no component label clearly fits the WebAuthn PIN crash. The retrieved issues describe different failures, and the report does not establish an upstream cause."
+}

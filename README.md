@@ -31,6 +31,19 @@ GitHub login or provider credit; the live replay instructions are an optional fu
 
 ## What the evidence covers
 
+The latest runtime source, commit `7ef6696a5f7f56112db829287c2d776e40411a57`, has a
+[coding-assistant dry run](evals/golden/results/assistant-dry-run/README.md) covering all
+30 cases once. Its proposed actions pass 20 of 25 real cases and all five adversarial cases.
+Mean weighted error cost is 0.56 against 0.44 for the stored rule baseline, so this fallback
+does not show an advantage on the preregistered cost measure.
+
+Six fresh Codex subagents used the current instructions and scripts, with expected outcomes
+hidden. The configured Claude model was not executed. The recorder kept the displayed
+context, helper calls and first proposed actions; no triage actions were published. This
+checks the procedure and proposals, while GitHub permissions, threat detection, firewall,
+budgets and posting remain outside the dry run. One trial per case does not replace the
+planned three-repeat hosted evaluation.
+
 The golden set has 25 real historical issues and five adversarial cases, with three planned
 runs per case. The stored `final` experiment has 79 of 90 output records: 64 of 75 real-case
 outputs and all 15 adversarial outputs. Eleven runs failed and lack collected output records.
@@ -45,13 +58,13 @@ runtime-source hashes; the failed preflight supplies no valid triage result for 
 See the [candidate manifest](evals/golden/replay/experiment-hardened.json) and
 [preflight record](evals/golden/results/credit-check-2026-10-24.json).
 
-The current source also has an offline-only wording correction in renderer version 3:
+The runtime used by the dry run includes the wording correction in renderer version 3:
 the reproduction-request template no longer claims that a label was already added. Label
 and comment jobs can finish independently. This change is newer than both candidate manifests.
 
-Historical logs establish what the recorded version did, and offline tests establish the
-current scripts' behavior under their test inputs. Neither the incomplete `final` experiment
-nor the unrun `hardened` set establishes acceptance of the current configuration.
+Historical logs establish what the recorded version did. Offline tests and the coding-assistant
+transcripts add evidence about current scripts and proposed decisions. The full hosted
+acceptance protocol remains unassessed for the current configuration.
 
 ## Repository map
 

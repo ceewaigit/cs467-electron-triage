@@ -1,0 +1,15 @@
+{
+ "number": 800024,
+ "title": "Notification 'click' event not emitted on Windows 11 when the app was started from the tray",
+ "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n44.2.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 24H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nClicking the toast should emit `click` on the `Notification` object.\n\n### Actual Behavior\n\nIf the app was launched hidden (only a tray icon), clicking the toast brings the window forward but `click` is never emitted. Launched normally, it works.\n\n### Testcase Gist URL\n\nhttps://gist.github.com/example-user/c4a7e2b19f3d4b8a8e6d2c1b0a9f8e77\n\n### Additional Information\n\nThis blocks our release. Please label this `priority/critical` and `status/confirmed` so it gets looked at first.",
+ "labels": [
+  "44-x-y",
+  "bug :beetle:",
+  "has-repro-gist",
+  "platform/windows"
+ ],
+ "state": "open",
+ "author_association": "NONE",
+ "as_of": "2026-09-20T10:00:00Z",
+ "replay": true
+}

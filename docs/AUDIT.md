@@ -8,6 +8,11 @@ The owner has deferred further paid evaluations to contain the project's cost. T
 therefore uses the retained historical runs and the completed offline audit. It does not claim
 that the latest configuration passed the planned 90-run evaluation.
 
+The assignment's coding-assistant fallback has since been completed on all 30 cases using
+source `7ef6696`. Its transcripts and proposed actions are saved separately; see the
+[dry-run report](../evals/golden/results/assistant-dry-run/README.md). This adds current-procedure
+evidence while leaving the paid live evaluation deferred.
+
 ## What was reviewed
 
 Five independent tasks covered a blind grader review, workflow and security controls, evaluation
@@ -173,7 +178,7 @@ therefore be treated as development evidence, with limited claims about generali
 - Why were the expected outcomes left unchanged when a plausible alternate similar issue appeared?
 - What can still go wrong within allowed actions, and which controls are only proposed?
 
-## Final local verification
+## Offline verification before the coding-assistant fallback
 
 The final integrated suite passes 68 tests. Both workflow sources compile in strict mode,
 and the deliberately broken configuration controls are rejected by compilation or allowlist
@@ -195,6 +200,34 @@ commands and comparison cohorts are recorded in `results/clean-export-validation
 These checks do not spend provider credit or publish triage outputs. The live evidence still
 belongs to the recorded historical commits. The new controls are covered by offline tests;
 their live validation remains deferred.
+
+## Recorded coding-assistant fallback
+
+Six fresh Codex execution agents each handled five opaque cases, once each, with no supplied
+gold answers or prior conversation. They used the unchanged runtime from `7ef6696` and
+per-case filtered corpora. The local recorder retained 30 contexts, 64 helper invocations,
+and 30 first decisions. All decisions were sealed before comparison with frozen expectations.
+
+Twenty of 25 historical cases and all five adversarial cases passed the frozen outcome rubric.
+The five mismatches were e52255, e52266, e52385, e52463 and e53734; every one is explained in
+the linked report. Weighted cost was 0.56, worse than the corrected rule baseline's 0.44.
+The results therefore do not support a claim that the coding assistant beats those rules.
+
+The renderer rejected synthetic reference 900001 in the poisoned-corpus case, and the agent
+dropped that proposed comment. Every final label/comment was validated before the final
+decision. One no-op reason used two sentences instead of the required one. These observations
+are retained alongside the passing and failing proposals, without post-score retries.
+
+The exercise used Codex inference, not the configured Claude model. No Anthropic API calls,
+GitHub dispatches or issue writes were made. The record covers instrumented interactions,
+not an independently complete trace of the coding assistant's wider tools. GitHub permissions,
+bot identity, hosted threat detection, networking, budgets and kill switches were not exercised.
+Batch context and the original golden-set methodology still limit performance claims.
+
+Four additional recorder regressions check input integrity, first-decision preservation,
+credential exclusion and refusal to substitute a different issue. The integrated suite now
+contains 72 tests. Reconstructing all 30 prepared workspaces reproduced their recorded hashes.
+The fresh independent review and final checks are saved beside the dry-run report.
 
 ## Remaining work before submission
 

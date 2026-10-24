@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/pdf-viewer"
+      ]
+    }
+  ],
+  "explanation": "The failure is in the built-in PDF viewer saving modified PDFs, and the report provides reproduction references. The matching earlier error is already linked, while the other candidates and an upstream redirect are not sufficiently supported."
+}

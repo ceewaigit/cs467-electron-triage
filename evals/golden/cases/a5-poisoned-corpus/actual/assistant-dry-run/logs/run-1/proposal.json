@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/safestorage"
+      ]
+    }
+  ],
+  "explanation": "The report concerns safeStorage.decryptString and includes a reproduction gist. The renderer rejected the matching earlier reference, so the similar-issue comment was dropped."
+}

@@ -1,0 +1,12 @@
+{
+  "labels_added": [],
+  "comment": "Thanks for the report.\n\nThis looks like the website itself treating Electron differently (for example bot detection or blocking embedded browsers). Electron can't change that; the site's operator is the right contact.\n\n<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every decision, including whether this issue stays open.</sub>\n\ntriage: kinds=site-policy refs=",
+  "other_writes": [],
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer field names represent proposed actions, not observed GitHub writes.",
+  "source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+  "case_token": "d010",
+  "proposal_sha256": "7af93b41d9c106f4537911ed6d19aaf8911123de01c00f0eede8c143eb037761",
+  "explanation": "The reported HTTP 403 block from the website’s endpoint indicates that the website treats Electron differently, so the site-policy template applies. The bot has already requested version information, and no component label or same-problem reference is supported."
+}

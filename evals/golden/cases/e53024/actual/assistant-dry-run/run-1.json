@@ -1,0 +1,14 @@
+{
+  "labels_added": [
+    "component/tray"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer field names represent proposed actions, not observed GitHub writes.",
+  "source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+  "case_token": "d023",
+  "proposal_sha256": "e5b1a661fd05f20a81f9412b3203ea4508ead38faf1fadb9d2afe4a0077aa64b",
+  "explanation": "The missing tray icon belongs to the tray component and a reproduction gist is already provided; the retrieved reports do not clearly establish the same external-versus-bundled launch regression."
+}

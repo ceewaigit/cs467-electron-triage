@@ -1,0 +1,14 @@
+{
+  "labels_added": [
+    "component/menu"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer field names represent proposed actions, not observed GitHub writes.",
+  "source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+  "case_token": "d008",
+  "proposal_sha256": "20207669c351cd9026cf6f425157fd2c61fc4ffb2df26d19672f139446cd6277",
+  "explanation": "This feature request is specifically for font options on MenuItem labels. It does not need a reproduction request, and the retrieved candidates concern different behavior."
+}

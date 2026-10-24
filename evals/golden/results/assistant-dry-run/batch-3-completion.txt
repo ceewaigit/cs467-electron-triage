@@ -1,0 +1,3 @@
+Completed: d011, d012, d013, d014, d015.
+
+Procedural issue: d015’s renderer rejected reference 900001 as absent from the issue corpus; the comment was dropped before finish.

@@ -1,0 +1,14 @@
+{
+  "labels_added": [
+    "component/BrowserWindow"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer field names represent proposed actions, not observed GitHub writes.",
+  "source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+  "case_token": "d006",
+  "proposal_sha256": "c9e422e03cb97f2f2011f5e3ef3e9f69a22e68cc24d585a64a31491537236d7d",
+  "explanation": "The feature request concerns native window creation and its memory overhead, so BrowserWindow fits. No reproduction request or comment is warranted for this feature request, and the candidates do not describe the same problem."
+}

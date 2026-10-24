@@ -1,0 +1,35 @@
+Offline reconstruction of all recorded workspaces
+Command: python3 evals/golden/results/assistant-dry-run/prepare.py --destination NEW_DIRECTORY
+Exit status: 0
+prepared context: 917 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 831 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 864 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 959 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 830 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 939 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 922 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 811 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 910 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 963 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 956 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 809 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 889 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 966 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 966 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 929 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 908 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 806 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 933 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 937 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 975 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 824 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 895 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 966 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 843 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 966 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 966 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 832 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 874 earlier corpus rows retained; evaluation files and result summaries removed
+prepared context: 813 earlier corpus rows retained; evaluation files and result summaries removed
+Reconstructed 30 input-only workspaces at /private/var/folders/bg/2dlhd5nj7wlbvx44ry7lmbbh0000gn/T/cs467-dry-reconstruction-3whp42hl/prepared.
+No assistant was invoked. Do not reuse or overwrite the recorded experiment for new decisions.

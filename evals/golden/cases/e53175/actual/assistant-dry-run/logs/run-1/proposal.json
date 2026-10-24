@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "upstream",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "blocked/upstream ❌"
+      ]
+    }
+  ],
+  "explanation": "The requested preedit rectangle support belongs to the Wayland text-input integration inherited from Chromium and depends on upstream protocol support. This is a feature request, and the retrieved IME reports do not establish the same Wayland protocol problem."
+}

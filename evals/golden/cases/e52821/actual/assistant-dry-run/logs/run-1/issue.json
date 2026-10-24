@@ -1,0 +1,15 @@
+{
+ "number": 800013,
+ "title": "Duplicate \"Toggle Full Screen\" menu item on macOS",
+ "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.4.0\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS 26.5.2\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nGiven a menu item with role `togglefullscreen`, there should be one \"Toggle Full Screen\" menu item.\n\n### Actual Behavior\n\nTwo \"Toggle Full Screen\" menu items (with two keyboard shortcuts).\n\n<img width=\"439\" height=\"263\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2787fcbf-44b9-4de5-9711-cb065b5fbda6\" />\n\n### Testcase Gist URL\n\nhttps://gist.github.com/eostrom/b120b0b6412063855bbf9b2677247368\n\n### Additional Information\n\nReported as #49048 (v39.1.2) and fixed in #49074 (not sure what version). Re-reported in #50531 (v41.1.0) and closed as stale. Still reproducible in 43.4.0 (and 42.7.0).",
+ "labels": [
+  "43-x-y",
+  "bug :beetle:",
+  "has-repro-gist",
+  "platform/macOS"
+ ],
+ "state": "open",
+ "author_association": "NONE",
+ "as_of": "2026-08-14T19:38:51Z",
+ "replay": true
+}
