@@ -1,0 +1,14 @@
+{
+  "number": 800001,
+  "title": "Detached/undocked DevTools is a blank/empty window",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.1.1\n\n### What operating system(s) are you using?\n\nmacOS\n\n### Operating System Version\n\nmacOS Sonoma 14.7.3\n\n### What arch are you using?\n\narm64 (including Apple Silicon)\n\n### Last Known Working Electron version\n\n39.8.10\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nOpening dev tools in `detach` or `undock` mode should show dev tools.\n\n### Actual Behavior\n\nOn any electron version newer than 39.8.10, dev tools in detach/undocked mode is a blank/empty window, nothing loads. Only downgrading to electron 39.8.10 fixes it.\n\n<img width=\"1265\" height=\"880\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/2785f3c4-cf9d-45e6-aeb3-b7e54ad1c805\" />\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nWorth noting: This is happening for a frameless transparent window. Opening it in any mode besides `detach` or `undocked` works, but is not usable in this case (and overlay window w/ click-through transparency).\n\nAlso worth noting: disabling all extensions does not fix it either.\n\nScreenshot of 39.8.10 electron:\n<img width=\"1265\" height=\"878\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7c0a3b80-a47a-4ac2-aea6-97d7ee336d21\" />",
+  "labels": [
+    "43-x-y",
+    "bug :beetle:",
+    "platform/macOS"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-07-17T20:29:16Z",
+  "replay": true
+}

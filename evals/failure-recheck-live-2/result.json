@@ -1,0 +1,27 @@
+{
+  "run_id": 40067336688,
+  "source_commit": "7debabe981d26af3ff36cc4606f45bc6efb1daf3",
+  "issue": 218,
+  "conclusion": "failure",
+  "valid_triage_decisions": 0,
+  "error": "Anthropic invalid_request_error: key not scoped to a workspace; anthropic-workspace-id header required.",
+  "agent_harness_attempts": 2,
+  "agent_session_recorded_cost_usd_each": [
+    0,
+    0
+  ],
+  "agent_successful_usage_rows": 0,
+  "detection_recorded_ai_credits": 0,
+  "detection_successful_usage_rows": 0,
+  "recorded_inference_cost_usd": 0,
+  "billing_limit": "Usage evidence reports zero inference; provider invoice not inspected.",
+  "observed_writes": {
+    "labels": [],
+    "comment": null,
+    "other": []
+  },
+  "remaining_cases_dispatched": 0,
+  "retry_authorization": "Owner refreshed the secret and explicitly requested one retry after the first workspace-scoping failure.",
+  "next_step": "No further dispatch. Funded workspace ID or a workspace-scoped key is required; key refresh alone did not resolve authentication.",
+  "artifact_namespace_note": "The copied runner retains actual/failure-recheck-live within this separate attempt directory; the top-level directory and run ID distinguish attempts."
+}

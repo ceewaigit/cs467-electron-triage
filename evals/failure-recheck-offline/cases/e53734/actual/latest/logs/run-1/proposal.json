@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro,similar",
+      "refs": "53350"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/app",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The app.commandLine feature switch does not enable overlay scrollbars. The report supplies API fragments but no runnable app and no gist or repository, so request a reproduction. Earlier issue 53350 reports the same switch and scrollbar regression; no redirect is supported."
+}

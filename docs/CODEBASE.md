@@ -5,7 +5,9 @@ issue and suggest first-pass triage. It does not contain Electron's source or bu
 Python handles deterministic checks, data preparation and evaluation; the model decides what
 the report means. GitHub Actions controls which decisions can become repository writes.
 
-Further paid evaluation is deferred by the owner. The
+The limited live recheck is blocked by workspace authentication; both attempts failed before
+inference. The [five-case diagnostic](../evals/failure-recheck-offline/README.md) saves the
+new free reruns and independent review. The
 [offline reproduction guide](../evals/golden/README.md#reproduce-the-analysis-offline) checks
 the current scripts and saved evidence without calling GitHub or the model provider.
 The [coding-assistant fallback](../evals/golden/results/assistant-dry-run/README.md) records
@@ -122,6 +124,9 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/{conservative-linking,reproduction-check}/experiment.py` | Separate comparison wrappers: prepare frozen workspaces, reconstruct them, export sealed decisions and score paired results; no model or network calls |
 | `evals/reproduction-check/known_regression.py` | Prepares and collects the separate known failure; never includes it in fresh-case metrics |
 | `evals/reproduction-check/evidence/independent-check-source.py` | Independently reconstructs contexts, replays helpers and scores evidence; exclusive output creation protects the saved first audit |
+| `evals/failure-recheck-offline/check.py` | Prepares or reconstructs five selected input-only sessions, exports sealed first decisions and scores them; no model or network calls |
+| `evals/failure-recheck-offline/evidence/independent-*-source.py`, `live-review-source.py` in that directory | Saved independent checks for runtime/input integrity, helper/export replay, historical comparison and live-failure evidence; preserve their first reports |
+| `evals/failure-recheck-live*/run.py` | Wraps the sandbox replay helper for one explicit case at k=1; `file` creates an issue, `dispatch` can incur provider cost, and `collect` reads and saves GitHub results |
 
 The copies under each experiment's `evidence/frozen/` and `known-regression/collection-source.py`
 are archived execution sources. Keep them unchanged when editing maintained code. Follow each

@@ -1,0 +1,245 @@
+{
+  "compared_at_utc": "2026-10-24T05:46:50.716146+00:00",
+  "source_sha256": "89958c4e3fd2be9c60d66a5cfbcc2d945e86ced5226e30a8b98b1a823abbc25f",
+  "independent_review_sha256": "8924b6876bed82036e46b267c878e9ec8a5a494aa6ed3d80bbda523aad718e6b",
+  "old_passes": 0,
+  "new_passes": 1,
+  "old_weighted_error_cost_total": 14,
+  "new_weighted_error_cost_total": 11,
+  "cases": {
+    "e52255": {
+      "old_score": {
+        "pass": false,
+        "fails": [
+          "similar comment links none of [51761, 52098]"
+        ],
+        "cost": 3,
+        "safety": false
+      },
+      "new_score": {
+        "pass": false,
+        "fails": [
+          "similar comment links none of [51761, 52098]"
+        ],
+        "cost": 3,
+        "safety": false
+      },
+      "old_output_sha256": "5acc49d3bd479225668e63deb9e623d5bb5c9028fe6170cb342b6716345d7229",
+      "new_output_sha256": "ae454a88f86dd6723d0b3bbc887bb3e85e99a6e70e9fec061ea7a1ff28643449",
+      "old_source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+      "new_source_commit": "7debabe981d26af3ff36cc4606f45bc6efb1daf3",
+      "action_fields_unchanged": true,
+      "old_labels": [
+        "component/gpu"
+      ],
+      "new_labels": [
+        "component/gpu"
+      ],
+      "old_kinds_and_refs": [
+        [
+          "similar"
+        ],
+        [
+          51767
+        ]
+      ],
+      "new_kinds_and_refs": [
+        [
+          "similar"
+        ],
+        [
+          51767
+        ]
+      ]
+    },
+    "e52266": {
+      "old_score": {
+        "pass": false,
+        "fails": [
+          "wrong comment kind similar"
+        ],
+        "cost": 3,
+        "safety": false
+      },
+      "new_score": {
+        "pass": false,
+        "fails": [
+          "wrong comment kind similar"
+        ],
+        "cost": 3,
+        "safety": false
+      },
+      "old_output_sha256": "0ad6735af6e5472eaed0ab638e365a3f131e372f191f442d9d2aa8c8738fb19a",
+      "new_output_sha256": "4f9f8f8fb604e269dbd29cf4222005e5a51093c8fe8ad3b1d90dfa5dca9bee12",
+      "old_source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+      "new_source_commit": "7debabe981d26af3ff36cc4606f45bc6efb1daf3",
+      "action_fields_unchanged": true,
+      "old_labels": [
+        "component/printing",
+        "blocked/need-repro"
+      ],
+      "new_labels": [
+        "component/printing",
+        "blocked/need-repro"
+      ],
+      "old_kinds_and_refs": [
+        [
+          "need-repro",
+          "similar"
+        ],
+        [
+          50420
+        ]
+      ],
+      "new_kinds_and_refs": [
+        [
+          "need-repro",
+          "similar"
+        ],
+        [
+          50420
+        ]
+      ]
+    },
+    "e52385": {
+      "old_score": {
+        "pass": false,
+        "fails": [
+          "wrong comment kind similar"
+        ],
+        "cost": 3,
+        "safety": false
+      },
+      "new_score": {
+        "pass": true,
+        "fails": [],
+        "cost": 0,
+        "safety": false
+      },
+      "old_output_sha256": "c628679db5a1e0199c1db1f540af8dfe797ffc31a1dc761d67305350b1f1bdad",
+      "new_output_sha256": "a8b34ab39cad0d1b81ab0f4bb38323984d10a0161189d7448afc795ecb02c674",
+      "old_source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+      "new_source_commit": "7debabe981d26af3ff36cc4606f45bc6efb1daf3",
+      "action_fields_unchanged": false,
+      "old_labels": [
+        "component/devtools",
+        "blocked/need-repro"
+      ],
+      "new_labels": [
+        "component/devtools",
+        "blocked/need-repro"
+      ],
+      "old_kinds_and_refs": [
+        [
+          "need-repro",
+          "similar"
+        ],
+        [
+          51047
+        ]
+      ],
+      "new_kinds_and_refs": [
+        [
+          "need-repro"
+        ],
+        []
+      ]
+    },
+    "e52463": {
+      "old_score": {
+        "pass": false,
+        "fails": [
+          "wrong label blocked/upstream ❌",
+          "wrong comment kind upstream"
+        ],
+        "cost": 4,
+        "safety": false
+      },
+      "new_score": {
+        "pass": false,
+        "fails": [
+          "wrong label blocked/upstream ❌",
+          "wrong comment kind upstream"
+        ],
+        "cost": 4,
+        "safety": false
+      },
+      "old_output_sha256": "528979b707178e101e83d7f1c95e7f9171ba6ed0eed785754a5db4c0009b18d6",
+      "new_output_sha256": "a6ffded22e33c2eb90b7fbba223e38e5fa910ecb3202f59c8c4142444d9f2222",
+      "old_source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+      "new_source_commit": "7debabe981d26af3ff36cc4606f45bc6efb1daf3",
+      "action_fields_unchanged": true,
+      "old_labels": [
+        "blocked/need-repro",
+        "blocked/upstream ❌"
+      ],
+      "new_labels": [
+        "blocked/need-repro",
+        "blocked/upstream ❌"
+      ],
+      "old_kinds_and_refs": [
+        [
+          "need-repro",
+          "upstream"
+        ],
+        []
+      ],
+      "new_kinds_and_refs": [
+        [
+          "need-repro",
+          "upstream"
+        ],
+        []
+      ]
+    },
+    "e53734": {
+      "old_score": {
+        "pass": false,
+        "fails": [
+          "wrong label component/app"
+        ],
+        "cost": 1,
+        "safety": false
+      },
+      "new_score": {
+        "pass": false,
+        "fails": [
+          "wrong label component/app"
+        ],
+        "cost": 1,
+        "safety": false
+      },
+      "old_output_sha256": "76bb91d757452e1e03c8505f3eb24cd4a85f9a83df5fe2d28c8da3d7faa9a8de",
+      "new_output_sha256": "8f4d61d785cfb1aaa82300c9a382c9d59afd4c780bbb137f36f7419a5a0ac034",
+      "old_source_commit": "7ef6696a5f7f56112db829287c2d776e40411a57",
+      "new_source_commit": "7debabe981d26af3ff36cc4606f45bc6efb1daf3",
+      "action_fields_unchanged": true,
+      "old_labels": [
+        "component/app",
+        "blocked/need-repro"
+      ],
+      "new_labels": [
+        "component/app",
+        "blocked/need-repro"
+      ],
+      "old_kinds_and_refs": [
+        [
+          "need-repro",
+          "similar"
+        ],
+        [
+          53350
+        ]
+      ],
+      "new_kinds_and_refs": [
+        [
+          "need-repro",
+          "similar"
+        ],
+        [
+          53350
+        ]
+      ]
+    }
+  }
+}

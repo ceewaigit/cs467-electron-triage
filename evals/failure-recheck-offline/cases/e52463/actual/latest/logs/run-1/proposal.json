@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro,upstream",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "blocked/need-repro",
+        "blocked/upstream ❌"
+      ]
+    }
+  ],
+  "explanation": "The bug has no gist, repository, or runnable example, and no supported-version request; ask for an Electron Fiddle reproduction. The reporter confirms the same behavior in Chromium or Chrome, supporting an upstream redirect. No specific Electron component fits, and none of the earlier candidates describes the same moving pre-edit panel behavior."
+}

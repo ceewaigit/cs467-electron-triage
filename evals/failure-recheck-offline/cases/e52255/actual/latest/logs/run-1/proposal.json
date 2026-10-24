@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "51767"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/gpu"
+      ]
+    }
+  ],
+  "explanation": "GPU startup failure supports component/gpu. Issue 51767 reports the same GPU process exit code and is not already linked. The supported-version bot already asked for information, so omit a reproduction request. Chromium causation is unconfirmed, and the report spans several Electron applications, so omit redirects."
+}

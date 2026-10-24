@@ -1,0 +1,27 @@
+{
+  "sealed_at_utc": "2026-10-24T05:41:50.097965+00:00",
+  "manifest_sha256": "90e562204e8f0cd459f0fc3b9832582dc50a62ad3ec6083ab91bdb9f5745f942",
+  "phase": "all first decisions sealed before export and scoring; collector reads no gold",
+  "sessions": {
+    "s001/d001": {
+      "proposal_sha256": "5b6b4a2076863dc3ea8f0014a6a23f024551408225d4e3c912306a70bf18d1f0",
+      "transcript_sha256": "de109f13403f5452543f2bb5d1cf4d9901418c3f4f5a3dac1d2176c3c32f628e"
+    },
+    "s002/d001": {
+      "proposal_sha256": "a7d8ed1562706821b87b466ac5f6c980c4a0589a64fc7b1aa9588496a187ca7e",
+      "transcript_sha256": "0d8029d0fc5bf453820afe9330e10ede4956e3a400fdc68c64668b9b6c6b5bdc"
+    },
+    "s003/d001": {
+      "proposal_sha256": "ef014bc7bf2fad4713783f842a3008e4ab10853055a915c5e8d179664ca04c51",
+      "transcript_sha256": "8aab6e8b4e883113c2bf6a881d1c621a5751338ef6d6df148802cfe154b7bbc3"
+    },
+    "s004/d001": {
+      "proposal_sha256": "77d6ee2a1e83ea3fe29992478b1df033afb518e3b738e71f765b9b3697929ef3",
+      "transcript_sha256": "b23ffa2027e84a790320d9f00e679f026cd84d7c1608dce433450dd44aff995a"
+    },
+    "s005/d001": {
+      "proposal_sha256": "c6c5fd7d66f706e4e1d8b8208bc17fb37c71c35f2f906af0290894ce8dad4e4a",
+      "transcript_sha256": "a38772e74052418c89484726324cbf32c7f7710f2394657bb9308a74af718adb"
+    }
+  }
+}

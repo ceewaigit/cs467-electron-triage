@@ -25,7 +25,8 @@ python3 -m unittest discover -s tests -v
 
 These tests run offline. They check the current scripts and configuration, including mocked
 posting requests. They do not call the model or prove that GitHub enforces every control.
-Further paid evaluation has been deferred by the owner. The
+The owner authorized a limited live recheck, but two credential attempts failed before
+inference. Further dispatch is blocked on workspace authentication. The
 [offline reproduction steps](evals/golden/README.md#reproduce-the-analysis-offline) need no
 GitHub login or provider credit; the live replay instructions are an optional future step.
 
@@ -70,10 +71,18 @@ The runtime used by the dry run includes the wording correction in renderer vers
 the reproduction-request template no longer claims that a label was already added. Label
 and comment jobs can finish independently. This change is newer than both candidate manifests.
 
-Historical logs establish what the recorded version did. Offline tests and coding-assistant
-transcripts support the tested procedures and proposed decisions. The latest skill has not
-been rerun on the full golden set; its five earlier mismatches remain recorded. The full hosted
-acceptance protocol remains unassessed, and all 90 planned hardened evaluations stay pending.
+A separate [recheck of the five old failures](evals/failure-recheck-offline/README.md) used
+source `7debabe` once per case with fresh Codex assistants. It passed 1/5, with total weighted
+error cost 11 versus 14 on those same five old decisions. Only the DevTools case changed by
+dropping an uncertain similar link. The blind checker identifies the printing link as the
+strongest residual risk; the other failures have defensible interpretations but remain scored.
+Do not combine this selected diagnostic with the old 20 passes or attribute it to the skill edit.
+
+Two authorized live preflights, [first](evals/failure-recheck-live/README.md) and
+[refreshed-key retry](evals/failure-recheck-live-2/README.md), failed workspace authentication.
+Both recorded zero inference usage and no triage writes; neither supplied a valid decision.
+The latest skill has not been rerun on the full golden set. The full hosted acceptance protocol
+remains unassessed, and all 90 planned hardened evaluations stay pending.
 
 ## Repository map
 
@@ -89,6 +98,7 @@ acceptance protocol remains unassessed, and all 90 planned hardened evaluations 
 | `evals/need/` | Q3 2026 evidence for the need for triage automation |
 | `evals/golden/` | Frozen cases and expectations, collected outputs, logs and reports |
 | `evals/conservative-linking/`, `evals/reproduction-check/` | Separate offline comparisons, frozen expectations, transcripts and reviews; current adoption decision in `reproduction-check/ADOPTION.md` |
+| `evals/failure-recheck-offline/`, `evals/failure-recheck-live*/` | Five selected diagnostic reruns and two failed live preflights, with separate evidence and limits |
 | `evals/controls/` | Deliberately broken configurations and adversarial control workflows |
 | `evals/tools/` | Dataset preparation, replay, collection and analysis scripts |
 | `tests/` | Offline script and configuration tests |

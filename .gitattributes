@@ -1,1 +1,7 @@
 .github/workflows/*.lock.yml linguist-generated=true
+
+# Preserve the exact bytes used by the recheck manifests and independent audits.
+evals/failure-recheck-*/** -text
+# Native logs retain their original whitespace; do not rewrite audit evidence.
+evals/failure-recheck-live*/runs/** -whitespace
+evals/failure-recheck-live*/cases/**/failures/logs/** -whitespace

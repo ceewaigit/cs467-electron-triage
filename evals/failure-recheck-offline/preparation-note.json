@@ -1,0 +1,6 @@
+{
+  "failure": "Preparation omitted batch opaque_arm metadata; no assistant was invoked and no decision exists. Added the missing display-only metadata before preparing again.",
+  "first_workspace": "/private/tmp/cs467-five-recheck-20261024",
+  "partial_artifacts_retained_at": "/private/tmp/cs467-five-preparation-failed-before-inference",
+  "execution_started": false
+}

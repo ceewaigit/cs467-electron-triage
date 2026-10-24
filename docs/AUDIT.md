@@ -4,14 +4,15 @@ The audit found and repaired implementation, measurement and reporting problems.
 minimum historical-case requirement is satisfied, but the current edited configuration is not yet
 fully validated in GitHub Actions. A high grade cannot be inferred from passing local tests.
 
-The owner has deferred further paid evaluations to contain the project's cost. This submission
-therefore uses the retained historical runs and the completed offline audit. It does not claim
-that the latest configuration passed the planned 90-run evaluation.
+The owner authorized a limited live recheck after updating the API secret. Two first-case
+attempts failed workspace authentication before inference; further dispatch is blocked.
+This submission retains historical runs, offline checks and the separate five-case diagnostic.
+It does not claim that the latest configuration passed the planned 90-run evaluation.
 
 The assignment's coding-assistant fallback has since been completed on all 30 cases using
 source `7ef6696`. Its transcripts and proposed actions are saved separately; see the
 [dry-run report](../evals/golden/results/assistant-dry-run/README.md). This records that version's
-procedure while leaving the paid live evaluation deferred.
+procedure without establishing hosted enforcement for the latest configuration.
 
 ## Current adoption decision
 
@@ -28,11 +29,38 @@ decision, blind review, frozen expectations and transcripts retain their origina
 The [adoption record](../evals/reproduction-check/ADOPTION.md) explains the later decision and
 links the independent follow-up review. No result was repeated or relabelled to secure adoption.
 
-The five mismatches in the earlier golden dry run remain recorded; the new comparison does
-not establish that they are all fixed. The latest skill has fresh offline comparison evidence,
-but no full golden rerun or hosted Claude evaluation. All 90 planned hardened evaluations
-remain pending. This limits the accuracy and enforcement claims, while the assignment permits
-a documented coding-assistant fallback when end-to-end execution is unavailable.
+The five mismatches in the earlier golden dry run remain recorded. A new diagnostic below
+rechecks only those cases, and four still fail. The latest skill has fresh offline comparison
+evidence, but no full golden rerun or valid hosted Claude decision. All 90 planned hardened
+evaluations remain pending. The assignment permits a documented coding-assistant fallback
+when end-to-end execution is unavailable.
+
+## Latest five-case diagnostic and failed live preflights
+
+Five fresh Codex assistants each received one input-only case at source `7debabe`, once.
+The [saved diagnostic](../evals/failure-recheck-offline/README.md) has 1/5 passes, total weighted
+error cost 11 and zero scored safety failures. The same five old decisions scored 0/5 and cost
+14. Only e52385 changed, by dropping the uncertain #51047 link. No reproduction decision changed.
+This selected sample cannot establish a causal improvement or a new full-suite pass rate.
+
+The [independent review](../evals/failure-recheck-offline/evidence/blind-review.md) confirms
+hashes, contexts, helper executions and exports. It finds no new hard-control defect requiring
+repair. e52266's printing link remains a plausible overlink because the reports differ in
+whether empty or nonempty options trigger the failure. The GPU reference, upstream suggestion
+and app component have defensible interpretations; all remain failures against frozen targets.
+No runtime change or golden-target adjustment was made in response to these results.
+
+The two authorized hosted attempts ran the same source and selected first case on fresh
+sandbox issues. Runs 40066776440 and 40067336688 both returned HTTP 400 because the key was
+not scoped to a workspace and no `anthropic-workspace-id` header was supplied. Each recorded
+two internal agent attempts with zero tokens and $0; detection also recorded zero usage.
+No triage labels, comments or other writes were observed. Recorded usage is not an inspected
+provider invoice. The detector job's successful job status did not supply a security verdict.
+
+The [first attempt](../evals/failure-recheck-live/README.md) and
+[refreshed-key retry](../evals/failure-recheck-live-2/README.md) retain complete artifacts,
+failed records, final run metadata, skipped automatic-event runs and cost evidence. Neither
+failure is scored as a no-action success. The other four live cases were not dispatched.
 
 ## What was reviewed
 
@@ -253,7 +281,8 @@ The fresh independent review and final checks are saved beside the dry-run repor
 ## Remaining work before submission
 
 1. Review the saved failure tables and understand the difference between historical live results
-   and the current offline-tested controls. No further provider spending is planned.
+   and the current offline-tested controls. Further live dispatch requires working workspace
+   authentication; the full 90-run plan remains pending.
 2. Keep mobile-browser operation and burst-limit enforcement marked unverified. Testing them
    is optional future work, not evidence already supplied by the API kill-switch test.
 3. Confirm the AI-use statement accurately describes the student's own choices and verification.

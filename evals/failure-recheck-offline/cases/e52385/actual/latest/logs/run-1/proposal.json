@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/devtools",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "Detached DevTools opens blank, so label the DevTools component. The bug report supplies no gist, repository, or runnable example and no supported-version request is pending, so request a reproduction. Candidate excerpts do not clearly establish the same detached-window failure; no redirect is supported."
+}

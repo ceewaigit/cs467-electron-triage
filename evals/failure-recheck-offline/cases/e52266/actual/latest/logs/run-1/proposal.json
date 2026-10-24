@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro,similar",
+      "refs": "50420"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/printing",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "Printing bug has no gist, repository, or runnable example, so request a reproduction. Earlier issue 50420 reports the same Invalid printer settings failure in webContents.print on Linux. No clear evidence supports a redirect."
+}
