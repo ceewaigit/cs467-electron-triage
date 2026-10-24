@@ -1,0 +1,67 @@
+{
+  "reviewer": "/root/judgment_blind_checker",
+  "sealed_at_utc": "2026-10-24T07:39:57.016385+00:00",
+  "status": "approved: completion documentation agrees with sealed evidence",
+  "errors": [],
+  "document_and_support_hashes": {
+    "RESULTS.md": "52124aef87e967591ec368e0ba3f86c121b025cadd8c744101e1030fc0ab6935",
+    "README.md": "846f1aaf4b961526703efb466a0426b2fca9f856dc86577d69965edf9f104419",
+    "evidence/decision.json": "f4ad7bb80f051b667d664db949403af9f49c0811ce5d3c35d8d20b3ac8b8faf4",
+    "evidence/semantic-review.json": "dfcc67a012d298be57b52b91c7dd2a82a744f4d6baf5ea9d1b495ed89f7e1cf9",
+    "evidence/semantic-review-blind.json": "4b5424e1902adfefde25db4e86d8ef8263e5b1699feefadbe08646a6ae0d89b0",
+    "evidence/independent-audit.json": "a0e9b9b8944ccb9a896b0bae22ac4a281254ee2f917c9f5b48ba51b2be23e706",
+    "evidence/final-state.json": "2c9e18aeaadef4df9932ea2e55ba4d26be0d98e7a76d102ed5bd9e4d8fe419a7",
+    "requirements-review/report.md": "8afb7e9ba12ffc82e9eed79651eabd76ee484218740a26e68374c683bc31eb66",
+    "requirements-review/matrix.md": "dfe37f2a3900a70c2aa73f9cb3560226e6df0c74863a35d7c14cc37da6171e8a"
+  },
+  "correction_record": "evidence/documentation-review-corrections.json",
+  "corrections_verified": [
+    "Validation recovery correctly attributed to candidate s004/e51540/repetition1.",
+    "GPU link failure is described as rejection by the frozen expectation, distinct from an allowlist/rendering rejection.",
+    "README non-regression claim is hypothetical for a passing result; actual rejection and scored regression remain explicit."
+  ],
+  "factual_checks": {
+    "fresh_pass_counts": "original45/48,candidate44/48",
+    "fresh_costs": "original3,candidate4",
+    "known_pass_counts": "original0/4,candidate2/4",
+    "known_costs": "original8,candidate2",
+    "paired_score_regression": "fresh/e52099/2 loses component/build",
+    "unresolved_known_failure": "e53734 wrong component/app in both candidate repeats",
+    "separate_known_gain": "e52255 omits #51767 in both candidate repeats",
+    "shared_fresh_failures": "e51065 both policies/both repeats; e52099 original repeat1 and both candidate repeats",
+    "first_decisions": 104,
+    "recorded_helpers_replayed": 239,
+    "paired_gate_dictionaries_checked": 52,
+    "no_invalid_final_safety_or_procedure_failures": true,
+    "positive_controls_both_policies": true,
+    "current_suite_tests": 119,
+    "committed_submission_suite_tests": 103,
+    "requirements_traceability_entries": 101
+  },
+  "semantic_review_assessment": {
+    "anonymous_changed_pairs": 3,
+    "directions_reviewed": 6,
+    "all_non_harmful": true,
+    "mapped_candidate_directions": 3,
+    "disagreement_preserved": true,
+    "mechanical_scores_or_targets_changed": false,
+    "adoption_still_rejected": true,
+    "limitations_accurately_disclosed": [
+      "Review evaluated abstract kinds/refs and opening/corpus text, not exact rendered comment wording.",
+      "Packet lacked complete project-specific component definitions; optional build-label reasoning conflicts with the fixed expected target.",
+      "Symptom-level support for #51767 differs from the stricter frozen acceptable-reference set.",
+      "Neither this semantic opinion nor a pooled known-case gain overrides failed predeclared gates."
+    ]
+  },
+  "preservation": {
+    "head": "90724fea4152861499063b4f163d84c28348b0d3",
+    "prior_tracked_count": 5502,
+    "changed_prior_tracked_files": [],
+    "runtime_unchanged": true,
+    "candidate_adopted": false,
+    "new_commit_created": false,
+    "push_performed": "Coordinator attests false in final-state.json; no push action performed by this reviewer.",
+    "preexecution_readme_retained": true
+  },
+  "scope": "Final factual documentation review only. Historical-label exposure and offline/sample/model limits remain disclosed; no claim of universal non-regression, configured Claude retest, or A+ certification."
+}

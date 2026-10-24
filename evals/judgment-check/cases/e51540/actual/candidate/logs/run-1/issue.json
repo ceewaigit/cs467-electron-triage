@@ -1,0 +1,14 @@
+{
+  "number": 800022,
+  "title": "从41.2.1版本开始，窗口左边框、右边框、下边框会有个深灰色的边框线，上边框没有深灰色的边框线，之前的版本不存在这个问题 #51237",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n41.2.1\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\n版本\tWindows 10 专业版 版本号\t22H2 安装日期\t‎2023/‎11/‎17 OS 内部版本\t19045.6466\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n41.2.0\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\n<img width=\"430\" height=\"248\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/22b98d61-5d9f-4884-a275-dec45bac24ac\" />\n\n上面这种图是41.2.0版本，windows 10上面正常显示，边框没有黑线。\n\n\n### Actual Behavior\n\n<img width=\"966\" height=\"699\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/65045a3d-1f8b-40ea-b66d-4c13400b5dc2\" />\n\n这张图是升级到41.2.1及以上版本，windows 10上面显示出现的黑线，上边框没有黑线，只有左、右、下边框有黑线。 windows 11上面看不出来效果，只有win10上面可以看到黑线。\n\n\n操作系统信息：\n\n处理器\t11th Gen Intel(R) Core(TM) i5-1155G7 @ 2.50GHz   2.50 GHz\n机带 RAM\t24.0 GB (23.8 GB 可用)\n存储\t954 GB SSD UMIS RPITJ1TBVME2HWD\n显卡\tIntel(R) Iris(R) Xe Graphics (128 MB)\n\n系统类型\t64 位操作系统, 基于 x64 的处理器\n\n版本\tWindows 10 专业版\n版本号\t22H2\n安装日期\t‎2023/‎11/‎17\nOS 内部版本\t19045.6466\n\n### Testcase Gist URL\n\nhttps://github.com/yuzw1007/electron-41-border-demo.git\n\n### Additional Information\n\n访问github gitst无法打开，单独创建了一个示例repo,   直接运行npm run dev\n只有windows 10上面有这个黑线问题，windows 11上面看不出来黑线。",
+  "labels": [
+    "41-x-y",
+    "bug :beetle:",
+    "platform/windows"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-05-07T04:11:35Z",
+  "replay": true
+}

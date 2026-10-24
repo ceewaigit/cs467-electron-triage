@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/notifications"
+      ]
+    }
+  ],
+  "explanation": "A single Notification dismissal emits close twice; the icon and window are incidental. A gist is supplied and no candidate establishes the same failure."
+}

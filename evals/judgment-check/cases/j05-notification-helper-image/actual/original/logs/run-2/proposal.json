@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/notifications"
+      ]
+    }
+  ],
+  "explanation": "The report concerns duplicate Notification close events, supplies a gist, and has no candidate reporting the same behavior."
+}

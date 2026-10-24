@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/powerMonitor"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d008",
+  "batch_id": "s006",
+  "repetition": 1,
+  "policy_sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+  "proposal_sha256": "20b7127bdae80bba82524e49dd9374886d9969f5f1dcfc637aea0768db08b519",
+  "explanation": "The report concerns powerMonitor unlock-screen events. Its self-contained main.js registers one listener after app.whenReady, and the provided launch and lock/unlock steps reach the failure; no candidate describes the same behavior.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

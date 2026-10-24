@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report describes unwanted dark lines on the left, right, and bottom window borders beginning in 41.2.1, supporting BrowserWindow. A reproduction repository is supplied. No candidate excerpt matches that regression. The rejected component/window label was dropped; component/BrowserWindow validated successfully."
+}

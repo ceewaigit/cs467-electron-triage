@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "BrowserWindow setBounds and getBounds no longer match the visible frameless thick-frame window rectangle, supporting BrowserWindow alone. A gist is supplied. Related issue 51244 is already linked, and the other excerpts lack the same specific failure or describe different resize behavior."
+}

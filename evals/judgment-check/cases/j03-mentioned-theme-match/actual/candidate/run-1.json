@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/native-theme"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d010",
+  "batch_id": "s002",
+  "repetition": 1,
+  "policy_sha256": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a",
+  "proposal_sha256": "29b8135faaac26fda9a0a7e12f322c3a7727d46c346f08bb99a7b973a88d0961",
+  "explanation": "Setting nativeTheme.themeSource to dark leaves shouldUseDarkColors false, directly supporting native-theme. A gist is supplied; the matching earlier issue 990103 is already linked by the reporter, and the remaining candidates differ in failure details.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

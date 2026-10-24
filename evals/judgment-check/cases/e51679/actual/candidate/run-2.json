@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/BrowserWindow"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d020",
+  "batch_id": "s012",
+  "repetition": 2,
+  "policy_sha256": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a",
+  "proposal_sha256": "f6c122737915e87b1b801dfb5d888602dc150342fb4dbbd16894994281040a1f",
+  "explanation": "BrowserWindow setBounds and getBounds disagree with the visible frameless window rectangle; a gist is supplied, and no unlinked excerpt establishes the same specific failure.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

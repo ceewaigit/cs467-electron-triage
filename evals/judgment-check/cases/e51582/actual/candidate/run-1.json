@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/asar"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d021",
+  "batch_id": "s004",
+  "repetition": 1,
+  "policy_sha256": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a",
+  "proposal_sha256": "574a1c4d8dbe21934d64f18951277c1b3b364ac5c3628c1c536802bdf82a7fa4",
+  "explanation": "The proposed change explicitly adds ASAR integrity support on Linux. This is a feature request, so no reproduction is requested. Earlier excerpts concern different ASAR integrity changes or unrelated platform support and do not support a same-problem link.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

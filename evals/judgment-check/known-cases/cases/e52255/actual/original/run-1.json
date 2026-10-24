@@ -1,0 +1,31 @@
+{
+  "labels_added": [
+    "component/gpu"
+  ],
+  "comment": "Thanks for the report.\n\nThis looks like it may be the same problem as `electron/electron#51767`. If it is, adding your details there helps more than a separate issue. If it is different, a short note on what differs helps a maintainer decide.\n\n<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every decision, including whether this issue stays open.</sub>\n\ntriage: kinds=similar refs=#51767",
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": {
+    "type": "triage_comment",
+    "kinds": "similar",
+    "refs": "51767"
+  },
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d002",
+  "batch_id": "s002",
+  "repetition": 1,
+  "policy_sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+  "proposal_sha256": "37aadfc79cc3af985883cb65bdcf2395ab73f2f51bed9a1e266827c2b6d97c57",
+  "explanation": "The report concerns GPU process startup failures and matches the GPU exit error in issue 51767. The bot already requested a supported version, so no reproduction request is added; reporter-linked issues are omitted and an upstream cause is unconfirmed.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

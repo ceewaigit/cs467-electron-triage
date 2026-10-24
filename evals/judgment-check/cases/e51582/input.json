@@ -1,0 +1,13 @@
+{
+  "id": "e51582",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/51582",
+  "as_of": "2026-05-11T10:40:33Z",
+  "author_association": "NONE",
+  "title": "Could electron support ASAR integrity on linux?",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nCould electron support ASAR integrity on linux?\n\n### Proposed Solution\n\nAs electron asar integrity is supported on windows and mac ,Could electron support ASAR integrity on linux?\n\n### Alternatives Considered\n\n.\n\n### Additional Information\n\n_No response_",
+  "labels_at_open": [
+    "enhancement :sparkles:"
+  ],
+  "body_source": "current (never edited)"
+}

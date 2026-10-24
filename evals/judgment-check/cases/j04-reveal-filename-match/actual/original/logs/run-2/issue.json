@@ -1,0 +1,10 @@
+{
+  "number": 800002,
+  "title": "showItemInFolder selects the sibling file when names contain parentheses",
+  "body": "### Electron Version\n\n42.4.1\n\n### What operating system(s) are you using?\nmacOS 15\n\n### Expected Behavior\nshell.showItemInFolder('/tmp/triage-sample/Report (final).pdf') should select Report (final).pdf in Finder.\n\n### Actual Behavior\nWith sibling files Report.pdf and Report (final).pdf, Finder opens the correct folder but selects Report.pdf. Removing the parentheses from the target filename makes selection correct. Opening the target with shell.openPath works; only reveal selection is wrong. The gist creates both files in a temporary directory and makes the calls.\n\n### Testcase Gist URL\nhttps://gist.github.com/offline-fixture-owner/9c638e1b58264def9c4a6b5fbd441ec2\n",
+  "labels": [],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-06-30T12:00:00Z",
+  "replay": true
+}

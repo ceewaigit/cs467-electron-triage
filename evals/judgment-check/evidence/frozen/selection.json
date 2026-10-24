@@ -1,0 +1,1484 @@
+{
+  "selected_at_utc": "2026-10-24T07:03:54.091348+00:00",
+  "runtime_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "seed": 4672028,
+  "algorithm": "one random.Random(4672028), sample(sorted(eligible_issue_numbers), 4) for April, May, June in order",
+  "source": "evals/data/electron_issues.jsonl",
+  "source_sha256": "3fa8dfedbf7b0234b83125151723b7f3289b46fc277089332aec84035573292f",
+  "exclusion_scope": "All input.json under evals outside this namespace; only source/id/source_number identifiers inspected, including golden, all rechecks, both earlier fresh experiments, frozen copies and known regressions",
+  "eligibility": "Q2 2026 creation date; non-bot author; association not MEMBER, OWNER, COLLABORATOR; no prior input identifier",
+  "previous_case_inputs_inspected": [
+    {
+      "path": "evals/conservative-linking/cases/e50647/input.json",
+      "sha256": "86837b692becfca0026084c3850c6251fefbc1b9b87ab2fc7e655fe58fd49068",
+      "excluded_numbers": [
+        50647
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e50682/input.json",
+      "sha256": "f6c69af74c4c2de0fc69395fc9e6288f6da95a0df6452865f1c4405575baf9fa",
+      "excluded_numbers": [
+        50682
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51026/input.json",
+      "sha256": "dd465d6acfc5c8ef0cc1709048f929556e29cecd8cbed15bd195f01d0f698710",
+      "excluded_numbers": [
+        51026
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51064/input.json",
+      "sha256": "0cc1a133457d759a696ca0ddad28c7bfa52d8f9e0d55ad18b97f96df09f4fa55",
+      "excluded_numbers": [
+        51064
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51096/input.json",
+      "sha256": "b58f20b81b098dee24740163343fda6d1d8f67eadd426e233010a436c3094087",
+      "excluded_numbers": [
+        51096
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51188/input.json",
+      "sha256": "b47388e70a5f314f7a1444a056704e172d7af7220dd348d7efef5820a66017cf",
+      "excluded_numbers": [
+        51188
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51237/input.json",
+      "sha256": "be641f82c66d8799ecb0373126aefea603448ec84dea93bf09ddc9db20dacf19",
+      "excluded_numbers": [
+        51237
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51333/input.json",
+      "sha256": "ed4866607fb13ab05abb179f01155a7e92aa3b824d46d8cea9fab7dcf4b8458f",
+      "excluded_numbers": [
+        51333
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51442/input.json",
+      "sha256": "b7a2fbf08c47f1ce9b293b599ba529e07a2a383281e361f4ed654de5f7b2a774",
+      "excluded_numbers": [
+        51442
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51521/input.json",
+      "sha256": "b41926f477a77b70725ca1c08dca5a3719bced8cd76c5b22c5cc6db6393904a6",
+      "excluded_numbers": [
+        51521
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51556/input.json",
+      "sha256": "65fa5e8e253965bfe310880d96b890f169649e768fb17338a6b4c474fbadba65",
+      "excluded_numbers": [
+        51556
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51588/input.json",
+      "sha256": "e6ad9a549ae34d61e68ed2ecf57918b1e2ab4d60d3476a2569c37cdd7d824e1c",
+      "excluded_numbers": [
+        51588
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51598/input.json",
+      "sha256": "b4e54989231f8713ca3ce87c862cc596355a244d1237b2ca845c7ebd0e8b61de",
+      "excluded_numbers": [
+        51598
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51741/input.json",
+      "sha256": "c8923bc6700717aba8c4e0371b615a1769d0dd82d5ff4afdb8bfa8084d58b026",
+      "excluded_numbers": [
+        51741
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51765/input.json",
+      "sha256": "05df32fde181b2c0eb84466a4b723d543bd064318ecc29d17429f4e1b04863e8",
+      "excluded_numbers": [
+        51765
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51789/input.json",
+      "sha256": "756d3f1356bc651660c02e997cd51f10fb4c31d4613349c941d2b5874941c7b0",
+      "excluded_numbers": [
+        51789
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51818/input.json",
+      "sha256": "d0fb3b7a3c88862276e29c948ae0e023ccb9b8df9f6a4a1929123203f9115a1e",
+      "excluded_numbers": [
+        51818
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51876/input.json",
+      "sha256": "f9ceedda9a60fb90b73a6c9ac8723f502e476984303e34c90de3569cd65f93c3",
+      "excluded_numbers": [
+        51876
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51940/input.json",
+      "sha256": "f9103cef8735a47d33785f95bb55a307da3738e027dbd1eb9d119922677068cc",
+      "excluded_numbers": [
+        51940
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51957/input.json",
+      "sha256": "b2c9d9edfd170808ca1dc4c8fe32da51ec99d6e471db69759cb021641d1de6fb",
+      "excluded_numbers": [
+        51957
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e51962/input.json",
+      "sha256": "04bea511f02f7feb7c53f5135e4fabe0ab5f768b262fc1548c7682808ca26caa",
+      "excluded_numbers": [
+        51962
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e52055/input.json",
+      "sha256": "39d561e43f0bb6c70894da5f1a277e61b301536a72712c5a45ea73180f9ca0c0",
+      "excluded_numbers": [
+        52055
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e52087/input.json",
+      "sha256": "192098def9ee9ec9c2a14ec84505b4273f81652e40d265f74404fb3c23a242c3",
+      "excluded_numbers": [
+        52087
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/e52208/input.json",
+      "sha256": "51fd9f4245128df57ca136ade59a85eba984772f69d67b205ba03ef5787d8772",
+      "excluded_numbers": [
+        52208
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/s01-selection-clipboard/input.json",
+      "sha256": "b91f37a6a5fb48206868fc27114f2f2872a5a60ae5e3f48f3a332ac28126ef88",
+      "excluded_numbers": [
+        820001
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/s02-folder-cancel/input.json",
+      "sha256": "1d74f6a1c2a1c41f59c2723f5fe4bf0692a939a015ca8b3cebc940f31a579731",
+      "excluded_numbers": [
+        820002
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/s03-image-dimensions/input.json",
+      "sha256": "e4ca12f25edfbe766fd5cb5e052dc6e0302f61c0ffaedc114fbcea09aa95ee1f",
+      "excluded_numbers": [
+        820003
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/s04-glossary-no-action/input.json",
+      "sha256": "cb3138ad29b64142f52134637c7929df6d38719cad56a6dfa5b23bb589acb295",
+      "excluded_numbers": [
+        820004
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/s05-resume-untrusted-log/input.json",
+      "sha256": "65d35e4feba8232137a6f2bb445a4f3f6142a988c3e93a045254e29b6ffd3b20",
+      "excluded_numbers": [
+        820005
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/cases/s06-storage-partition/input.json",
+      "sha256": "90653ea1c36211cb6b943489b0ae3d5614e490b1461cd8735a061b9bd3a922c7",
+      "excluded_numbers": [
+        820006
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e50647/input.json",
+      "sha256": "86837b692becfca0026084c3850c6251fefbc1b9b87ab2fc7e655fe58fd49068",
+      "excluded_numbers": [
+        50647
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e50682/input.json",
+      "sha256": "f6c69af74c4c2de0fc69395fc9e6288f6da95a0df6452865f1c4405575baf9fa",
+      "excluded_numbers": [
+        50682
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51026/input.json",
+      "sha256": "dd465d6acfc5c8ef0cc1709048f929556e29cecd8cbed15bd195f01d0f698710",
+      "excluded_numbers": [
+        51026
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51064/input.json",
+      "sha256": "0cc1a133457d759a696ca0ddad28c7bfa52d8f9e0d55ad18b97f96df09f4fa55",
+      "excluded_numbers": [
+        51064
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51096/input.json",
+      "sha256": "b58f20b81b098dee24740163343fda6d1d8f67eadd426e233010a436c3094087",
+      "excluded_numbers": [
+        51096
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51188/input.json",
+      "sha256": "b47388e70a5f314f7a1444a056704e172d7af7220dd348d7efef5820a66017cf",
+      "excluded_numbers": [
+        51188
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51237/input.json",
+      "sha256": "be641f82c66d8799ecb0373126aefea603448ec84dea93bf09ddc9db20dacf19",
+      "excluded_numbers": [
+        51237
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51333/input.json",
+      "sha256": "ed4866607fb13ab05abb179f01155a7e92aa3b824d46d8cea9fab7dcf4b8458f",
+      "excluded_numbers": [
+        51333
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51442/input.json",
+      "sha256": "b7a2fbf08c47f1ce9b293b599ba529e07a2a383281e361f4ed654de5f7b2a774",
+      "excluded_numbers": [
+        51442
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51521/input.json",
+      "sha256": "b41926f477a77b70725ca1c08dca5a3719bced8cd76c5b22c5cc6db6393904a6",
+      "excluded_numbers": [
+        51521
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51556/input.json",
+      "sha256": "65fa5e8e253965bfe310880d96b890f169649e768fb17338a6b4c474fbadba65",
+      "excluded_numbers": [
+        51556
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51588/input.json",
+      "sha256": "e6ad9a549ae34d61e68ed2ecf57918b1e2ab4d60d3476a2569c37cdd7d824e1c",
+      "excluded_numbers": [
+        51588
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51598/input.json",
+      "sha256": "b4e54989231f8713ca3ce87c862cc596355a244d1237b2ca845c7ebd0e8b61de",
+      "excluded_numbers": [
+        51598
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51741/input.json",
+      "sha256": "c8923bc6700717aba8c4e0371b615a1769d0dd82d5ff4afdb8bfa8084d58b026",
+      "excluded_numbers": [
+        51741
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51765/input.json",
+      "sha256": "05df32fde181b2c0eb84466a4b723d543bd064318ecc29d17429f4e1b04863e8",
+      "excluded_numbers": [
+        51765
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51789/input.json",
+      "sha256": "756d3f1356bc651660c02e997cd51f10fb4c31d4613349c941d2b5874941c7b0",
+      "excluded_numbers": [
+        51789
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51818/input.json",
+      "sha256": "d0fb3b7a3c88862276e29c948ae0e023ccb9b8df9f6a4a1929123203f9115a1e",
+      "excluded_numbers": [
+        51818
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51876/input.json",
+      "sha256": "f9ceedda9a60fb90b73a6c9ac8723f502e476984303e34c90de3569cd65f93c3",
+      "excluded_numbers": [
+        51876
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51940/input.json",
+      "sha256": "f9103cef8735a47d33785f95bb55a307da3738e027dbd1eb9d119922677068cc",
+      "excluded_numbers": [
+        51940
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51957/input.json",
+      "sha256": "b2c9d9edfd170808ca1dc4c8fe32da51ec99d6e471db69759cb021641d1de6fb",
+      "excluded_numbers": [
+        51957
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e51962/input.json",
+      "sha256": "04bea511f02f7feb7c53f5135e4fabe0ab5f768b262fc1548c7682808ca26caa",
+      "excluded_numbers": [
+        51962
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e52055/input.json",
+      "sha256": "39d561e43f0bb6c70894da5f1a277e61b301536a72712c5a45ea73180f9ca0c0",
+      "excluded_numbers": [
+        52055
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e52087/input.json",
+      "sha256": "192098def9ee9ec9c2a14ec84505b4273f81652e40d265f74404fb3c23a242c3",
+      "excluded_numbers": [
+        52087
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/e52208/input.json",
+      "sha256": "51fd9f4245128df57ca136ade59a85eba984772f69d67b205ba03ef5787d8772",
+      "excluded_numbers": [
+        52208
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/s01-selection-clipboard/input.json",
+      "sha256": "b91f37a6a5fb48206868fc27114f2f2872a5a60ae5e3f48f3a332ac28126ef88",
+      "excluded_numbers": [
+        820001
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/s02-folder-cancel/input.json",
+      "sha256": "1d74f6a1c2a1c41f59c2723f5fe4bf0692a939a015ca8b3cebc940f31a579731",
+      "excluded_numbers": [
+        820002
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/s03-image-dimensions/input.json",
+      "sha256": "e4ca12f25edfbe766fd5cb5e052dc6e0302f61c0ffaedc114fbcea09aa95ee1f",
+      "excluded_numbers": [
+        820003
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/s04-glossary-no-action/input.json",
+      "sha256": "cb3138ad29b64142f52134637c7929df6d38719cad56a6dfa5b23bb589acb295",
+      "excluded_numbers": [
+        820004
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/s05-resume-untrusted-log/input.json",
+      "sha256": "65d35e4feba8232137a6f2bb445a4f3f6142a988c3e93a045254e29b6ffd3b20",
+      "excluded_numbers": [
+        820005
+      ]
+    },
+    {
+      "path": "evals/conservative-linking/evidence/frozen/cases/s06-storage-partition/input.json",
+      "sha256": "90653ea1c36211cb6b943489b0ae3d5614e490b1461cd8735a061b9bd3a922c7",
+      "excluded_numbers": [
+        820006
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live/cases/e52255/input.json",
+      "sha256": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+      "excluded_numbers": [
+        52255
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live/cases/e52266/input.json",
+      "sha256": "0f1767b600d6bccd3108e26fed26509059820d7bde9a7389594819b81712a391",
+      "excluded_numbers": [
+        52266
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live/cases/e52385/input.json",
+      "sha256": "b0db8b98694a2ded19415acaeeac083ceca8be7f84962f79b502b8c75526eaf9",
+      "excluded_numbers": [
+        52385
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live/cases/e52463/input.json",
+      "sha256": "7b556136cb170cd8ef7bcee76c324a84f23e94e30b038bf0869296580eec6df2",
+      "excluded_numbers": [
+        52463
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live/cases/e53734/input.json",
+      "sha256": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+      "excluded_numbers": [
+        53734
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-2/cases/e52255/input.json",
+      "sha256": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+      "excluded_numbers": [
+        52255
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-2/cases/e52266/input.json",
+      "sha256": "0f1767b600d6bccd3108e26fed26509059820d7bde9a7389594819b81712a391",
+      "excluded_numbers": [
+        52266
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-2/cases/e52385/input.json",
+      "sha256": "b0db8b98694a2ded19415acaeeac083ceca8be7f84962f79b502b8c75526eaf9",
+      "excluded_numbers": [
+        52385
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-2/cases/e52463/input.json",
+      "sha256": "7b556136cb170cd8ef7bcee76c324a84f23e94e30b038bf0869296580eec6df2",
+      "excluded_numbers": [
+        52463
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-2/cases/e53734/input.json",
+      "sha256": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+      "excluded_numbers": [
+        53734
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-3/cases/e52255/input.json",
+      "sha256": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+      "excluded_numbers": [
+        52255
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-3/cases/e52266/input.json",
+      "sha256": "0f1767b600d6bccd3108e26fed26509059820d7bde9a7389594819b81712a391",
+      "excluded_numbers": [
+        52266
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-3/cases/e52385/input.json",
+      "sha256": "b0db8b98694a2ded19415acaeeac083ceca8be7f84962f79b502b8c75526eaf9",
+      "excluded_numbers": [
+        52385
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-3/cases/e52463/input.json",
+      "sha256": "7b556136cb170cd8ef7bcee76c324a84f23e94e30b038bf0869296580eec6df2",
+      "excluded_numbers": [
+        52463
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-live-3/cases/e53734/input.json",
+      "sha256": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+      "excluded_numbers": [
+        53734
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/cases/e52255/input.json",
+      "sha256": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+      "excluded_numbers": [
+        52255
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/cases/e52266/input.json",
+      "sha256": "0f1767b600d6bccd3108e26fed26509059820d7bde9a7389594819b81712a391",
+      "excluded_numbers": [
+        52266
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/cases/e52385/input.json",
+      "sha256": "b0db8b98694a2ded19415acaeeac083ceca8be7f84962f79b502b8c75526eaf9",
+      "excluded_numbers": [
+        52385
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/cases/e52463/input.json",
+      "sha256": "7b556136cb170cd8ef7bcee76c324a84f23e94e30b038bf0869296580eec6df2",
+      "excluded_numbers": [
+        52463
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/cases/e53734/input.json",
+      "sha256": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+      "excluded_numbers": [
+        53734
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/evidence/frozen/cases/e52255/input.json",
+      "sha256": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+      "excluded_numbers": [
+        52255
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/evidence/frozen/cases/e52266/input.json",
+      "sha256": "0f1767b600d6bccd3108e26fed26509059820d7bde9a7389594819b81712a391",
+      "excluded_numbers": [
+        52266
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/evidence/frozen/cases/e52385/input.json",
+      "sha256": "b0db8b98694a2ded19415acaeeac083ceca8be7f84962f79b502b8c75526eaf9",
+      "excluded_numbers": [
+        52385
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/evidence/frozen/cases/e52463/input.json",
+      "sha256": "7b556136cb170cd8ef7bcee76c324a84f23e94e30b038bf0869296580eec6df2",
+      "excluded_numbers": [
+        52463
+      ]
+    },
+    {
+      "path": "evals/failure-recheck-offline/evidence/frozen/cases/e53734/input.json",
+      "sha256": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+      "excluded_numbers": [
+        53734
+      ]
+    },
+    {
+      "path": "evals/golden/cases/a1-close-stale/input.json",
+      "sha256": "efcdbc072d620351692d9d14345d420d38f2074aace0c7e102fc89d8dbad58ed",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/golden/cases/a2-hidden-comment/input.json",
+      "sha256": "7aced3feebaa72e74d6cdad4a53831b58f6d8329d1b26cd083fcbe1d50bdc8ed",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/golden/cases/a3-tool-error/input.json",
+      "sha256": "875631226cdf637599071f07c9ef0fd6554b932baaa0ca0608484d6786531884",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/golden/cases/a4-label-request/input.json",
+      "sha256": "74e395614f2ac1c69abc42850cc23c1190d91d7a52dc9fc06418507bf02299fc",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/golden/cases/a5-poisoned-corpus/input.json",
+      "sha256": "ab152b544d49f203ab6fd9d0609f20bac375d23b54a4402664800f1a95043957",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/golden/cases/e52232/input.json",
+      "sha256": "cd581686e83f2cec7bc53837014ec4acbbe3fce0f5cef86d58713337ed628dc5",
+      "excluded_numbers": [
+        52232
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52255/input.json",
+      "sha256": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+      "excluded_numbers": [
+        52255
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52263/input.json",
+      "sha256": "4aef42259d16ae2d1d5b8940da0168627165cc27cbc443c5a1735a2d6d675ac7",
+      "excluded_numbers": [
+        52263
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52266/input.json",
+      "sha256": "0f1767b600d6bccd3108e26fed26509059820d7bde9a7389594819b81712a391",
+      "excluded_numbers": [
+        52266
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52334/input.json",
+      "sha256": "1d1ef93fe19da9da6d246dd2f8634abe966542c8c23d7c626d905b8e36d1d9d9",
+      "excluded_numbers": [
+        52334
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52383/input.json",
+      "sha256": "69ecfc5bd5ccf7740ede256434beb8d3eba80dda074e675c8ab90f992db79f4a",
+      "excluded_numbers": [
+        52383
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52385/input.json",
+      "sha256": "b0db8b98694a2ded19415acaeeac083ceca8be7f84962f79b502b8c75526eaf9",
+      "excluded_numbers": [
+        52385
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52427/input.json",
+      "sha256": "1481cf904a551b69233e83e8637f70d09ca7ab4d128908d4e3128eb1e1967c12",
+      "excluded_numbers": [
+        52427
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52463/input.json",
+      "sha256": "7b556136cb170cd8ef7bcee76c324a84f23e94e30b038bf0869296580eec6df2",
+      "excluded_numbers": [
+        52463
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52643/input.json",
+      "sha256": "0f716a0c05cc99462e94d3c2e7685acbf5e3fa99202aa4284c19135702f8a34e",
+      "excluded_numbers": [
+        52643
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52738/input.json",
+      "sha256": "1c01d4001f7e63b0963ad7151b4a908249231f65e3ec4f20bcd125082631d488",
+      "excluded_numbers": [
+        52738
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e52821/input.json",
+      "sha256": "6fbbf392798ac79865ad61232c1a5ce35f0a20f4f6ac6abbce1a08874181c552",
+      "excluded_numbers": [
+        52821
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53024/input.json",
+      "sha256": "2ef00a497c34f67ac65c5316e718b61cfe55a77a6659ca6c5282d8f1f9687867",
+      "excluded_numbers": [
+        53024
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53175/input.json",
+      "sha256": "2bc9036891c7c2e57d6a9bcdfe8ef3a8f350f2a49805488dc7ad55e9eb2f300a",
+      "excluded_numbers": [
+        53175
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53213/input.json",
+      "sha256": "e78e2cf5891d27af2939f19fe8e8e6afa7dd4cc2a6ca1a8c4922c0b1e9c1e2f3",
+      "excluded_numbers": [
+        53213
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53286/input.json",
+      "sha256": "f46fc3b0b435aca7755aedf6462cb8969cce2075c9c1a7a5fcf17398cfd67378",
+      "excluded_numbers": [
+        53286
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53376/input.json",
+      "sha256": "515810f132b3691a058bd9a0234c037d11ad41990dd9bfc7f6925d48277c3bad",
+      "excluded_numbers": [
+        53376
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53545/input.json",
+      "sha256": "0dcbec5f9afc336126999cc6d25d095c0bd8a2478644a9d52b7888e89fdbc67a",
+      "excluded_numbers": [
+        53545
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53610/input.json",
+      "sha256": "a0b54992cf4110dd3ee6886c29d6a69ab43da45edb8552ac7b338dfc952eb585",
+      "excluded_numbers": [
+        53610
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53734/input.json",
+      "sha256": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+      "excluded_numbers": [
+        53734
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53747/input.json",
+      "sha256": "2389f11d0a9507856bc203101f783a03b79a7e1f3059f43f75f6f569e2522bdb",
+      "excluded_numbers": [
+        53747
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e53939/input.json",
+      "sha256": "17c7ffa8ac1a76813af344f3c25b1ba292981f61a56bfa167f1b060e2f3f6805",
+      "excluded_numbers": [
+        53939
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e54035/input.json",
+      "sha256": "2215b878b2b47b2e040bf14d8c9731cbd27d7fe1bd913092c149138b60ab1a84",
+      "excluded_numbers": [
+        54035
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e54123/input.json",
+      "sha256": "e5478d5fe759f5842472215c0075a5bc076560c5d78c0379f6b0b265bf070365",
+      "excluded_numbers": [
+        54123
+      ]
+    },
+    {
+      "path": "evals/golden/cases/e54317/input.json",
+      "sha256": "0734bccddc0f2cc83da5cd1733b8cae2bd14a54195382f35c027c273ae2bb550",
+      "excluded_numbers": [
+        54317
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e50610/input.json",
+      "sha256": "f1b2af9a7fdce0f1d6cb18b35485069fe87a21690f06e94ec0ce9b0837bc30f0",
+      "excluded_numbers": [
+        50610
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e50678/input.json",
+      "sha256": "38e5f76fda71076822fe2e009d45924fd5afbcaace88ee0cdaa3b808e9519068",
+      "excluded_numbers": [
+        50678
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e50840/input.json",
+      "sha256": "6f6a64cfcc96f3de5f8c1e3bf55efdb05e1a3e429379d7ca208bc2bedf919415",
+      "excluded_numbers": [
+        50840
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51014/input.json",
+      "sha256": "bd5afb37b75eda4d100c316e7c0252fb4618259eaca64220f4ebcc4d096306c7",
+      "excluded_numbers": [
+        51014
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51351/input.json",
+      "sha256": "b9a6fbe1574c9fb46218fdc44255609eac4b60036671847691bdc629fb548ddc",
+      "excluded_numbers": [
+        51351
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51393/input.json",
+      "sha256": "3f864266feff7538d971ea258e935a8710ffbc4882ded51e436c62aacc9e6015",
+      "excluded_numbers": [
+        51393
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51557/input.json",
+      "sha256": "e3133ed960f2ced6bcfad438b1200bfb985a782df37ea2448699a51a8c389059",
+      "excluded_numbers": [
+        51557
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51571/input.json",
+      "sha256": "ed3414452f669d9ba003606957c25892fa56f330999b32ddfae56dc5ac76a757",
+      "excluded_numbers": [
+        51571
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51619/input.json",
+      "sha256": "82fe0a4540dadac0a1be6f33ffd7d54782eed58f3b95323bb21ce785483523c0",
+      "excluded_numbers": [
+        51619
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51678/input.json",
+      "sha256": "bcc0e2136e5d18bf7c97f06b3e5b47df857701aea5e6939d36c9919f864f5431",
+      "excluded_numbers": [
+        51678
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51760/input.json",
+      "sha256": "c4bca8eaad73b9ba30578a8044afc44e03ac16a8f4d5409d21f9f572bce64a35",
+      "excluded_numbers": [
+        51760
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51788/input.json",
+      "sha256": "9be4e45bf0be675476017e985016f5c7fa33c51e21c1b652fdad3e730f78f914",
+      "excluded_numbers": [
+        51788
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51860/input.json",
+      "sha256": "36470e7fe9527e046b2a438c1e5e059fa293a01bd9e4c167c74bd84240d9d4ba",
+      "excluded_numbers": [
+        51860
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51950/input.json",
+      "sha256": "3101a191eb3596efc89e2dfd773fa5bdd2ceccdaec5537009fbee52a5538ea8f",
+      "excluded_numbers": [
+        51950
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e51963/input.json",
+      "sha256": "5c38a6ee771941cd332977026d4edd5d0484f9ab53337280e41736f8fb5d5b5c",
+      "excluded_numbers": [
+        51963
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e52086/input.json",
+      "sha256": "3531777d53e6578f71b4c550fc87c53c23a686c306e91c33932f816a8a51f474",
+      "excluded_numbers": [
+        52086
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e52098/input.json",
+      "sha256": "849c9ef7afb037ceb963b8e97b6e366fb9f7bf3859297331c757b7b1d372e875",
+      "excluded_numbers": [
+        52098
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/e52124/input.json",
+      "sha256": "d66061632371d13ece843bea4c3ece57dd0eafd7e344e6a2d84b64996bc808d1",
+      "excluded_numbers": [
+        52124
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/cases/r01-multiline-constructor/input.json",
+      "sha256": "66b4dce02a4e7d8d5b09fa7dc843c9f31ab49751e791fa41b9826f64ca75ef0d",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r02-call-variants/input.json",
+      "sha256": "de16638d035512470a0d8bacb8422d753f951796127f74435445b928995cfdce",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r03-config-fragment/input.json",
+      "sha256": "57615f3aef4c0e6efc2d228cbb6cbd4d820053130e8d0c2b91ee9f4b0ccd807c",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r04-external-fixture/input.json",
+      "sha256": "d0635b78171900bc6b13e42cd51f92d531becc5fb7ea5e29abb681ee68242d5a",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r05-stack-output/input.json",
+      "sha256": "4a521cc146cf0f3eb0bb9bd209a62df5ce2bb7beaa3b7043f8fd833d47b22300",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r06-complete-inline/input.json",
+      "sha256": "e8d0cb70cb4496b9479dccb19ac389f8109a005e58c0534812dbc2ce1e931739",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r07-gist-supplied/input.json",
+      "sha256": "4e0f7f75a992e09389f26478399bb78b5417a888cd14e1b00af97061c7a2f6bc",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r08-repository-supplied/input.json",
+      "sha256": "d61d204a4ea3b4f1aad8e97fe6bc328a93b0f2106fd4d7adef973ea0aa6afa4f",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r09-feature-guard/input.json",
+      "sha256": "c53273f29b3716cc5a998c50d9d5d768fccbea610daf6032cf7b11a5657b531d",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r10-supported-version-guard/input.json",
+      "sha256": "67edd3aa0cc7a7cf91422c773670896bee9483aea137e8cba11e8f42c2c4c5ce",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r11-security-guard/input.json",
+      "sha256": "63616c7e7be4b5e10eaee03e71fa11b22b6e785d4e891b2db7ea8737b54db168",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/cases/r12-maintainer-skip/input.json",
+      "sha256": "f8c642e6dd7c579e9e8c43896ae6a901a2aa07ddbbfd236cb3d06cf9c133068a",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e50610/input.json",
+      "sha256": "f1b2af9a7fdce0f1d6cb18b35485069fe87a21690f06e94ec0ce9b0837bc30f0",
+      "excluded_numbers": [
+        50610
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e50678/input.json",
+      "sha256": "38e5f76fda71076822fe2e009d45924fd5afbcaace88ee0cdaa3b808e9519068",
+      "excluded_numbers": [
+        50678
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e50840/input.json",
+      "sha256": "6f6a64cfcc96f3de5f8c1e3bf55efdb05e1a3e429379d7ca208bc2bedf919415",
+      "excluded_numbers": [
+        50840
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51014/input.json",
+      "sha256": "bd5afb37b75eda4d100c316e7c0252fb4618259eaca64220f4ebcc4d096306c7",
+      "excluded_numbers": [
+        51014
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51351/input.json",
+      "sha256": "b9a6fbe1574c9fb46218fdc44255609eac4b60036671847691bdc629fb548ddc",
+      "excluded_numbers": [
+        51351
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51393/input.json",
+      "sha256": "3f864266feff7538d971ea258e935a8710ffbc4882ded51e436c62aacc9e6015",
+      "excluded_numbers": [
+        51393
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51557/input.json",
+      "sha256": "e3133ed960f2ced6bcfad438b1200bfb985a782df37ea2448699a51a8c389059",
+      "excluded_numbers": [
+        51557
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51571/input.json",
+      "sha256": "ed3414452f669d9ba003606957c25892fa56f330999b32ddfae56dc5ac76a757",
+      "excluded_numbers": [
+        51571
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51619/input.json",
+      "sha256": "82fe0a4540dadac0a1be6f33ffd7d54782eed58f3b95323bb21ce785483523c0",
+      "excluded_numbers": [
+        51619
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51678/input.json",
+      "sha256": "bcc0e2136e5d18bf7c97f06b3e5b47df857701aea5e6939d36c9919f864f5431",
+      "excluded_numbers": [
+        51678
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51760/input.json",
+      "sha256": "c4bca8eaad73b9ba30578a8044afc44e03ac16a8f4d5409d21f9f572bce64a35",
+      "excluded_numbers": [
+        51760
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51788/input.json",
+      "sha256": "9be4e45bf0be675476017e985016f5c7fa33c51e21c1b652fdad3e730f78f914",
+      "excluded_numbers": [
+        51788
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51860/input.json",
+      "sha256": "36470e7fe9527e046b2a438c1e5e059fa293a01bd9e4c167c74bd84240d9d4ba",
+      "excluded_numbers": [
+        51860
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51950/input.json",
+      "sha256": "3101a191eb3596efc89e2dfd773fa5bdd2ceccdaec5537009fbee52a5538ea8f",
+      "excluded_numbers": [
+        51950
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e51963/input.json",
+      "sha256": "5c38a6ee771941cd332977026d4edd5d0484f9ab53337280e41736f8fb5d5b5c",
+      "excluded_numbers": [
+        51963
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e52086/input.json",
+      "sha256": "3531777d53e6578f71b4c550fc87c53c23a686c306e91c33932f816a8a51f474",
+      "excluded_numbers": [
+        52086
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e52098/input.json",
+      "sha256": "849c9ef7afb037ceb963b8e97b6e366fb9f7bf3859297331c757b7b1d372e875",
+      "excluded_numbers": [
+        52098
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/e52124/input.json",
+      "sha256": "d66061632371d13ece843bea4c3ece57dd0eafd7e344e6a2d84b64996bc808d1",
+      "excluded_numbers": [
+        52124
+      ]
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r01-multiline-constructor/input.json",
+      "sha256": "66b4dce02a4e7d8d5b09fa7dc843c9f31ab49751e791fa41b9826f64ca75ef0d",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r02-call-variants/input.json",
+      "sha256": "de16638d035512470a0d8bacb8422d753f951796127f74435445b928995cfdce",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r03-config-fragment/input.json",
+      "sha256": "57615f3aef4c0e6efc2d228cbb6cbd4d820053130e8d0c2b91ee9f4b0ccd807c",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r04-external-fixture/input.json",
+      "sha256": "d0635b78171900bc6b13e42cd51f92d531becc5fb7ea5e29abb681ee68242d5a",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r05-stack-output/input.json",
+      "sha256": "4a521cc146cf0f3eb0bb9bd209a62df5ce2bb7beaa3b7043f8fd833d47b22300",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r06-complete-inline/input.json",
+      "sha256": "e8d0cb70cb4496b9479dccb19ac389f8109a005e58c0534812dbc2ce1e931739",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r07-gist-supplied/input.json",
+      "sha256": "4e0f7f75a992e09389f26478399bb78b5417a888cd14e1b00af97061c7a2f6bc",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r08-repository-supplied/input.json",
+      "sha256": "d61d204a4ea3b4f1aad8e97fe6bc328a93b0f2106fd4d7adef973ea0aa6afa4f",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r09-feature-guard/input.json",
+      "sha256": "c53273f29b3716cc5a998c50d9d5d768fccbea610daf6032cf7b11a5657b531d",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r10-supported-version-guard/input.json",
+      "sha256": "67edd3aa0cc7a7cf91422c773670896bee9483aea137e8cba11e8f42c2c4c5ce",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r11-security-guard/input.json",
+      "sha256": "63616c7e7be4b5e10eaee03e71fa11b22b6e785d4e891b2db7ea8737b54db168",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/evidence/frozen/cases/r12-maintainer-skip/input.json",
+      "sha256": "f8c642e6dd7c579e9e8c43896ae6a901a2aa07ddbbfd236cb3d06cf9c133068a",
+      "excluded_numbers": []
+    },
+    {
+      "path": "evals/reproduction-check/known-regression/input.json",
+      "sha256": "b2c9d9edfd170808ca1dc4c8fe32da51ec99d6e471db69759cb021641d1de6fb",
+      "excluded_numbers": [
+        51957
+      ]
+    }
+  ],
+  "previous_real_numbers_excluded": [
+    50610,
+    50647,
+    50678,
+    50682,
+    50840,
+    51014,
+    51026,
+    51064,
+    51096,
+    51188,
+    51237,
+    51333,
+    51351,
+    51393,
+    51442,
+    51521,
+    51556,
+    51557,
+    51571,
+    51588,
+    51598,
+    51619,
+    51678,
+    51741,
+    51760,
+    51765,
+    51788,
+    51789,
+    51818,
+    51860,
+    51876,
+    51940,
+    51950,
+    51957,
+    51962,
+    51963,
+    52055,
+    52086,
+    52087,
+    52098,
+    52124,
+    52208,
+    52232,
+    52255,
+    52263,
+    52266,
+    52334,
+    52383,
+    52385,
+    52427,
+    52463,
+    52643,
+    52738,
+    52821,
+    53024,
+    53175,
+    53213,
+    53286,
+    53376,
+    53545,
+    53610,
+    53734,
+    53747,
+    53939,
+    54035,
+    54123,
+    54317,
+    820001,
+    820002,
+    820003,
+    820004,
+    820005,
+    820006
+  ],
+  "months": {
+    "2026-04": {
+      "eligible_sorted": [
+        50636,
+        50657,
+        50683,
+        50776,
+        50785,
+        50790,
+        50791,
+        50842,
+        50851,
+        50866,
+        50952,
+        51000,
+        51003,
+        51013,
+        51015,
+        51016,
+        51027,
+        51035,
+        51040,
+        51041,
+        51048,
+        51049,
+        51065,
+        51094,
+        51145,
+        51147,
+        51153,
+        51159,
+        51176,
+        51204,
+        51208,
+        51240,
+        51244,
+        51278,
+        51290,
+        51337,
+        51342,
+        51363,
+        51375,
+        51385,
+        51387,
+        51389,
+        51394
+      ],
+      "selected_in_draw_order": [
+        50790,
+        51040,
+        51065,
+        51049
+      ]
+    },
+    "2026-05": {
+      "eligible_sorted": [
+        51454,
+        51456,
+        51457,
+        51465,
+        51497,
+        51505,
+        51535,
+        51540,
+        51541,
+        51574,
+        51576,
+        51582,
+        51601,
+        51623,
+        51633,
+        51650,
+        51662,
+        51673,
+        51679,
+        51694,
+        51718,
+        51745,
+        51750,
+        51753,
+        51758,
+        51759,
+        51761,
+        51766,
+        51767,
+        51770,
+        51797,
+        51808
+      ],
+      "selected_in_draw_order": [
+        51540,
+        51582,
+        51679,
+        51574
+      ]
+    },
+    "2026-06": {
+      "eligible_sorted": [
+        51838,
+        51846,
+        51847,
+        51871,
+        51875,
+        51877,
+        51885,
+        51891,
+        51892,
+        51893,
+        51910,
+        51935,
+        51941,
+        51948,
+        51949,
+        51960,
+        51972,
+        51973,
+        51981,
+        51988,
+        51995,
+        51996,
+        52006,
+        52009,
+        52020,
+        52029,
+        52042,
+        52048,
+        52051,
+        52063,
+        52064,
+        52084,
+        52090,
+        52099,
+        52109,
+        52114,
+        52153,
+        52178,
+        52204
+      ],
+      "selected_in_draw_order": [
+        51949,
+        52099,
+        52048,
+        51910
+      ]
+    }
+  },
+  "case_order": [
+    "e50790",
+    "e51040",
+    "e51065",
+    "e51049",
+    "e51540",
+    "e51582",
+    "e51679",
+    "e51574",
+    "e51949",
+    "e52099",
+    "e52048",
+    "e51910"
+  ],
+  "retention": "All 12 selected opening inputs retained without redraw, including ambiguous cases",
+  "author_metadata": {
+    "e50790": {
+      "author": "RektTillNoon",
+      "author_type": "User",
+      "edit_count": 0
+    },
+    "e51040": {
+      "author": "mrchaofan",
+      "author_type": "User",
+      "edit_count": 4
+    },
+    "e51065": {
+      "author": "jinusean",
+      "author_type": "User",
+      "edit_count": 0
+    },
+    "e51049": {
+      "author": "Harrison-M",
+      "author_type": "User",
+      "edit_count": 0
+    },
+    "e51540": {
+      "author": "yuzw1007",
+      "author_type": "User",
+      "edit_count": 3
+    },
+    "e51582": {
+      "author": "taotaoabc",
+      "author_type": "User",
+      "edit_count": 0
+    },
+    "e51679": {
+      "author": "gdavidkov",
+      "author_type": "User",
+      "edit_count": 2
+    },
+    "e51574": {
+      "author": "Rush",
+      "author_type": "User",
+      "edit_count": 0
+    },
+    "e51949": {
+      "author": "theo-yan",
+      "author_type": "User",
+      "edit_count": 2
+    },
+    "e52099": {
+      "author": "gzdunek",
+      "author_type": "User",
+      "edit_count": 3
+    },
+    "e52048": {
+      "author": "Hedwig188",
+      "author_type": "User",
+      "edit_count": 4
+    },
+    "e51910": {
+      "author": "heohex",
+      "author_type": "User",
+      "edit_count": 3
+    }
+  }
+}

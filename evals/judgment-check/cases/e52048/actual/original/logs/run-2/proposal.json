@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/printing",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The printing options are ignored. The bug report has no gist or repository and supplies native implementation fragments rather than a runnable app with page content and a print call; no supported-version request is pending. Candidates concern different printing failures, and upstream ownership is not established."
+}

@@ -1,0 +1,43 @@
+{
+  "repro_expectation": "forbidden",
+  "positive_controls": [],
+  "semantic_supported_refs": [],
+  "reporter_mentioned_refs": [
+    51039
+  ],
+  "coverage_supported_refs": [],
+  "acceptable_optional_refs": [],
+  "rejected_reference_reasons": [],
+  "ambiguity": "",
+  "focus": "Feature behavior rather than comparison implementation",
+  "id": "e51040",
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "rationale": "This is a feature request to change macOS child/panel window main-window behavior and collection flags. BrowserWindow or BaseWindow identifies the window feature. Chromium is cited as a desired implementation model, not evidence that the defect belongs upstream. No reproduction request is useful for the feature request. #51039 is already offered as a proposed solution, not a new earlier issue to recommend.",
+  "basis": "Opening input plus earlier opening-state corpus; no evaluated policy output",
+  "judgment_recorded_before_execution": true,
+  "acceptable_outcomes": {
+    "labels": {
+      "required": [],
+      "one_of": [
+        [
+          "component/BrowserWindow",
+          "component/BaseWindow"
+        ]
+      ],
+      "acceptable": [],
+      "forbidden": []
+    },
+    "comment": {
+      "required_kinds": [],
+      "acceptable_kinds": [],
+      "refs_any": [],
+      "must_not_match": []
+    },
+    "decision": "act"
+  },
+  "fixture_provenance": {
+    "constructed_records": [],
+    "reserved_synthetic_field_omitted": null,
+    "reason": null
+  }
+}

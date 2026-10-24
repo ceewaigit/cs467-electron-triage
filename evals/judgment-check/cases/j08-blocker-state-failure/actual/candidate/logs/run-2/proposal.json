@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/powerSaveBlocker"
+      ]
+    }
+  ],
+  "explanation": "powerSaveBlocker.isStarted immediately reports false for the ID returned by start. The self-contained main.js waits for app readiness, starts the blocker, and logs the state query; no earlier candidate supports the same failure."
+}

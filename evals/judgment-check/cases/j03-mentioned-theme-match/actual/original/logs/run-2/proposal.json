@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/native-theme"
+      ]
+    }
+  ],
+  "explanation": "The report concerns nativeTheme and includes a gist; the matching earlier issue is already linked by the reporter and the remaining candidates describe different behavior."
+}

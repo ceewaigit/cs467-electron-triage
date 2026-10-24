@@ -1,0 +1,18 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/app"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "app.setPath/getPath themselves return inconsistent state in the concrete reproduction. Unlike an app.whenReady setup mention, this is a genuine app API failure. The full executable script and launch commands supply the inputs, created directory and observation, so no repro request is useful. Node fs/os/path merely construct a valid existing directory."
+}

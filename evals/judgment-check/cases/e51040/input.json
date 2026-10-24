@@ -1,0 +1,13 @@
+{
+  "id": "e51040",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/51040",
+  "as_of": "2026-04-14T10:44:36Z",
+  "author_association": "CONTRIBUTOR",
+  "title": "Align Mac canBecomeMainWindow behavior with Chromium; prevent windows with parent from becoming main window.",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a feature request that matches the one I want to file, without success.\n\n### Problem Description\n\nIn some of our scenarios, pop-up content is hosted in an independent window, which takes over the foreground window and causes the traffic lights of the previous window to gray out.However, if we set focusable to false, the window cannot receive mouse-move events, resulting in no hover styles and an inability to respond to user input.\nWe know we should use a panel, but Electron’s panel implementation forces the NSWindowCollectionBehaviorCanJoinAllSpaces option in the code.We found that using Chromium’s widget does not have this issue, and Chromium contains the following code:\nWith the rise of AI, Spotlight-like interaction patterns will become increasingly common.Yet Electron’s handling of these scenarios has been quite frustrating for developers.\n\n<img width=\"3024\" height=\"1964\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/54ab251f-b51b-4a6b-8f44-a89d14bd19ed\" />\n\n<img width=\"3024\" height=\"1964\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/52e3a708-e6a2-4324-9765-f2162fb03cdf\" />\n\n### Proposed Solution\n\n#51039\n\n\n### Alternatives Considered\n\nAdd way to disable NSWindowCollectionBehaviorCanJoinAllSpaces flag for panels on macOS.\n\n\n### Additional Information\n\nAdd way to disable NSWindowCollectionBehaviorCanJoinAllSpaces flag for panels on macOS.\n\n",
+  "labels_at_open": [
+    "enhancement :sparkles:"
+  ],
+  "body_source": "userContentEdits oldest revision (2026-04-14T10:44:36Z)"
+}

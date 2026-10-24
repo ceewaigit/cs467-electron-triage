@@ -1,0 +1,12 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "security",
+      "refs": ""
+    }
+  ],
+  "explanation": "The report describes a possible vulnerability and requires the private security reporting template only."
+}

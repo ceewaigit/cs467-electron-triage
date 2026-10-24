@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/offscreen"
+      ]
+    }
+  ],
+  "explanation": "The crash occurs while importing a shared texture in an offscreen paint handler. The code lacks window/page startup, but the checks classify issue.form as unknown, so the required bug-form condition for requesting a reproduction is not met. Candidates have different triggers or frames, and 50247 is already linked."
+}

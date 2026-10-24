@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "51767"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/gpu"
+      ]
+    }
+  ],
+  "explanation": "GPU process startup failure matches the exit code and behaviour in 51767. The supported-version bot already requested information; reporter-linked cases are omitted and an upstream cause is not established."
+}

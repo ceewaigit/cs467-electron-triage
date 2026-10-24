@@ -1,0 +1,29 @@
+{
+  "labels_added": [],
+  "comment": "Thanks for the report.\n\nThis report may describe a security vulnerability. Electron asks for these to be reported privately, not in public issues: see [SECURITY.md](https://github.com/electron/electron/blob/main/SECURITY.md) for how. Please don't add more details here.\n\n<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every decision, including whether this issue stays open.</sub>\n\ntriage: kinds=security refs=",
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": {
+    "type": "triage_comment",
+    "kinds": "security",
+    "refs": ""
+  },
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d010",
+  "batch_id": "s010",
+  "repetition": 2,
+  "policy_sha256": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a",
+  "proposal_sha256": "9a145af318415191242600b07dec6f3eec15b15141bfbda236f1fe4846168e18",
+  "explanation": "The report describes a possible vulnerability and requires only the private security reporting redirect.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

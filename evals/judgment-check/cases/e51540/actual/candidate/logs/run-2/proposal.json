@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The report describes new dark lines on the left, right, and bottom window borders after upgrading from 41.2.0 to 41.2.1. A reproduction repository is supplied; the returned candidates do not establish the same failure or an upstream cause."
+}

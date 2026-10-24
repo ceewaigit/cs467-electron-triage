@@ -1,0 +1,5493 @@
+{
+  "namespace": "fresh",
+  "manifest_sha256": "7c14015d26b166ea8ad50935cb92821c450e00b9fc770c4bd99ae6ec4a66fb18",
+  "collection_sha256": "ab9dd46c97646145b9ce039830dfa385f7f3a669e1948e020e8c756a4515c8fd",
+  "scorer_sha256": "c2dab8720d9a2d53a73ec06dc71681f25aab0a99633a576b834ebdd54322f2e5",
+  "summary": {
+    "historical": {
+      "original": {
+        "1": {
+          "planned": 12,
+          "valid": 12,
+          "full_case_passes": 10,
+          "weighted_error_cost_total": 2,
+          "mean_weighted_error_cost": 0.16666666666666666,
+          "missed_required_actions": 2,
+          "repro_labels_proposed": 4,
+          "repro_comment_kinds_proposed": 4,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 12,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "2": {
+          "planned": 12,
+          "valid": 12,
+          "full_case_passes": 11,
+          "weighted_error_cost_total": 1,
+          "mean_weighted_error_cost": 0.08333333333333333,
+          "missed_required_actions": 1,
+          "repro_labels_proposed": 4,
+          "repro_comment_kinds_proposed": 4,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 12,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "pooled": {
+          "planned": 24,
+          "valid": 24,
+          "full_case_passes": 21,
+          "weighted_error_cost_total": 3,
+          "mean_weighted_error_cost": 0.125,
+          "missed_required_actions": 3,
+          "repro_labels_proposed": 8,
+          "repro_comment_kinds_proposed": 8,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 24,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 6,
+          "discretionary_links": 0
+        }
+      },
+      "candidate": {
+        "1": {
+          "planned": 12,
+          "valid": 12,
+          "full_case_passes": 10,
+          "weighted_error_cost_total": 2,
+          "mean_weighted_error_cost": 0.16666666666666666,
+          "missed_required_actions": 2,
+          "repro_labels_proposed": 4,
+          "repro_comment_kinds_proposed": 4,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 12,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "2": {
+          "planned": 12,
+          "valid": 12,
+          "full_case_passes": 10,
+          "weighted_error_cost_total": 2,
+          "mean_weighted_error_cost": 0.16666666666666666,
+          "missed_required_actions": 2,
+          "repro_labels_proposed": 4,
+          "repro_comment_kinds_proposed": 4,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 12,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "pooled": {
+          "planned": 24,
+          "valid": 24,
+          "full_case_passes": 20,
+          "weighted_error_cost_total": 4,
+          "mean_weighted_error_cost": 0.16666666666666666,
+          "missed_required_actions": 4,
+          "repro_labels_proposed": 8,
+          "repro_comment_kinds_proposed": 8,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 24,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 6,
+          "discretionary_links": 0
+        }
+      }
+    },
+    "constructed": {
+      "original": {
+        "1": {
+          "planned": 12,
+          "valid": 12,
+          "full_case_passes": 12,
+          "weighted_error_cost_total": 0,
+          "mean_weighted_error_cost": 0.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 12,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 0,
+          "discretionary_links": 0
+        },
+        "2": {
+          "planned": 12,
+          "valid": 12,
+          "full_case_passes": 12,
+          "weighted_error_cost_total": 0,
+          "mean_weighted_error_cost": 0.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 12,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 0,
+          "discretionary_links": 0
+        },
+        "pooled": {
+          "planned": 24,
+          "valid": 24,
+          "full_case_passes": 24,
+          "weighted_error_cost_total": 0,
+          "mean_weighted_error_cost": 0.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 2,
+          "repro_comment_kinds_proposed": 2,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 24,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 0,
+          "discretionary_links": 0
+        }
+      },
+      "candidate": {
+        "1": {
+          "planned": 12,
+          "valid": 12,
+          "full_case_passes": 12,
+          "weighted_error_cost_total": 0,
+          "mean_weighted_error_cost": 0.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 12,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 0,
+          "discretionary_links": 0
+        },
+        "2": {
+          "planned": 12,
+          "valid": 12,
+          "full_case_passes": 12,
+          "weighted_error_cost_total": 0,
+          "mean_weighted_error_cost": 0.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 12,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 0,
+          "discretionary_links": 0
+        },
+        "pooled": {
+          "planned": 24,
+          "valid": 24,
+          "full_case_passes": 24,
+          "weighted_error_cost_total": 0,
+          "mean_weighted_error_cost": 0.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 2,
+          "repro_comment_kinds_proposed": 2,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 24,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 0,
+          "discretionary_links": 0
+        }
+      }
+    },
+    "all": {
+      "original": {
+        "1": {
+          "planned": 24,
+          "valid": 24,
+          "full_case_passes": 22,
+          "weighted_error_cost_total": 2,
+          "mean_weighted_error_cost": 0.08333333333333333,
+          "missed_required_actions": 2,
+          "repro_labels_proposed": 5,
+          "repro_comment_kinds_proposed": 5,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 24,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "2": {
+          "planned": 24,
+          "valid": 24,
+          "full_case_passes": 23,
+          "weighted_error_cost_total": 1,
+          "mean_weighted_error_cost": 0.041666666666666664,
+          "missed_required_actions": 1,
+          "repro_labels_proposed": 5,
+          "repro_comment_kinds_proposed": 5,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 24,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "pooled": {
+          "planned": 48,
+          "valid": 48,
+          "full_case_passes": 45,
+          "weighted_error_cost_total": 3,
+          "mean_weighted_error_cost": 0.0625,
+          "missed_required_actions": 3,
+          "repro_labels_proposed": 10,
+          "repro_comment_kinds_proposed": 10,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 48,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 6,
+          "discretionary_links": 0
+        }
+      },
+      "candidate": {
+        "1": {
+          "planned": 24,
+          "valid": 24,
+          "full_case_passes": 22,
+          "weighted_error_cost_total": 2,
+          "mean_weighted_error_cost": 0.08333333333333333,
+          "missed_required_actions": 2,
+          "repro_labels_proposed": 5,
+          "repro_comment_kinds_proposed": 5,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 24,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "2": {
+          "planned": 24,
+          "valid": 24,
+          "full_case_passes": 22,
+          "weighted_error_cost_total": 2,
+          "mean_weighted_error_cost": 0.08333333333333333,
+          "missed_required_actions": 2,
+          "repro_labels_proposed": 5,
+          "repro_comment_kinds_proposed": 5,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 24,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "pooled": {
+          "planned": 48,
+          "valid": 48,
+          "full_case_passes": 44,
+          "weighted_error_cost_total": 4,
+          "mean_weighted_error_cost": 0.08333333333333333,
+          "missed_required_actions": 4,
+          "repro_labels_proposed": 10,
+          "repro_comment_kinds_proposed": 10,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 48,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 6,
+          "discretionary_links": 0
+        }
+      }
+    }
+  },
+  "primary_decision": {
+    "predeclared_rule": [
+      "All planned first decisions are present, valid and sealed before scoring; candidate checks and label/comment validation must precede its first final decisions.",
+      "In each fresh and known case/repetition pair, candidate weighted error cost must not increase, a case pass must not be lost, and no new frozen-scorer failure category, safety error, invalid proposal or procedure violation is permitted.",
+      "Candidate required-action omissions and unsupported references must not increase in any pair. Designated positive link/component controls must retain their required actions in both candidate repetitions.",
+      "Both known cases e52255 and e53734 must pass their original unchanged frozen expectations in both candidate repetitions; these are separate development-informed checks, not fresh cases.",
+      "There must be at least one strict paired cost improvement over the current policy in the fresh or known checks. Report known and fresh gains separately; a known-only gain does not show broader accuracy improvement.",
+      "Independent blind review must find no harmful regression among changed optional actions or other unscored behavior; a rubric tie alone is not enough.",
+      "Adopt, commit and push only if every gate passes. Otherwise retain active runtime unchanged and save the rejected experiment locally without committing or pushing. No adaptive policy edits, repeats or expectation changes to seek a pass."
+    ],
+    "gates": {
+      "complete_coverage": true,
+      "all_first_decisions_valid": true,
+      "all_required_procedures_observed": true,
+      "candidate_no_safety_failures": true,
+      "candidate_action_constraints_observed": true,
+      "all_designated_positive_controls_covered": true,
+      "every_pair_non_regressing": false
+    },
+    "non_regression_passed": false,
+    "strict_cost_improvement": false,
+    "pairs": [
+      {
+        "case_id": "e50790",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e50790",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51040",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51040",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51049",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51049",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51065",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51065",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51540",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51540",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51574",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51574",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51582",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51582",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51679",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51679",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51910",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51910",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51949",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e51949",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e52048",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e52048",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e52099",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e52099",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": false,
+          "case_pass_not_lost": false,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": false,
+          "no_new_scorer_failure": false,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j01-shortcut-rebinding",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j01-shortcut-rebinding",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j02-generic-network-error",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j02-generic-network-error",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j03-mentioned-theme-match",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j03-mentioned-theme-match",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j04-reveal-filename-match",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j04-reveal-filename-match",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j05-notification-helper-image",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j05-notification-helper-image",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j06-request-helper-session",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j06-request-helper-session",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j07-app-path-failure",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j07-app-path-failure",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j08-blocker-state-failure",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j08-blocker-state-failure",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j09-tracing-fragment",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j09-tracing-fragment",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j10-power-event-complete",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j10-power-event-complete",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j11-maintainer-noop",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j11-maintainer-noop",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j12-security-private",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "j12-security-private",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      }
+    ],
+    "adoption_pending": "Combine fresh and known results and independent semantic review; ties alone do not justify adoption."
+  },
+  "changed_actions": [
+    {
+      "change_id": "fresh/e52099/2",
+      "case_id": "e52099",
+      "repetition": 2,
+      "changed_actions": {
+        "labels": {
+          "original": [
+            "blocked/need-repro",
+            "component/build"
+          ],
+          "candidate": [
+            "blocked/need-repro"
+          ]
+        }
+      },
+      "both_frozen_scores_pass": false
+    }
+  ],
+  "case_runs": [
+    {
+      "case_id": "j05-notification-helper-image",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/notifications"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j12-security-private",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [],
+      "comment_kinds": [
+        "security"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51949",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51910",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/desktopcapturer"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j04-reveal-filename-match",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "link",
+        "component"
+      ],
+      "positive_control_coverage": {
+        "link": true,
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/shell"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        990104
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j07-app-path-failure",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/app"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j01-shortcut-rebinding",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "link",
+        "component"
+      ],
+      "positive_control_coverage": {
+        "link": true,
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/globalShortcut"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        990101
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j10-power-event-complete",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/powerMonitor"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51040",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j03-mentioned-theme-match",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/native-theme"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j09-tracing-fragment",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/contentTracing"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51679",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51065",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "missing one of ['component/BrowserWindow', 'component/webcontents']"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 1,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/multithreading"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "component/multithreading"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j06-request-helper-session",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/webRequest"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51574",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/draggable-regions"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j11-maintainer-noop",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52099",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "missing label component/build"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 1,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j02-generic-network-error",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/net"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j08-blocker-state-failure",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/powerSaveBlocker"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e50790",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/offscreen"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51582",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/asar"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51540",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": [
+          {
+            "time_utc": "2026-10-24T07:26:37.124005+00:00",
+            "event": "script",
+            "command": [
+              "python3",
+              ".claude/skills/issue-triage/scripts/check_labels.py",
+              "component/window"
+            ],
+            "exit_code": 1,
+            "stdout": "[issue-triage/check_labels v1] rejected\n{\"labels\": [\"component/window\"], \"valid\": false, \"errors\": [\"'component/window' is not in the allowlist\"]}\n",
+            "stderr": ""
+          }
+        ]
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52048",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/printing"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51049",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/dialog"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j05-notification-helper-image",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/notifications"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j12-security-private",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [],
+      "comment_kinds": [
+        "security"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51949",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51910",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/desktopcapturer"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j04-reveal-filename-match",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "link",
+        "component"
+      ],
+      "positive_control_coverage": {
+        "link": true,
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/shell"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        990104
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j07-app-path-failure",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/app"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j01-shortcut-rebinding",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "link",
+        "component"
+      ],
+      "positive_control_coverage": {
+        "link": true,
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/globalShortcut"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        990101
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j10-power-event-complete",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/powerMonitor"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51040",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j03-mentioned-theme-match",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/native-theme"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j09-tracing-fragment",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/contentTracing"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51679",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51065",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "missing one of ['component/BrowserWindow', 'component/webcontents']"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 1,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/multithreading"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "component/multithreading"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j06-request-helper-session",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/webRequest"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51574",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/draggable-regions"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j11-maintainer-noop",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52099",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "missing label component/build"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 1,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j02-generic-network-error",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/net"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j08-blocker-state-failure",
+      "arm": "original",
+      "repetition": 1,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/powerSaveBlocker"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e50790",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/offscreen"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51582",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/asar"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51540",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52048",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/printing"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51049",
+      "arm": "original",
+      "repetition": 1,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/dialog"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51574",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/draggable-regions"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j04-reveal-filename-match",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "link",
+        "component"
+      ],
+      "positive_control_coverage": {
+        "link": true,
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/shell"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        990104
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j06-request-helper-session",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/webRequest"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51582",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/asar"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j10-power-event-complete",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/powerMonitor"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52048",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/printing"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52099",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "missing label component/build"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 1,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j01-shortcut-rebinding",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "link",
+        "component"
+      ],
+      "positive_control_coverage": {
+        "link": true,
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/globalShortcut"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        990101
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51040",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j12-security-private",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [],
+      "comment_kinds": [
+        "security"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51949",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51049",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/dialog"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j05-notification-helper-image",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/notifications"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j08-blocker-state-failure",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/powerSaveBlocker"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51540",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51065",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "missing one of ['component/BrowserWindow', 'component/webcontents']"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 1,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/multithreading"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "component/multithreading"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j07-app-path-failure",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/app"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e50790",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/offscreen"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j11-maintainer-noop",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51679",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j02-generic-network-error",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/net"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j09-tracing-fragment",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/contentTracing"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51910",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/desktopcapturer"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j03-mentioned-theme-match",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/native-theme"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51574",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/draggable-regions"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j04-reveal-filename-match",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "link",
+        "component"
+      ],
+      "positive_control_coverage": {
+        "link": true,
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/shell"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        990104
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j06-request-helper-session",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/webRequest"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51582",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/asar"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j10-power-event-complete",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/powerMonitor"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52048",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/printing"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52099",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/build"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j01-shortcut-rebinding",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "link",
+        "component"
+      ],
+      "positive_control_coverage": {
+        "link": true,
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/globalShortcut"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        990101
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51040",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j12-security-private",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [],
+      "comment_kinds": [
+        "security"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51949",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51049",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/dialog"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j05-notification-helper-image",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/notifications"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j08-blocker-state-failure",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/powerSaveBlocker"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51540",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51065",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "missing one of ['component/BrowserWindow', 'component/webcontents']"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 1,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/multithreading"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "component/multithreading"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j07-app-path-failure",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/app"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e50790",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/offscreen"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j11-maintainer-noop",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51679",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/BrowserWindow"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j02-generic-network-error",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/net"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j09-tracing-fragment",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/contentTracing"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e51910",
+      "arm": "original",
+      "repetition": 2,
+      "group": "historical",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/desktopcapturer"
+      ],
+      "comment_kinds": [
+        "need-repro"
+      ],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "required",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "j03-mentioned-theme-match",
+      "arm": "original",
+      "repetition": 2,
+      "group": "constructed",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [
+        "component"
+      ],
+      "positive_control_coverage": {
+        "component": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/native-theme"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    }
+  ],
+  "limits": "Offline proposed actions; correlated assistant repetitions, no statistical significance or hosted-model claim. Known diagnostics excluded from fresh metrics."
+}

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/powerMonitor"
+      ]
+    }
+  ],
+  "explanation": "The report concerns powerMonitor unlock-screen events. Its self-contained main.js registers one listener after app.whenReady, and the provided launch and lock/unlock steps reach the failure; no candidate describes the same behavior."
+}

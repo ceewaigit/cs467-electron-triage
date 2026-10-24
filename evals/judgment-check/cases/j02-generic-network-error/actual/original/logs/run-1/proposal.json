@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/net"
+      ]
+    }
+  ],
+  "explanation": "The report concerns net.fetch after response-body cancellation and includes a reproduction gist. Candidates with ERR_FAILED describe proxy authentication or Network Service restart failures, so they do not establish the same problem."
+}

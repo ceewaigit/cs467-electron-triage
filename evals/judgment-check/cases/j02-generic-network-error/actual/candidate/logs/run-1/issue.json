@@ -1,0 +1,10 @@
+{
+  "number": 800018,
+  "title": "net.fetch ERR_FAILED only after cancelling a streamed body",
+  "body": "### Electron Version\n\n42.4.1\n\n### What operating system(s) are you using?\nUbuntu 24.04\n\n### Expected Behavior\nThe local test server sends a streaming 200 response; cancelling that response body should not prevent a subsequent net.fetch to the same server.\n\n### Actual Behavior\nThe first fetch succeeds. After response.body.cancel(), the second request fails with net::ERR_FAILED before reaching the server. Requests without cancellation always succeed. There is no proxy, certificate, service worker or custom protocol involved. The gist includes the localhost server and all launch code.\n\n### Testcase Gist URL\nhttps://gist.github.com/offline-fixture-owner/87c2d6357a1147dfbad887b899916ef0\n",
+  "labels": [],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-06-30T12:00:00Z",
+  "replay": true
+}

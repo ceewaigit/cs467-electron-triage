@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/notifications"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d013",
+  "batch_id": "s011",
+  "repetition": 2,
+  "policy_sha256": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a",
+  "proposal_sha256": "de81fe8a44a17bb5c09936712b985780ab8c3c468e2399b8735e20248ae60ab7",
+  "explanation": "A single Notification dismissal emits close twice, including without an icon or window. A gist is supplied, and the earlier reports describe different failures.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

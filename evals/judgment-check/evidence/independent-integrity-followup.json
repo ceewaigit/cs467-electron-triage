@@ -1,0 +1,40 @@
+{
+  "reviewer": "/root/judgment_blind_checker",
+  "recorded_at_utc": "2026-10-24T07:34:44.276811+00:00",
+  "independent_score_sha256": "ef1669381c03b00cdb07f060faf09a8c0b2dd5bd78d3cafe0dde58b9ba986dc5",
+  "checks": [
+    {
+      "namespace": "fresh",
+      "original_workspace_all_hashes_match": true,
+      "runtime_files_equal_source_commit": 15,
+      "frozen_score_agreement_count": 96,
+      "unplanned_workspace_files": [],
+      "rejected_intermediate_calls": [
+        {
+          "case_id": "e51540",
+          "arm": "candidate",
+          "repetition": 1,
+          "command": [
+            "python3",
+            ".claude/skills/issue-triage/scripts/check_labels.py",
+            "component/window"
+          ],
+          "exit_code": 1
+        }
+      ]
+    },
+    {
+      "namespace": "known",
+      "original_workspace_all_hashes_match": true,
+      "runtime_files_equal_source_commit": 15,
+      "frozen_score_agreement_count": 8,
+      "unplanned_workspace_files": [],
+      "rejected_intermediate_calls": []
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "coordinator_score_reports_read": false,
+  "diagnostic_assessment": "Candidate s004/e51540/repetition1 requested validation of nonexistent component/window. The unchanged validator rejected it before the final decision; the first final proposal instead used validated component/BrowserWindow. The attempt and nonzero output were preserved and replay exactly. Batch instructions explicitly permit intermediate validation failures; this is a caught validation attempt, not an invalid final proposal, external write, or protocol violation.",
+  "recommendation": "Reject adoption under the fixed mechanical gates: fresh e52099/repetition2 regresses by missing component/build, and known e53734 still has wrong component/app in both candidate repetitions. Preserve active runtime and do not commit/push this experiment under the user condition."
+}

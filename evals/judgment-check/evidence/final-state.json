@@ -1,0 +1,11 @@
+{
+  "verified_at_utc": "2026-10-24T07:38:31.834579+00:00",
+  "head": "90724fea4152861499063b4f163d84c28348b0d3",
+  "prior_tracked_file_count": 5502,
+  "changed_prior_tracked_files": [],
+  "candidate_adopted": false,
+  "commit_created": false,
+  "push_performed": false,
+  "decision_sha256": "f4ad7bb80f051b667d664db949403af9f49c0811ce5d3c35d8d20b3ac8b8faf4",
+  "new_evidence": "evals/judgment-check/ and tests/test_judgment_experiment.py remain untracked"
+}

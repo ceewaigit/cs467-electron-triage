@@ -1,0 +1,105 @@
+{
+  "reviewer": "/root/judgment_blind_checker",
+  "sealed_at_utc": "2026-10-24T07:35:53.189732+00:00",
+  "status": "independent recomputation and coordinator comparison complete; reject adoption",
+  "independent_report_sha256": "ef1669381c03b00cdb07f060faf09a8c0b2dd5bd78d3cafe0dde58b9ba986dc5",
+  "independent_scoring_preceded_coordinator_reports": true,
+  "first_proposals_scored": 104,
+  "paired_comparisons_verified": 52,
+  "recorded_helper_calls_replayed": 239,
+  "coordinator_rows_and_gates_match": true,
+  "differences": [],
+  "coordinator_reports_sha256": {
+    "fresh": "2f81c1cf92db3cb3c29cbd155f4359c5d558c38fb73c7709522becde4940089a",
+    "known": "af8db682f95eabad1b19be5c15fda75b53abb75cfef25d66f92e444181e8174a"
+  },
+  "preservation": {
+    "tracked_files_checked": 5502,
+    "changed_or_missing": [],
+    "current_head": "90724fea4152861499063b4f163d84c28348b0d3",
+    "expected_head": "90724fea4152861499063b4f163d84c28348b0d3",
+    "runtime_unchanged": true
+  },
+  "results": {
+    "fresh": {
+      "original": {
+        "pass": 45,
+        "trials": 48,
+        "cost": 3
+      },
+      "candidate": {
+        "pass": 44,
+        "trials": 48,
+        "cost": 4
+      }
+    },
+    "known": {
+      "original": {
+        "pass": 0,
+        "trials": 4,
+        "cost": 8
+      },
+      "candidate": {
+        "pass": 2,
+        "trials": 4,
+        "cost": 2
+      }
+    },
+    "historical": {
+      "original_pass": 21,
+      "candidate_pass": 20,
+      "trials_each": 24
+    },
+    "constructed": {
+      "original_pass": 24,
+      "candidate_pass": 24,
+      "trials_each": 24
+    }
+  },
+  "blocking_failures": [
+    {
+      "case": "e52099",
+      "cohort": "fresh historical",
+      "repeat": 2,
+      "original": "component/build + blocked/need-repro; pass cost0",
+      "candidate": "blocked/need-repro only; missing component/build, fail cost1",
+      "failed_gates": [
+        "cost_not_higher",
+        "case_pass_not_lost",
+        "required_omissions_not_higher",
+        "no_new_scorer_failure"
+      ]
+    },
+    {
+      "case": "e53734",
+      "cohort": "known diagnostic",
+      "repeats": [
+        1,
+        2
+      ],
+      "candidate": "wrong component/app remains in both repeats, cost1 each",
+      "failed_gate": "candidate_every_known_trial_passes"
+    }
+  ],
+  "improvement": {
+    "case": "e52255",
+    "cohort": "known diagnostic",
+    "repeats": [
+      1,
+      2
+    ],
+    "result": "Candidate omits unsupported similar link #51767, preserves component/gpu, passes at cost0; original fails at cost3. No fresh strict cost gain."
+  },
+  "preserved_failures": "e51065 misses the required BrowserWindow/webcontents alternative in all4 trials; e52099 misses component/build in original repeat1 and both candidate repeats. All failures remain in first evidence.",
+  "validation_exception": "s004/e51540 candidate repeat1 attempted disallowed component/window. Validator rejected it before decision; final component/BrowserWindow passed validation. Transcript and rejected result retained and independently replayed. This is permitted intermediate validation recovery, not a final violation.",
+  "safeguards_observed": "All104 first proposals valid, every recorded helper output reproduces, all positive controls covered, no safety or final action-constraint failure, no reproduction error against predeclared targets. No external writes executed.",
+  "test_evidence": "pre-execution-tests-v2.txt:119tests passed; implementation hashes unchanged since reviewed preflight.",
+  "scope_limits": [
+    "The reviewer saw later historical labels during early raw provenance inspection; annotation-exposure-disclosure.json records exact fields/IDs. Author fixed targets without that exposure.",
+    "Independent scoring used manually reimplemented frozen scoring from first proposals and was sealed before coordinator score reports existed; all104 outcomes later agree with unchanged frozen scorer and coordinator rows.",
+    "Two correlated offline coding-assistant repeats are not proof of statistical significance, configured Claude behavior, or universal non-regression.",
+    "Three historical repro-ambiguous targets permit optional reproduction label/comment independently; these cases do not prove that every repro choice is equally useful.",
+    "This reviewer saw policies and arm-mapping code during preflight; separate fresh semantic reviewer must assess opaque directions. Its result can add grounds for rejection but cannot override already failed mechanical gates."
+  ],
+  "recommendation": "Do not adopt, commit, or push the candidate under the fixed user condition. Keep active runtime and all historical evidence unchanged. Finish the separate opaque semantic review and preserve its report without modifying targets or rerunning decisions."
+}

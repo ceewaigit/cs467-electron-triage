@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/app"
+      ]
+    }
+  ],
+  "explanation": "app.getPath returns the old directory immediately after app.setPath succeeds. The supplied main.js creates the target directory and directly prints the set/get mismatch with launch instructions; the earlier candidates concern different operations."
+}

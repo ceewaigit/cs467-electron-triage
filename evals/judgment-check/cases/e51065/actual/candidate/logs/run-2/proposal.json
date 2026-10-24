@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/multithreading",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "Web worker messages are delayed for over 12 seconds and arrive in a burst on window focus. No runnable worker/page reproduction or repository is supplied, and no candidate establishes the same failure or an upstream cause."
+}

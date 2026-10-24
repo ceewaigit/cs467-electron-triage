@@ -1,0 +1,59 @@
+{
+  "repro_expectation": "forbidden",
+  "positive_controls": [],
+  "semantic_supported_refs": [],
+  "reporter_mentioned_refs": [
+    40505,
+    50706,
+    50863,
+    50864,
+    51244,
+    51252,
+    51296,
+    51287
+  ],
+  "coverage_supported_refs": [],
+  "acceptable_optional_refs": [],
+  "rejected_reference_reasons": [
+    {
+      "number": 51244,
+      "reason": "Already mentioned, and it changes getter results after resizable transition rather than leaving getters stable while HWND expands."
+    },
+    {
+      "number": 51572,
+      "reason": "One-to-three-pixel rounding mismatch at fixed high DPI differs from deterministic asymmetric frame insets."
+    }
+  ],
+  "ambiguity": "The report inconsistently names the first affected version; keep it and allow either window component. No exact causal conclusion is required.",
+  "focus": "Faulty window geometry versus screen conversion helper",
+  "id": "e51679",
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "rationale": "The failure is a mismatch between frameless resizable HWND geometry and BrowserWindow bounds, including visible +16x8 outsets. BrowserWindow/BaseWindow is the direct surface. screen.dipToScreenRect measures coordinates; its conversion is not alleged to be broken. A gist is supplied. The reporter already lists #51244, whose getter inflation after changing resizable differs from the current stable getter/expanded HWND observation; do not repeat that link or promote other same-area geometry reports without a matching behavior.",
+  "basis": "Opening input plus earlier opening-state corpus; no evaluated policy output",
+  "judgment_recorded_before_execution": true,
+  "acceptable_outcomes": {
+    "labels": {
+      "required": [],
+      "one_of": [
+        [
+          "component/BrowserWindow",
+          "component/BaseWindow"
+        ]
+      ],
+      "acceptable": [],
+      "forbidden": []
+    },
+    "comment": {
+      "required_kinds": [],
+      "acceptable_kinds": [],
+      "refs_any": [],
+      "must_not_match": []
+    },
+    "decision": "act"
+  },
+  "fixture_provenance": {
+    "constructed_records": [],
+    "reserved_synthetic_field_omitted": null,
+    "reason": null
+  }
+}

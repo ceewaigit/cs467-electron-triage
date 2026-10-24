@@ -14,6 +14,9 @@ runs in `ceewaigit/cs467-electron-triage`; it is not deployed to `electron/elect
 3. Read the [evaluation guide](evals/golden/README.md) to inspect a case, reproduce the
    analysis offline and understand the limits of the recorded evidence.
 4. Read the [audit](docs/AUDIT.md) for current findings and outstanding verification.
+5. Use the [requirement-by-requirement review](evals/judgment-check/requirements-review/matrix.md)
+   to trace the original assignment to evidence at `90724fe`. The
+   [documentation follow-up](evals/judgment-check/PUBLICATION.md) records subsequent clarifications.
 
 All commands in these documents start from this repository's root. Python scripts use Python
 3.10 or later and the standard library; there is no dependency installation or application
@@ -97,6 +100,15 @@ Ordinary hosted execution now has evidence; current adversarial rejection and ha
 exhaustion do not. No further runs were dispatched. The full golden rerun and separate
 90-run hardened plan remain pending.
 
+A later [free comparison](evals/judgment-check/RESULTS.md) tested a separate linking/label
+candidate on 24 fresh cases twice per policy, plus the two known failures separately.
+The current policy passed 45/48 fresh decisions; the candidate passed 44/48. The candidate
+corrected the GPU-reference mismatch in both known repeats but retained the app-label mismatch.
+It was rejected and is not installed. All 104 first decisions, transcripts and independent
+reviews are published as evidence; the original results and current policy remain unchanged.
+The [manual drift-review policy](docs/DRIFT_REVIEW.md) explains the owner review required before
+accepting model/runtime changes or deployment, and why paid monitoring is currently unscheduled.
+
 ## Repository map
 
 | Path | Purpose |
@@ -112,6 +124,7 @@ exhaustion do not. No further runs were dispatched. The full golden rerun and se
 | `evals/golden/` | Frozen cases and expectations, collected outputs, logs and reports |
 | `evals/conservative-linking/`, `evals/reproduction-check/` | Separate offline comparisons, frozen expectations, transcripts and reviews; current adoption decision in `reproduction-check/ADOPTION.md` |
 | `evals/failure-recheck-offline/`, `evals/failure-recheck-live*/` | Five free diagnostic reruns, two failed live preflights and five completed live cases, with separate evidence and limits |
+| `evals/judgment-check/` | Rejected candidate comparison, preserved first decisions, original-requirements audit and documentation-publication review |
 | `evals/controls/` | Deliberately broken configurations and adversarial control workflows |
 | `evals/tools/` | Dataset preparation, replay, collection and analysis scripts |
 | `tests/` | Offline script and configuration tests |

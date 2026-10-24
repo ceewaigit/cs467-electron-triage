@@ -1,0 +1,18 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "similar",
+      "refs": "990101"
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/globalShortcut"
+      ]
+    }
+  ],
+  "explanation": "The report concerns globalShortcut callbacks retained after unregistering; the supplied gist avoids a reproduction request, and issue 990101 describes the same callback behavior."
+}

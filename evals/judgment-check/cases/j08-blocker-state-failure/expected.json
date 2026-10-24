@@ -1,0 +1,18 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/powerSaveBlocker"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The start/isStarted state inconsistency is a genuine powerSaveBlocker API failure. app.whenReady only sequences startup; no powerMonitor event or screen enumeration is involved. The complete main process script and command suffice for reproduction. Do not infer a device power/sleep failure beyond the reported state query."
+}

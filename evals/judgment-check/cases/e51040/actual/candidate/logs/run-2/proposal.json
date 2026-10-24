@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The requested change concerns parented windows, focusability and native panel behavior; this is a BrowserWindow feature request without a sufficiently matching earlier issue or redirect."
+}

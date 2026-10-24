@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/powerSaveBlocker"
+      ]
+    }
+  ],
+  "explanation": "The supplied main.js starts Electron, waits for readiness, starts a blocker, and immediately queries its ID, providing a complete reproduction; no candidate describes the same state-query failure."
+}

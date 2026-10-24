@@ -1,0 +1,11 @@
+{
+  "id": "j06-request-helper-session",
+  "set": "constructed-judgment-control",
+  "source": "synthetic:judgment-check/j06-request-helper-session",
+  "as_of": "2026-06-30T12:00:00Z",
+  "author_association": "NONE",
+  "title": "webRequest onBeforeSendHeaders callback result lost after redirect",
+  "body": "### Electron Version\n\n42.4.1\n\n### What operating system(s) are you using?\nWindows 11\n\n### Expected Behavior\nThe registered onBeforeSendHeaders listener adds X-Experiment: one to each request, including a redirected request.\n\n### Actual Behavior\nThe local server records X-Experiment on the first request but not on the redirect target. The listener fires twice and returns the header both times. I obtain webRequest using session.defaultSession; I verified cookies/cache/proxy work and changing sessions does not change the problem. app.commandLine only sets enable-logging, and BrowserWindow only loads the test page. The gist supplies the local redirect server and the complete listener.\n\n### Testcase Gist URL\nhttps://gist.github.com/offline-fixture-owner/45da703c17d84c3dbba76c06f0dd9c68\n",
+  "labels_at_open": [],
+  "body_source": "constructed-before-execution"
+}

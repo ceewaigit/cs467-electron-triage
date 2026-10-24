@@ -1,0 +1,52 @@
+{
+  "repro_expectation": "forbidden",
+  "positive_controls": [],
+  "semantic_supported_refs": [],
+  "reporter_mentioned_refs": [],
+  "coverage_supported_refs": [],
+  "acceptable_optional_refs": [],
+  "rejected_reference_reasons": [
+    {
+      "number": 51572,
+      "reason": "Fixed-scale one-to-three-pixel rounding differs from persistent extra height after changing monitors."
+    },
+    {
+      "number": 51730,
+      "reason": "Fixed-scale bounds inaccuracy is not the described monitor-transition height behavior."
+    }
+  ],
+  "ambiguity": "screen is optional because the display transition may be relevant, while the failed observable is window geometry.",
+  "focus": "Display transition versus generic DPI geometry similarities",
+  "id": "e51949",
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "rationale": "A short window gains persistent extra height after moving between differently scaled monitors. The window sizing feature is direct, and screen is a defensible secondary component for the display transition. A Fiddle gist and precise monitor/drag steps are supplied. Fixed-DPI rounding offsets and frameless resize-hit insets do not establish this persistent minimum-height change after a monitor transition.",
+  "basis": "Opening input plus earlier opening-state corpus; no evaluated policy output",
+  "judgment_recorded_before_execution": true,
+  "acceptable_outcomes": {
+    "labels": {
+      "required": [],
+      "one_of": [
+        [
+          "component/BrowserWindow",
+          "component/BaseWindow"
+        ]
+      ],
+      "acceptable": [
+        "component/screen"
+      ],
+      "forbidden": []
+    },
+    "comment": {
+      "required_kinds": [],
+      "acceptable_kinds": [],
+      "refs_any": [],
+      "must_not_match": []
+    },
+    "decision": "act"
+  },
+  "fixture_provenance": {
+    "constructed_records": [],
+    "reserved_synthetic_field_omitted": null,
+    "reason": null
+  }
+}

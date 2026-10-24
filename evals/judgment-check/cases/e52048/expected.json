@@ -1,0 +1,23 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/printing"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/webcontents",
+      "blocked/need-repro"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "need-repro"
+    ],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The report identifies ignored duplexMode and printBackground options in webContents.print and gives the mismatched native option-key reads; printing is the failed feature and webcontents a defensible owning API. The C++ excerpts are diagnosis, not a runnable app, so asking for a Fiddle is useful; proceeding with the precise source-level regression evidence is also defensible. printToPDF is explicitly a working comparison. Earlier tiny-output DPI and single-page PDF truncation reports have different behavior. Chromium constants used by Electron do not by themselves justify an upstream redirect."
+}

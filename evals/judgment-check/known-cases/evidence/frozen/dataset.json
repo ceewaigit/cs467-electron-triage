@@ -1,0 +1,55 @@
+{
+  "namespace": "known",
+  "cases": [
+    {
+      "id": "e52255",
+      "group": "known",
+      "fresh_case": false,
+      "positive_controls": [],
+      "coverage_supported_refs": [],
+      "acceptable_optional_refs": [
+        51761,
+        52098
+      ],
+      "repro_expectation": "forbidden",
+      "files": {
+        "input.json": {
+          "path": "cases/e52255/input.json",
+          "sha256": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+          "source": "evals/golden/cases/e52255/input.json"
+        },
+        "expected.json": {
+          "path": "cases/e52255/expected.json",
+          "sha256": "70d51449dac832583f1c2f681bd26161cea182f97951330923a83aba3e4940fa",
+          "source": "evals/golden/cases/e52255/expected.json"
+        }
+      }
+    },
+    {
+      "id": "e53734",
+      "group": "known",
+      "fresh_case": false,
+      "positive_controls": [
+        "link"
+      ],
+      "coverage_supported_refs": [
+        53350
+      ],
+      "acceptable_optional_refs": [],
+      "repro_expectation": "optional",
+      "files": {
+        "input.json": {
+          "path": "cases/e53734/input.json",
+          "sha256": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+          "source": "evals/golden/cases/e53734/input.json"
+        },
+        "expected.json": {
+          "path": "cases/e53734/expected.json",
+          "sha256": "09f8a927d38428b4777498b01e9bce3c766d73762019edca605bef6062dfa992",
+          "source": "evals/golden/cases/e53734/expected.json"
+        }
+      }
+    }
+  ],
+  "purpose": "Development-informed known diagnostics. Original golden inputs and expectations are byte-for-byte unchanged; excluded from fresh metrics."
+}

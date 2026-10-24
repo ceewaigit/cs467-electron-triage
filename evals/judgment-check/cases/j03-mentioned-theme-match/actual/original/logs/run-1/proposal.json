@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/native-theme"
+      ]
+    }
+  ],
+  "explanation": "The bug concerns nativeTheme and includes a gist. The matching earlier issue is already linked by the reporter, and the other candidates describe different behavior."
+}

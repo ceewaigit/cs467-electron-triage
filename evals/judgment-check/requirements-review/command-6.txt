@@ -1,0 +1,66 @@
+$ python3 evals/need/analyze_extra.py
+{
+ "bug_reports_without_gist_at_open": 84,
+ "asked_for_repro_label_or_comment": "22/84",
+ "hours_to_repro_ask": {
+  "median": 26.0,
+  "max": 775.0
+ },
+ "outside_issue_body_chars": {
+  "median": 2927,
+  "over_4000": 57,
+  "n": 169
+ },
+ "ai_authorship_proxy": "44/169",
+ "duplicate_links": [
+  {
+   "issue": 52255,
+   "linked_to": 51761,
+   "by": "MarshallOfSound",
+   "hours_to_link": 933.0
+  },
+  {
+   "issue": 53610,
+   "linked_to": 51761,
+   "by": "nmggithub",
+   "hours_to_link": 1.2
+  },
+  {
+   "issue": 53024,
+   "linked_to": 52674,
+   "by": "YUCLing (non-maintainer)",
+   "hours_to_link": 6.2
+  },
+  {
+   "issue": 53734,
+   "linked_to": 53350,
+   "by": "MarshallOfSound (same answer re-typed, no link)",
+   "hours_to_link": 0.5
+  },
+  {
+   "issue": 52821,
+   "linked_to": 50531,
+   "by": "nikwen",
+   "hours_to_link": 74.3
+  },
+  {
+   "issue": 52427,
+   "linked_to": 48446,
+   "by": "nikwen",
+   "hours_to_link": null
+  },
+  {
+   "issue": 53307,
+   "linked_to": 53213,
+   "by": "nikwen",
+   "hours_to_link": null
+  }
+ ],
+ "quarterly_issue_volume_search_api": {
+  "2025Q3": 210,
+  "2025Q4": 214,
+  "2026Q1": 185,
+  "2026Q2": 198,
+  "2026Q3": 193
+ }
+}

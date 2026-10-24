@@ -1,0 +1,10 @@
+{
+  "number": 800007,
+  "title": "globalShortcut unregister/register leaves both callbacks active",
+  "body": "### Electron Version\n\n42.4.1\n\n### What operating system(s) are you using?\nWindows 11\n\n### Expected Behavior\nAfter unregistering Ctrl+Alt+Y and registering it again, one press should invoke only the new callback once.\n\n### Actual Behavior\nThe first registration logs A. After unregister and register with callback B, every press logs A then B. isRegistered reports false between the two registrations. This happens in a fresh process without a menu accelerator. A BrowserWindow displays the logs and registrations begin in app.whenReady.\n\n### Testcase Gist URL\nhttps://gist.github.com/offline-fixture-owner/7a83c52eddd844219dd4014c81f09a91\n",
+  "labels": [],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-06-30T12:00:00Z",
+  "replay": true
+}

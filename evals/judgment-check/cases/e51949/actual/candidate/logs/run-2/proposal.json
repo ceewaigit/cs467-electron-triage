@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The BrowserWindow height increases and remains incorrect after moving between displays; a gist is supplied and the candidates do not establish this same transition-dependent failure."
+}

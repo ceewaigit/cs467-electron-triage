@@ -1,0 +1,26 @@
+{
+  "id": "e52255",
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [],
+    "acceptable": [
+      "component/gpu"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "similar"
+    ],
+    "refs_any": [
+      51761,
+      52098
+    ],
+    "must_not_match": []
+  },
+  "rationale": "GPU process crash on Electron 39 (EOL); the bot already asked for a supported version, so no repro ask. The reporter already linked #52098 and #51761, so a similar-issue comment is optional.",
+  "written": "2026-10-23",
+  "author": "student"
+}

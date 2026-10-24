@@ -1,0 +1,10 @@
+{
+  "number": 800011,
+  "title": "contentTracing recording promise never settles",
+  "body": "### Electron Version\n\n42.4.1\n\n### What operating system(s) are you using?\nUbuntu 24.04\n\n### Expected Behavior\ncontentTracing.startRecording should settle so the application can proceed.\n\n### Actual Behavior\nIt stays pending in our application. This is the call we use; traceCategories comes from our configuration file and the rest of the startup code is not included.\n```js\ncontentTracing.startRecording({\n  categoryFilter: traceCategories.join(','),\n  traceOptions: 'record-until-full'\n});\n```\n### Testcase Gist URL\n_No response_\n",
+  "labels": [],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-06-30T12:00:00Z",
+  "replay": true
+}

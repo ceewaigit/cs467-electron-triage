@@ -1,0 +1,21 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/desktopcapturer",
+      "blocked/need-repro"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "need-repro"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "desktopCapturer.getSources fails to return sources when Windows thumbnails are requested, with a WGC start-capture error and a zero-thumbnail workaround. desktopcapturer is the direct component. The multiline call depends on undefined data.options and no runnable app is supplied, so request a Fiddle. The named Razer window is a capture target, not proof the bug belongs to that app. Earlier appIcon data URL failure on macOS and parented-window omissions differ in symptom and platform."
+}

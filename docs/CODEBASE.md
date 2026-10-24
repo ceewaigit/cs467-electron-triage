@@ -125,6 +125,10 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/{conservative-linking,reproduction-check}/experiment.py` | Separate comparison wrappers: prepare frozen workspaces, reconstruct them, export sealed decisions and score paired results; no model or network calls |
 | `evals/reproduction-check/known_regression.py` | Prepares and collects the separate known failure; never includes it in fresh-case metrics |
 | `evals/reproduction-check/evidence/independent-check-source.py` | Independently reconstructs contexts, replays helpers and scores evidence; exclusive output creation protects the saved first audit |
+| `evals/judgment-check/experiment.py`, `known_cases.py` | Prepare anonymous frozen contexts, collect all 104 first decisions before scoring, and apply paired and independent-review gates; no model or network calls |
+| `evals/judgment-check/selection/select_cases.py`, `author_dataset.py` | Record the unused Q2 sample and constructed controls with expectations; preserve their pre-execution versions and outputs |
+| `evals/judgment-check/evidence/annotation-check-source.py`, `independent-recompute-source.py` | Saved independent checks of annotations, contexts, helper transcripts and scores; existing audit outputs must not be overwritten |
+| `evals/judgment-check/requirements-review/checks.py`, `make_matrix.py` | Saved review utilities for the exact `90724fe` snapshot and original requirements; their reports describe that revision, with later changes assessed separately |
 | `evals/failure-recheck-offline/check.py` | Prepares or reconstructs five selected input-only sessions, exports sealed first decisions and scores them; no model or network calls |
 | `evals/failure-recheck-offline/evidence/independent-*-source.py`, `live-review-source.py` in that directory | Saved independent checks for runtime/input integrity, helper/export replay, historical comparison and live-failure evidence; preserve their first reports |
 | `evals/failure-recheck-live*/run.py` | Wraps the sandbox replay helper for one explicit case at k=1; `file` creates an issue, `dispatch` can incur provider cost, and `collect` reads and saves GitHub results |
@@ -133,7 +137,8 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/failure-recheck-live-3/summarize.py` | Offline frozen scoring, independent-score and cost reconciliation; refuses to overwrite its saved result |
 | `evals/failure-recheck-live-3/evidence/*source.py`, `check_cost-before-float-tolerance.py` | Archived audits and accounting code; the attempt README identifies authoritative versions, two non-runnable aggregate drafts, and fixture/parser/numeric/line-ending corrections |
 
-The copies under each experiment's `evidence/frozen/` and `known-regression/collection-source.py`
+The copies under each experiment's `evidence/frozen/`, `selection/pre-review-drafts/`
+and `known-regression/collection-source.py`
 are archived execution sources. Keep them unchanged when editing maintained code. Follow each
 experiment's README for reconstruction or rescoring in a disposable copy. Its historical
 decision describes the protocol at experiment close; the later owner decision is in `ADOPTION.md`.
@@ -158,11 +163,13 @@ control experiments, described in the evaluation guide.
 | `tests/test_offline_dry_run.py` | Changed snapshots and alternate check inputs are rejected, the first proposal is preserved, and helper subprocesses do not inherit API credentials |
 | `tests/test_conservative_experiment.py` | Frozen context, paired exports, reference handling and comparison scoring for the first experiment |
 | `tests/test_reproduction_experiment.py` | Reproduction-specific decision criteria, frozen input integrity and strict validation of the separate known-case collector |
+| `tests/test_judgment_experiment.py` | Frozen judgment comparison, collection/scoring order, required components, references and blind-review mapping; hash-verified fixtures work in shallow CI checkouts |
 | `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token |
 | `.github/workflows/issue-triage-forced.md` and `.lock.yml` | Source and compiled forced-actions control |
 | `.github/aw/actions-lock.json` | Action-version resolution used by the workflow compiler |
 | `.github/CODEOWNERS` | Requests owner review for protected areas; required review also needs repository settings |
 | `AGENTS.md` and `CONTRIBUTING.md` | Repository editing rules and contributor AI policy |
+| `docs/DRIFT_REVIEW.md` | Manual owner review of model/runtime changes and deployment; no scheduled paid monitoring or automatic model-drift detection |
 
 Read the relevant test beside the implementation. Mocked `gh` calls show what the script
 would request, without contacting GitHub. Compilation and source checks inspect configuration;

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/powerMonitor"
+      ]
+    }
+  ],
+  "explanation": "powerMonitor emits unlock-screen twice for one unlock. The supplied main.js includes startup, one listener, launch instructions and the lock/unlock trigger, so it is a complete reproduction. No candidate matches the duplicate unlock event."
+}

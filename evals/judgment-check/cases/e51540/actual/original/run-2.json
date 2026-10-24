@@ -1,0 +1,27 @@
+{
+  "labels_added": [
+    "component/BrowserWindow"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d015",
+  "batch_id": "s015",
+  "repetition": 2,
+  "policy_sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+  "proposal_sha256": "cd3ddba55b4420135f6600586c4c7fa0979a035c436374e65bd28500fc83244a",
+  "explanation": "The report describes a window-border rendering regression and supplies a reproduction repository; the candidates do not describe the same border behavior and there is no evidence for an upstream redirect.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "labels_added": [
+    "component/BrowserWindow"
+  ],
+  "comment": null,
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": null,
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d022",
+  "batch_id": "s004",
+  "repetition": 1,
+  "policy_sha256": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a",
+  "proposal_sha256": "d6cef92f01afec7d8c1b7d264b3d90c6abd49eb26aa013162af8953c0100bf36",
+  "explanation": "The report describes unwanted dark lines on the left, right, and bottom window borders beginning in 41.2.1, supporting BrowserWindow. A reproduction repository is supplied. No candidate excerpt matches that regression. The rejected component/window label was dropped; component/BrowserWindow validated successfully.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": [
+      {
+        "time_utc": "2026-10-24T07:26:37.124005+00:00",
+        "event": "script",
+        "command": [
+          "python3",
+          ".claude/skills/issue-triage/scripts/check_labels.py",
+          "component/window"
+        ],
+        "exit_code": 1,
+        "stdout": "[issue-triage/check_labels v1] rejected\n{\"labels\": [\"component/window\"], \"valid\": false, \"errors\": [\"'component/window' is not in the allowlist\"]}\n",
+        "stderr": ""
+      }
+    ]
+  }
+}

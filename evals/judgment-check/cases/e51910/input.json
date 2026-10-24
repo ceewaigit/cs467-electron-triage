@@ -1,0 +1,15 @@
+{
+  "id": "e51910",
+  "set": "fresh-q2-real",
+  "source": "https://github.com/electron/electron/issues/51910",
+  "as_of": "2026-06-08T10:53:55Z",
+  "author_association": "NONE",
+  "title": "desktopCapturer.getSources error wgc_capturer_win.cc:441",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n42.3.3\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11 25H2\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n41.5.0 (working with errors)\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nWhile calling getSources got all sources \n\n```\nconst fetchSourcesPromise = desktopCapturer.getSources({\n    types:         data.options.types, // window, screen\n    thumbnailSize: data.options.thumbnailSize || {\n        width:  150,\n        height: 150,\n    },\n    fetchWindowIcons: data.options.fetchWindowIcons ?? true,\n})\n```\n\n### Actual Behavior\n\nNow got error \n`[10400:0608/134611.098:ERROR:third_party\\webrtc\\modules\\desktop_capture\\win\\wgc_capturer_win.cc:441] Failed to start capture: -2147024809`\n\n### Testcase Gist URL\n\n_No response_\n\n### Additional Information\n\nElectron 41.5.0 - got all sources, but error still in terminal\nElectron 42.1.0 - app crash with error\nElectron 42.3.3 - app still working, but have no sources (error still in terminal)\n\nApp who crashing  - RazerSynapse (window RzMonitorForegroundWindow)\n\nIf i call getSources with  \n```\n  thumbnailSize: {\n      width:  0,\n      height: 0,\n  }\n```\nworking fine, unfortunately without preview",
+  "labels_at_open": [
+    "42-x-y",
+    "bug :beetle:",
+    "platform/windows"
+  ],
+  "body_source": "userContentEdits oldest revision (2026-06-08T10:53:55Z)"
+}

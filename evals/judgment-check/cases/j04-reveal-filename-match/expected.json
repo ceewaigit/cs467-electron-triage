@@ -1,0 +1,22 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/shell"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [
+      "similar"
+    ],
+    "acceptable_kinds": [],
+    "refs_any": [
+      990104
+    ],
+    "must_not_match": []
+  },
+  "rationale": "Earlier #990104 describes the same shell.showItemInFolder operation, parenthesized filename, existing sibling and wrong selection on macOS. The matching behavior supports a tentative similar link. #990105 concerns a missing file passed to shell.openPath, which is a different API/outcome despite the same shell/path vocabulary. The supplied gist removes the need for a repro request."
+}

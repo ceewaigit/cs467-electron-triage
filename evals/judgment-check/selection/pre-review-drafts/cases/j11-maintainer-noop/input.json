@@ -1,0 +1,11 @@
+{
+  "id": "j11-maintainer-noop",
+  "set": "constructed-judgment-control",
+  "source": "synthetic:judgment-check/j11-maintainer-noop",
+  "as_of": "2026-06-30T12:00:00Z",
+  "author_association": "MEMBER",
+  "title": "Investigate message port transfer metrics in a test harness",
+  "body": "### Electron Version\n\n42.4.1\n\nThis maintainer investigation tracks whether transfer metrics should be recorded by the test harness. I am collecting design notes here; no first-pass labels or canned response are needed.\n",
+  "labels_at_open": [],
+  "body_source": "constructed-before-execution"
+}

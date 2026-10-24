@@ -1,0 +1,18 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/native-theme"
+    ],
+    "one_of": [],
+    "acceptable": [],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The feature is nativeTheme forced-dark state, and #990103 is a clear behavioral match. The reporter already identified that exact reference; under the preserved task standard a redundant similar comment is not useful. Recognize the semantic relationship but act with the component label and no repro request because a gist is supplied."
+}

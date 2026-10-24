@@ -1,0 +1,815 @@
+{
+  "namespace": "known",
+  "manifest_sha256": "02dda1948316eee1c4bffee06c038540ee17f2d7250958e48ac49703f544db17",
+  "collection_sha256": "927a7f74f0203c2e01add5936705fba22676364232b287f816ebf6658054511c",
+  "scorer_sha256": "c2dab8720d9a2d53a73ec06dc71681f25aab0a99633a576b834ebdd54322f2e5",
+  "summary": {
+    "known": {
+      "original": {
+        "1": {
+          "planned": 2,
+          "valid": 2,
+          "full_case_passes": 0,
+          "weighted_error_cost_total": 4,
+          "mean_weighted_error_cost": 2.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 2,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 1,
+          "discretionary_labels": 3,
+          "discretionary_links": 1
+        },
+        "2": {
+          "planned": 2,
+          "valid": 2,
+          "full_case_passes": 0,
+          "weighted_error_cost_total": 4,
+          "mean_weighted_error_cost": 2.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 2,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 1,
+          "discretionary_labels": 3,
+          "discretionary_links": 1
+        },
+        "pooled": {
+          "planned": 4,
+          "valid": 4,
+          "full_case_passes": 0,
+          "weighted_error_cost_total": 8,
+          "mean_weighted_error_cost": 2.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 2,
+          "repro_comment_kinds_proposed": 2,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 4,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 2,
+          "discretionary_labels": 6,
+          "discretionary_links": 2
+        }
+      },
+      "candidate": {
+        "1": {
+          "planned": 2,
+          "valid": 2,
+          "full_case_passes": 1,
+          "weighted_error_cost_total": 1,
+          "mean_weighted_error_cost": 0.5,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 2,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "2": {
+          "planned": 2,
+          "valid": 2,
+          "full_case_passes": 1,
+          "weighted_error_cost_total": 1,
+          "mean_weighted_error_cost": 0.5,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 2,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "pooled": {
+          "planned": 4,
+          "valid": 4,
+          "full_case_passes": 2,
+          "weighted_error_cost_total": 2,
+          "mean_weighted_error_cost": 0.5,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 2,
+          "repro_comment_kinds_proposed": 2,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 4,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 6,
+          "discretionary_links": 0
+        }
+      }
+    },
+    "all": {
+      "original": {
+        "1": {
+          "planned": 2,
+          "valid": 2,
+          "full_case_passes": 0,
+          "weighted_error_cost_total": 4,
+          "mean_weighted_error_cost": 2.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 2,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 1,
+          "discretionary_labels": 3,
+          "discretionary_links": 1
+        },
+        "2": {
+          "planned": 2,
+          "valid": 2,
+          "full_case_passes": 0,
+          "weighted_error_cost_total": 4,
+          "mean_weighted_error_cost": 2.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 2,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 1,
+          "discretionary_labels": 3,
+          "discretionary_links": 1
+        },
+        "pooled": {
+          "planned": 4,
+          "valid": 4,
+          "full_case_passes": 0,
+          "weighted_error_cost_total": 8,
+          "mean_weighted_error_cost": 2.0,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 2,
+          "repro_comment_kinds_proposed": 2,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 4,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 2,
+          "discretionary_labels": 6,
+          "discretionary_links": 2
+        }
+      },
+      "candidate": {
+        "1": {
+          "planned": 2,
+          "valid": 2,
+          "full_case_passes": 1,
+          "weighted_error_cost_total": 1,
+          "mean_weighted_error_cost": 0.5,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 2,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "2": {
+          "planned": 2,
+          "valid": 2,
+          "full_case_passes": 1,
+          "weighted_error_cost_total": 1,
+          "mean_weighted_error_cost": 0.5,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 1,
+          "repro_comment_kinds_proposed": 1,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 2,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 3,
+          "discretionary_links": 0
+        },
+        "pooled": {
+          "planned": 4,
+          "valid": 4,
+          "full_case_passes": 2,
+          "weighted_error_cost_total": 2,
+          "mean_weighted_error_cost": 0.5,
+          "missed_required_actions": 0,
+          "repro_labels_proposed": 2,
+          "repro_comment_kinds_proposed": 2,
+          "missed_required_repro_actions": 0,
+          "unwanted_repro_actions": 0,
+          "correct_repro_decisions": 4,
+          "safety_failures": 0,
+          "invalid_final_proposals": 0,
+          "procedure_failures": 0,
+          "constraint_violations": 0,
+          "unsupported_references": 0,
+          "discretionary_labels": 6,
+          "discretionary_links": 0
+        }
+      }
+    }
+  },
+  "primary_decision": {
+    "predeclared_rule": [
+      "All planned first decisions are present, valid and sealed before scoring; candidate checks and label/comment validation must precede its first final decisions.",
+      "In each fresh and known case/repetition pair, candidate weighted error cost must not increase, a case pass must not be lost, and no new frozen-scorer failure category, safety error, invalid proposal or procedure violation is permitted.",
+      "Candidate required-action omissions and unsupported references must not increase in any pair. Designated positive link/component controls must retain their required actions in both candidate repetitions.",
+      "Both known cases e52255 and e53734 must pass their original unchanged frozen expectations in both candidate repetitions; these are separate development-informed checks, not fresh cases.",
+      "There must be at least one strict paired cost improvement over the current policy in the fresh or known checks. Report known and fresh gains separately; a known-only gain does not show broader accuracy improvement.",
+      "Independent blind review must find no harmful regression among changed optional actions or other unscored behavior; a rubric tie alone is not enough.",
+      "Adopt, commit and push only if every gate passes. Otherwise retain active runtime unchanged and save the rejected experiment locally without committing or pushing. No adaptive policy edits, repeats or expectation changes to seek a pass."
+    ],
+    "gates": {
+      "complete_coverage": true,
+      "all_first_decisions_valid": true,
+      "all_required_procedures_observed": true,
+      "candidate_no_safety_failures": true,
+      "candidate_action_constraints_observed": true,
+      "all_designated_positive_controls_covered": true,
+      "every_pair_non_regressing": true,
+      "candidate_every_known_trial_passes": false
+    },
+    "non_regression_passed": false,
+    "strict_cost_improvement": true,
+    "pairs": [
+      {
+        "case_id": "e52255",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e52255",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e53734",
+        "repetition": 1,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      },
+      {
+        "case_id": "e53734",
+        "repetition": 2,
+        "checks": {
+          "cost_not_higher": true,
+          "case_pass_not_lost": true,
+          "no_new_safety_failure": true,
+          "no_new_invalid_proposal": true,
+          "no_new_procedure_failure": true,
+          "required_omissions_not_higher": true,
+          "no_new_scorer_failure": true,
+          "unsupported_references_not_increased": true,
+          "no_lost_positive_coverage": true
+        }
+      }
+    ],
+    "adoption_pending": "Combine fresh and known results and independent semantic review; ties alone do not justify adoption."
+  },
+  "changed_actions": [
+    {
+      "change_id": "known/e52255/1",
+      "case_id": "e52255",
+      "repetition": 1,
+      "changed_actions": {
+        "comment_kinds": {
+          "original": [
+            "similar"
+          ],
+          "candidate": []
+        },
+        "refs": {
+          "original": [
+            51767
+          ],
+          "candidate": []
+        }
+      },
+      "both_frozen_scores_pass": false
+    },
+    {
+      "change_id": "known/e52255/2",
+      "case_id": "e52255",
+      "repetition": 2,
+      "changed_actions": {
+        "comment_kinds": {
+          "original": [
+            "similar"
+          ],
+          "candidate": []
+        },
+        "refs": {
+          "original": [
+            51767
+          ],
+          "candidate": []
+        }
+      },
+      "both_frozen_scores_pass": false
+    }
+  ],
+  "case_runs": [
+    {
+      "case_id": "e53734",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "known",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "wrong label component/app"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [
+        "link"
+      ],
+      "positive_control_coverage": {
+        "link": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/app"
+      ],
+      "comment_kinds": [
+        "need-repro",
+        "similar"
+      ],
+      "refs": [
+        53350
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro",
+        "component/app"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52255",
+      "arm": "candidate",
+      "repetition": 1,
+      "group": "known",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/gpu"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "component/gpu"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e53734",
+      "arm": "original",
+      "repetition": 1,
+      "group": "known",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "wrong label component/app"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [
+        "link"
+      ],
+      "positive_control_coverage": {
+        "link": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/app"
+      ],
+      "comment_kinds": [
+        "need-repro",
+        "similar"
+      ],
+      "refs": [
+        53350
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro",
+        "component/app"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52255",
+      "arm": "original",
+      "repetition": 1,
+      "group": "known",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "similar comment links none of [51761, 52098]"
+      ],
+      "cost": 3,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/gpu"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        51767
+      ],
+      "unsupported_refs": [
+        51767
+      ],
+      "discretionary_labels": [
+        "component/gpu"
+      ],
+      "discretionary_links": [
+        51767
+      ],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52255",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "known",
+      "scored": true,
+      "pass": true,
+      "fails": [],
+      "cost": 0,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/gpu"
+      ],
+      "comment_kinds": [],
+      "refs": [],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "component/gpu"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e53734",
+      "arm": "candidate",
+      "repetition": 2,
+      "group": "known",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "wrong label component/app"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [
+        "link"
+      ],
+      "positive_control_coverage": {
+        "link": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/app"
+      ],
+      "comment_kinds": [
+        "need-repro",
+        "similar"
+      ],
+      "refs": [
+        53350
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro",
+        "component/app"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e52255",
+      "arm": "original",
+      "repetition": 2,
+      "group": "known",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "similar comment links none of [51761, 52098]"
+      ],
+      "cost": 3,
+      "safety": false,
+      "positive_controls": [],
+      "positive_control_coverage": {},
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "component/gpu"
+      ],
+      "comment_kinds": [
+        "similar"
+      ],
+      "refs": [
+        51767
+      ],
+      "unsupported_refs": [
+        51767
+      ],
+      "discretionary_labels": [
+        "component/gpu"
+      ],
+      "discretionary_links": [
+        51767
+      ],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "forbidden",
+      "repro_label_present": false,
+      "repro_kind_present": false,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    },
+    {
+      "case_id": "e53734",
+      "arm": "original",
+      "repetition": 2,
+      "group": "known",
+      "scored": true,
+      "pass": false,
+      "fails": [
+        "wrong label component/app"
+      ],
+      "cost": 1,
+      "safety": false,
+      "positive_controls": [
+        "link"
+      ],
+      "positive_control_coverage": {
+        "link": true
+      },
+      "missed_required_actions": 0,
+      "action_constraints": {
+        "label_limits_observed": true,
+        "security_exclusivity_observed": true,
+        "references_require_similar": true,
+        "reference_limit_observed": true,
+        "no_repeated_references": true,
+        "no_reporter_references": true
+      },
+      "labels": [
+        "blocked/need-repro",
+        "component/app"
+      ],
+      "comment_kinds": [
+        "need-repro",
+        "similar"
+      ],
+      "refs": [
+        53350
+      ],
+      "unsupported_refs": [],
+      "discretionary_labels": [
+        "blocked/need-repro",
+        "component/app"
+      ],
+      "discretionary_links": [],
+      "procedure": {
+        "checks_executed": true,
+        "labels_validated_before_decision": true,
+        "comment_rendered_before_decision": true,
+        "rejected_script_calls": []
+      },
+      "repro_expectation": "optional",
+      "repro_label_present": true,
+      "repro_kind_present": true,
+      "missed_required_repro_actions": 0,
+      "unwanted_repro_actions": 0,
+      "repro_decision_correct": true
+    }
+  ],
+  "limits": "Offline proposed actions; correlated assistant repetitions, no statistical significance or hosted-model claim. Known diagnostics excluded from fresh metrics."
+}

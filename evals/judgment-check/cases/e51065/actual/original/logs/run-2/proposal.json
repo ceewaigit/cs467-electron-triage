@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/multithreading",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "The bug concerns delayed web worker messages and has no runnable reproduction or repository; candidates describe different failures, and the Chromium template question is not upstream evidence."
+}

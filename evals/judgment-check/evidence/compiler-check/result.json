@@ -1,0 +1,28 @@
+{
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "compiler_version": "gh aw version v0.93.2",
+  "command": [
+    "gh",
+    "aw",
+    "compile",
+    "issue-triage",
+    "issue-triage-forced",
+    "--strict",
+    "--no-check-update"
+  ],
+  "completed_at_utc": "2026-10-24T07:15:02.068807+00:00",
+  "exit_code": 0,
+  "comparisons": {
+    ".github/workflows/issue-triage.lock.yml": {
+      "byte_identical": true,
+      "before_sha256": "b8df2adf893b9765a73d6287879b86cab96bc35058e1ea69f6419da26f89a22c",
+      "after_sha256": "b8df2adf893b9765a73d6287879b86cab96bc35058e1ea69f6419da26f89a22c"
+    },
+    ".github/workflows/issue-triage-forced.lock.yml": {
+      "byte_identical": true,
+      "before_sha256": "44d69af163141e42b30613b869c4651ee132bd914d6599a1522bef26703b47e2",
+      "after_sha256": "44d69af163141e42b30613b869c4651ee132bd914d6599a1522bef26703b47e2"
+    }
+  },
+  "scope": "Compile only in disposable baseline copy. No provider evaluation, workflow dispatch or source-checkout change."
+}

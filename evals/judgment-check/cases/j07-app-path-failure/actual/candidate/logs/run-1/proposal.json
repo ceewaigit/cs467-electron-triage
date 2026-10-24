@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/app"
+      ]
+    }
+  ],
+  "explanation": "app.getPath returns the old value after app.setPath. The supplied main.js creates its target directory, invokes both APIs, prints the mismatch, and supplies launch instructions and lifecycle handling, so no additional repro is needed. Candidates concern different failures."
+}

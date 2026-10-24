@@ -1,0 +1,45 @@
+{
+  "repro_expectation": "forbidden",
+  "positive_controls": [],
+  "semantic_supported_refs": [
+    51237
+  ],
+  "reporter_mentioned_refs": [
+    51237
+  ],
+  "coverage_supported_refs": [],
+  "acceptable_optional_refs": [],
+  "rejected_reference_reasons": [],
+  "ambiguity": "BrowserWindow and BaseWindow are equivalent acceptable first-pass routes. This is a semantic match but not an obligation to post a redundant similar comment.",
+  "focus": "Clearly matching earlier issue already mentioned",
+  "id": "e51540",
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "rationale": "The opening Chinese text describes new dark lines on the left, right and bottom window borders in Electron 41.2.1 on Windows 10, absent in 41.2.0. BrowserWindow/BaseWindow names the feature. A runnable repository and npm run dev command are supplied, so no repro request. Earlier #51237 matches the same edges, color, platform and version transition, but the reporter already identifies it in the title. Recognize the semantic match without repeating the link. Hardware specifications do not justify a GPU component.",
+  "basis": "Opening input plus earlier opening-state corpus; no evaluated policy output",
+  "judgment_recorded_before_execution": true,
+  "acceptable_outcomes": {
+    "labels": {
+      "required": [],
+      "one_of": [
+        [
+          "component/BrowserWindow",
+          "component/BaseWindow"
+        ]
+      ],
+      "acceptable": [],
+      "forbidden": []
+    },
+    "comment": {
+      "required_kinds": [],
+      "acceptable_kinds": [],
+      "refs_any": [],
+      "must_not_match": []
+    },
+    "decision": "act"
+  },
+  "fixture_provenance": {
+    "constructed_records": [],
+    "reserved_synthetic_field_omitted": null,
+    "reason": null
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "reviewer": "/root/judgment_blind_checker",
+  "recorded_at_utc": "2026-10-24T07:38:51.913225+00:00",
+  "status": "corrections requested before final documentation seal",
+  "documents_sha256": {
+    "RESULTS.md": "52124aef87e967591ec368e0ba3f86c121b025cadd8c744101e1030fc0ab6935",
+    "README.md": "846f1aaf4b961526703efb466a0426b2fca9f856dc86577d69965edf9f104419"
+  },
+  "corrections": [
+    {
+      "file": "RESULTS.md",
+      "line": 57,
+      "observed": "One current-policy session attempted component/window",
+      "correction": "One candidate-policy session attempted component/window",
+      "basis": "First transcript s004/e51540/repetition1 and independent-integrity-followup.json identify candidate."
+    },
+    {
+      "file": "RESULTS.md",
+      "line": 3,
+      "observed": "disallowed GPU reference",
+      "correction": "GPU reference rejected by the frozen expectation",
+      "basis": "The renderer accepted the in-corpus reference; the unchanged frozen expected references rejected it."
+    },
+    {
+      "file": "README.md",
+      "line": 58,
+      "observed": "The result can support no observed regression in these trials",
+      "correction": "A passing result could support no observed regression in these trials",
+      "basis": "This completed experiment records one paired scored regression and was rejected."
+    }
+  ],
+  "otherwise_verified": [
+    "All cohort pass counts and weighted costs match independent-score.json.",
+    "Failure descriptions, acceptance:false and no-adoption statement match sealed mechanical gates.",
+    "All six opaque semantic judgments are non-harmful; mapped judgments use only original-to-candidate. The disagreement with frozen labels/refs is explicitly preserved without target changes.",
+    "Semantic packet limits are accurately identified: abstract actions, no rendered wording or complete project-specific component definitions.",
+    "All104contexts,239recordedhelpercalls,52pairs and5502priortrackedfiles reflect independent-audit.json.",
+    "Requirements review report states103originaltests,101traceabilityentries and no missing required configuration artifact without certifyingA+."
+  ]
+}

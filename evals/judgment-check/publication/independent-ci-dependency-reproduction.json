@@ -1,0 +1,16 @@
+{
+  "kind": "Synthetic missing-baseline condition, not an actual GitHub Actions run",
+  "test_source_sha256": "6a1c9c6243930ae4e4d3e520b8f8375b759453682ea94116527ff3fbc8b54c4d",
+  "test_runs": 1,
+  "failures": 0,
+  "errors": 1,
+  "baseline_git_reads": [
+    [
+      "git",
+      "show",
+      "90724fea4152861499063b4f163d84c28348b0d3:evals/reproduction-check/experiment.py"
+    ]
+  ],
+  "expected_failure_confirmed": true,
+  "output": "test_both_arms_missing_required_component_fail_designated_control (publication_original_test.JudgmentGateTests.test_both_arms_missing_required_component_fail_designated_control) ... ERROR\n\n======================================================================\nERROR: test_both_arms_missing_required_component_fail_designated_control (publication_original_test.JudgmentGateTests.test_both_arms_missing_required_component_fail_designated_control)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/Users/ceewai/Documents/SMU/Y4S1/CS467/Assignment3/repo/tests/test_judgment_experiment.py\", line 98, in test_both_arms_missing_required_component_fail_designated_control\n    self.assertTrue(self.decision(rows())[\"strict_cost_improvement\"])\n        ^^^^^^^^^^^^^^^^^\n  File \"/Users/ceewai/Documents/SMU/Y4S1/CS467/Assignment3/repo/evals/judgment-check/experiment.py\", line 40, in helpers\n    raw = ((evidence / \"frozen/helper.py\").read_bytes() if evidence else source(repo, HELPER_PATH))\n                                                                         ~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"/Users/ceewai/Documents/SMU/Y4S1/CS467/Assignment3/repo/evals/judgment-check/experiment.py\", line 34, in source\n    return subprocess.check_output([\"git\", \"show\", f\"{BASELINE}:{name}\"], cwd=repo)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/mock.py\", line 1176, in __call__\n    return self._mock_call(*args, **kwargs)\n           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/mock.py\", line 1180, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/lib/python3.14/unittest/mock.py\", line 1247, in _execute_mock_call\n    result = effect(*args, **kwargs)\n  File \"<stdin>\", line 11, in missing_baseline\nsubprocess.CalledProcessError: Command '['git', 'show', '90724fea4152861499063b4f163d84c28348b0d3:evals/reproduction-check/experiment.py']' returned non-zero exit status 128.\n\n----------------------------------------------------------------------\nRan 1 test in 0.002s\n\nFAILED (errors=1)\n"
+}

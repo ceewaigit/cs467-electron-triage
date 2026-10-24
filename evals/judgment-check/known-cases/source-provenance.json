@@ -1,0 +1,19 @@
+{
+  "baseline_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "fresh_manifest_sha256": "7c14015d26b166ea8ad50935cb92821c450e00b9fc770c4bd99ae6ec4a66fb18",
+  "known_cases": [
+    "e52255",
+    "e53734"
+  ],
+  "fresh_case": false,
+  "files": {
+    "cases/e52255/input.json": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+    "cases/e52255/expected.json": "70d51449dac832583f1c2f681bd26161cea182f97951330923a83aba3e4940fa",
+    "cases/e53734/input.json": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+    "cases/e53734/expected.json": "09f8a927d38428b4777498b01e9bce3c766d73762019edca605bef6062dfa992",
+    "protocol.json": "a179693d8d49a6ab4fdc4593d139af2c3c99cce54856c6aa27f641d93697ee78",
+    "dataset.json": "6c62650597d896e1e69575154420ecfbe3efba5992561f75ae3f92b7bc16071a",
+    "policies/original-SKILL.md": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+    "policies/candidate-SKILL.md": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a"
+  }
+}

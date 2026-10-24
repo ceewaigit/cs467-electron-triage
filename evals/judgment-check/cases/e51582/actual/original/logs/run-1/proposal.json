@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/asar"
+      ]
+    }
+  ],
+  "explanation": "This feature request concerns ASAR integrity on Linux. Feature requests do not require a repro, and the candidates concern different enhancements or problems without a clear same-problem match or redirect."
+}

@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The regression affects window border rendering, which fits BrowserWindow. A runnable reproduction repository is supplied. Candidates show different behavior, and the report does not establish an upstream cause."
+}

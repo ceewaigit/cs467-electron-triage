@@ -1,0 +1,75 @@
+{
+  "reviewer": "/root/judgment_blind_checker",
+  "sealed_at_utc": "2026-10-24T07:24:18.027300+00:00",
+  "status": "approved for frozen preparation and predeclared execution",
+  "blockers": [],
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "inputs_sha256": {
+    "experiment.py": "5a4077b46ca7cad69579eaef2bfc4845d56b7f237dabe1f0f6d1a372e69aa988",
+    "known_cases.py": "0b11fc0e715c666423ccf66fd497f1c3d129824e2a432d088f82b3f2c7e30689",
+    "protocol.json": "a179693d8d49a6ab4fdc4593d139af2c3c99cce54856c6aa27f641d93697ee78",
+    "dataset.json": "f1ff3f5fa7b48e7deeae4f3f445871945979c25acc7a0ff17a4520ce2bc70011",
+    "policies/original-SKILL.md": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+    "policies/candidate-SKILL.md": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a",
+    "pre-execution-tests-v2.txt": "a49278552dc68b39fe0e73291ae7a9930809660024b6e93bf9e45ec54552d1d3",
+    "evidence/annotation-review.json": "6da7e954bc3e526701c3db84f352ca04b4c9c99892964fbc66f550a90fd94dfd",
+    "tests/test_judgment_experiment.py": "6a1c9c6243930ae4e4d3e520b8f8375b759453682ea94116527ff3fbc8b54c4d"
+  },
+  "initial_findings_record": "evidence/preexecution-review-initial.json",
+  "resolved_findings": {
+    "optional_component_cannot_replace_required": {
+      "component": false
+    },
+    "title_only_reporter_reference_rejected": true,
+    "fix_scope": "New experiment wrapper and new tests only; pinned old helper and runtime remain unchanged."
+  },
+  "policy_checks": {
+    "original_matches_baseline_commit": true,
+    "active_runtime_matches_original": true,
+    "only_sections_changed": [
+      2,
+      4
+    ],
+    "candidate_sections_equal_preserved_prior_candidate": true,
+    "adopted_reproduction_section_preserved": true,
+    "policy_hashes_match_protocol": true,
+    "scorer_bytes_equal_4baa2cb": true
+  },
+  "harness_review": {
+    "neutral_opening_fields_only": true,
+    "source_context_hashes_and_corpus_cutoff_verified_by_preparation": true,
+    "paired_arms_have_same_case_order_per_repeat": true,
+    "two_repetitions_per_arm": true,
+    "fresh_planned_decisions": 96,
+    "known_planned_decisions": 8,
+    "all104_sealed_and_collected_before_scoring": true,
+    "exclusive_evidence_writes": true,
+    "known_expectations_copied_unchanged_from_source_commit": true,
+    "each_pair_checks_cost_pass_failure_identity_omissions_unsupported_refs_procedures": true,
+    "positive_controls_require_actual_required_component_and_link_actions": true,
+    "known_candidate_must_pass_every_repeat": true,
+    "strict_gain_required_fresh_or_known_reported_separately": true,
+    "semantic_review_maps_only_original_to_candidate_after_both_directions_sealed": true,
+    "failed_gate_requires_no_adoption": true
+  },
+  "verification": {
+    "full_test_suite": "119 tests passed,44.736 seconds; preserved pre-execution-tests-v2.txt inspected",
+    "harness_tests": 16,
+    "previous_tracked_hashes_unchanged": 5502,
+    "independent_recompute_source": "evidence/independent-recompute-source.py authored before decisions; parses successfully, not yet run against any proposals"
+  },
+  "context_disclosure": {
+    "annotation_review_preceded_policy_review": true,
+    "candidate_policy_read_after_annotation_seal": true,
+    "coordinator_scores_or_decision_outputs_read": false,
+    "prior_historical_label_exposure": "evidence/annotation-exposure-disclosure.json",
+    "arm_blind_semantic_reviewer_required": "This reviewer inspected policies and mapping logic. A separate fresh reviewer should see only the opaque action-difference packet for blind semantic assessment."
+  },
+  "limitations": [
+    "Two repeated offline coding-assistant trials are correlated; they do not establish universal non-regression or configured Claude performance.",
+    "Prepared workspaces minimize visible evaluation metadata but do not enforce global filesystem or network isolation.",
+    "Exact backend model ID and metered usage are unavailable; no paid/provider/GitHub execution is performed.",
+    "The collector records helper use and first proposed actions, not private model reasoning or hosted safeguards.",
+    "Full suite reports current offline tests; workflow compiler is not rerun because no workflow source changes."
+  ]
+}

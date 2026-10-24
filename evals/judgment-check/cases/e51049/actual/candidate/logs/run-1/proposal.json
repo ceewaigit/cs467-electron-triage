@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/dialog"
+      ]
+    }
+  ],
+  "explanation": "The failing behavior is delayed resolution of dialog.showMessageBox before any BrowserWindow exists. The window and monitor details describe the trigger without establishing independent failures. A reproduction gist is provided, and no earlier excerpt matches this delayed promise resolution and trigger."
+}

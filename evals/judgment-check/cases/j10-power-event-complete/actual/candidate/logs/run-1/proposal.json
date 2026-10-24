@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/powerMonitor"
+      ]
+    }
+  ],
+  "explanation": "The powerMonitor unlock-screen event fires twice for one unlock; the supplied main.js includes startup, one listener, launch instructions and lock/unlock steps, so it is a complete reproduction. No candidate matches the event and failure."
+}

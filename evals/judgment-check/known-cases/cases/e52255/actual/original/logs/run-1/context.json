@@ -1,0 +1,22 @@
+{
+  "case_token": "d002",
+  "earlier_corpus_rows": 809,
+  "file_sha256": {
+    ".claude/skills/issue-triage/SKILL.md": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+    ".claude/skills/issue-triage/assets/allowed-labels.txt": "5eea2a81aaeaeb3afcc5526d087a4091171d761cf60b31f4b0c86d53de41357e",
+    ".claude/skills/issue-triage/references/components.json": "6a6f33d5e4fa6e65b5986723a87a4692a3f007feeafc105c9a23f083aff513b7",
+    ".claude/skills/issue-triage/scripts/check_labels.py": "4bc38e16b2f0ee0f64de2c62112351bb8138c8c54cce181ece099cb517311cf6",
+    ".claude/skills/issue-triage/scripts/render_comment.py": "c9603072a424a8ba7956a6ab96a77931897e7e4ca00a028249818b2ce676234d",
+    ".claude/skills/issue-triage/scripts/triage_checks.py": "890b3d3051b98b40a6bff042ad3be688aedde3036d3acde7e9e4ec338e505efe",
+    ".github/workflows/issue-triage.lock.yml": "b8df2adf893b9765a73d6287879b86cab96bc35058e1ea69f6419da26f89a22c",
+    ".github/workflows/issue-triage.md": "5604573190391f69f28d1e3096eae2f92cee782c4460b92e762243edb6953920",
+    ".triage/issue.json": "90bd92c24f42b592bce04f9a3a2a8f6a80f1b002d08c2e0f3852356395675c1d",
+    "AGENTS.md": "3600a27c2517bf2d1e6e968dd137571b2a6c0636c1cf47130ca41cadb821bba2",
+    "CLAUDE.md": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49",
+    "data/issue-corpus.jsonl": "7c39a7ca0fe9a793d2ee5524d6b03b534dcf00c31624efcbb2c0c14f16bd924a",
+    "data/labels.json": "8a53a9dce49748959aa2938549b038962a8a812f078b70944ff11c1e1505d2df",
+    "scripts/post_triage_comment.py": "71ef1e29e07697bd7097e9d24d956af3c47c0032b9abb2c609478868836ca01a",
+    "scripts/prepare_agent_context.py": "808aed32b67860e9e9f30ee19a25e05b962560210d4a37f49443ce923566e6f1",
+    "scripts/prepare_issue.py": "20804035b7ee36900d3247de14a02a97f415df35fcfa82aa24339b81a359c13a"
+  }
+}

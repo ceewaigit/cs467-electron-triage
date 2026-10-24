@@ -1,0 +1,52 @@
+{
+  "repro_expectation": "optional",
+  "positive_controls": [],
+  "semantic_supported_refs": [],
+  "reporter_mentioned_refs": [],
+  "coverage_supported_refs": [],
+  "acceptable_optional_refs": [],
+  "rejected_reference_reasons": [
+    {
+      "number": 50785,
+      "reason": "Tiny printed dimensions with DPI settings differs from ignored duplex/background flags."
+    },
+    {
+      "number": 48005,
+      "reason": "PDF page truncation differs from native printer options being ignored."
+    }
+  ],
+  "ambiguity": "Exact source-level before/after evidence may justify investigation without another repro; need-repro label and comment are optional, predeclared before execution.",
+  "focus": "API failure with detailed source diagnosis but no runnable test",
+  "id": "e52048",
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "rationale": "The report identifies ignored duplexMode and printBackground options in webContents.print and gives the mismatched native option-key reads; printing is the failed feature and webcontents a defensible owning API. The C++ excerpts are diagnosis, not a runnable app, so asking for a Fiddle is useful; proceeding with the precise source-level regression evidence is also defensible. printToPDF is explicitly a working comparison. Earlier tiny-output DPI and single-page PDF truncation reports have different behavior. Chromium constants used by Electron do not by themselves justify an upstream redirect.",
+  "basis": "Opening input plus earlier opening-state corpus; no evaluated policy output",
+  "judgment_recorded_before_execution": true,
+  "acceptable_outcomes": {
+    "labels": {
+      "required": [
+        "component/printing"
+      ],
+      "one_of": [],
+      "acceptable": [
+        "component/webcontents",
+        "blocked/need-repro"
+      ],
+      "forbidden": []
+    },
+    "comment": {
+      "required_kinds": [],
+      "acceptable_kinds": [
+        "need-repro"
+      ],
+      "refs_any": [],
+      "must_not_match": []
+    },
+    "decision": "act"
+  },
+  "fixture_provenance": {
+    "constructed_records": [],
+    "reserved_synthetic_field_omitted": null,
+    "reason": null
+  }
+}

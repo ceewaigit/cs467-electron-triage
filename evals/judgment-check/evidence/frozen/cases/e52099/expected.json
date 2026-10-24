@@ -1,0 +1,22 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/build"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "blocked/need-repro"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [
+      "need-repro"
+    ],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The failure occurs during Electron binary installation because the extract-zip native binary requires GLIBC_2.33 on a stated Debian Bullseye/glibc 2.31 environment. build is the direct package/install route. Node loader frames and the generic npm suggestion do not establish a Node integration or upstream bug. The concrete image, versions, command and nested error may suffice for investigation; a minimal install project/container is also defensible because no complete runnable project is supplied. #51963 shares Cannot find native binding but is an arm32 prebuild availability report, not this x64 glibc-version mismatch."
+}

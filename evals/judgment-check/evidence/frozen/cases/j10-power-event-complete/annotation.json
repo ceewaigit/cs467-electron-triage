@@ -1,0 +1,40 @@
+{
+  "repro_expectation": "forbidden",
+  "positive_controls": [
+    "component"
+  ],
+  "semantic_supported_refs": [],
+  "reporter_mentioned_refs": [],
+  "coverage_supported_refs": [],
+  "acceptable_optional_refs": [],
+  "rejected_reference_reasons": [],
+  "ambiguity": "",
+  "focus": "Complete inline repro preserved despite no gist",
+  "id": "j10-power-event-complete",
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "rationale": "The duplicated unlock-screen event is the failed powerMonitor feature. app.whenReady is setup only. Startup, listener registration, exact user trigger, observation and launch commands are all present, so the lack of a gist does not justify another repro request. Nothing establishes a powerSaveBlocker failure.",
+  "basis": "Opening input plus earlier opening-state corpus; no evaluated policy output",
+  "judgment_recorded_before_execution": true,
+  "acceptable_outcomes": {
+    "labels": {
+      "required": [
+        "component/powerMonitor"
+      ],
+      "one_of": [],
+      "acceptable": [],
+      "forbidden": []
+    },
+    "comment": {
+      "required_kinds": [],
+      "acceptable_kinds": [],
+      "refs_any": [],
+      "must_not_match": []
+    },
+    "decision": "act"
+  },
+  "fixture_provenance": {
+    "constructed_records": [],
+    "reserved_synthetic_field_omitted": null,
+    "reason": null
+  }
+}

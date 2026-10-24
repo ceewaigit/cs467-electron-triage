@@ -1,0 +1,51 @@
+{
+  "repro_expectation": "forbidden",
+  "positive_controls": [
+    "link",
+    "component"
+  ],
+  "semantic_supported_refs": [
+    990101
+  ],
+  "reporter_mentioned_refs": [],
+  "coverage_supported_refs": [
+    990101
+  ],
+  "acceptable_optional_refs": [],
+  "rejected_reference_reasons": [],
+  "ambiguity": "",
+  "focus": "Positive semantic link with full shared sequence; setup component negatives",
+  "id": "j01-shortcut-rebinding",
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "rationale": "The earlier fixture matches the API, key sequence, successful unregister observation and old-plus-new callbacks on each subsequent press. A tentative link is useful and the supplied gist avoids another repro request. BrowserWindow and app.whenReady only host/start the example; they are not failing components.",
+  "basis": "Opening input plus earlier opening-state corpus; no evaluated policy output",
+  "judgment_recorded_before_execution": true,
+  "acceptable_outcomes": {
+    "labels": {
+      "required": [
+        "component/globalShortcut"
+      ],
+      "one_of": [],
+      "acceptable": [],
+      "forbidden": []
+    },
+    "comment": {
+      "required_kinds": [
+        "similar"
+      ],
+      "acceptable_kinds": [],
+      "refs_any": [
+        990101
+      ],
+      "must_not_match": []
+    },
+    "decision": "act"
+  },
+  "fixture_provenance": {
+    "constructed_records": [
+      990101
+    ],
+    "reserved_synthetic_field_omitted": true,
+    "reason": "The renderer reserves synthetic=true for nonlinkable attack records. These separately tagged fabricated reference fixtures exist only for offline tests and are not historical evidence."
+  }
+}

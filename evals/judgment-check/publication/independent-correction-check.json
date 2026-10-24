@@ -1,0 +1,171 @@
+{
+  "review_scope": "Correction to initial shallow-CI blocker; preserved original review and reproduction",
+  "original_test_matches_before_inventory": true,
+  "original_test_matches_frozen_copy": true,
+  "all_existing_test_class_methods_unchanged": true,
+  "original_test_methods": 16,
+  "fixture_comparisons": [
+    {
+      "source": ".claude/skills/issue-triage/SKILL.md",
+      "sha256": "8d46cb101c8d4ee3c0085ec84eef4056dc2c2af8809e2a950de644947c3b3139",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": ".claude/skills/issue-triage/assets/allowed-labels.txt",
+      "sha256": "5eea2a81aaeaeb3afcc5526d087a4091171d761cf60b31f4b0c86d53de41357e",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": ".claude/skills/issue-triage/references/components.json",
+      "sha256": "6a6f33d5e4fa6e65b5986723a87a4692a3f007feeafc105c9a23f083aff513b7",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": ".claude/skills/issue-triage/scripts/check_labels.py",
+      "sha256": "4bc38e16b2f0ee0f64de2c62112351bb8138c8c54cce181ece099cb517311cf6",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": ".claude/skills/issue-triage/scripts/render_comment.py",
+      "sha256": "c9603072a424a8ba7956a6ab96a77931897e7e4ca00a028249818b2ce676234d",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": ".claude/skills/issue-triage/scripts/triage_checks.py",
+      "sha256": "890b3d3051b98b40a6bff042ad3be688aedde3036d3acde7e9e4ec338e505efe",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": ".github/workflows/issue-triage.lock.yml",
+      "sha256": "b8df2adf893b9765a73d6287879b86cab96bc35058e1ea69f6419da26f89a22c",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": ".github/workflows/issue-triage.md",
+      "sha256": "5604573190391f69f28d1e3096eae2f92cee782c4460b92e762243edb6953920",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "AGENTS.md",
+      "sha256": "3600a27c2517bf2d1e6e968dd137571b2a6c0636c1cf47130ca41cadb821bba2",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "CLAUDE.md",
+      "sha256": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "data/issue-corpus.jsonl",
+      "sha256": "17f98b105cfa82f53f9162fcdb274faab69460fd9e64049cc9978cd4b2255c5c",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "data/labels.json",
+      "sha256": "8a53a9dce49748959aa2938549b038962a8a812f078b70944ff11c1e1505d2df",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "evals/golden/cases/e52255/expected.json",
+      "sha256": "70d51449dac832583f1c2f681bd26161cea182f97951330923a83aba3e4940fa",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "evals/golden/cases/e52255/input.json",
+      "sha256": "445a1b3ff1bb77951adb83b84590d9a1e4866c21cd9139067e14387ef88d9b39",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "evals/golden/cases/e53734/expected.json",
+      "sha256": "09f8a927d38428b4777498b01e9bce3c766d73762019edca605bef6062dfa992",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "evals/golden/cases/e53734/input.json",
+      "sha256": "33832d845751e4e52a31f85d8e8efc48fd09499d1d8a6cbba53c9054e902774d",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "evals/golden/results/assistant-dry-run/manifest.json",
+      "sha256": "bc689212d38506064d6fe67b85692529128dbca1734a6db398a082f0ebc8d674",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "evals/reproduction-check/experiment.py",
+      "sha256": "25899fc6115b595f91f47248a4209a4fa58e0e2294f8d3c84261382e38c90d9d",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "evals/tools/offline_dry_run.py",
+      "sha256": "3da8ed3609c41d7ec9db1d18999c5ae81a6c106e7fea495e3de3ee19de7bae96",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "evals/tools/score.py",
+      "sha256": "c2dab8720d9a2d53a73ec06dc71681f25aab0a99633a576b834ebdd54322f2e5",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "scripts/post_triage_comment.py",
+      "sha256": "71ef1e29e07697bd7097e9d24d956af3c47c0032b9abb2c609478868836ca01a",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "scripts/prepare_agent_context.py",
+      "sha256": "808aed32b67860e9e9f30ee19a25e05b962560210d4a37f49443ce923566e6f1",
+      "exact_baseline_bytes": true
+    },
+    {
+      "source": "scripts/prepare_issue.py",
+      "sha256": "20804035b7ee36900d3247de14a02a97f415df35fcfa82aa24339b81a359c13a",
+      "exact_baseline_bytes": true
+    }
+  ],
+  "mutated_fixture_checks": [
+    {
+      "source": "scripts/prepare_agent_context.py",
+      "altered_fixture_rejected": true
+    },
+    {
+      "source": "evals/golden/cases/e52255/input.json",
+      "altered_fixture_rejected": true
+    }
+  ],
+  "no_history_export": {
+    "exists": true,
+    "git_directory_absent": true,
+    "git_probe_returncode": 128,
+    "saved_suite_returncode": 0,
+    "test_source_matches_saved_export": true,
+    "log_hash_matches": true,
+    "log_tail": [
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 119 tests in 54.687s",
+      "",
+      "OK"
+    ]
+  },
+  "prior_inventory_changes": [
+    "DESIGN.md",
+    "README.md",
+    "data/README.md",
+    "docs/CODEBASE.md"
+  ],
+  "experiment_inventory_changes": [
+    "evals/judgment-check/README.md",
+    "tests/test_judgment_experiment.py"
+  ],
+  "runtime_changes": [],
+  "current_reviewed_hashes": {
+    "DESIGN.md": "f24e51b0d8dd4cabfbf5cfa1c6ed1ac7dff880a825e06b08a5092b8c36710d2b",
+    "README.md": "29ef1d77e8d65c8d4f8743ff789288b69ec3898bc86a3a7056b8f49eb5eff9fd",
+    "data/README.md": "2b63a07b634a99f32fd1fcaa22440ffcfcf4c8d2c4eda17e8de195b2d152e0cb",
+    "docs/CODEBASE.md": "3ba15b9645e0ad130b63d6fc0e461adadbefc77762ec2565752347c2effe4ec0",
+    "docs/DRIFT_REVIEW.md": "f98f8df6b18942a0f2da3db352e7d68b448f34d783636b4ee4af536caf218bf0",
+    "evals/judgment-check/PUBLICATION.md": "8a756e6e09a66240053b734f82c6f06391b2ca5426af1b1b9b67669e5f3afffa",
+    "evals/judgment-check/README.md": "ae45edbe9cc1118fc98005ec382b19d8ffc2ad835064226995dad6de7e9dd9ad",
+    "tests/test_judgment_experiment.py": "c8684d60d77af0fc0cc2a741c02d214d0fe738e252372ab60ac8776bb816d70f"
+  },
+  "ci_blocker_resolved": true
+}

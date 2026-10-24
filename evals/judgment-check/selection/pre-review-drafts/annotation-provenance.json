@@ -1,0 +1,56 @@
+{
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "annotator": "Independent Codex dataset subagent; no extra agents spawned",
+  "runtime_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "expected_schema": "unchanged evals/tools/score.py score_run fields",
+  "preexecution_status": "All expected outcomes and rationales authored before any evaluated assistant run or helper execution for these cases",
+  "sources_read": [
+    "AGENTS.md",
+    "docs/CODEBASE.md",
+    "evals/reproduction-check/select_cases.py",
+    "evals/conservative-linking/select_cases.py",
+    "evals/conservative-linking/annotate_cases.py (utility includes previous nongolden judgment constants)",
+    "evals/reproduction-check/dataset.json (first 110 lines; metadata/schema and first case record)",
+    "evals/tools/score.py",
+    "evals/golden/RUBRIC.md",
+    ".claude/skills/issue-triage/assets/allowed-labels.txt",
+    ".claude/skills/issue-triage/scripts/render_comment.py",
+    "evals/data/electron_issues.jsonl (selected opening snapshots)",
+    "prior evals input.json files (source/id/source_number identifiers extracted only)",
+    "90724fea4152861499063b4f163d84c28348b0d3:data/issue-corpus.jsonl (title/phrase searches and full plausible reference opening text)"
+  ],
+  "no_prior_actual_output_files_read": true,
+  "no_golden_expected_outcomes_read": true,
+  "no_candidate_policy_read": true,
+  "no_later_maintainer_history_read": true,
+  "no_network_provider_or_github_calls": true,
+  "opening_source_sha256": "3fa8dfedbf7b0234b83125151723b7f3289b46fc277089332aec84035573292f",
+  "base_corpus_sha256": "17f98b105cfa82f53f9162fcdb274faab69460fd9e64049cc9978cd4b2255c5c",
+  "authoring_source_sha256": "418c9b9e69111087b7979e19b83f1913392491a154402351ecdfd7331a4a939c",
+  "semantic_vs_action_rule": "A matching reporter-mentioned reference remains a semantic match, but preserved rubric says not to repeat it. coverage_supported_refs records only useful unmentioned link obligations.",
+  "fixtures": {
+    "numbers": [
+      990101,
+      990102,
+      990103,
+      990104,
+      990105
+    ],
+    "historical_claim": false,
+    "numbering": "Unique six-digit offline fixture numbers; never to be published",
+    "annotation_marker": "fixture_provenance.kind=constructed-offline-reference",
+    "synthetic_field": "Omitted because renderer reserves synthetic=true for intentionally nonlinkable attack rows",
+    "scope": "Per-case corpus-additions.jsonl; original corpus untouched"
+  },
+  "limitations": [
+    "Required CODEBASE guide exposed aggregate historical scores and a few historical procedural observations; no prior actual/output report was opened.",
+    "The permitted prior annotation utility contains prior nongolden judgments. Those were encountered when inspecting authoring structure; this exposure is disclosed, and no golden expected file was opened.",
+    "Historical semantic review used manual earlier-corpus title/phrase search and detailed plausible references, not exhaustive proof that no distant match exists.",
+    "The frozen rubric prohibits repeat links. Reporter-mentioned matching controls test recognition separately from the utility of another posted link.",
+    "Selected reports can share a symptom with prior evaluation input although the input identifiers themselves are disjoint; all random selections are retained.",
+    "Source author association and opening reconstruction limitations are inherited from the saved data.",
+    "Constructed gist links are offline artifact-presence fixtures; their reachability and code execution are not claimed.",
+    "Constructed failures are fabricated evaluation scenarios, not claims of Electron defects.",
+    "Expected schema permits optional labels and comment kinds independently; three historical repro-ambiguous cases predeclare that limitation."
+  ]
+}

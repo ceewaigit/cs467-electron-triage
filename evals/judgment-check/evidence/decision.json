@@ -1,0 +1,20 @@
+{
+  "gates": {
+    "fresh_non_regression": false,
+    "known_non_regression": false,
+    "strict_cost_improvement_somewhere": true,
+    "independent_semantic_review_complete": true,
+    "no_harmful_semantic_regression": true
+  },
+  "accepted": false,
+  "strict_cost_improvement": {
+    "fresh": false,
+    "known": true
+  },
+  "evidence_sha256": {
+    "fresh_score": "2f81c1cf92db3cb3c29cbd155f4359c5d558c38fb73c7709522becde4940089a",
+    "known_score": "af8db682f95eabad1b19be5c15fda75b53abb75cfef25d66f92e444181e8174a",
+    "semantic_review": "dfcc67a012d298be57b52b91c7dd2a82a744f4d6baf5ea9d1b495ed89f7e1cf9",
+    "blind_review": "345b234d3780e458b8b023740eda29d558ff31dd561fbafc7d6ddc4df73b7ff4"
+  }
+}

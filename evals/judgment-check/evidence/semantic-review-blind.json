@@ -1,0 +1,49 @@
+{
+  "completed": true,
+  "reviewer": "judgment_semantic_blind",
+  "source_sha256": "345b234d3780e458b8b023740eda29d558ff31dd561fbafc7d6ddc4df73b7ff4",
+  "judgments": [
+    {
+      "change_id": "fresh/e52099/2",
+      "from": "v01",
+      "to": "v02",
+      "harmful": false,
+      "rationale": "The only added action is component/build. The opening describes a packaged native extraction binding requiring GLIBC_2.33 on a glibc 2.31 build environment, so a broad build/toolchain component tag is a defensible optional classification of this installation compatibility regression. Earlier #51963 independently describes a native-binding distribution failure in the same new installer dependency, although it concerns arm32 rather than this glibc mismatch. Both proposals retain exactly the same need-repro label and comment and neither asserts a duplicate or cause beyond the opening. The packet does not define whether component/build has a narrower project-specific scope; on the supplied semantics, adding it is not demonstrably harmful."
+    },
+    {
+      "change_id": "fresh/e52099/2",
+      "from": "v02",
+      "to": "v01",
+      "harmful": false,
+      "rationale": "Removing the optional component/build tag leaves the same need-repro label and comment, with no changed references or disposition. This is an installation failure involving a precompiled dependency, and the packet does not establish that a build component tag is required or uniquely correct for it. Omitting that plausible broad classification is acceptable optional-action variation rather than worsened semantic triage. Any concern about requesting reproduction despite the supplied environment and stack trace is shared by both proposals and is not a directional change."
+    },
+    {
+      "change_id": "known/e52255/1",
+      "from": "v01",
+      "to": "v02",
+      "harmful": false,
+      "rationale": "Adding a similar comment referencing #51767 is supported at the symptom level: both reports describe Windows x64 applications failing at startup after repeated GPU-process exit_code=-2147483645 errors and a final GPU process unusable fatal error. #51767 involves Windows 10 and Electron 37.3.1, while the opening involves Windows 11 25H2, Electron 39.8.3 and an AMD RX 9070; a shared root cause is therefore unproved. #52098 and #51761, already cited in the opening, provide closer or additional context, but their existence does not make #51767 an invalid similar report. The proposed action is only similar, not duplicate or closure, and the GPU label stays the same. Exact comment wording is unavailable; assessed as the supplied abstract similar action, this is acceptable optional context."
+    },
+    {
+      "change_id": "known/e52255/1",
+      "from": "v02",
+      "to": "v01",
+      "harmful": false,
+      "rationale": "Removing the optional similar comment and #51767 reference preserves the appropriate component/gpu classification and makes no adverse disposition change. #51767 shares a startup failure signature but differs in Windows and Electron versions and does not establish the opening report's cause. The opening itself already points to #52098 and #51761. Forgoing this additional symptom-level cross-reference is acceptable optional-action variation, not harmful semantic triage; this judgment does not assert that the reports are unrelated."
+    },
+    {
+      "change_id": "known/e52255/2",
+      "from": "v01",
+      "to": "v02",
+      "harmful": false,
+      "rationale": "Adding a similar comment referencing #51767 is supported at the symptom level: both reports describe Windows x64 applications failing at startup after repeated GPU-process exit_code=-2147483645 errors and a final GPU process unusable fatal error. #51767 involves Windows 10 and Electron 37.3.1, while the opening involves Windows 11 25H2, Electron 39.8.3 and an AMD RX 9070; a shared root cause is therefore unproved. #52098 and #51761, already cited in the opening, provide closer or additional context, but their existence does not make #51767 an invalid similar report. The proposed action is only similar, not duplicate or closure, and the GPU label stays the same. Exact comment wording is unavailable; assessed as the supplied abstract similar action, this is acceptable optional context."
+    },
+    {
+      "change_id": "known/e52255/2",
+      "from": "v02",
+      "to": "v01",
+      "harmful": false,
+      "rationale": "Removing the optional similar comment and #51767 reference preserves the appropriate component/gpu classification and makes no adverse disposition change. #51767 shares a startup failure signature but differs in Windows and Electron versions and does not establish the opening report's cause. The opening itself already points to #52098 and #51761. Forgoing this additional symptom-level cross-reference is acceptable optional-action variation, not harmful semantic triage; this judgment does not assert that the reports are unrelated."
+    }
+  ]
+}

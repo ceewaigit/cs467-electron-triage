@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/net"
+      ]
+    }
+  ],
+  "explanation": "The second net.fetch fails specifically after cancellation of the first response body, directly supporting net. A reproduction gist is supplied. Candidate failures involve proxy authentication, service crashes or other different operations and do not match this cancellation trigger."
+}

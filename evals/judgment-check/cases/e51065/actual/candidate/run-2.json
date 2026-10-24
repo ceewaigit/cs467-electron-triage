@@ -1,0 +1,32 @@
+{
+  "labels_added": [
+    "component/multithreading",
+    "blocked/need-repro"
+  ],
+  "comment": "Thanks for the report.\n\nTo look into this, a maintainer needs a way to reproduce it. Could you make a minimal example in [Electron Fiddle](https://www.electronjs.org/fiddle), save it as a gist and add the link here?\n\n<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every decision, including whether this issue stays open.</sub>\n\ntriage: kinds=need-repro refs=",
+  "other_writes": [],
+  "scored": true,
+  "invalid_final_proposal": false,
+  "validation_errors": [],
+  "comment_request": {
+    "type": "triage_comment",
+    "kinds": "need-repro",
+    "refs": ""
+  },
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "interpretation": "Scorer fields represent proposed actions, not GitHub writes.",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "case_token": "d016",
+  "batch_id": "s011",
+  "repetition": 2,
+  "policy_sha256": "9015f8217b9d93ea4cdffce1ff124b5e1ad230d2f6f79cab94e7bfa563f86b4a",
+  "proposal_sha256": "c575e5e04be194e83a078819cc0d3904343eef51828e60fa12cfac2f36389f37",
+  "explanation": "Web worker messages are delayed for over 12 seconds and arrive in a burst on window focus. No runnable worker/page reproduction or repository is supplied, and no candidate establishes the same failure or an upstream cause.",
+  "procedure": {
+    "checks_executed": true,
+    "labels_validated_before_decision": true,
+    "comment_rendered_before_decision": true,
+    "rejected_script_calls": []
+  }
+}

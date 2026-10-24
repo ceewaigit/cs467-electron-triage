@@ -1,0 +1,17 @@
+{
+  "number": 800024,
+  "title": "dialog.showMessageBox promise resolution is delayed when shown before any BrowserWindow on Linux",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n41.2.0, 40.8.5, and 39.8.7\n\n### What operating system(s) are you using?\n\nUbuntu\n\n### Operating System Version\n\nUbuntu 24.04\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nI don't know how to test\n\n### Expected Behavior\n\nI expect that, after a user interacts with a dialog box displayed with `dialog.showMessageBox` before any other windows are displayed, the `showMessageBox` promise is resolved immediately.\n\n### Actual Behavior\n\nThe `showMessageBox` promise resolution is delayed by several seconds, as demonstrated in the attached video.\n\nhttps://github.com/user-attachments/assets/834362d2-6736-431f-8dcb-d11568691f7b\n\n### Testcase Gist URL\n\nhttps://gist.github.com/Harrison-M/4c6fe09e54d3ec83ef6b79324785314e\n\n### Additional Information\n\nThis only happens when the application is launched from the user's primary monitor. When launched from a secondary monitor, the message box behaves as expected and returns the promise immediately after the user clicks \"OK.\"\n\nIn the gist, I have included a second call to `showMessageBox` after the window is displayed to demonstrate that message boxes behave as expected when a `BrowserWindow` is present.",
+  "labels": [
+    "39-x-y",
+    "40-x-y",
+    "41-x-y",
+    "bug :beetle:",
+    "has-repro-gist",
+    "platform/linux"
+  ],
+  "state": "open",
+  "author_association": "NONE",
+  "as_of": "2026-04-14T21:10:07Z",
+  "replay": true
+}

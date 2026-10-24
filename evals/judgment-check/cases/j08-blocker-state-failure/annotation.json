@@ -1,0 +1,40 @@
+{
+  "repro_expectation": "forbidden",
+  "positive_controls": [
+    "component"
+  ],
+  "semantic_supported_refs": [],
+  "reporter_mentioned_refs": [],
+  "coverage_supported_refs": [],
+  "acceptable_optional_refs": [],
+  "rejected_reference_reasons": [],
+  "ambiguity": "",
+  "focus": "Genuine API state failure versus related power/platform vocabulary",
+  "id": "j08-blocker-state-failure",
+  "annotated_at_utc": "2026-10-24T07:11:04.702281+00:00",
+  "rationale": "The start/isStarted state inconsistency is a genuine powerSaveBlocker API failure. app.whenReady only sequences startup; no powerMonitor event or screen enumeration is involved. The complete main process script and command suffice for reproduction. Do not infer a device power/sleep failure beyond the reported state query.",
+  "basis": "Opening input plus earlier opening-state corpus; no evaluated policy output",
+  "judgment_recorded_before_execution": true,
+  "acceptable_outcomes": {
+    "labels": {
+      "required": [
+        "component/powerSaveBlocker"
+      ],
+      "one_of": [],
+      "acceptable": [],
+      "forbidden": []
+    },
+    "comment": {
+      "required_kinds": [],
+      "acceptable_kinds": [],
+      "refs_any": [],
+      "must_not_match": []
+    },
+    "decision": "act"
+  },
+  "fixture_provenance": {
+    "constructed_records": [],
+    "reserved_synthetic_field_omitted": null,
+    "reason": null
+  }
+}

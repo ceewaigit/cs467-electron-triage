@@ -1,0 +1,36 @@
+{
+  "completed": true,
+  "reviewer": "judgment_semantic_blind",
+  "source_sha256": "345b234d3780e458b8b023740eda29d558ff31dd561fbafc7d6ddc4df73b7ff4",
+  "reviewed_change_ids": [
+    "fresh/e52099/2",
+    "known/e52255/1",
+    "known/e52255/2"
+  ],
+  "candidate_direction_judgments": [
+    {
+      "change_id": "fresh/e52099/2",
+      "from": "v02",
+      "to": "v01",
+      "harmful": false,
+      "rationale": "Removing the optional component/build tag leaves the same need-repro label and comment, with no changed references or disposition. This is an installation failure involving a precompiled dependency, and the packet does not establish that a build component tag is required or uniquely correct for it. Omitting that plausible broad classification is acceptable optional-action variation rather than worsened semantic triage. Any concern about requesting reproduction despite the supplied environment and stack trace is shared by both proposals and is not a directional change."
+    },
+    {
+      "change_id": "known/e52255/1",
+      "from": "v02",
+      "to": "v01",
+      "harmful": false,
+      "rationale": "Removing the optional similar comment and #51767 reference preserves the appropriate component/gpu classification and makes no adverse disposition change. #51767 shares a startup failure signature but differs in Windows and Electron versions and does not establish the opening report's cause. The opening itself already points to #52098 and #51761. Forgoing this additional symptom-level cross-reference is acceptable optional-action variation, not harmful semantic triage; this judgment does not assert that the reports are unrelated."
+    },
+    {
+      "change_id": "known/e52255/2",
+      "from": "v02",
+      "to": "v01",
+      "harmful": false,
+      "rationale": "Removing the optional similar comment and #51767 reference preserves the appropriate component/gpu classification and makes no adverse disposition change. #51767 shares a startup failure signature but differs in Windows and Electron versions and does not establish the opening report's cause. The opening itself already points to #52098 and #51761. Forgoing this additional symptom-level cross-reference is acceptable optional-action variation, not harmful semantic triage; this judgment does not assert that the reports are unrelated."
+    }
+  ],
+  "harmful_regressions": [],
+  "mapping_rule": "Only original→candidate is a regression test. Reverse-direction harms remain preserved in the independent blind report.",
+  "blind_report_sha256": "4b5424e1902adfefde25db4e86d8ef8263e5b1699feefadbe08646a6ae0d89b0"
+}

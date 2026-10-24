@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/draggable-regions"
+      ]
+    }
+  ],
+  "explanation": "Crash concerns draggable regions. Supplied main.js starts the app, creates the window, loads the inline drag region, and provides the right-click steps; no candidate establishes the same failure or clear upstream ownership."
+}

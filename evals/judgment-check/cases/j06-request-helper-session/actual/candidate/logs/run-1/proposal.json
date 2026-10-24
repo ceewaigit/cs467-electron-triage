@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/webRequest"
+      ]
+    }
+  ],
+  "explanation": "The onBeforeSendHeaders callback returns a header that is lost on the redirect target, directly supporting webRequest. A reproduction gist is supplied. Other APIs are setup or diagnostics, and the candidate excerpts do not establish the same header-loss failure."
+}

@@ -1,0 +1,20 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/webRequest"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/net"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "The ignored onBeforeSendHeaders callback result is the webRequest failure. net is a defensible transport-boundary secondary label. session.defaultSession obtains the hook object, app.commandLine enables logging and BrowserWindow loads a page; no session state, app command line or window API is alleged to fail. A complete linked fixture is supplied."
+}

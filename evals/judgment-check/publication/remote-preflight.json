@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-10-24T07:49:56.671707+00:00",
+  "repository": "ceewaigit/cs467-electron-triage",
+  "visibility": "PUBLIC",
+  "remote_main_before_publication": "90724fea4152861499063b4f163d84c28348b0d3",
+  "source_commands": [
+    "gh repo view ceewaigit/cs467-electron-triage --json nameWithOwner,visibility,url",
+    "git ls-remote origin refs/heads/main"
+  ],
+  "scope": "Read-only remote checks. No provider calls or workflow dispatches. Public repository requires no private-repository collaborator invitation for grading; eLearn submission remains a student task."
+}

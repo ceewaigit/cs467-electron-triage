@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/asar"
+      ]
+    }
+  ],
+  "explanation": "The proposed change explicitly adds ASAR integrity support on Linux. This is a feature request, so no reproduction is requested. Earlier excerpts concern different ASAR integrity changes or unrelated platform support and do not support a same-problem link."
+}

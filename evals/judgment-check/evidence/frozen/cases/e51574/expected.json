@@ -1,0 +1,20 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [
+      "component/draggable-regions"
+    ],
+    "one_of": [],
+    "acceptable": [
+      "component/BrowserWindow"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "Right-clicking a CSS drag region in a hidden-titlebar window causes a native null-pointer crash. draggable-regions identifies the trigger; BrowserWindow is an acceptable integration label. The complete main.js, package.json and run/right-click steps are runnable, so do not ask for a gist. nodeIntegration/contextIsolation are setup flags; Chromium frames alone do not establish an upstream bug. The matching report #51576 was opened later and is ineligible at this cutoff."
+}

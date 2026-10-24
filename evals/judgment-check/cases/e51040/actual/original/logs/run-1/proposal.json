@@ -1,0 +1,13 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/BrowserWindow"
+      ]
+    }
+  ],
+  "explanation": "The feature request concerns Electron window focus and macOS panel behavior. It needs no bug reproduction request; the candidates do not establish the same problem, and comparison with Chromium does not establish an upstream cause."
+}

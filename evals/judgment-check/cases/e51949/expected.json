@@ -1,0 +1,23 @@
+{
+  "decision": "act",
+  "labels": {
+    "required": [],
+    "one_of": [
+      [
+        "component/BrowserWindow",
+        "component/BaseWindow"
+      ]
+    ],
+    "acceptable": [
+      "component/screen"
+    ],
+    "forbidden": []
+  },
+  "comment": {
+    "required_kinds": [],
+    "acceptable_kinds": [],
+    "refs_any": [],
+    "must_not_match": []
+  },
+  "rationale": "A short window gains persistent extra height after moving between differently scaled monitors. The window sizing feature is direct, and screen is a defensible secondary component for the display transition. A Fiddle gist and precise monitor/drag steps are supplied. Fixed-DPI rounding offsets and frameless resize-hit insets do not establish this persistent minimum-height change after a monitor transition."
+}

@@ -1,0 +1,103 @@
+{
+  "reviewer": "/root/judgment_blind_checker",
+  "sealed_at_utc": "2026-10-24T07:15:31.625724+00:00",
+  "phase": "annotation and selection review before candidate policy, protocol, harness or proposals",
+  "status": "approved for pre-execution freeze with disclosed limitations",
+  "dataset_sha256": "f1ff3f5fa7b48e7deeae4f3f445871945979c25acc7a0ff17a4520ce2bc70011",
+  "annotation_integrity_sha256": "e9d4c67d65bee14d3f2dff891633f396d80946a9664d0df2a391962a998674a7",
+  "source_commit": "90724fea4152861499063b4f163d84c28348b0d3",
+  "candidate_policy_read": false,
+  "candidate_protocol_or_harness_read": false,
+  "proposals_or_coordinator_results_read": false,
+  "historical_labels_blind": false,
+  "author_historical_labels_blind": true,
+  "exposure_record": "evidence/annotation-exposure-disclosure.json",
+  "initial_record": "evidence/annotation-review-initial.json",
+  "reproducibility": {
+    "independent_integrity_check": "evidence/annotation-check-source.py",
+    "integrity_report": "evidence/annotation-integrity.json",
+    "selection_reproduced": true,
+    "historical_selected": 12,
+    "constructed_selected": 12,
+    "eligible_month_counts": [
+      43,
+      32,
+      39
+    ],
+    "prior_input_records": 176,
+    "excluded_identifiers": 73,
+    "excluded_historical_numbers": 67,
+    "excluded_constructed_numbers": 6,
+    "all_selected_body_title_opening_provenance_verified": true,
+    "all_case_file_hashes_verified": true,
+    "all_reconstructed_corpora_hashes_verified": true,
+    "all_references_strictly_before_input_cutoff": true,
+    "expected_annotations_consistent": true,
+    "all_allowed_expected_labels_exist": true,
+    "minimal_expected_action_passes_frozen_scorer_for_all_cases": true
+  },
+  "requested_and_resolved_before_execution": [
+    {
+      "issue": "j01 input explicitly classified window/startup mentions as setup",
+      "resolution": "Replaced judgment wording with factual description of logs and registration timing."
+    },
+    {
+      "issue": "j11 input explicitly requested no canned response/labels",
+      "resolution": "Removed request; MEMBER metadata independently establishes skip."
+    },
+    {
+      "issue": "Fabricated reference March dates implausibly preceded the stated late-Q2 Electron version",
+      "resolution": "Changed fictional dates to June29, still strictly before June30 synthetic cutoff."
+    }
+  ],
+  "draft_preservation": "selection/preexecution-revisions.json and selection/pre-review-drafts/ preserve the initial bytes and hash each change; expected outcomes unchanged.",
+  "coverage": {
+    "required_unmentioned_link_cases": [
+      "j01-shortcut-rebinding",
+      "j04-reveal-filename-match"
+    ],
+    "clear_wrong_link_controls": [
+      "j02-generic-network-error",
+      "j04-reveal-filename-match (decoy)"
+    ],
+    "matching_reporter_mentioned_no_repeat_cases": [
+      "e51540",
+      "j03-mentioned-theme-match"
+    ],
+    "component_presence_controls": [
+      "j07-app-path-failure",
+      "j08-blocker-state-failure"
+    ],
+    "component_helper_exclusion_controls": [
+      "j05-notification-helper-image",
+      "j06-request-helper-session"
+    ],
+    "reproduction_required": 3,
+    "reproduction_optional": 3,
+    "reproduction_forbidden": 18,
+    "maintainer_skip": "j11-maintainer-noop",
+    "security_and_issue_injection": "j12-security-private"
+  },
+  "judgment_review": {
+    "opening_only_rationales": "Accepted as defensible first-pass labels and actions; none changed using subsequent maintainer events. The positive links share explicit API, condition and behavior, while the negative link control differs in causal conditions despite the same error string.",
+    "semantic_vs_action": "Correctly distinguishes semantic matches already cited by reporters from a useful new similar comment.",
+    "ambiguous_reproduction": "e50790, e52099 and e52048 expressly accept optional need-repro label/comment; this broadens outcomes in advance, rather than treating diagnostic detail as unambiguously complete code.",
+    "component_ambiguity": "Window/BaseWindow alternatives, e51949 optional screen, e50790/e52048 optional webcontents, and j06 optional net are predeclared rather than revised after decisions."
+  },
+  "limitations": [
+    "This reviewer accidentally saw later labels in raw labeledAtOpen while checking provenance; exact exposure is preserved separately. Historical semantic review cannot be called blind to later maintainer behavior. The author independently fixed expectations without that exposure.",
+    "No candidate policy, protocol, harness, proposals, or coordinator decision results had been opened at seal. Later score recomputation must remain separate from this annotation review.",
+    "Only 12 historical inputs; all expect some component action, so fresh natural historical no-action behavior is not represented. A constructed maintainer skip covers one no-action rule.",
+    "The constructed references and gist links are offline fixtures; no claim of real Electron bugs, link reachability or executable hosted reproductions.",
+    "Manual earlier-corpus search cannot prove no distant historical semantic match exists.",
+    "Three ambiguous reproduction cases allow label and comment independently, as the unchanged scorer schema permits. A clean pass is not evidence of perfect reproduction judgment on those cases.",
+    "Frozen score_run only requires at least one refs_any match and does not penalize extra unsupported refs when a correct ref is also supplied. The experiment protocol must separately audit every emitted reference and per-case regression.",
+    "A single paired sample can assess tested cases only; it cannot establish universal non-regression, hosted model performance, threat detection, repository permissions, or publication behavior."
+  ],
+  "followup_checks_required": [
+    "Prepared runtime inputs must remove case set/source/annotation/focus metadata and neutralize identifiers consistently; only input plus cutoff corpus and same baseline runtime may vary by policy.",
+    "Protocol must measure full frozen correctness, every unsupported ref, missing supported links, component errors, reproduction errors, safety and per-pair regressions before an adoption decision.",
+    "Known previously failed cases must remain a separate result from fresh cases."
+  ],
+  "blocking_issues": []
+}

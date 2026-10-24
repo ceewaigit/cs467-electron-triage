@@ -1,0 +1,74 @@
+[
+  {
+    "command": [
+      "python3",
+      "/Users/ceewai/Documents/SMU/Y4S1/CS467/Assignment3/repo/evals/judgment-check/requirements-review/checks.py",
+      "--snapshot",
+      "/var/folders/bg/2dlhd5nj7wlbvx44ry7lmbbh0000gn/T/cs467-requirements-90724fe-eig9iagk/snapshot"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "evals/tools/score.py",
+      "--runs",
+      "final"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "evals/tools/skill_check.py",
+      "--runs",
+      "final"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "evals/tools/stats.py",
+      "--runs",
+      "final",
+      "--baseline",
+      "baseline-v2"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "evals/tools/score.py",
+      "--runs",
+      "assistant-dry-run",
+      "--k",
+      "1"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "evals/need/analyze_issues.py"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "evals/need/analyze_extra.py"
+    ],
+    "exit_code": 0
+  },
+  {
+    "regenerated_json_equals_committed": {
+      "evals/golden/results/score-final.json": true,
+      "evals/golden/results/skill-check-final.json": true,
+      "evals/golden/results/score-assistant-dry-run.json": true,
+      "evals/need/issue_metrics.json": true,
+      "evals/need/extra_metrics.json": true
+    }
+  }
+]

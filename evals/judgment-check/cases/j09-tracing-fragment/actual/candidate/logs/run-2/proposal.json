@@ -1,0 +1,19 @@
+{
+  "execution_mode": "coding-assistant-dry-run",
+  "writes_executed": false,
+  "items": [
+    {
+      "type": "triage_comment",
+      "kinds": "need-repro",
+      "refs": ""
+    },
+    {
+      "type": "add_labels",
+      "labels": [
+        "component/contentTracing",
+        "blocked/need-repro"
+      ]
+    }
+  ],
+  "explanation": "contentTracing.startRecording remains pending, but the supplied call omits traceCategories and startup code, so a runnable reproduction is needed; the earlier excerpts describe different failures."
+}
