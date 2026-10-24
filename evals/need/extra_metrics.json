@@ -1,8 +1,8 @@
 {
- "bug_reports_without_gist_at_open": 88,
- "asked_for_repro_label_or_comment": "23/88",
+ "bug_reports_without_gist_at_open": 84,
+ "asked_for_repro_label_or_comment": "22/84",
  "hours_to_repro_ask": {
-  "median": 21.5,
+  "median": 26.0,
   "max": 775.0
  },
  "outside_issue_body_chars": {
