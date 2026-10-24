@@ -1,65 +1,82 @@
-# AGENTS.md
+# Repository instructions
 
-Instructions for coding agents (and people) changing this repository. The triage agent itself
-follows `.claude/skills/issue-triage/SKILL.md` and the body of `.github/workflows/issue-triage.md`;
-this file is for whoever edits those.
+These instructions apply to people and coding agents changing this repository. The live
+triage procedure is in `.claude/skills/issue-triage/SKILL.md` and the body of
+`.github/workflows/issue-triage.md`.
 
-## What this repo is
+## Purpose and layout
 
-A sandbox for a GitHub Agentic Workflow that does first-pass triage of new issues, tested by
-replaying historical `electron/electron` issues. Nothing here is deployed to Electron, and nothing
-here may write to `electron/electron`.
+This is a sandbox for first-pass issue triage, evaluated with historical `electron/electron`
+issues. Nothing here is deployed to Electron, and no command may write to `electron/electron`.
+Read [docs/CODEBASE.md](docs/CODEBASE.md) for the execution flow and every Python script's role.
 
-## Layout
-
-| Path | What |
+| Path | Purpose |
 |---|---|
-| `.github/workflows/issue-triage.md` | workflow source: trigger, permissions, tools, safe outputs, budgets |
-| `.github/workflows/issue-triage.lock.yml` | compiled workflow. Generated; never edit by hand |
-| `.claude/skills/issue-triage/` | the skill: `SKILL.md`, three scripts, label allowlist, component hints |
-| `scripts/prepare_issue.py` | pre-agent step that saves the triggering issue to `.triage/issue.json` |
-| `scripts/post_triage_comment.py` | safe-output job: renders the chosen templates and posts the comment |
-| `data/` | frozen issue corpus for the similar-issue search, and Electron's label list |
-| `evals/golden/` | rubric, 30 cases (`input.json`, `expected.json`, `actual/`), results |
-| `evals/tools/` | fetch, case builder, replay, collector, baseline and scorer |
-| `tests/` | unit tests for the skill's scripts |
+| `.github/workflows/issue-triage.md` | Workflow source: triggers, permissions, tools, outputs and budgets |
+| `.github/workflows/issue-triage.lock.yml` | Generated workflow; never edit by hand |
+| `.claude/skills/issue-triage/` | Skill procedure, three scripts, label allowlist and component hints |
+| `scripts/prepare_issue.py` | Save the triggering issue as `.triage/issue.json` before the agent runs |
+| `scripts/prepare_agent_context.py` | Remove grading material and future corpus rows from the disposable Actions checkout |
+| `scripts/post_triage_comment.py` | Validate a safe-output request, render templates and post the comment |
+| `data/` | Frozen search corpus and Electron label snapshot |
+| `evals/golden/` | Frozen rubric, 30 cases, expected outcomes, actual outputs and reports |
+| `evals/tools/`, `evals/need/` | Evaluation utilities and analysis of the need for automation |
+| `tests/` | Offline script and configuration tests |
 
-## Commands
+## Build and test
+
+There is no application build. Python 3.10 or later and the standard library are sufficient
+for the scripts and unit tests. Do not add dependencies to the skill scripts: their runtime
+has no package installation step.
 
 ```bash
-gh aw compile issue-triage --strict          # after any change to the workflow .md
-python3 -m unittest discover -s tests        # script tests; no network
-python3 evals/tools/score.py --runs agent    # score collected runs
-python3 evals/tools/baseline.py && python3 evals/tools/score.py --runs baseline
+python3 -m unittest discover -s tests -v
+gh aw compile issue-triage --strict --no-check-update
 ```
 
-Python 3.10+, standard library only. Do not add dependencies to the skill's scripts: they run
-inside the agent's sandbox, which has no package install step.
+Compile after editing the workflow source and commit its regenerated lock file. If changing
+the forced-actions control, compile `issue-triage-forced` too. Historical runs used `gh aw`
+v0.93.2; record the compiler version for any new experiment.
 
-## Rules
+Analysis commands write local reports. Follow the disposable-copy instructions in
+[evals/golden/README.md](evals/golden/README.md) before regenerating evidence. Always select the
+dataset explicitly, for example `score.py --runs final` or `skill_check.py --runs final`.
+`replay.py` defaults to `agent`, which is an older experiment. Running `baseline.py` without
+`--out` overwrites the historical baseline with output from the current scripts.
 
-- **Expected outcomes are frozen.** Do not edit `evals/golden/cases/*/expected.json` or
-  `evals/golden/RUBRIC.md` after commit `4baa2cb`. If one is wrong, leave it and record the
-  disagreement in `DESIGN.md` under test findings.
-- **Do not widen the agent's power.** Do not add permissions beyond `read`, a `github` tool, more
-  `bash` commands, top-level `jobs:`, or any safe output other than `add-labels` and the
-  `triage-comment` job. Never add `add-comment` (it lets the model write free text), `close-issue`,
-  `update-issue`, `remove-labels`, `create-pull-request`, `merge-pull-request` or
-  `GH_AW_GITHUB_TOKEN`. `tests/test_skill_scripts.py` fails on any of these. Such changes need
-  review from the code owner.
-- **Labels the agent may add** are listed twice: as patterns in `safe-outputs.add-labels.allowed`
-  (gh-aw allows at most 50 entries) and in full in `assets/allowed-labels.txt`. Change both
-  together; a test checks that every listed label matches a pattern.
-- **Comments come from templates only.** To change wording, edit `render_comment.py`; the
-  `triage-comment` job (`scripts/post_triage_comment.py`) renders and posts it.
-- **Do not tune the skill on the golden cases.** Examples in `SKILL.md` must stay unlike the eval
-  cases. Use Q2 2026 issues from `evals/data/` for development.
-- **Replayed issues must not reach Electron.** `evals/tools/replay.py` breaks `@mentions` and
-  rewrites `electron/electron` links before creating sandbox issues. Do not bypass it.
+## Editing rules
 
-## Labels in this repo
+- Preserve the frozen evaluation: `evals/golden/RUBRIC.md`, `cases/*/input.json`,
+  `cases/*/expected.json` and `evals/tools/score.py` were fixed in commit `4baa2cb`.
+  Record disagreements in `DESIGN.md` or a separate audit; do not adjust the target after
+  observing results. Add new regression tests outside the frozen golden cases.
+- Do not widen the agent's power. Do not add agent permissions beyond `read`, a `github`
+  tool, more `bash` commands, top-level `jobs:`, or a safe output other than `add-labels` and
+  the `triage-comment` job. Never add `add-comment`, `close-issue`, `update-issue`,
+  `remove-labels`, `create-pull-request`, `merge-pull-request` or `GH_AW_GITHUB_TOKEN`.
+  The configuration tests reject these changes; any proposed expansion needs owner review.
+- Keep the label allowlists consistent. Workflow patterns in `safe-outputs.add-labels.allowed`
+  cover the full list in `.claude/skills/issue-triage/assets/allowed-labels.txt`. Change them
+  together. A test checks that each listed label matches a workflow pattern.
+- Comments come from fixed templates in `render_comment.py`.
+  `scripts/post_triage_comment.py` validates and posts them. Preserve its target check, output
+  limit and requirement for a successful threat-detection verdict.
+- Do not tune the skill on the golden cases. Use Q2 2026 issues in `evals/data/` for development.
+  The component hints were drafted after the golden inputs were read; this existing limitation
+  is disclosed in `DESIGN.md`. Do not add further hints from those cases.
+- Preserve historical outputs and logs. New script behavior does not retroactively validate
+  old live runs. Use a separate experiment or disposable copy for reruns, and record the
+  source commit, model identifier, compiler version and any missing runs.
+- Use `evals/tools/replay.py` for sandbox issue creation. It breaks `@mentions` and rewrites
+  cross-repository references. Do not bypass that protection or aim replay at Electron.
+- Keep code readable: give functions and variables concrete names, document inputs and side
+  effects, and explain non-obvious constraints in comments. Prefer small standard-library
+  scripts over new abstractions or dependencies.
 
-- `component/*`: the Electron API or feature an issue is about (copied from Electron).
-- `blocked/need-repro`: waiting for an Electron Fiddle gist from the reporter.
-- `blocked/upstream ❌`: the cause is in Chromium or Node.js.
-- `blocked/need-info ❌`, `needs-template`: added only by replay, to mirror Electron's own bots.
+## Labels used here
+
+- `component/*` identifies the Electron API or feature in the report.
+- `blocked/need-repro` asks for an Electron Fiddle reproduction.
+- `blocked/upstream ❌` indicates a possible Chromium or Node.js cause.
+- `blocked/need-info ❌` and `needs-template` are applied by replay to represent Electron's
+  opening-time bot actions; the agent cannot add them.

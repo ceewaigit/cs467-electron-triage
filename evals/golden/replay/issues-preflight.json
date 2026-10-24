@@ -1,0 +1,15 @@
+{
+ "e52232": {
+  "title": "desktopCapturer returns sources with empty `display_id` on Windows",
+  "body": "### Preflight Checklist\n\n- [x] I have read the [Contributing Guidelines](https://github.com/electron/electron/blob/main/CONTRIBUTING.md) for this project.\n- [x] I agree to follow the [Code of Conduct](https://github.com/electron/electron/blob/main/CODE_OF_CONDUCT.md) that this project adheres to.\n- [x] I have searched the [issue tracker](https://www.github.com/electron/electron/issues) for a bug report that matches the one I want to file, without success.\n\n### Electron Version\n\n43.0.0\n\n### What operating system(s) are you using?\n\nWindows\n\n### Operating System Version\n\nWindows 11\n\n### What arch are you using?\n\nx64\n\n### Last Known Working Electron version\n\n_No response_\n\n### Does the issue also appear in Chromium / Google Chrome?\n\nNo\n\n### Expected Behavior\n\nSources returned by desktopCapturer should have a valid `display_id` property when using a capturer other than DirectX on Windows. There is a bug in code https://github.com/electron/electron/blob/57cc00ce06d2a1dc222bb2c358dcd82cfd57ab13/shell/browser/api/electron_api_desktop_capturer.cc#L485 for Windows path `display_id` is only initlialized when `using_directx_capturer_ = true `. Moreover `using_directx_capturer_` should be set based on actual usage, now it only checks if DirectX capturer is supported, while GDI Capturer can be used as a fallback. This will also cause errors in the future for the WGC capturer. \n\n### Actual Behavior\n\n`display_id = ''`\n\n### Testcase Gist URL\n\nhttps://gist.github.com/michalzaq12/52be3585397f508a3c4c67f5c14f8004\n\n### Additional Information\n\n_No response_",
+  "labels_at_open": [
+   "43-x-y",
+   "bug :beetle:",
+   "has-repro-gist",
+   "platform/windows"
+  ],
+  "issues": [
+   216
+  ]
+ }
+}

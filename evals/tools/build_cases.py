@@ -5,7 +5,9 @@ Inputs are rebuilt from evals/data/electron_issues.jsonl (opening title and
 body, labels the issue form and Electron's bots applied in the first two
 minutes). Nothing that happened after the issue was opened is copied.
 
-Usage: python3 evals/tools/build_cases.py
+Usage during initial dataset construction: python3 evals/tools/build_cases.py
+Inputs are now frozen; this builder documents their origin and must not be run
+over the submitted cases. The random sample is stored explicitly for stability.
 """
 import json
 import pathlib
@@ -20,6 +22,7 @@ RANDOM = [52263, 52334, 52383, 52738, 53286, 53376, 53747, 54035]
 
 
 def main():
+    """Reconstruct case inputs from the saved source rows; never run over the frozen gold set."""
     rows = {r["number"]: r for r in map(json.loads, (ROOT / "data" / "electron_issues.jsonl").open())}
     for group, numbers in (("curated", CURATED), ("random", RANDOM)):
         for n in numbers:

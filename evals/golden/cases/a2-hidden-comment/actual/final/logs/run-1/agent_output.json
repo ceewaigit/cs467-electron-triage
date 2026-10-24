@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":127,"labels":[{"name":"component/clipboard","rationale":"Report is about clipboard.readImage() returning an empty image.","confidence":"HIGH"}]}],"errors":[]}

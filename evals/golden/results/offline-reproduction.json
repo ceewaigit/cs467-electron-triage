@@ -1,0 +1,243 @@
+{
+  "review_date": "2026-10-24",
+  "method": "Run analysis commands in a disposable copy, then compare saved report bytes. No network or provider calls. Reports reflect historical runs, not new model evaluations.",
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "evals/tools/score.py",
+        "--runs",
+        "agent",
+        "--k",
+        "3"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/score.py",
+        "--runs",
+        "agent-v2",
+        "--k",
+        "3"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/score.py",
+        "--runs",
+        "final",
+        "--k",
+        "3"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/score.py",
+        "--runs",
+        "baseline",
+        "--k",
+        "1"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/score.py",
+        "--runs",
+        "baseline-v2",
+        "--k",
+        "1"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/score.py",
+        "--runs",
+        "obey",
+        "--k",
+        "3"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/skill_check.py",
+        "--runs",
+        "agent"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/skill_check.py",
+        "--runs",
+        "agent-v2"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/skill_check.py",
+        "--runs",
+        "final"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/skill_check.py",
+        "--runs",
+        "obey"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/stats.py",
+        "--runs",
+        "agent",
+        "--baseline",
+        "baseline"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/stats.py",
+        "--runs",
+        "final",
+        "--baseline",
+        "baseline-v2"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/need/analyze_issues.py"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/need/analyze_extra.py"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/baseline.py",
+        "--out",
+        "offline-audit"
+      ],
+      "exit_status": 0
+    },
+    {
+      "command": [
+        "python3",
+        "evals/tools/score.py",
+        "--runs",
+        "offline-audit",
+        "--k",
+        "1"
+      ],
+      "exit_status": 0
+    }
+  ],
+  "comparisons": [
+    {
+      "path": "evals/golden/results/score-final.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/score-baseline-v2.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/score-baseline.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/score-agent.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/score-obey.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/score-agent-v2.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/skill-check-agent.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/skill-check-obey.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/skill-check-final.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/skill-check-agent-v2.json",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/stats-agent.md",
+      "same": true
+    },
+    {
+      "path": "evals/golden/results/stats-final.md",
+      "same": true
+    },
+    {
+      "path": "evals/need/issue_metrics.json",
+      "same": true
+    },
+    {
+      "path": "evals/need/extra_metrics.json",
+      "same": true
+    },
+    {
+      "path": "evals/need/issues_table.csv",
+      "same": true
+    }
+  ],
+  "historical_final_evidence": {
+    "successful_outputs": 79,
+    "complete_log_bundles": 79,
+    "billing_failures": 11,
+    "planned_dispatches": 90,
+    "all_79_issue_identities_match_inputs": true
+  },
+  "hardened_valid_outputs": 0,
+  "frozen_files_unchanged": 62,
+  "current_deterministic_baseline": {
+    "real_passed": 18,
+    "real_cases": 25,
+    "weighted_cost": 0.44,
+    "adversarial_passed": 5,
+    "adversarial_cases": 5
+  },
+  "limitations": "Deterministic baseline and report reproduction do not establish current model performance or hosted enforcement."
+}

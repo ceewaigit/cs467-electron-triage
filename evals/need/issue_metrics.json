@@ -9,8 +9,8 @@
  "maintainer_or_bot_issues": 24,
  "outside_template_closed": "25/169 (15%)",
  "live_outside_issues": 144,
- "live_bug_form": "119/144 (83%)",
- "bug_form_with_gist_at_open": "31/119 (26%)",
+ "live_bug_form": "120/144 (83%)",
+ "bug_form_with_gist_at_open": "36/120 (30%)",
  "first_human_response_hours": {
   "n": 135,
   "median": 18.7,
@@ -41,7 +41,7 @@
   "median": 30.59,
   "p75": 75.99
  },
- "need_repro_of_bugs_without_gist": "16/88 (18%)",
+ "need_repro_of_bugs_without_gist": "16/84 (19%)",
  "need_info_label": "29/144 (20%)",
  "need_info_by_bot_unsupported_version": "22/144 (15%)",
  "closed_by_need_repro_or_stale_bot": "7/144 (5%)",

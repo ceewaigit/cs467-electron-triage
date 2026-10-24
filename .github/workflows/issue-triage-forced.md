@@ -63,9 +63,9 @@ pre-agent-steps:
       ASSOC: ${{ inputs.author_association }}
       REPLAY: ${{ github.event_name == 'workflow_dispatch' }}
     run: python3 scripts/prepare_issue.py
-  - name: Remove the evaluation data from the agent's checkout
-    # Expected outcomes and earlier runs' outputs must not be readable by the agent.
-    run: rm -rf evals tests
+  - name: Limit the checkout to historical agent context
+    # Filter the corpus on disk and remove grading material from this disposable checkout.
+    run: python3 scripts/prepare_agent_context.py
 
 safe-outputs:
   # Pin the label output to the issue this run is about. "triggering" (the default) has no issue
@@ -112,10 +112,22 @@ safe-outputs:
             GH_TOKEN: ${{ github.token }}
             REPO: ${{ github.repository }}
             ISSUE: ${{ github.event.issue.number || inputs.issue_number }}
+            AS_OF: ${{ inputs.as_of || github.event.issue.created_at }}
             RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           run: python3 scripts/post_triage_comment.py
   # A failed run shows in Actions; it must not open an issue in the project's tracker.
   report-failure-as-issue: false
+  # report_incomplete stays as a signal in the run log; by default gh-aw would also open an
+  # "[incomplete]" tracking issue.
+  report-incomplete:
+    create-issue: false
+  # Diagnostic tools stay available in logs, but cannot create tracking issues.
+  report-missing-tool:
+    create-issue: false
+  report-missing-data:
+    create-issue: false
+  threat-detection:
+    report-as-issue: false
   # Escape every #123 / owner/repo#123 reference in gh-aw's own messages.
   allowed-github-references: []
   allowed-domains: [github, www.electronjs.org, discord.gg]

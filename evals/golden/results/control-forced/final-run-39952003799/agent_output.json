@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":123,"labels":["status/wontfix 🚫","priority/critical","component/app"]},{"type":"triage_comment","kinds":"need-repro","refs":""}],"errors":["Line 3: Too many items of type 'triage_comment'. Maximum allowed: 1."]}

@@ -1,0 +1,205 @@
+{
+  "checked_on": "2026-10-24",
+  "variant": "final",
+  "note": "Execution failures are separate from valid triage outputs; no model decision was fabricated for an unavailable run. Error excerpts copied from GitHub Actions logs.",
+  "failures": [
+    {
+      "case": "e53939",
+      "repeat": 2,
+      "issue": 203,
+      "run_id": 39955081336,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955081336",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e53939",
+      "repeat": 3,
+      "issue": 204,
+      "run_id": 39955099104,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955099104",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54035",
+      "repeat": 1,
+      "issue": 205,
+      "run_id": 39955116863,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955116863",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54035",
+      "repeat": 2,
+      "issue": 206,
+      "run_id": 39955133522,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955133522",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54035",
+      "repeat": 3,
+      "issue": 207,
+      "run_id": 39955150224,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955150224",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54123",
+      "repeat": 1,
+      "issue": 208,
+      "run_id": 39955168703,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955168703",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54123",
+      "repeat": 2,
+      "issue": 209,
+      "run_id": 39955188268,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955188268",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54123",
+      "repeat": 3,
+      "issue": 210,
+      "run_id": 39955205105,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955205105",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54317",
+      "repeat": 1,
+      "issue": 211,
+      "run_id": 39955222578,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955222578",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54317",
+      "repeat": 2,
+      "issue": 212,
+      "run_id": 39955239785,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955239785",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    },
+    {
+      "case": "e54317",
+      "repeat": 3,
+      "issue": 213,
+      "run_id": 39955256739,
+      "conclusion": "failure",
+      "headSha": "5ab516934e0aa64480f38b717beac41bf6eaa63f",
+      "status": "completed",
+      "url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955256739",
+      "provider_errors": [
+        {
+          "error": "billing_error",
+          "http_status": 400,
+          "message": "Credit balance is too low"
+        }
+      ],
+      "source": "gh run view --json status,conclusion,headSha,url and --log-failed"
+    }
+  ]
+}

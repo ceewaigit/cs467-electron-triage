@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"Report is about screen sharing with system audio (restrictOwnAudio) in Electron's display capture.","confidence":"MEDIUM"}]}],"errors":[]}

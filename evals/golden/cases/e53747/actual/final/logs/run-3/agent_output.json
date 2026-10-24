@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":201,"labels":[{"name":"component/BrowserWindow","rationale":"Request is about how Electron creates native windows on Windows (extended window style), which is BrowserWindow creation.","confidence":"MEDIUM"}]}],"errors":[]}

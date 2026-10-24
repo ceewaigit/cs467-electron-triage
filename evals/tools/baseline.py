@@ -11,7 +11,11 @@ Rules (fixed before any agent run, not tuned on the golden cases):
   - redirect: security / site-policy / support from the keyword hints; upstream only when
     the reporter also answered "Yes" to the Chromium question; never third-party.
 
-    python3 evals/tools/baseline.py [--out baseline]   # writes cases/*/actual/<out>/run-1.json
+    python3 evals/tools/baseline.py --out baseline-local
+
+This executes the current helpers. Use a new output name for a local check:
+the default, baseline, overwrites the saved frozen-configuration results.
+Reproducing that older variant requires its historical helper version.
 """
 import argparse
 import json
@@ -26,6 +30,7 @@ CHECKS = ROOT / ".claude/skills/issue-triage/scripts/triage_checks.py"
 
 
 def decide(r):
+    """Choose labels, comment kinds and references using fixed rules, without a model."""
     if r["skip"]:
         return [], [], []
     labels, kinds, refs = [], [], []
@@ -56,6 +61,7 @@ def decide(r):
 
 
 def comment(kinds, refs):
+    """Render the same fixed comment templates used by the agent."""
     if not kinds:
         return None
     args = [sys.executable, str(CHECKS.with_name("render_comment.py")), "--kinds", ",".join(kinds)]
@@ -66,6 +72,7 @@ def comment(kinds, refs):
 
 
 def main():
+    """Run current helper scripts on every case and write the requested output variant."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="baseline")
     out_name = ap.parse_args().out

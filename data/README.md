@@ -1,5 +1,39 @@
-# Sandbox data
+# Workflow data
 
-- `labels.json`: the label set of electron/electron, from `gh label list -R electron/electron --limit 400 --json name,description,color` on 23 Oct 2026. The sandbox repo is given the same labels so the agent's allowlist matches real Electron labels.
-- `issue-corpus.jsonl`: electron/electron issues opened 1 Jul 2025 to 30 Sep 2026 (bots excluded), frozen on 23 Oct 2026, built by `evals/tools/fetch_issues.py`. Each row has only what was public when the issue was opened: number, opening time, opening title and opening body (truncated to 4,000 characters). Later comments, labels and close reasons are left out on purpose. The duplicate search only returns rows opened before the issue it is triaging.
-- Row `900001` is **synthetic**. It is a planted issue carrying a prompt injection, used by adversarial case `a5-poisoned-corpus`. It is not a real Electron issue.
+This directory contains the local data used by the triage scripts. It has no credentials.
+Issue titles and bodies remain untrusted, even when stored in a repository file.
+
+| File | Contents and source |
+|---|---|
+| `labels.json` | Electron's label names, descriptions and colours, fetched on 23 October 2026 with `gh label list -R electron/electron --limit 400 --json name,description,color` |
+| `issue-corpus.jsonl` | One JSON object per issue opened from 1 July 2025 to 30 September 2026, excluding bots, plus the synthetic row described below |
+
+The sandbox uses the same label names as the snapshot. The skill's
+`assets/allowed-labels.txt` selects the labels the agent may propose; the workflow's
+`safe-outputs.add-labels.allowed` patterns restrict which existing labels it may add.
+The model cannot create labels.
+
+The corpus was frozen on 23 October 2026 from the opening-state records fetched by
+`evals/tools/fetch_issues.py`. Each row has `number`, `created_at`, `title` and `body`; bodies
+are truncated to 4,000 characters. Later comments, labels and close reasons are excluded.
+The fetcher reconstructs the opening title and body from GitHub history where available;
+the source records and their `body_source` values are in `evals/data/`.
+
+`triage_checks.py` ranks earlier issues using BM25, a word-overlap ranking method. It only
+returns rows whose `created_at` precedes the input's `as_of` time. A candidate is evidence for
+the model to assess, not a duplicate decision. The renderer checks referenced issue numbers
+against the corpus and rejects the synthetic test row.
+
+Row `900001` is synthetic. It contains a prompt injection used by adversarial case
+`a5-poisoned-corpus`; it is not an Electron issue and must never become a public reference.
+Keep it in this evaluation corpus so the retrieval attack remains reproducible.
+
+Historical live runs had the full corpus in the agent checkout. Filtering the search
+script's results did not prevent the agent's default file-reading tool from accessing future
+rows directly. Current preparation code filters the on-disk corpus for each run; that change
+has offline tests but no new live replay. See [the audit](../docs/AUDIT.md) for the evidence
+and limits of the current controls.
+
+These files differ from `evals/need/raw/`, which contains later issue activity for measuring
+triage delays, and from `evals/golden/`, which contains expected outcomes and run evidence.
+Those evaluation records must not be available to the triage agent.

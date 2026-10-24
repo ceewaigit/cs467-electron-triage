@@ -22,6 +22,7 @@ ASSOCIATIONS = {"OWNER", "MEMBER", "COLLABORATOR", "CONTRIBUTOR", "FIRST_TIME_CO
 
 
 def main():
+    """Fetch the run's issue and write the small, normalized input used by the skill."""
     repo, number = os.environ["REPO"], os.environ["ISSUE"]
     if not re.fullmatch(r"\d{1,7}", number):
         sys.exit(f"invalid issue number {number!r}")
@@ -29,6 +30,7 @@ def main():
                                     check=True, capture_output=True, text=True).stdout)
     if raw.get("pull_request"):
         sys.exit("not an issue")
+    # Replays retain the source event's time so searches cannot use later issues.
     as_of = os.environ.get("AS_OF") or raw["created_at"]
     if not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ", as_of):
         sys.exit(f"invalid as_of {as_of!r}")

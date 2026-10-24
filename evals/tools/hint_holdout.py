@@ -5,7 +5,11 @@ The table was written after the golden inputs had been read, so its hit rate on 
 cases may be optimistic. This measures it on Q3 2026 outside issues that are NOT golden cases
 and that a maintainer gave a component label within 14 days (labels from the extract below).
 
-    python3 evals/tools/hint_holdout.py ../research/data/raw/issues
+    python3 evals/tools/hint_holdout.py evals/need/raw/issues
+
+This diagnostic uses the research snapshot's current title/body, which may
+include later edits. It is a sanity check of the keyword table, not an
+opening-state historical evaluation or a held-out test of the full agent.
 """
 import json
 import pathlib
@@ -25,6 +29,8 @@ for f in pathlib.Path(sys.argv[1]).glob("*.json"):
         if n["authorAssociation"] not in ("MEMBER", "OWNER", "COLLABORATOR") and n["number"] not in golden:
             nodes[n["number"]] = n
 acts = extract(sys.argv[1], set(nodes))
+# Only issues with an observed human component label can supply a comparison.
+# The two counts distinguish a usable first suggestion from a broad candidate list.
 top1 = any1 = total = 0
 for num, a in acts.items():
     truth = {x["label"] for x in a["maintainer_labels"] if x["label"].startswith("component/")}

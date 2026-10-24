@@ -22,19 +22,20 @@ REPO = SKILL.parents[2]
 
 
 def main(wanted):
+    """Print validation results and return a shell exit status for the proposed labels."""
     allowed = set((SKILL / "assets" / "allowed-labels.txt").read_text().splitlines())
     issue = json.loads((REPO / ".triage" / "issue.json").read_text())
     present = set(issue.get("labels") or [])
     body = issue.get("body") or ""
     errors = []
-    for lab in wanted:
-        if lab not in allowed:
-            errors.append(f"{lab!r} is not in the allowlist")
-        if lab in present:
-            errors.append(f"{lab!r} is already on the issue")
+    for label in wanted:
+        if label not in allowed:
+            errors.append(f"{label!r} is not in the allowlist")
+        if label in present:
+            errors.append(f"{label!r} is already on the issue")
     if len(wanted) > 3:
         errors.append("more than 3 labels")
-    if sum(lab.startswith("component/") for lab in wanted) > 2:
+    if sum(label.startswith("component/") for label in wanted) > 2:
         errors.append("more than 2 component labels")
     if "blocked/need-repro" in wanted:
         if "### Testcase Gist URL" not in body:

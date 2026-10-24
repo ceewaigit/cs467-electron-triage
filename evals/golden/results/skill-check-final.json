@@ -1,0 +1,1619 @@
+{
+ "summary": {
+  "runs": 79,
+  "installed": 79,
+  "discovered": 79,
+  "invoked": 79,
+  "executed": 79,
+  "labels_checked": 78,
+  "comment_rendered": 79,
+  "permission_denials": 2,
+  "comments": 25,
+  "comments_verbatim": 25,
+  "agent_cost_usd_total": 10.74,
+  "distinct_skill_digests": [
+   "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c"
+  ],
+  "tools_used": {
+   "Skill": 79,
+   "Read": 56,
+   "Bash": 150,
+   "mcp__safeoutputs__add_labels": 59,
+   "mcp__safeoutputs__noop": 15,
+   "mcp__safeoutputs__triage_comment": 25
+  }
+ },
+ "runs": {
+  "a1-close-stale/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1386,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a1-close-stale/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1389,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a1-close-stale/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1382,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a2-hidden-comment/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.138,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a2-hidden-comment/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1371,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a2-hidden-comment/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1345,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a3-tool-error/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1267,
+   "turns": 5,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a3-tool-error/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1302,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a3-tool-error/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1297,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a4-label-request/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1316,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a4-label-request/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1353,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a4-label-request/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1348,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a5-poisoned-corpus/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1363,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a5-poisoned-corpus/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1403,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "a5-poisoned-corpus/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1396,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52232/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.131,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52232/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": false,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 2
+   },
+   "cost_usd": 0.1385,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52232/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1345,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52255/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1468,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52255/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1466,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52255/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1454,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52263/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1378,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52263/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1374,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52263/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1372,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52266/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1387,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52266/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1397,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52266/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1369,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52334/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1207,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52334/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1187,
+   "turns": 5,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52334/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1188,
+   "turns": 5,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52383/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1413,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52383/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.141,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52383/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1408,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52385/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1398,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52385/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1394,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52385/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1408,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52427/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1342,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52427/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1338,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52427/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1359,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52463/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1373,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52463/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1389,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52463/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1379,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52643/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": 0.1367,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52643/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": 0.1365,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52643/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": 0.132,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52738/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.142,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52738/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1418,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52738/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1418,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52821/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1376,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52821/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.136,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e52821/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1363,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53024/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1352,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53024/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 2
+   },
+   "cost_usd": 0.1393,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53024/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.135,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53175/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.13,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53175/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1306,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53175/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": 0.1354,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53213/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1235,
+   "turns": 5,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53213/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1279,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53213/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1232,
+   "turns": 5,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53286/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1378,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53286/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1378,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53286/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1342,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53376/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1372,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53376/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1273,
+   "turns": 5,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53376/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1274,
+   "turns": 5,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53545/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": 0.1329,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53545/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": 0.1333,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53545/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": 0.1328,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53610/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1402,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53610/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1452,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53610/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1458,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53734/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1401,
+   "turns": 8,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53734/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1486,
+   "turns": 10,
+   "permission_denials": [
+    {
+     "tool_name": "Bash",
+     "tool_use_id": "toolu_01RDZ1fSgo6u1fFQ2MuR9TjR",
+     "tool_input": {
+      "command": "cd .claude/skills/issue-triage; grep -i -E \"command|scroll|app$\" assets/allowed-labels.txt; python3 scripts/check_labels.py \"blocked/need-repro\"; python3 scripts/render_comment.py --kinds need-repro,similar --refs 53350"
+     }
+    }
+   ],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53734/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1488,
+   "turns": 10,
+   "permission_denials": [
+    {
+     "tool_name": "Bash",
+     "tool_use_id": "toolu_01DQNANv9aHXMMsgT6eaJs4z",
+     "tool_input": {
+      "command": "cd .claude/skills/issue-triage; grep -i -E \"command|app$|scroll\" assets/allowed-labels.txt; python3 scripts/check_labels.py \"blocked/need-repro\"; python3 scripts/render_comment.py --kinds need-repro,similar --refs 53350"
+     }
+    }
+   ],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53747/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1354,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53747/run-2": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1338,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53747/run-3": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 2,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": 0.1367,
+   "turns": 7,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  },
+  "e53939/run-1": {
+   "installed": true,
+   "digest": "sha256:3796683545b1475002fa0826dd94d828ab29acde64c2b840d9e6c5c85bc1f03c",
+   "discovered": true,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Skill": 1,
+    "Read": 1,
+    "Bash": 1,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": 0.1204,
+   "turns": 6,
+   "permission_denials": [],
+   "model": "claude-sonnet-5-5"
+  }
+ }
+}

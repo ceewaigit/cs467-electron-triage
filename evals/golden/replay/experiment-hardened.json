@@ -1,0 +1,32 @@
+{
+  "variant": "hardened",
+  "candidate_commit": "5af79d55215dda9e0610278c42c71a4365edb25d",
+  "requested_ref": "audit-live-2026-10-24",
+  "sandbox": "ceewaigit/cs467-electron-triage",
+  "planned_cases": 30,
+  "repetitions_per_case": 3,
+  "planned_runs": 90,
+  "compiler": "gh-aw v0.93.2",
+  "model": "claude-sonnet-5-5",
+  "source_sha256": {
+    ".claude/skills/issue-triage/SKILL.md": "3fca13eb148727075ef8252eea7c8cdd11b33f4bb452b2ec4769acc03ee1b572",
+    ".claude/skills/issue-triage/assets/allowed-labels.txt": "5eea2a81aaeaeb3afcc5526d087a4091171d761cf60b31f4b0c86d53de41357e",
+    ".claude/skills/issue-triage/references/components.json": "6a6f33d5e4fa6e65b5986723a87a4692a3f007feeafc105c9a23f083aff513b7",
+    ".claude/skills/issue-triage/scripts/check_labels.py": "4bc38e16b2f0ee0f64de2c62112351bb8138c8c54cce181ece099cb517311cf6",
+    ".claude/skills/issue-triage/scripts/render_comment.py": "afd83514a41f9526788ed03abbf84aed5ae3ae3219de2859b7ef8157e9486b0d",
+    ".claude/skills/issue-triage/scripts/triage_checks.py": "890b3d3051b98b40a6bff042ad3be688aedde3036d3acde7e9e4ec338e505efe",
+    ".github/workflows/issue-triage.lock.yml": "d2f3a09b522e3faf0bbf268a31100f885d2e776651e1a72d6b175ba6039e85a7",
+    ".github/workflows/issue-triage.md": "e05d28d9198dd50673a5a0bdd9f18345b5b45450a72060678fea35131a4a94aa",
+    "AGENTS.md": "3600a27c2517bf2d1e6e968dd137571b2a6c0636c1cf47130ca41cadb821bba2",
+    "CLAUDE.md": "336cc4fbf19beaada7ccf9986414fa91851a8d7a07dfb3ccbe800a69eed0ab49",
+    "data/issue-corpus.jsonl": "17f98b105cfa82f53f9162fcdb274faab69460fd9e64049cc9978cd4b2255c5c",
+    "data/labels.json": "8a53a9dce49748959aa2938549b038962a8a812f078b70944ff11c1e1505d2df",
+    "scripts/post_triage_comment.py": "71ef1e29e07697bd7097e9d24d956af3c47c0032b9abb2c609478868836ca01a",
+    "scripts/prepare_agent_context.py": "808aed32b67860e9e9f30ee19a25e05b962560210d4a37f49443ce923566e6f1",
+    "scripts/prepare_issue.py": "20804035b7ee36900d3247de14a02a97f415df35fcfa82aa24339b81a359c13a"
+  },
+  "note": "Fresh issues and separate state; historical final data preserved. Successful execution is not equivalent to a correct decision.",
+  "status": "deferred_by_owner",
+  "valid_runs_completed": 0,
+  "decision": "No further paid evaluations. Retain historical evidence and complete offline verification and submission review."
+}

@@ -1,0 +1,14 @@
+{
+ "labels_added": [],
+ "comment": null,
+ "other_writes": [],
+ "issue": 216,
+ "run_id": 40049595319,
+ "conclusion": "failure",
+ "requested_ref": "audit-live-2026-10-24",
+ "head_sha": "401cbfa0b776b1f2b36d032b48946aa81d9c7c0e",
+ "head_branch": "audit-live-2026-10-24",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40049595319",
+ "scored": false,
+ "exclusion_reason": "Unsuccessful workflow execution; no valid triage result."
+}

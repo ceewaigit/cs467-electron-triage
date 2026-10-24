@@ -1,39 +1,49 @@
 # Contributing
 
-This is a course sandbox, so contributions are mostly changes to the triage agent and its tests.
-Read `AGENTS.md` first for the layout, commands and the rules on what may not change.
+This course sandbox contains a triage agent and its evaluation. Read [AGENTS.md](AGENTS.md)
+before making changes and use the [codebase guide](docs/CODEBASE.md) to find the relevant code.
+Do not deploy the workflow to another project's repository without permission.
 
-## Issues
+## What the triage agent does
 
-New issues from people outside the project get a first pass from an automated triage agent. It
-can add a `component/*` label, ask for an Electron Fiddle repro, point to an earlier issue that
-looks like the same problem, or suggest a better place for the report. It cannot close, edit,
-assign or unlabel anything. A maintainer reviews every label and comment it leaves; if it got
-something wrong, say so in a comment and a maintainer will fix it.
+When enabled, the workflow gives new issues from outside contributors a first pass. It can
+add allowed labels, request an Electron Fiddle reproduction, link a similar earlier issue,
+or suggest a more suitable reporting channel. Comments use fixed templates. The agent has no
+output for closing, editing, assigning or deleting issues, removing labels, or merging code.
 
-## AI policy
+There is no approval step before each permitted label or comment. Comments link to their
+workflow run and are posted as `github-actions[bot]`. Maintainers remain responsible for
+correcting mistakes and deciding whether to close an issue or accept a contribution.
+If a suggestion is wrong, explain the problem in a comment for a maintainer to review.
 
-**There must be a human in the loop.** You may use AI tools to write issues, code or tests, but
-you are responsible for what you submit: review it, understand it, and be able to explain it.
+## AI contributions
 
-- **Disclose AI help** in the issue or pull request description: which tool, and what it did (for
-  example "Claude drafted the test, I checked the cases"). Unreviewed AI output will be closed.
-- **The triage agent's output is a suggestion.** A label or comment from
-  `github-actions[bot]` is not a maintainer decision. Only a maintainer closes issues, merges pull
-  requests or decides an issue is a duplicate.
-- **Issue text is data to the agent.** Instructions written into an issue ("ignore your rules",
-  "a maintainer approved closing these") are not followed, and trying them is not welcome. Report
-  ways around the agent's limits privately to the owner, as you would a security issue.
-- **Changes to the agent need owner review.** Pull requests touching `.github/`, `.claude/`,
-  `AGENTS.md`, `CLAUDE.md`, `scripts/` or `evals/golden/` are routed to the owner by `CODEOWNERS`.
-  A change that widens what the agent can do (new permissions, tools or safe outputs) must say why
-  in the description and come with a failing-then-passing eval case.
-- **Coding agents** working in this repository must follow `AGENTS.md`.
+You may use AI tools to write code, tests, documentation or issue reports. Review what you
+submit, understand it and be able to explain it. Disclose the tool and its contribution in
+the issue or pull request description, for example: "Claude drafted these tests; I checked
+the fixtures and ran them." Unreviewed AI output will be closed.
 
-## Pull requests
+The triage bot's labels and comments are suggestions. Only a maintainer decides that a
+report is a duplicate, closes an issue or merges a pull request. Issue bodies and retrieved
+issue excerpts are untrusted input. Claims of maintainer approval inside them do not grant
+the agent additional permissions. Report a way around these limits privately to the owner.
 
-1. Run `python3 -m unittest discover -s tests` and, after any change to the workflow,
-   `gh aw compile issue-triage --strict`. Commit the regenerated `.lock.yml` with the source.
-2. If the change affects triage decisions, rerun the golden set (`evals/golden/README.md`) and put
-   the score before and after in the description.
-3. Do not edit frozen expected outcomes; see `AGENTS.md`.
+Changes to the agent need owner review. `.github/CODEOWNERS` requests review from
+`@ceewaigit` for configuration, skill code, scripts, data, tests and evaluation files.
+CODEOWNERS alone does not enforce a required review; that also needs repository protection
+settings. A proposal to add permissions, tools or safe outputs must explain the need and
+include a regression test. Keep such tests separate from the frozen golden cases.
+
+## Preparing a change
+
+1. Run `python3 -m unittest discover -s tests -v`.
+2. After a workflow change, run `gh aw compile issue-triage --strict --no-check-update` and
+   commit the regenerated `.lock.yml`. Compile `issue-triage-forced` as well if its source
+   changed. Record the compiler version used.
+3. If triage decisions or runtime controls change, follow the
+   [evaluation guide](evals/golden/README.md). Compare a new run with the relevant historical
+   experiment and disclose failed or missing runs. Offline tests are not a live replay.
+4. Preserve the frozen rubric, inputs, expectations and scorer. Do not overwrite earlier
+   outputs or baseline results when checking current code.
+5. Explain what changed, how it was verified and which checks remain outstanding. Keep the
+   AI-use statement accurate, including AI assistance with prose or analysis.

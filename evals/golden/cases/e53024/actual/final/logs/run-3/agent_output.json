@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":177,"labels":[{"name":"component/tray","rationale":"Report is about missing tray icons on Linux; title and body match the Tray API.","confidence":"HIGH"}]}],"errors":[]}

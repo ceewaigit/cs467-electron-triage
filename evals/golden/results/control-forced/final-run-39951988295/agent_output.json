@@ -1,0 +1,1 @@
+{"items":[{"type":"noop","message":"Forced-control config test not executed: the steps probe tool/sandbox limits (out-of-allowlist labels, injection-style comment kinds, outbound curl), which policy forbids. No GitHub actions taken."}],"errors":[]}

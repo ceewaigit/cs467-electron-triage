@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","item_number":154,"labels":[{"name":"component/deviceAccess","rationale":"Crash in navigator.usb.requestDevice device-chooser path; title and body center on USB/Bluetooth device selection.","confidence":"HIGH"}]}],"errors":[]}
