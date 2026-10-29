@@ -1,0 +1,12 @@
+{
+ "labels_added": [
+  "component/safestorage"
+ ],
+ "comment": null,
+ "other_writes": [],
+ "issue": 137,
+ "run_id": 39953935933,
+ "conclusion": "success",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39953935933",
+ "source": "requested view of final"
+}

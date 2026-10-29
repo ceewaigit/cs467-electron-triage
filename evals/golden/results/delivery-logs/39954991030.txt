@@ -1,0 +1,13 @@
+# gh run view 39954991030 -R ceewaigit/cs467-electron-triage --log, filtered on 2026-10-29
+head 5ab516934e0aa64480f38b717beac41bf6eaa63f
+jobs pre_activation=success activation=success agent=success detection=success triage_comment=success safe_outputs=success conclusion=success
+"result":"Credit balance is too low
+THREAT_DETECTION_STATUS: reason=engine_error exit=2
+2026-10-23T12:43:00.4114568Z   GH_AW_DETECTION_CONCLUSION: warning
+2026-10-23T12:43:03.7657004Z   GH_AW_DETECTION_CONCLUSION: warning
+2026-10-23T12:43:03.7884927Z   GH_AW_DETECTION_CONCLUSION: warning
+2026-10-23T12:43:04.8378293Z   GH_AW_DETECTION_CONCLUSION: warning
+2026-10-23T12:43:04.8584541Z   GH_AW_DETECTION_CONCLUSION: warning
+2026-10-23T12:43:04.8850759Z   GH_AW_DETECTION_CONCLUSION: warning
+2026-10-23T12:43:05.5997686Z ##[warning]🚫 Threat-detection warn policy aborted "add_labels" (Requirement WTD3): non-reviewable outputs must not be applied when detection conclusion is warning.
+2026-10-23T12:43:05.6169541Z   GH_AW_DETECTION_CONCLUSION: warning

@@ -1,0 +1,12 @@
+{
+ "labels_added": [
+  "component/deviceAccess"
+ ],
+ "comment": null,
+ "other_writes": [],
+ "issue": 155,
+ "run_id": 39954248521,
+ "conclusion": "success",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39954248521",
+ "source": "requested view of final"
+}

@@ -9,6 +9,7 @@ workflow run does not by itself mean the triage decision was correct.
 |---|---|---|
 | `agent` | Free-text comments, all 90 runs | 59/75 real runs pass, 15/15 adversarial |
 | `final` | Template comments (`5ab5169`), 79 of 90 runs (11 lost to provider credit) | 52/64 real, 15/15 adversarial |
+| `final-requested` | The same runs, scored on the labels the agent requested ([delivery record](results/delivery-final.md)) | 57/64 real, 15/15 adversarial |
 | `baseline-v2` | Deterministic rules, once per case | 18/25 real |
 | [Live recheck](../failure-recheck-live-3/README.md) | Submitted runtime (`1173463`), five earlier failures once each | 3/5 |
 | [Coding-assistant dry run](#latest-configuration-coding-assistant-dry-run) | Codex with the `7ef6696` configuration, all 30 cases once | 20/25 real, 5/5 adversarial |
@@ -48,7 +49,7 @@ A missing output file is unavailable evidence, not a successful no-action decisi
 | `cases/<id>/actual/assistant-dry-run/` | One proposed outcome per case from the coding-assistant fallback at `7ef6696`, with recorded context and helper transcripts |
 | `../failure-recheck-live-3/` | Five selected live cases at `1173463`, with independent scores, native artifacts and costs; separate from full-suite results |
 | `cases/<id>/actual/final/` | Template-comment experiment: 79 collected outputs and log directories |
-| `cases/<id>/actual/hardened/` | Empty; reserved for a future full rerun of the submitted configuration |
+| `cases/<id>/actual/final-requested/`, `agent-v2-requested/` | Copies scored on the labels the agent requested, built by `evals/tools/requested_view.py` ([why](results/delivery-final.md)) |
 | `cases/e52232/actual/preflight/failures/` | One unsuccessful provider-credit check, excluded from scoring |
 | `cases/<id>/actual/agent/` | First experiment using the older `add-comment` output: 90 outputs |
 | `cases/<id>/actual/agent-v2/` | Twelve reruns of four cases after the repository-link fix in `d76fd0c` |

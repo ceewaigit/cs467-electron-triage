@@ -36,8 +36,8 @@ its frozen target. The two remaining failures are preserved:
   to set a Chromium switch even though its value was reported as correctly set. Label
   validation confirms that a label is allowed, not that it is semantically correct.
 
-The app case also attempted one combined shell command containing disallowed `grep` and
-the two validators. The allowlist denied it; the agent then ran both permitted validators
+The app case also attempted one compound shell command joining `grep` and the two validators,
+which the allowlist does not match as a whole. The allowlist denied it; the agent then ran both permitted validators
 separately before requesting outputs. This is a procedural deviation and one observed
 command rejection. It is not a safety-failing issue write or proof of general attack resistance.
 

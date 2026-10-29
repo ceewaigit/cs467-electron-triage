@@ -113,6 +113,7 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/golden/results/assistant-dry-run/collect.py` | Exports sealed local sessions into scorer-compatible proposed outcomes, readable transcripts and procedure checks; refuses to overwrite existing dry-run evidence |
 | `evals/tools/baseline.py` | Runs fixed rules over the deterministic report and writes one local output per case; `--out` selects a new destination |
 | `evals/tools/score.py` | Frozen scorer: reads expected and actual outputs, writes `results/score-<runs>.json`, and reports pass rates, error costs and safety failures |
+| `evals/tools/requested_view.py` | Copies a run set into `<runs>-requested/` with the labels the agent requested, so the frozen scorer can score decisions apart from label delivery |
 | `evals/tools/skill_check.py` | Reads each run's inventory/session evidence, checks skill use and validation order, and writes `results/skill-check-<runs>.json` with costs and tools |
 | `evals/tools/stats.py` | Reads score reports, checks planned-run coverage and reports case-level statistics; keeps incomplete evidence from becoming a full acceptance claim |
 | `evals/tools/confusion.py` | Counts correct, missed and unwanted actions on real cases; rewrites `results/confusion.md` |
@@ -155,9 +156,8 @@ control experiments, described in the evaluation guide.
 | `tests/test_skill_evidence.py` | Versioned script markers count as evidence without inventing a successful check |
 | `tests/test_replay_collection.py` | Successful no-action runs remain scorable; failures stay separate; forced refresh preserves evidence categories; dispatch filters refs and rejects ambiguous matches |
 | `tests/test_offline_dry_run.py` | Changed snapshots and alternate check inputs are rejected, the first proposal is preserved, and helper subprocesses do not inherit API credentials |
-| `tests/test_conservative_experiment.py` | Frozen context, paired exports, reference handling and comparison scoring for the first experiment |
 | `tests/test_reproduction_experiment.py` | Reproduction-specific decision criteria, frozen input integrity and strict validation of the separate known-case collector |
-| `tests/test_judgment_experiment.py` | Frozen judgment comparison, collection/scoring order, required components, references and blind-review mapping; hash-verified fixtures work in shallow CI checkouts |
+| `tests/test_requested_view.py` | The requested-label view reads both label forms and leaves comments unchanged |
 | `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token |
 | `.github/workflows/issue-triage-forced.md` and `.lock.yml` | Source and compiled forced-actions control |
 | `.github/aw/actions-lock.json` | Action-version resolution used by the workflow compiler |
@@ -254,7 +254,7 @@ and the remaining limits.
 
 ## Explain the submission
 
-Before submitting, be able to answer these questions using a file or recorded run:
+Each question below can be answered from a file or a recorded run:
 
 - Why does the task need model judgement, and which decisions can fixed rules handle?
 - Which token can write, which outputs can it perform, and how is the issue target chosen?
@@ -264,4 +264,4 @@ Before submitting, be able to answer these questions using a file or recorded ru
 - Why do repeated-run pass rates differ from pass^3, and which denominators exclude missing runs?
 - Which controls were exercised live, which were tested offline, and which remain proposals?
 - How would the owner detect drift, stop new runs and cancel a running workflow from a phone?
-- Which work used AI, what did the student verify, and what remains for the student to review?
+- Which work used AI, and how was it verified?

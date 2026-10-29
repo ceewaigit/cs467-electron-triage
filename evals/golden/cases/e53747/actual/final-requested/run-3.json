@@ -1,0 +1,12 @@
+{
+ "labels_added": [
+  "component/BrowserWindow"
+ ],
+ "comment": null,
+ "other_writes": [],
+ "issue": 201,
+ "run_id": 39955044123,
+ "conclusion": "success",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39955044123",
+ "source": "requested view of final"
+}

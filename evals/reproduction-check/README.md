@@ -2,7 +2,7 @@
 
 The candidate handled the known missed request correctly, but did not demonstrate fewer
 reproduction errors on 120 fresh paired decisions. The independent checker confirmed the
-failed adoption criteria. The submitted runtime remains at `962fac7`; no commit or push was made.
+failed adoption criteria. The runtime the experiment tested is `962fac7`; its candidate change was later adopted on a separate criterion ([ADOPTION.md](ADOPTION.md)).
 
 This experiment tests one change: distinguish an incomplete code fragment from a runnable
 reproduction before deciding whether to request an Electron Fiddle. A multiline constructor

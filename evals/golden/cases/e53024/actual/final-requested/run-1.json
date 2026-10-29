@@ -1,0 +1,12 @@
+{
+ "labels_added": [
+  "component/tray"
+ ],
+ "comment": null,
+ "other_writes": [],
+ "issue": 175,
+ "run_id": 39954599784,
+ "conclusion": "success",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39954599784",
+ "source": "requested view of final"
+}

@@ -104,14 +104,14 @@ Native traces show the skill and permitted validators used, clean detector verdi
 only the recorded bot labels/comments. Ordinary output delivery is now tested on current
 source. Adversarial rejection, credit/timeout exhaustion, burst limits and mobile operation
 remain unverified on current source. The full golden suite and 90-run plan remain pending.
-The current offline suite passed all 103 tests; its log is saved with this attempt.
+The offline suite at that commit passed all 103 tests; its log is saved with this attempt.
 
 ## What was reviewed
 
 Five independent tasks covered a blind grader review, workflow and security controls, evaluation
 methods, Python readability, and documentation. The blind reviewer read the assignment and
 submission without receiving the other reviewers' findings. After repairs, it was asked to review
-the revised documents and evidence again. Reviews are aids to the student's own verification.
+the revised documents and evidence again. Reviews are aids to the owner's own verification.
 
 The scope included every maintained Python script, workflow source and compiled lock, repository
 instructions, contribution policy, all explanatory documents, the frozen rubric and case files,
@@ -190,10 +190,10 @@ that every final-submission byte was used by its CI or preflight. See
 | Case | Passes | What failed |
 |---|---:|---|
 | e52255 | 0/3 | Similar comment linked none of the frozen acceptable references; #51767 may be defensible but remains a scored failure |
-| e52266 | 0/3 | Runs 1/2 added an incorrect similar comment; run 3 omitted `blocked/need-repro` |
-| e52427 | 2/3 | Run 1 omitted `component/desktopcapturer` |
+| e52266 | 0/3 | Runs 1/2 added an incorrect similar comment; run 3 requested `blocked/need-repro`, but GitHub recorded it only as a suggestion |
+| e52427 | 2/3 | Run 1 requested `component/desktopcapturer`; GitHub recorded it only as a suggestion |
 | e53175 | 1/3 | Runs 1/2 omitted an upstream redirect |
-| e53747 | 0/3 | All three omitted both accepted window-component labels |
+| e53747 | 0/3 | All three requested `component/BrowserWindow`; detection failed on provider credit and gh-aw withheld the label |
 | e53939 | 1/1 collected | Runs 2/3 failed before a model decision because of provider credit exhaustion |
 | e54035, e54123, e54317 | 0 runs collected each | All nine attempts failed for the same billing reason; these are unavailable decisions, not successful no-action cases |
 
@@ -202,6 +202,13 @@ report 16/21 fully sampled real cases passing all three runs, with a case-level 
 of 0.549 to 0.894. The run pass rate is 0.812 over 64 real runs. The mean weighted error cost is
 0.333 against 0.409 for the corrected rule baseline on the same 22 observed cases. These subset
 results do not satisfy the reporting requirement for the complete 25-case acceptance protocol.
+
+These scores use the issue's state after each run. In 12 template-era runs a requested label
+never landed: nine when the detection call failed on provider credit and gh-aw's warn policy
+withheld `add_labels`, and three that GitHub recorded only as suggestions. Scored on the
+requested labels, the run pass rate is 0.891, 18/21 cases pass every run and the cost is 0.258.
+At `5ab5169` the comment job did not check the verdict, so six of those runs still posted.
+See `evals/golden/results/delivery-final.md`.
 
 One procedural failure remains distinct from outcome scoring: in e52232/run-2 the agent corrected
 a rejected mixed-case label but did not rerun the validator before requesting the valid label.
@@ -220,7 +227,7 @@ cost was $10.74. Detection and failed-attempt costs are not included in that fig
 | agent/e53734 | 1/3 | Missing similar reference; one wrong component and one denied command |
 | agent/e53747 | 2/3 | One missed window component |
 | agent/e54035 | 2/3 | One missed repro-request label/comment |
-| agent-v2/e52821 | 2/3 | One missed required component after the repo-link fix |
+| agent-v2/e52821 | 2/3 | Run 2 requested `component/menu`; GitHub recorded it only as a suggestion |
 
 The other three `agent-v2` cases passed 3/3. The original agent's complete 25-case result met its
 frozen thresholds, with mean weighted cost 0.427 against the original baseline's 0.520. It does
@@ -253,27 +260,14 @@ therefore be treated as development evidence, with limited claims about generali
 | Expectations recorded first | Frozen at `4baa2cb`; history check against rubric, scorer, inputs and expectations |
 | Actual/expected comparison and all failures | Frozen scorer, retained per-case outputs, failure tables above and execution-failure manifest |
 | Governance and five questions | DESIGN; distinguishes tested controls from proposed procedures and untested load/mobile behaviour |
-| Bill of materials and AI-use statement | End of DESIGN; student must review and confirm attribution |
+| Bill of materials and AI-use statement | End of DESIGN |
 | DESIGN at most 150 lines | Checked locally, including headings and blanks |
-| Specific commit containing all deliverables | Source, locks, logs and reports are included together; select the containing commit's GitHub link after the student's final review |
+| Specific commit containing all deliverables | Source, locks, logs and reports are included together |
 | Private-repository grader access | If private, confirm `ctreude` can access the selected commit before submission |
-
-## Questions the student should be able to answer
-
-- Which results describe which commit, and why are incomplete executions kept separate from
-  correct no-action decisions?
-- Why does an agent help with this workflow, and what does the small baseline comparison fail
-  to establish?
-- Which restrictions are enforced by tokens, tool schemas, the renderer and trusted jobs, and
-  which are instructions that a model may disobey?
-- What does pass³ mean here, why do repeated runs share information, and why is the confidence
-  interval not a population-wide performance guarantee?
-- Why were the expected outcomes left unchanged when a plausible alternate similar issue appeared?
-- What can still go wrong within allowed actions, and which controls are only proposed?
 
 ## Offline verification before the coding-assistant fallback
 
-The final integrated suite passes 68 tests. Both workflow sources compile in strict mode,
+The integrated suite at that point passed 68 tests. Both workflow sources compile in strict mode,
 and the deliberately broken configuration controls are rejected by compilation or allowlist
 tests. DESIGN.md has 150 lines. Git comparisons confirm that the frozen scorer, rubric,
 inputs and expected outcomes remain unchanged from `4baa2cb`. Local documentation links
@@ -286,7 +280,7 @@ triage-check reports match their intended case's title, opening time and author 
 See `results/offline-reproduction.json` and `results/blind-review-offline.txt` for the final
 checks and the independent review. The latter was conducted without the prior audit's findings.
 
-A clean export of the staged submission also passed all 68 tests and reproduced 17 reports
+A clean export at that point also passed all 68 tests and reproduced 17 reports
 and data files byte-for-byte, including the corrected agreement and confusion prose. Its
 commands and comparison cohorts are recorded in `results/clean-export-validation.txt`.
 
@@ -319,17 +313,12 @@ Batch context and the original golden-set methodology still limit performance cl
 
 Four additional recorder regressions check input integrity, first-decision preservation,
 credential exclusion and refusal to substitute a different issue. The integrated suite now
-contains 72 tests. Reconstructing all 30 prepared workspaces reproduced their recorded hashes.
+contained 72 tests. Reconstructing all 30 prepared workspaces reproduced their recorded hashes.
 The fresh independent review and final checks are saved beside the dry-run report.
 
-## Remaining work before submission
+## Open items
 
-1. Review the two current scored mismatches and distinguish ordinary hosted-path evidence
-   from adversarial and limit-enforcement claims. Authentication now works; the full 90-run
-   plan remains pending by spending choice, not because these five runs failed to execute.
-2. Keep mobile-browser operation and burst-limit enforcement marked unverified. Testing them
-   is optional future work, not evidence already supplied by the API kill-switch test.
-3. Confirm the AI-use statement accurately describes the student's own choices and verification.
-   The student must understand and be able to explain every submitted component.
-4. Check all required source, locks, logs and results in the selected commit; verify access and
-   submit its GitHub link. Later or uncommitted files are not part of what the grader receives.
+1. The full 90-run plan on the submitted runtime is pending by spending choice; the five live
+   runs in `evals/failure-recheck-live-3/` are the only current-source evidence.
+2. Mobile-browser operation and burst-limit enforcement are unverified. The API kill-switch
+   test does not cover them.

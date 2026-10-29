@@ -1,0 +1,12 @@
+{
+ "labels_added": [
+  "component/desktopcapturer"
+ ],
+ "comment": null,
+ "other_writes": [],
+ "issue": 171,
+ "run_id": 39954530338,
+ "conclusion": "success",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/39954530338",
+ "source": "requested view of final"
+}
