@@ -7,7 +7,7 @@ failed adoption criteria. The submitted runtime remains at `962fac7`; no commit 
 This experiment tests one change: distinguish an incomplete code fragment from a runnable
 reproduction before deciding whether to request an Electron Fiddle. A multiline constructor
 example was mistaken for a complete reproduction in the preceding
-[linking/label comparison](../conservative-linking/README.md). That known failure motivated the
+[linking/label comparison](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/conservative-linking/README.md). That known failure motivated the
 change; it is excluded from this experiment's fresh cases.
 
 The candidate changes only section 3 of the issue-triage skill. It asks the assistant to check

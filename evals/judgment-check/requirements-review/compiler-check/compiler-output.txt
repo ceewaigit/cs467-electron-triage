@@ -1,5 +1,0 @@
-.github/workflows/issue-triage-forced.md: warning: Prompt explicitly requires shell(curl -s https://example.com), but the effective tool configuration does not allow it. Align the prompt with the permitted tools, or, if intended, allow the specific command "curl -s https://example.com" in tools.bash. Permissions have not been expanded.
-
-⚠ Experimental features in use:
-  • rate limiting: 1 workflow
-⚠ Compiled 2 workflows: 2 succeeded, 2 warnings

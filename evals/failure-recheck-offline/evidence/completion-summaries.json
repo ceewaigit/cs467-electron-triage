@@ -1,7 +1,0 @@
-{
-  "s001": "Completed d001 and froze the first decision once. All required helpers passed. Proposed labels: component/app, blocked/need-repro; comment kinds: need-repro,similar; reference: 53350. No external writes executed.",
-  "s002": "Completed d001 in s002. Required helpers passed, and finish ran exactly once. Frozen proposal: labels blocked/need-repro, blocked/upstream ❌; comment kinds need-repro,upstream; no references. No external writes executed.",
-  "s003": "Completed d001 and froze the first decision exactly once. All helpers passed. Proposed component/printing, blocked/need-repro, and need-repro,similar referencing 50420. No external writes executed.",
-  "s004": "Completed d001 in s004. Required helpers succeeded; finish recorded exactly once with component/devtools, blocked/need-repro, and need-repro comment. No references or external writes.",
-  "s005": "Completed s005/d001. Required helpers passed; finish recorded exactly once. Frozen proposal: component/gpu and similar reference 51767. No external writes or procedural failures."
-}

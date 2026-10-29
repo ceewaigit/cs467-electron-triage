@@ -52,14 +52,14 @@ the workflow needs `gh aw` v0.93.2: `gh aw compile issue-triage --strict --no-ch
 
 ## Other folders
 
-The folders below hold follow-up experiments. They are kept as evidence but are not needed to
-mark the core evaluation.
+The folders below hold follow-up evidence that DESIGN.md cites. Two rejected skill changes, an
+offline recheck and two live attempts that failed authentication are kept on the
+[`archive/experiments` branch](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/experiments/evals).
 
 | Path | What it is |
 |---|---|
-| `evals/failure-recheck-offline/`, `evals/failure-recheck-live*/` | Reruns of earlier failures. Two live attempts failed authentication; the third ran five cases |
-| `evals/reproduction-check/` | Test of the repro-instruction change now in the skill ([adoption record](evals/reproduction-check/ADOPTION.md)) |
-| `evals/conservative-linking/`, `evals/judgment-check/` | Two rejected skill changes, tested offline |
+| `evals/failure-recheck-live-3/` | Live run of the submitted runtime on five earlier failures |
+| `evals/reproduction-check/` | Test of the repro-instruction change now in the skill; it failed its pre-registered gates and was adopted on a later criterion ([adoption record](evals/reproduction-check/ADOPTION.md)) |
 | `evals/data/`, `data/` | Opening-time issue records, and the frozen search corpus and label snapshot |
 | `evals/tools/` | Replay, collection, scoring and statistics scripts |
 | `docs/CODEBASE.md`, `docs/AUDIT.md` | Walkthrough of the code; audit of fixes and remaining limits |

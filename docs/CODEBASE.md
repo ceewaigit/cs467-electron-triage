@@ -7,7 +7,7 @@ the report means. GitHub Actions controls which decisions can become repository 
 
 The updated credential completed the [five-case live recheck](../evals/failure-recheck-live-3/README.md):
 3/5 pass the frozen rubric, with a combined agent/detector estimate of $1.2526727. The two
-earlier authentication failures and [free diagnostic](../evals/failure-recheck-offline/README.md)
+earlier authentication failures and [free diagnostic](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-offline/README.md)
 remain separate historical records. The 90-run plan remains pending. The
 [offline reproduction guide](../evals/golden/README.md#reproduce-the-analysis-offline) checks
 the current scripts and saved evidence without calling GitHub or the model provider.
@@ -120,18 +120,12 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/tools/hint_holdout.py` | Checks component keywords on non-golden Q3 issues with maintainer component labels; reads a supplied raw-data directory and prints counts |
 | `evals/need/analyze_issues.py` | Reads saved Q3 issue histories and opening-state records; writes `issues_table.csv` and `issue_metrics.json` |
 | `evals/need/analyze_extra.py` | Reads those histories and the issue table; writes `extra_metrics.json` for reproduction requests, an AI-authorship proxy and duplicate-link delay |
-| `evals/conservative-linking/select_cases.py`, `annotate_cases.py` | Reconstruct the first comparison's Q2 sample and expectations; preserve the frozen outputs after execution |
+| Archived experiments | `conservative-linking`, `judgment-check` and `failure-recheck-offline` (with the two failed live attempts) are on the [`archive/experiments` branch](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/experiments/evals) |
 | `evals/reproduction-check/select_cases.py` | Selects new Q2 opening inputs while excluding all earlier cases; records the seed, eligible IDs and exclusions |
-| `evals/{conservative-linking,reproduction-check}/experiment.py` | Separate comparison wrappers: prepare frozen workspaces, reconstruct them, export sealed decisions and score paired results; no model or network calls |
+| `evals/reproduction-check/experiment.py` | Separate comparison wrappers: prepare frozen workspaces, reconstruct them, export sealed decisions and score paired results; no model or network calls |
 | `evals/reproduction-check/known_regression.py` | Prepares and collects the separate known failure; never includes it in fresh-case metrics |
 | `evals/reproduction-check/evidence/independent-check-source.py` | Independently reconstructs contexts, replays helpers and scores evidence; exclusive output creation protects the saved first audit |
-| `evals/judgment-check/experiment.py`, `known_cases.py` | Prepare anonymous frozen contexts, collect all 104 first decisions before scoring, and apply paired and independent-review gates; no model or network calls |
-| `evals/judgment-check/selection/select_cases.py`, `author_dataset.py` | Record the unused Q2 sample and constructed controls with expectations; preserve their pre-execution versions and outputs |
-| `evals/judgment-check/evidence/annotation-check-source.py`, `independent-recompute-source.py` | Saved independent checks of annotations, contexts, helper transcripts and scores; existing audit outputs must not be overwritten |
-| `evals/judgment-check/requirements-review/checks.py`, `make_matrix.py` | Saved review utilities for the exact `90724fe` snapshot and original requirements; their reports describe that revision, with later changes assessed separately |
-| `evals/failure-recheck-offline/check.py` | Prepares or reconstructs five selected input-only sessions, exports sealed first decisions and scores them; no model or network calls |
-| `evals/failure-recheck-offline/evidence/independent-*-source.py`, `live-review-source.py` in that directory | Saved independent checks for runtime/input integrity, helper/export replay, historical comparison and live-failure evidence; preserve their first reports |
-| `evals/failure-recheck-live*/run.py` | Wraps the sandbox replay helper for one explicit case at k=1; `file` creates an issue, `dispatch` can incur provider cost, and `collect` reads and saves GitHub results |
+| `evals/failure-recheck-live-3/run.py` | Wraps the sandbox replay helper for one explicit case at k=1; `file` creates an issue, `dispatch` can incur provider cost, and `collect` reads and saves GitHub results |
 | `evals/failure-recheck-live-3/collect_artifacts.py`, `check_trigger.py` | Read GitHub and save complete run artifacts or verify the automatic issue-event run skipped; neither dispatches inference |
 | `evals/failure-recheck-live-3/check_cost.py` | Offline checkpoint: reconcile agent and detector request ledgers, tokens and saved rates; stop on incomplete evidence or spending thresholds; no in-flight dollar cap |
 | `evals/failure-recheck-live-3/summarize.py` | Offline frozen scoring, independent-score and cost reconciliation; refuses to overwrite its saved result |

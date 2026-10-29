@@ -1,3 +1,0 @@
-Completed and froze d011, d012, d013, d014, d015, d016, d017, d018, d019, and d020 in order using `recorder.py finish`.
-
-No procedural problems or helper failures. No frozen decisions were modified.

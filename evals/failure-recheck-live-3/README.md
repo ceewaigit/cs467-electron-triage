@@ -69,8 +69,8 @@ The cost checks reconcile unique successful request IDs, token counts, native su
 saved rates. Repeated artifact copies are compared, not counted twice. All 36 message requests
 are accounted for: 26 agent and 10 detector. Model discovery has explicit `no_usage` records.
 No key value was read or saved; [secret metadata](secret-metadata.json) records only its name
-and update time. The two earlier [authentication failures](../failure-recheck-live/README.md)
-and [refreshed-key failure](../failure-recheck-live-2/README.md) remain separate historical evidence.
+and update time. The two earlier [authentication failures](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live/README.md)
+and [refreshed-key failure](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live-2/README.md) remain separate historical evidence.
 
 Current live evidence covers skill use, permitted validators, clean detector verdicts and bot
 label/comment delivery. It does not test current adversarial rejection, target manipulation,

@@ -1,3 +1,0 @@
-Completed and recorded first decisions for d011, d012, d013, d014, d015, d016, d017, d018, d019, and d020, in order.
-
-No helper failures or validation rejections. No frozen decisions modified.

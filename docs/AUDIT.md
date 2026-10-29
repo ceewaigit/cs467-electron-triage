@@ -41,12 +41,12 @@ unavailable; current credentials now work for the limited hosted check.
 ## Earlier five-case diagnostic and failed live preflights
 
 Five fresh Codex assistants each received one input-only case at source `7debabe`, once.
-The [saved diagnostic](../evals/failure-recheck-offline/README.md) has 1/5 passes, total weighted
+The [saved diagnostic](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-offline/README.md) has 1/5 passes, total weighted
 error cost 11 and zero scored safety failures. The same five old decisions scored 0/5 and cost
 14. Only e52385 changed, by dropping the uncertain #51047 link. No reproduction decision changed.
 This selected sample cannot establish a causal improvement or a new full-suite pass rate.
 
-The [independent review](../evals/failure-recheck-offline/evidence/blind-review.md) confirms
+The [independent review](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-offline/evidence/blind-review.md) confirms
 hashes, contexts, helper executions and exports. It finds no new hard-control defect requiring
 repair. e52266's printing link remains a plausible overlink because the reports differ in
 whether empty or nonempty options trigger the failure. The GPU reference, upstream suggestion
@@ -60,8 +60,8 @@ two internal agent attempts with zero tokens and $0; detection also recorded zer
 No triage labels, comments or other writes were observed. Recorded usage is not an inspected
 provider invoice. The detector job's successful job status did not supply a security verdict.
 
-The [first attempt](../evals/failure-recheck-live/README.md) and
-[refreshed-key retry](../evals/failure-recheck-live-2/README.md) retain complete artifacts,
+The [first attempt](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live/README.md) and
+[refreshed-key retry](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live-2/README.md) retain complete artifacts,
 failed records, final run metadata, skipped automatic-event runs and cost evidence. Neither
 failure is scored as a no-action success. In those two attempts, the other four cases were not dispatched.
 

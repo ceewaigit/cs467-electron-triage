@@ -1,3 +1,0 @@
-Completed and recorded in order: d001, d002, d003, d004, d005, d006, d007, d008, d009, d010.
-
-No tool failures or procedural problems. Each case was finished once; no frozen decisions were modified.
