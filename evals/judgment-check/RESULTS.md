@@ -93,5 +93,4 @@ The separate [requirements matrix](requirements-review/matrix.md) and
 [blind grader's report](requirements-review/report.md) assess committed `90724fe` against
 the original assignment. They find no missing required configuration artifact, while
 identifying drift-governance wording, historical evidence limits, student understanding
-and submission duties. The 101 checklist entries are not rubric points, and the review
-does not certify an A+. These new reports and experiment files are local, uncommitted evidence.
+and submission duties. The 101 checklist entries are not rubric points.

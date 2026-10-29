@@ -20,4 +20,5 @@ jobs:
       - name: Skill script and workflow config tests
         run: python3 -m unittest discover -s tests -v
       - name: Baseline still scores (scorer and cases are intact)
-        run: python3 evals/tools/baseline.py && python3 evals/tools/score.py --runs baseline --k 1
+        # Writes to a scratch namespace so the stored historical baseline is never overwritten.
+        run: python3 evals/tools/baseline.py --out baseline-ci && python3 evals/tools/score.py --runs baseline-ci --k 1

@@ -1,17 +1,19 @@
 # Golden-task evaluation
 
 The golden set has 25 real `electron/electron` issues opened in July to September 2026 and
-five adversarial inputs. Each case has an input and an expected outcome. The planned model
-evaluation repeats every case three times. [RUBRIC.md](RUBRIC.md) defines correctness and
-weighted error cost; a successful GitHub workflow does not establish a correct triage decision.
+five adversarial inputs. Each case has an input and an expected outcome, and each ran three
+times. [RUBRIC.md](RUBRIC.md) defines correctness and weighted error cost; a successful
+workflow run does not by itself mean the triage decision was correct.
 
-The five authorized [targeted live runs](../failure-recheck-live-3/README.md) are complete:
-3/5 pass at source `1173463`, for a combined agent/detector estimate of $1.2526727.
-The separate 90-run plan remains pending. Use the
-[offline reproduction steps](#reproduce-the-analysis-offline) to check the code and saved
-evidence. Live replay below is an optional future decision; no further runs are needed to
-reproduce the reports already present. The [coding-assistant fallback](#latest-configuration-coding-assistant-dry-run)
-records historical source `7ef6696` locally and retains its transcripts.
+| Experiment | What ran | Result |
+|---|---|---|
+| `agent` | Free-text comments, all 90 runs | 59/75 real runs pass, 15/15 adversarial |
+| `final` | Template comments (`5ab5169`), 79 of 90 runs (11 lost to provider credit) | 52/64 real, 15/15 adversarial |
+| `baseline-v2` | Deterministic rules, once per case | 18/25 real |
+| [Live recheck](../failure-recheck-live-3/README.md) | Submitted runtime (`1173463`), five earlier failures once each | 3/5 |
+| [Coding-assistant dry run](#latest-configuration-coding-assistant-dry-run) | Codex with the `7ef6696` configuration, all 30 cases once | 20/25 real, 5/5 adversarial |
+
+[Reproduce the analysis offline](#reproduce-the-analysis-offline) needs no login or API key.
 
 ## What was fixed before the runs
 
@@ -46,7 +48,7 @@ A missing output file is unavailable evidence, not a successful no-action decisi
 | `cases/<id>/actual/assistant-dry-run/` | One proposed outcome per case from the coding-assistant fallback at `7ef6696`, with recorded context and helper transcripts |
 | `../failure-recheck-live-3/` | Five selected live cases at `1173463`, with independent scores, native artifacts and costs; separate from full-suite results |
 | `cases/<id>/actual/final/` | Template-comment experiment: 79 collected outputs and log directories |
-| `cases/<id>/actual/hardened/` | Reserved for the audited successor; 0 of 90 planned valid outputs are present |
+| `cases/<id>/actual/hardened/` | Empty; reserved for a future full rerun of the submitted configuration |
 | `cases/e52232/actual/preflight/failures/` | One unsuccessful provider-credit check, excluded from scoring |
 | `cases/<id>/actual/agent/` | First experiment using the older `add-comment` output: 90 outputs |
 | `cases/<id>/actual/agent-v2/` | Twelve reruns of four cases after the repository-link fix in `d76fd0c` |

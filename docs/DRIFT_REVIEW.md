@@ -40,8 +40,15 @@ even when the workflow job succeeds, and keep ambiguous judgement disagreements 
 
 The owner records whether to retain, revise or disable the configuration and why. Failures
 require investigation before approval; additional paid confirmation runs need separate
-authorization. The pending 90-run plan stays pending. Weekly hosted golden reruns remain a
-proposal for future sustained operation, with a cadence and budget to be agreed before launch.
+authorization. The pending 90-run plan stays pending.
+
+## Proposed schedule for sustained operation
+
+Not implemented. Before any deployment beyond this sandbox, run all 30 golden cases once a week
+(one repeat each, about $8 at the measured $0.25 per run). This is a diagnostic: `ceewaigit`
+reviews every changed output within two days. Any new failure triggers the full three-repeat
+acceptance run before the configuration stays enabled. This is the proposal DESIGN.md answers
+question 2 with.
 
 This policy clarifies the current governance process. It adds no scheduler, new hosted test,
 permission or automatic model-behaviour check, and it does not resolve historical evaluation

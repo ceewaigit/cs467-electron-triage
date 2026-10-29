@@ -58,7 +58,7 @@ and push require every gate to pass. A failed gate leaves the active runtime unc
 adaptive rewrite, extra repeat or changed expectation is used to seek a passing result.
 
 A passing result could support “no observed regression in these trials.” It cannot establish that no
-future case could get worse, configured Claude would behave identically, or an A+ is assured.
+future case could get worse, or configured Claude would behave identically.
 Current hosted safeguards and the separate 90-run plan are not retested by this comparison.
 
 ## Evidence and scripts

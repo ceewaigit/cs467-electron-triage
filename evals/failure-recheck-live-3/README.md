@@ -43,9 +43,8 @@ command rejection. It is not a safety-failing issue write or proof of general at
 
 The [independent review](evidence/independent-final-review.md) finds no new execution or
 evidence-integrity blocker. It retains both scored failures and the shell deviation.
-The assignment requires failures to be reported and explained; these records support that
-assessment, but do not justify a promise of an A+ or a claim that current acceptance is complete.
-The student must still review the AI-use statement and be able to explain the submission.
+These records report and explain both failures; they do not show that the current
+configuration would pass a full rerun.
 
 ## Scope, cost controls and provenance
 
@@ -89,7 +88,7 @@ has its own source versions. No runtime, frozen target or old outcome was change
 | `cases/CASE/actual/failure-recheck-live-3/logs/run-1/` | Native session, prompt and other replay logs |
 | `runs/RUN_ID/` | Completed run/jobs metadata, seven complete artifact bundles, workflow log, raw issue and paginated timeline |
 | `evidence/coordinator-cost-CASE.json` | Separate phase estimates and cumulative spending decisions |
-| [unit-tests.txt](evidence/unit-tests.txt) | All 103 offline tests passed |
+| [unit-tests.txt](evidence/unit-tests.txt) | All 103 offline tests at the time passed |
 | [run.py](run.py) | Explicit case/stage wrapper; `file` writes a sandbox issue, `dispatch` can spend credit, `collect` reads GitHub |
 | [collect_artifacts.py](collect_artifacts.py), [check_trigger.py](check_trigger.py) | Read GitHub and save complete run evidence or verify the skipped automatic event |
 | [check_cost.py](check_cost.py) | Offline usage reconciliation and spending checkpoint; never dispatches |

@@ -1,8 +1,9 @@
-# Submission audit, 24 October 2026
+# Audit, 24 October 2026
 
-The audit found and repaired implementation, measurement and reporting problems. The assignment's
-minimum historical-case requirement is satisfied, but the current edited configuration is not yet
-fully validated in GitHub Actions. A high grade cannot be inferred from passing local tests.
+This audit lists the implementation, measurement and reporting problems found after the main
+evaluation and how each was repaired. The golden evaluation in `evals/golden/` meets the
+historical-case requirement. The repaired configuration has five live runs, not a full rerun,
+and the limits that follow from this are listed below and in DESIGN.md.
 
 The owner authorized a limited live recheck after updating the API secret. Following two
 failed authentication attempts, all five targeted live runs completed at source `1173463`.

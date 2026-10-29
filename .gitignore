@@ -2,3 +2,6 @@
 __pycache__/
 .github/aw/logs/
 .DS_Store
+# Scratch baseline written by CI
+evals/golden/cases/*/actual/baseline-ci/
+evals/golden/results/score-baseline-ci.json

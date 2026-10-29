@@ -82,5 +82,5 @@ The [final offline validation](evidence/final-validation.json) records 103 passi
 
 The assignment permits a documented coding-assistant fallback. This evidence supports that
 route, with the earlier complete fallback and historical live records. It does not establish
-an A+ outcome, deployment readiness or a fully passing latest configuration. A student should
-be able to explain the printing-link risk, the annotation disagreements and the untested controls.
+deployment readiness or a fully passing latest configuration. The printing-link risk, the
+annotation disagreements and the untested controls remain open.

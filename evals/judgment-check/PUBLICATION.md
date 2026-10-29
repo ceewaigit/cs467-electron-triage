@@ -30,8 +30,7 @@ accurate for that earlier stage; this later publication does not rewrite them.
 
 The [101-item matrix](requirements-review/matrix.md) and its report still assess `90724fe`.
 Their original counts and findings are preserved. The publication review under `publication/`
-assesses the documentation changes separately; it does not certify student understanding,
-eLearn submission, deployment readiness or an A+.
+assesses the documentation changes separately; it does not certify deployment readiness.
 
 ## Verification record
 
