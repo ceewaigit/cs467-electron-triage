@@ -22,8 +22,10 @@ on:
   # Unattended expiry: extend explicitly with gh aw compile --refresh-stop-time.
   stop-after: "+30d"
 
-# Each run gets its own job slots.
+# Each replay issue gets its own run group and job slots, as issue events do in issue-triage.md;
+# without the group, every dispatched run of this workflow waits for the one before it.
 concurrency:
+  group: "gh-aw-${{ github.workflow }}-${{ inputs.issue_number || github.run_id }}"
   job-discriminator: ${{ inputs.issue_number || github.run_id }}
 
 permissions:
