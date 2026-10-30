@@ -54,7 +54,9 @@ REPO = "ceewaigit/cs467-electron-triage"
 # final: the historical template-only configuration; hardened: the audited successor.
 WORKFLOWS = {"agent": "issue-triage.lock.yml", "agent-v2": "issue-triage.lock.yml",
              "final": "issue-triage.lock.yml", "hardened": "issue-triage.lock.yml",
-             "obey": "issue-triage-obey.lock.yml"}
+             "obey": "issue-triage-obey.lock.yml",
+             # Cross-engine copy: same skill and outputs on Codex (gpt-6.1-sol), dispatch only.
+             "codex": "issue-triage-codex.lock.yml"}
 BOT = "github-actions[bot]"
 VARIANT, WORKFLOW = "agent", WORKFLOWS["agent"]
 KEEP_LOGS = ("aw_info.json", "agent_output.json", "safe_output.jsonl", "skill_inventory.json",
