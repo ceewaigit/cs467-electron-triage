@@ -47,6 +47,44 @@ class SkillEvidenceTests(unittest.TestCase):
         self.assertFalse(result["labels_checked"])
         self.assertFalse(result["comment_rendered"])
 
+    def inspect_codex(self, steps):
+        """steps: (command or None, output) pairs; a None command is a safe-output call named by output."""
+        events = [{"type": "session.init", "data": {"sourceEngine": "codex", "model": "gpt-6.1-sol"}}]
+        for command, output in steps:
+            if command is None:
+                item = {"type": "mcp_tool_call", "server": "safeoutputs", "tool": output, "arguments": {}}
+                events += [{"type": "tool.execution_start", "item": item},
+                           {"type": "tool.execution_complete", "item": item | {"result": "ok"}}]
+            else:
+                item = {"type": "command_execution", "command": command}
+                events += [{"type": "tool.execution_start", "item": item},
+                           {"type": "tool.execution_complete", "item": item | {"aggregated_output": output}}]
+        with tempfile.TemporaryDirectory() as temporary:
+            output = pathlib.Path(temporary) / "actual/codex"
+            logdir = output / "logs/run-1"
+            logdir.mkdir(parents=True)
+            (output / "run-1.json").write_text(json.dumps({"comment": None}))
+            (logdir / "agent-session.jsonl").write_text("".join(json.dumps(e) + "\n" for e in events))
+            return check(logdir)
+
+    def test_codex_skill_read_and_markers_count(self):
+        result = self.inspect_codex([
+            ("/bin/bash -lc 'cat .codex/skills/issue-triage/SKILL.md'", "---\nname: issue-triage"),
+            ("python3 triage_checks.py", "[issue-triage/triage_checks v2] ok"),
+            ("python3 check_labels.py component/gpu", "[issue-triage/check_labels v1] ok"),
+            (None, "add_labels")])
+        self.assertIsNone(result["discovered"])
+        self.assertTrue(result["invoked"])
+        self.assertTrue(result["executed"])
+        self.assertTrue(result["labels_checked"])
+        self.assertEqual(result["model"], "gpt-6.1-sol")
+
+    def test_codex_output_before_check_is_unchecked(self):
+        result = self.inspect_codex([(None, "add_labels"),
+                                     ("python3 check_labels.py x", "[issue-triage/check_labels v1] ok")])
+        self.assertFalse(result["invoked"])
+        self.assertFalse(result["labels_checked"])
+
 
 if __name__ == "__main__":
     unittest.main()

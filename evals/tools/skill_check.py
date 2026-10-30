@@ -11,6 +11,11 @@ Four layers, weakest to strongest:
 
 Also records cost, turns, tools used and permission denials for the audit trail.
 
+Codex sessions (the cross-engine copy) have no Skill tool and no skill list at start-up: Codex
+loads a skill by reading its SKILL.md through the shell. For those runs, discovered is None,
+invoked means a shell command read .codex/skills/issue-triage/SKILL.md, and token counts stand
+in for cost, which the Codex log does not report.
+
     python3 evals/tools/skill_check.py [--runs agent]   # writes results/skill-check-<runs>.json
 """
 import argparse
@@ -20,6 +25,23 @@ import pathlib
 import re
 
 GOLDEN = pathlib.Path(__file__).resolve().parents[1] / "golden"
+
+
+def codex_content(e):
+    """Rewrite one Codex event as the Claude content blocks the checks below read, or []."""
+    item = e.get("item") or {}
+    if item.get("type") == "command_execution":
+        if e["type"] == "tool.execution_start":
+            return [{"type": "tool_use", "name": "Bash", "input": {"command": item.get("command", "")}}]
+        if e["type"] == "tool.execution_complete":
+            return [{"type": "tool_result", "content": item.get("aggregated_output") or ""}]
+    if item.get("type") == "mcp_tool_call":
+        if e["type"] == "tool.execution_start":
+            return [{"type": "tool_use", "name": f"mcp__{item.get('server')}__{item.get('tool')}",
+                     "input": item.get("arguments") or {}}]
+        if e["type"] == "tool.execution_complete":
+            return [{"type": "tool_result", "content": json.dumps(item.get("result"))}]
+    return []
 
 
 def check(logdir):
@@ -43,11 +65,17 @@ def check(logdir):
     sess = logdir / "agent-session.jsonl"
     if not sess.exists():
         return r
-    ok_labels = ok_comment = False
+    ok_labels = ok_comment = codex = False
     rendered = None
     with sess.open() as session:
         for line in session:
             e = json.loads(line)
+            # Claude sessions use some of the same event types, so Codex handling keys on init.
+            if e.get("type") == "session.init" and e["data"].get("sourceEngine") == "codex":
+                codex = True
+                r["discovered"], r["model"], r["permission_denials"] = None, e["data"].get("model"), []
+            if codex and e.get("type") == "session.result":
+                r["tokens"], r["turns"] = e.get("usage"), e["data"].get("numTurns")
             if "total_cost_usd" in e:
                 r["cost_usd"], r["turns"] = round(e["total_cost_usd"], 4), e.get("num_turns")
                 r["permission_denials"] = e.get("permission_denials")
@@ -55,11 +83,15 @@ def check(logdir):
                 r["model"] = e.get("model")
             msg = e.get("message")
             content = (msg.get("content") if isinstance(msg, dict) else None) or []
+            if codex:
+                content = codex_content(e)
             for c in content if isinstance(content, list) else []:
                 if c.get("type") == "tool_use":
                     name = c["name"]
                     r["tools"][name] += 1
                     if name == "Skill" and "issue-triage" in json.dumps(c["input"]):
+                        r["invoked"] = True
+                    if name == "Bash" and ".codex/skills/issue-triage/SKILL.md" in c["input"].get("command", ""):
                         r["invoked"] = True
                     if name.endswith("add_labels") and not ok_labels:
                         r["labels_checked"] = False
@@ -98,6 +130,8 @@ def main():
             totals["runs"] += 1
             for k in ("installed", "discovered", "invoked", "executed", "labels_checked", "comment_rendered"):
                 totals[k] += bool(r[k])
+                if r[k] is None:
+                    totals[f"{k}_not_applicable"] += 1
             if r["comment_verbatim"] is not None:
                 totals["comments"] += 1
                 totals["comments_verbatim"] += r["comment_verbatim"]
@@ -112,7 +146,7 @@ def main():
     print(json.dumps(summary, indent=1))
     for k, r in out.items():
         missing = [x for x in ("installed", "discovered", "invoked", "executed", "labels_checked",
-                               "comment_rendered") if not r[x]]
+                               "comment_rendered") if r[x] is False]
         if missing:
             print(f"{k}: missing {missing}")
 
