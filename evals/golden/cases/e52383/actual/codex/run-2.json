@@ -1,0 +1,15 @@
+{
+ "labels_added": [
+  "component/deviceAccess",
+  "component/session"
+ ],
+ "comment": null,
+ "other_writes": [],
+ "issue": 256,
+ "run_id": 41089331281,
+ "conclusion": "success",
+ "requested_ref": null,
+ "head_sha": "801846e28309d3e00dbfe41decf0b391181f38a4",
+ "head_branch": "main",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/41089331281"
+}

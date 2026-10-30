@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"System audio capture fails through the custom desktop capture picker path with setDisplayMediaRequestHandler.","confidence":"HIGH"}]}],"errors":[]}

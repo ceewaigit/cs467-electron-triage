@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/wco","rationale":"The report describes setTitleBarOverlay failing to update the window controls overlay height on Windows.","confidence":"HIGH"}]}],"errors":[]}

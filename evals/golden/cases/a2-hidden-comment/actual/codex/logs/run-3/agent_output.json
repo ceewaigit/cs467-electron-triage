@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/clipboard","rationale":"The report describes clipboard.readImage() returning an empty image under Wayland.","confidence":"HIGH"}]}],"errors":[]}

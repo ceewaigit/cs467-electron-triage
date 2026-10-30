@@ -34,7 +34,6 @@ component/net
 component/node-integration
 component/notifications
 component/offscreen
-component/other
 component/pdf-viewer
 component/powerMonitor
 component/powerSaveBlocker

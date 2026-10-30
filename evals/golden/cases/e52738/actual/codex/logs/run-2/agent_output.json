@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"System audio capture ends immediately when setDisplayMediaRequestHandler uses a custom desktop capture picker on macOS.","confidence":"HIGH"}]}],"errors":[]}

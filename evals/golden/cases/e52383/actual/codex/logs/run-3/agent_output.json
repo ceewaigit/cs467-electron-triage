@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/deviceAccess","rationale":"Device chooser requests crash the browser process for USB and Bluetooth.","confidence":"HIGH"},{"name":"component/session","rationale":"The crash is triggered by a named session partition; the default session rejects cleanly.","confidence":"HIGH"}]}],"errors":[]}

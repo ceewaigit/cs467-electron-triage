@@ -151,7 +151,10 @@ class SkillScripts(unittest.TestCase):
         with (ROOT / "data" / "issue-corpus.jsonl").open() as f:
             corpus_id = json.loads(f.readline())["number"]
         text = self.comment("--kinds", "similar,need-repro", "--refs", str(corpus_id))
-        self.assertTrue(text.endswith(f"triage: kinds=similar,need-repro refs=#{corpus_id}"))
+        self.assertTrue(text.endswith(f"`triage: kinds=similar,need-repro refs=#{corpus_id}`"))
+        # Refs outside the similar template would be stray links, so the trailer drops them.
+        self.assertTrue(self.comment("--kinds", "need-repro", "--refs", str(corpus_id)).endswith(
+            "`triage: kinds=need-repro refs=`"))
         self.assertIn(f"`electron/electron#{corpus_id}`", text)
         self.assertNotIn("@", text)
         self.assertNotIn("github.com/electron/electron/issues", text)
@@ -252,6 +255,57 @@ class WorkflowConfig(unittest.TestCase):
         self.assertNotIn("\njobs:", self.src)
         self.assertIn("run: python3 scripts/prepare_agent_context.py", self.src,
                       "grading material and future corpus rows must be removed before the agent runs")
+
+class LockConfig(unittest.TestCase):
+    """The compiled lock is what Actions runs, so its limits are checked directly, not via the source.
+
+    CI also recompiles the source and fails on any difference (checks.yml).
+    """
+    JOB_PERMISSIONS = {
+        "pre_activation": {"actions: read"},
+        "activation": {"actions: read", "contents: read"},
+        "agent": {"contents: read", "issues: read"},
+        "detection": {"contents: read"},
+        "safe_outputs": {"issues: write", "pull-requests: write"},
+        "triage_comment": {"contents: read", "issues: write"},
+        "conclusion": {"actions: read", "issues: write", "pull-requests: write"},
+    }
+    AGENT_TOOLS = {
+        "Bash(cat)", "Bash(date)", "Bash(echo)", "Bash(grep)", "Bash(head)", "Bash(ls)", "Bash(printf)",
+        "Bash(pwd)", "Bash(sort)", "Bash(tail)", "Bash(uniq)", "Bash(wc)", "Bash(yq)", "Bash(safeoutputs:*)",
+        "Bash(python3 .claude/skills/issue-triage/scripts/triage_checks.py)",
+        "Bash(python3 .claude/skills/issue-triage/scripts/check_labels.py:*)",
+        "Bash(python3 .claude/skills/issue-triage/scripts/render_comment.py:*)",
+        "BashOutput", "Edit(//tmp/**)", "ExitPlanMode", "Glob", "Grep", "KillBash", "LS", "NotebookRead",
+        "Read", "Read(//tmp/**)", "Skill", "Task", "TodoWrite", "mcp__safeoutputs",
+    }
+
+    def setUp(self):
+        wf = pathlib.Path(os.environ.get("WORKFLOW_DIR", ROOT / ".github/workflows"))
+        self.lock = (wf / "issue-triage.lock.yml").read_text()
+        self.jobs = dict(re.findall(r"^  ([a-z_]+):\n((?:    .*\n|\n)*)", self.lock.split("\njobs:\n", 1)[1], re.M))
+
+    def test_only_output_jobs_can_write(self):
+        for job, body in self.jobs.items():
+            block = re.search(r"^    permissions:\n((?:      .*\n)*)", body, re.M)
+            granted = {line.strip() for line in block.group(1).splitlines()} if block else set()
+            self.assertEqual(granted, self.JOB_PERMISSIONS[job], job)
+
+    def test_agent_tools_and_turns(self):
+        command = self.jobs["agent"]
+        tools = re.search(r"--allowed-tools '\\''([^']*)'\\''", command).group(1)
+        self.assertEqual(set(tools.split(",")), self.AGENT_TOOLS)
+        self.assertEqual(re.findall(r"--max-turns (\d+)", command), ["30"])
+
+    def test_label_handler_is_pinned_and_limited(self):
+        raw = re.search(r'GH_AW_SAFE_OUTPUTS_HANDLER_CONFIG: "(.*)"\n', self.jobs["safe_outputs"]).group(1)
+        config = json.loads(raw.encode().decode("unicode_escape").encode("latin1").decode())
+        self.assertEqual(set(config), {"add_labels", "noop", "report_incomplete", "report_missing_data",
+                                       "report_missing_tool"})
+        self.assertEqual(config["add_labels"], {
+            "allowed": ["component/*", "blocked/need-repro", "blocked/upstream ❌"], "max": 1, "max_labels": 3,
+            "target": WorkflowConfig.TARGET})
+
 
 class PostComment(unittest.TestCase):
     """scripts/post_triage_comment.py: the only path from the agent to a public comment."""

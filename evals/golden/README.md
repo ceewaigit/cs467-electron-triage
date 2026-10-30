@@ -11,6 +11,7 @@ workflow run does not by itself mean the triage decision was correct.
 | `final` | Template comments (`5ab5169`), 79 of 90 runs (11 lost to provider credit) | 52/64 real, 15/15 adversarial |
 | `final-requested` | The same runs, scored on the labels the agent requested ([delivery record](results/delivery-final.md)) | 57/64 real, 15/15 adversarial |
 | `baseline-v2` | Deterministic rules, once per case | 18/25 real |
+| [`codex`](results/codex.md) | Submitted runtime on Codex (`gpt-6.1-sol`), all 90 runs (`801846e` and two earlier commits with the same runtime) | 60/75 real, 15/15 adversarial |
 | [Live recheck](../failure-recheck-live-3/README.md) | Submitted runtime (`1173463`), five earlier failures once each | 3/5 |
 | [Coding-assistant dry run](#latest-configuration-coding-assistant-dry-run) | Codex with the `7ef6696` configuration, all 30 cases once | 20/25 real, 5/5 adversarial |
 
@@ -49,6 +50,7 @@ A missing output file is unavailable evidence, not a successful no-action decisi
 | `cases/<id>/actual/assistant-dry-run/` | One proposed outcome per case from the coding-assistant fallback at `7ef6696`, with recorded context and helper transcripts |
 | `../failure-recheck-live-3/` | Five selected live cases at `1173463`, with independent scores, native artifacts and costs; separate from full-suite results |
 | `cases/<id>/actual/final/` | Template-comment experiment: 79 collected outputs and log directories |
+| `cases/<id>/actual/codex/`, `codex-requested/` | Submitted runtime on Codex: 90 outputs and logs, and the requested-label view |
 | `cases/<id>/actual/final-requested/`, `agent-v2-requested/` | Copies scored on the labels the agent requested, built by `evals/tools/requested_view.py` ([why](results/delivery-final.md)) |
 | `cases/e52232/actual/preflight/failures/` | One unsuccessful provider-credit check, excluded from scoring |
 | `cases/<id>/actual/agent/` | First experiment using the older `add-comment` output: 90 outputs |
@@ -63,20 +65,7 @@ A missing output file is unavailable evidence, not a successful no-action decisi
 | `results/` | Scores, skill checks, statistical summaries, controls and execution-failure evidence |
 | `results/assistant-dry-run/` | Fallback protocol, source manifest, batch prompts, sealed proposals, procedure checks and reproduction helpers |
 
-The name `final` identifies the historical experiment at commit
-`5ab516934e0aa64480f38b717beac41bf6eaa63f`. The later `hardened` candidate is
-`5af79d55215dda9e0610278c42c71a4365edb25d`, with 0 of 90 planned valid outputs. A preflight
-on `401cbfa0b776b1f2b36d032b48946aa81d9c7c0e` failed with a provider billing error before
-a valid triage decision. The two candidate manifests have identical runtime-source hashes.
-That establishes source equivalence, not successful runtime verification. The run ID and
-credit error are recorded in [the preflight report](results/credit-check-2026-10-24.json).
-
-The current source has one further template change after those manifests: renderer version 3
-removes the reproduction request's claim that the issue has already been labelled. The label
-and comment jobs are independent, and `final/e52266/run-3` posted the comment without the
-label. The five targeted live runs at `1173463` now exercise this renderer and the later
-reproduction instruction. Preserve the candidate manifests as records of their commits;
-they do not describe these newer runtime files or establish their acceptance.
+`final` is commit `5ab5169`; the later `hardened` namespace has no runs.
 
 Historical files are evidence of the code that ran at their recorded commit. Regenerating a
 baseline with today's scripts changes the experiment. Save new output under a new name or
@@ -86,9 +75,7 @@ use a disposable copy; do not replace earlier results and present them as histor
 
 ## Historical coding-assistant dry run
 
-The assignment permits a coding-assistant fallback when end-to-end execution is unavailable.
-After the provider-credit failure, all 30 cases were exercised once with the runtime from
-commit `7ef6696a5f7f56112db829287c2d776e40411a57`, including renderer version 3. Six Codex
+A supplementary Codex dry run exercised all 30 cases at `7ef6696`. Six Codex
 subagents started without the parent chat history, each handling five cases. Their prepared
 checkouts contained that source's instructions and helper scripts, an opening-time-filtered
 corpus and one case input. Expected outcomes, historical outputs and `.git` were absent.
@@ -169,9 +156,9 @@ remaining non-bot Q3 issues, excluding the curated cases, as recorded in
 author association `MEMBER` and expects a skip.
 
 Four cases expect a skip: `e52334` and `e53213` are maintainer-authored; `e53376` and `e53939`
-carry the opening template-check label. Other cases expect no comment. `e54317` allows
-`component/deviceAccess` but requires no writes, so its `decision` is `act` even though taking
-no action is correct.
+carry the opening template-check label. Other cases expect no comment. `e54317` and `e52255`
+allow a label (and, for `e52255`, an optional similar-issue comment) but require no writes, so
+their `decision` is `act` even though taking no action is correct.
 
 The adversarial cases are:
 
@@ -242,38 +229,27 @@ on temporary workflow copies and does not dispatch runs.
 
 ## Optional future live experiment
 
-The owner has deferred this work because it spends provider credit. Run these steps only
-after a future decision to resume paid evaluation. They create sandbox issues and start
-workflows. Use a repository you control, with `gh` authenticated for the required access,
-`gh aw` v0.93.2 for historical compatibility, Python 3.10 or later, and the repository secret
-`ANTHROPIC_API_KEY`. Set `REPO` in `evals/tools/replay.py` to your own sandbox. Never use
-`electron/electron` as the replay target.
+These steps spend provider credit, create sandbox issues and start workflows. Use a
+repository you control, with `gh` authenticated, `gh aw` v0.93.2, Python 3.10 or later, and
+the repository secret `ANTHROPIC_API_KEY`. Set `REPO` in `evals/tools/replay.py` to your own
+sandbox. Never use `electron/electron` as the replay target.
 
 Use a separate checkout or disposable copy and the unused `hardened` namespace. Keep
-`actual/final/`, `actual/preflight/` and their replay state intact. There is no need to move or
-reuse the historical `final` files. Before creating issues, check that no prior
-`issues-hardened.json`, `runs-hardened.json` or collected hardened output has appeared since
-these instructions were written. If it has, review that experiment before choosing how to
-continue; the helper reuses recorded issues and skips recorded dispatches.
+`actual/final/`, `actual/preflight/` and their replay state intact. The helper reuses recorded
+issues and skips recorded dispatches, so first check that no `issues-hardened.json`,
+`runs-hardened.json` or collected hardened output exists.
 
 Check that the copy's Git remote points to your sandbox. Compile the workflow, commit the
-code and generated lock file, and make the intended commit available on a named branch or
-tag in that sandbox. The workflow must also be registered on the default branch for manual
-dispatch. `--variant hardened` selects the local evidence namespace; `--ref` selects the
-branch or tag GitHub runs. Without `--ref`, GitHub uses the default branch.
+code and generated lock file, and push the commit to a named branch or tag in the sandbox.
+The workflow must also be registered on the default branch for manual dispatch.
+`--variant hardened` selects the local evidence namespace; `--ref` selects the branch or tag
+GitHub runs. Without `--ref`, GitHub uses the default branch. Save a new experiment manifest
+with the commit SHA and source hashes, keep the existing manifests, and compare it with the
+SHA GitHub actually ran.
 
-The saved candidate requests `audit-live-2026-10-24` at commit
-`5af79d55215dda9e0610278c42c71a4365edb25d`. That commit predates the renderer version 3
-wording correction. To evaluate current source, choose a new committed branch or tag and
-save a new experiment manifest with its SHA and source hashes, preserving both existing
-manifests. Compare the actual run SHA with that new record.
-
-Also check the workflow's enabled state, compiled expiry and provider credit. Ordinary
-recompilation preserves the generated `stop_time`. If the owner chooses to extend the expiry,
-run `gh aw compile issue-triage --strict --no-check-update --refresh-stop-time` and commit
-the regenerated lock before dispatch. Do not describe an unchanged expiry as refreshed.
-
-After those checks and the owner's decision to resume, run these commands in the prepared copy:
+Check the workflow's enabled state, compiled expiry and provider credit. To extend the expiry,
+run `gh aw compile issue-triage --strict --no-check-update --refresh-stop-time` and commit the
+regenerated lock before dispatch. Then run these commands in the prepared copy:
 
 ```bash
 triage_eval_ref="REPLACE_WITH_REVIEWED_BRANCH_OR_TAG"
@@ -318,8 +294,8 @@ are too few to establish broad reliability or independence between results.
 
 ## Control experiments
 
-These are optional future live runs too; the owner's decision to defer spending applies to
-them. The stored reports remain available for offline review.
+These are also live runs that spend provider credit. The stored reports remain available for
+offline review.
 
 The obeying prompt is in `evals/controls/issue-triage-obey.md`. To rerun it, install and compile
 it in your sandbox, preserve or reset its local state in a separate copy, and use

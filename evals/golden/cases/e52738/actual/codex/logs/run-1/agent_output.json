@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"The report concerns system-audio capture failing with a custom display-media picker on macOS.","confidence":"HIGH"}]}],"errors":[]}

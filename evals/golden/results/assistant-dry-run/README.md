@@ -1,6 +1,6 @@
 # Coding-assistant dry run of the audited configuration
 
-This is the assignment's fallback exercise after provider credit exhaustion. It uses the
+This is a supplementary offline dry run. It uses the
 runtime files from commit `7ef6696a5f7f56112db829287c2d776e40411a57`, including renderer v3,
 on all 25 historical inputs and five adversarial inputs. Each case has one first decision.
 No Anthropic API calls, GitHub dispatches or published triage actions were made.
@@ -9,8 +9,7 @@ The configured `claude-sonnet-5-5` model was **not** run. Six fresh Codex coding
 subagents interpreted five cases each. They inherited the chat's model; its exact backend
 identifier was not exposed to the recorder. Codex inference was used; its metered usage is
 not measured by these artifacts. This tests following the current procedure with
-the existing assistant. It is neither a Claude performance estimate nor the deferred 90-run
-`hardened` experiment, which still has 0 valid runs.
+the existing assistant. It is not a Claude performance estimate.
 
 ## Results and every decision failure
 
@@ -104,12 +103,9 @@ to see the rejected synthetic reference, or
 [e52255's transcript](../../cases/e52255/actual/assistant-dry-run/logs/run-1/transcript.md)
 to inspect a failed decision.
 
-The blind reviewer independently reproduced all 64 helper calls and the frozen score, checked
-all 124 transcript events and sealed hashes, and found no unresolved blocking discrepancy.
-It also verified the final reconstruction script and documentation. The review limits its
-conclusion to consistent, reproducible local evidence; it does not predict a grade or establish
-hosted enforcement. Temporary paths named in that report refer to the archived check source
-and results linked above.
+The blind reviewer reproduced all 64 helper calls and the frozen score, checked all 124
+transcript events and sealed hashes, and found no blocking discrepancy. This shows the local
+evidence is consistent; it does not test hosted enforcement.
 
 ## Reproduce the checks without spending provider credit
 

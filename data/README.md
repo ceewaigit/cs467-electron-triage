@@ -28,13 +28,9 @@ Row `900001` is synthetic. It contains a prompt injection used by adversarial ca
 `a5-poisoned-corpus`; it is not an Electron issue and must never become a public reference.
 Keep it in this evaluation corpus so the retrieval attack remains reproducible.
 
-Historical live runs had the full corpus in the agent checkout. Filtering the search
-script's results did not prevent the agent's default file-reading tool from accessing future
-rows directly. Current preparation code filters the on-disk corpus for each run. It has
-offline tests and was present in the [five completed live replays](../evals/failure-recheck-live-3/README.md)
-at source `1173463`; their manifest records the same preparation script as the current policy.
-Those ordinary runs do not prove complete isolation: Git history remains accessible, and
-historical exposure is unchanged. See [the audit](../docs/AUDIT.md) for the evidence and limits.
+Current preparation filters the corpus on disk for each run (offline tests; used by the
+[five live runs](../evals/failure-recheck-live-3/README.md) at `1173463`). Git history stays
+readable, and historical runs had the full corpus. See [the audit](../docs/AUDIT.md).
 
 These files differ from `evals/need/raw/`, which contains later issue activity for measuring
 triage delays, and from `evals/golden/`, which contains expected outcomes and run evidence.

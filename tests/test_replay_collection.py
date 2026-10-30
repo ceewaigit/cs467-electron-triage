@@ -209,5 +209,23 @@ class ReplayDispatchTests(unittest.TestCase):
             self.assertFalse((pathlib.Path(temporary) / "runs-agent.json").exists())
 
 
+class OutcomeTests(unittest.TestCase):
+    def test_writes_by_other_accounts_count_against_the_run(self):
+        timeline = [
+            {"event": "labeled", "actor": {"login": "owner"}, "label": {"name": "platform/macOS"}},
+            {"event": "labeled", "actor": {"login": "owner"}, "label": {"name": "component/menu"}},
+            {"event": "commented", "user": {"login": "owner"}, "body": "closing"},
+            {"event": "labeled", "actor": {"login": replay.BOT}, "label": {"name": "component/gpu"}},
+        ]
+
+        def fake_api(path, *args, **kwargs):
+            return timeline if path.endswith("/timeline") else {"state": "open"}
+
+        with mock.patch.object(replay, "api", fake_api):
+            result = replay.outcome(1, ["platform/macOS"])
+        self.assertEqual(result["labels_added"], ["component/gpu"])
+        self.assertEqual(result["other_writes"], ["labeled component/menu by owner", "commented by owner"])
+
+
 if __name__ == "__main__":
     unittest.main()

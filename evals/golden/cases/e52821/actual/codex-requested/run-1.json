@@ -1,0 +1,15 @@
+{
+ "labels_added": [
+  "component/menu"
+ ],
+ "comment": null,
+ "other_writes": [],
+ "issue": 273,
+ "run_id": 41091990141,
+ "conclusion": "success",
+ "requested_ref": null,
+ "head_sha": "801846e28309d3e00dbfe41decf0b391181f38a4",
+ "head_branch": "main",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/41091990141",
+ "source": "requested view of codex"
+}

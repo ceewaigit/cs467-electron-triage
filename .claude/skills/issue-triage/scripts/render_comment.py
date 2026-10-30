@@ -14,7 +14,7 @@ import pathlib
 import re
 import sys
 
-VERSION = "issue-triage/render_comment v3"
+VERSION = "issue-triage/render_comment v4"
 REPO = pathlib.Path(__file__).resolve().parents[4]
 ORDER = ["security", "third-party", "site-policy", "upstream", "support", "similar", "need-repro"]
 TEXT = {
@@ -76,8 +76,12 @@ def main():
     parts += [TEXT[k].format(refs=links) for k in ORDER if k in kinds]
     parts.append("<sub>Automated first-pass triage. It can only add labels and comment; a maintainer makes every "
                  "decision, including whether this issue stays open.</sub>")
-    parts.append(f"triage: kinds={','.join(k for k in ORDER if k in kinds)} refs={','.join('#' + str(r) for r in refs)}")
-    print(f"[{VERSION}] ok -- post the text between the markers exactly")
+    # Machine-readable trailer, also in a code span so its numbers stay plain text. Refs belong
+    # only to the similar-issue template.
+    trailer_refs = refs if "similar" in kinds else []
+    parts.append(f"`triage: kinds={','.join(k for k in ORDER if k in kinds)} "
+                 f"refs={','.join('#' + str(r) for r in trailer_refs)}`")
+    print(f"[{VERSION}] ok -- call triage_comment with these kinds and refs; the workflow posts this text")
     print("-----BEGIN COMMENT-----")
     print("\n\n".join(parts))
     print("-----END COMMENT-----")

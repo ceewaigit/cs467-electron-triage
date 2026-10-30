@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/safestorage","rationale":"The report concerns safeStorage.decryptString failing with the KWallet 6 backend.","confidence":"HIGH"}]}],"errors":[]}

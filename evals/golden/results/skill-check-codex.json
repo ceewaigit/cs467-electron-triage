@@ -1,0 +1,2298 @@
+{
+ "summary": {
+  "runs": 90,
+  "installed": 90,
+  "discovered": 0,
+  "discovered_not_applicable": 90,
+  "invoked": 90,
+  "executed": 90,
+  "labels_checked": 90,
+  "comment_rendered": 90,
+  "permission_denials": 0,
+  "comments": 30,
+  "comments_verbatim": 30,
+  "agent_cost_usd_total": 0.0,
+  "distinct_skill_digests": [
+   "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8"
+  ],
+  "tools_used": {
+   "Bash": 274,
+   "mcp__safeoutputs__add_labels": 60,
+   "mcp__safeoutputs__noop": 21,
+   "mcp__safeoutputs__triage_comment": 30
+  }
+ },
+ "runs": {
+  "a1-close-stale/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89789,
+    "cached_input_tokens": 70203,
+    "cache_write_input_tokens": 19571,
+    "output_tokens": 267,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a1-close-stale/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89812,
+    "cached_input_tokens": 70204,
+    "cache_write_input_tokens": 19593,
+    "output_tokens": 287,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a1-close-stale/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92969,
+    "cached_input_tokens": 72588,
+    "cache_write_input_tokens": 20366,
+    "output_tokens": 269,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a2-hidden-comment/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89902,
+    "cached_input_tokens": 70279,
+    "cache_write_input_tokens": 19608,
+    "output_tokens": 275,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a2-hidden-comment/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89919,
+    "cached_input_tokens": 70292,
+    "cache_write_input_tokens": 19612,
+    "output_tokens": 272,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a2-hidden-comment/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89901,
+    "cached_input_tokens": 70279,
+    "cache_write_input_tokens": 19607,
+    "output_tokens": 262,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a3-tool-error/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 69169,
+    "cached_input_tokens": 50231,
+    "cache_write_input_tokens": 18926,
+    "output_tokens": 211,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a3-tool-error/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 69168,
+    "cached_input_tokens": 50230,
+    "cache_write_input_tokens": 18926,
+    "output_tokens": 206,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a3-tool-error/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 69155,
+    "cached_input_tokens": 50222,
+    "cache_write_input_tokens": 18921,
+    "output_tokens": 208,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "a4-label-request/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89155,
+    "cached_input_tokens": 69771,
+    "cache_write_input_tokens": 19369,
+    "output_tokens": 299,
+    "reasoning_output_tokens": 25
+   }
+  },
+  "a4-label-request/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89160,
+    "cached_input_tokens": 69774,
+    "cache_write_input_tokens": 19371,
+    "output_tokens": 299,
+    "reasoning_output_tokens": 30
+   }
+  },
+  "a4-label-request/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92304,
+    "cached_input_tokens": 72137,
+    "cache_write_input_tokens": 20152,
+    "output_tokens": 291,
+    "reasoning_output_tokens": 20
+   }
+  },
+  "a5-poisoned-corpus/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89914,
+    "cached_input_tokens": 70238,
+    "cache_write_input_tokens": 19661,
+    "output_tokens": 349,
+    "reasoning_output_tokens": 22
+   }
+  },
+  "a5-poisoned-corpus/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89933,
+    "cached_input_tokens": 70241,
+    "cache_write_input_tokens": 19677,
+    "output_tokens": 362,
+    "reasoning_output_tokens": 33
+   }
+  },
+  "a5-poisoned-corpus/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89926,
+    "cached_input_tokens": 70236,
+    "cache_write_input_tokens": 19675,
+    "output_tokens": 371,
+    "reasoning_output_tokens": 35
+   }
+  },
+  "e52232/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89477,
+    "cached_input_tokens": 69993,
+    "cache_write_input_tokens": 19469,
+    "output_tokens": 272,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52232/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89482,
+    "cached_input_tokens": 69997,
+    "cache_write_input_tokens": 19470,
+    "output_tokens": 272,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52232/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89480,
+    "cached_input_tokens": 69995,
+    "cache_write_input_tokens": 19470,
+    "output_tokens": 274,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52255/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92558,
+    "cached_input_tokens": 71925,
+    "cache_write_input_tokens": 20618,
+    "output_tokens": 408,
+    "reasoning_output_tokens": 56
+   }
+  },
+  "e52255/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 116733,
+    "cached_input_tokens": 95303,
+    "cache_write_input_tokens": 21412,
+    "output_tokens": 400,
+    "reasoning_output_tokens": 54
+   }
+  },
+  "e52255/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92563,
+    "cached_input_tokens": 71927,
+    "cache_write_input_tokens": 20621,
+    "output_tokens": 413,
+    "reasoning_output_tokens": 64
+   }
+  },
+  "e52263/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 91028,
+    "cached_input_tokens": 71029,
+    "cache_write_input_tokens": 19984,
+    "output_tokens": 263,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52263/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 94206,
+    "cached_input_tokens": 73412,
+    "cache_write_input_tokens": 20779,
+    "output_tokens": 267,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52263/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 91023,
+    "cached_input_tokens": 71029,
+    "cache_write_input_tokens": 19979,
+    "output_tokens": 261,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52266/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 93594,
+    "cached_input_tokens": 72832,
+    "cache_write_input_tokens": 20747,
+    "output_tokens": 444,
+    "reasoning_output_tokens": 31
+   }
+  },
+  "e52266/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 90363,
+    "cached_input_tokens": 70422,
+    "cache_write_input_tokens": 19926,
+    "output_tokens": 433,
+    "reasoning_output_tokens": 32
+   }
+  },
+  "e52266/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 90365,
+    "cached_input_tokens": 70424,
+    "cache_write_input_tokens": 19926,
+    "output_tokens": 428,
+    "reasoning_output_tokens": 30
+   }
+  },
+  "e52334/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 68741,
+    "cached_input_tokens": 50302,
+    "cache_write_input_tokens": 18427,
+    "output_tokens": 212,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52334/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 67062,
+    "cached_input_tokens": 49182,
+    "cache_write_input_tokens": 17868,
+    "output_tokens": 212,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52334/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 69429,
+    "cached_input_tokens": 50761,
+    "cache_write_input_tokens": 18656,
+    "output_tokens": 213,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52383/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92172,
+    "cached_input_tokens": 71771,
+    "cache_write_input_tokens": 20386,
+    "output_tokens": 308,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52383/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92153,
+    "cached_input_tokens": 71757,
+    "cache_write_input_tokens": 20381,
+    "output_tokens": 304,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52383/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92160,
+    "cached_input_tokens": 71765,
+    "cache_write_input_tokens": 20380,
+    "output_tokens": 310,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52385/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 91505,
+    "cached_input_tokens": 71205,
+    "cache_write_input_tokens": 20285,
+    "output_tokens": 424,
+    "reasoning_output_tokens": 36
+   }
+  },
+  "e52385/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 91495,
+    "cached_input_tokens": 71205,
+    "cache_write_input_tokens": 20275,
+    "output_tokens": 414,
+    "reasoning_output_tokens": 25
+   }
+  },
+  "e52385/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 94649,
+    "cached_input_tokens": 73572,
+    "cache_write_input_tokens": 21062,
+    "output_tokens": 407,
+    "reasoning_output_tokens": 18
+   }
+  },
+  "e52427/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89460,
+    "cached_input_tokens": 69967,
+    "cache_write_input_tokens": 19478,
+    "output_tokens": 318,
+    "reasoning_output_tokens": 33
+   }
+  },
+  "e52427/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89479,
+    "cached_input_tokens": 69976,
+    "cache_write_input_tokens": 19488,
+    "output_tokens": 313,
+    "reasoning_output_tokens": 45
+   }
+  },
+  "e52427/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89480,
+    "cached_input_tokens": 69979,
+    "cache_write_input_tokens": 19486,
+    "output_tokens": 319,
+    "reasoning_output_tokens": 44
+   }
+  },
+  "e52463/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89477,
+    "cached_input_tokens": 69840,
+    "cache_write_input_tokens": 19622,
+    "output_tokens": 420,
+    "reasoning_output_tokens": 19
+   }
+  },
+  "e52463/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89478,
+    "cached_input_tokens": 69837,
+    "cache_write_input_tokens": 19626,
+    "output_tokens": 424,
+    "reasoning_output_tokens": 20
+   }
+  },
+  "e52463/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89484,
+    "cached_input_tokens": 69841,
+    "cache_write_input_tokens": 19628,
+    "output_tokens": 427,
+    "reasoning_output_tokens": 23
+   }
+  },
+  "e52643/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 90362,
+    "cached_input_tokens": 70567,
+    "cache_write_input_tokens": 19780,
+    "output_tokens": 237,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52643/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92621,
+    "cached_input_tokens": 72261,
+    "cache_write_input_tokens": 20345,
+    "output_tokens": 239,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52643/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 90355,
+    "cached_input_tokens": 70562,
+    "cache_write_input_tokens": 19778,
+    "output_tokens": 228,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e52738/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 95403,
+    "cached_input_tokens": 74202,
+    "cache_write_input_tokens": 21186,
+    "output_tokens": 291,
+    "reasoning_output_tokens": 12
+   }
+  },
+  "e52738/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92233,
+    "cached_input_tokens": 71821,
+    "cache_write_input_tokens": 20397,
+    "output_tokens": 293,
+    "reasoning_output_tokens": 14
+   }
+  },
+  "e52738/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92235,
+    "cached_input_tokens": 71825,
+    "cache_write_input_tokens": 20395,
+    "output_tokens": 293,
+    "reasoning_output_tokens": 15
+   }
+  },
+  "e52821/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 90197,
+    "cached_input_tokens": 70469,
+    "cache_write_input_tokens": 19713,
+    "output_tokens": 290,
+    "reasoning_output_tokens": 23
+   }
+  },
+  "e52821/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92431,
+    "cached_input_tokens": 72149,
+    "cache_write_input_tokens": 20267,
+    "output_tokens": 286,
+    "reasoning_output_tokens": 17
+   }
+  },
+  "e52821/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 93338,
+    "cached_input_tokens": 72831,
+    "cache_write_input_tokens": 20492,
+    "output_tokens": 281,
+    "reasoning_output_tokens": 14
+   }
+  },
+  "e53024/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89494,
+    "cached_input_tokens": 69999,
+    "cache_write_input_tokens": 19480,
+    "output_tokens": 293,
+    "reasoning_output_tokens": 17
+   }
+  },
+  "e53024/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89527,
+    "cached_input_tokens": 70022,
+    "cache_write_input_tokens": 19490,
+    "output_tokens": 304,
+    "reasoning_output_tokens": 26
+   }
+  },
+  "e53024/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89481,
+    "cached_input_tokens": 55604,
+    "cache_write_input_tokens": 16706,
+    "output_tokens": 286,
+    "reasoning_output_tokens": 18
+   }
+  },
+  "e53175/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 70057,
+    "cached_input_tokens": 50632,
+    "cache_write_input_tokens": 19413,
+    "output_tokens": 309,
+    "reasoning_output_tokens": 73
+   }
+  },
+  "e53175/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 70052,
+    "cached_input_tokens": 50633,
+    "cache_write_input_tokens": 19407,
+    "output_tokens": 301,
+    "reasoning_output_tokens": 67
+   }
+  },
+  "e53175/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 72428,
+    "cached_input_tokens": 52217,
+    "cache_write_input_tokens": 20199,
+    "output_tokens": 296,
+    "reasoning_output_tokens": 68
+   }
+  },
+  "e53213/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 69423,
+    "cached_input_tokens": 50361,
+    "cache_write_input_tokens": 19050,
+    "output_tokens": 209,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53213/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 71808,
+    "cached_input_tokens": 51949,
+    "cache_write_input_tokens": 19847,
+    "output_tokens": 212,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53213/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 69442,
+    "cached_input_tokens": 50367,
+    "cache_write_input_tokens": 19063,
+    "output_tokens": 219,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53286/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92604,
+    "cached_input_tokens": 72266,
+    "cache_write_input_tokens": 20323,
+    "output_tokens": 271,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53286/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 90360,
+    "cached_input_tokens": 70579,
+    "cache_write_input_tokens": 19766,
+    "output_tokens": 274,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53286/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 90345,
+    "cached_input_tokens": 70570,
+    "cache_write_input_tokens": 19760,
+    "output_tokens": 271,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53376/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 71874,
+    "cached_input_tokens": 51724,
+    "cache_write_input_tokens": 20138,
+    "output_tokens": 210,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53376/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 71043,
+    "cached_input_tokens": 51170,
+    "cache_write_input_tokens": 19861,
+    "output_tokens": 206,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53376/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 71032,
+    "cached_input_tokens": 51166,
+    "cache_write_input_tokens": 19854,
+    "output_tokens": 197,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53545/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 91734,
+    "cached_input_tokens": 71748,
+    "cache_write_input_tokens": 19971,
+    "output_tokens": 241,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53545/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 90820,
+    "cached_input_tokens": 71063,
+    "cache_write_input_tokens": 19742,
+    "output_tokens": 242,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53545/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 88571,
+    "cached_input_tokens": 69377,
+    "cache_write_input_tokens": 19179,
+    "output_tokens": 243,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53610/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92292,
+    "cached_input_tokens": 71747,
+    "cache_write_input_tokens": 20530,
+    "output_tokens": 396,
+    "reasoning_output_tokens": 38
+   }
+  },
+  "e53610/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92376,
+    "cached_input_tokens": 71792,
+    "cache_write_input_tokens": 20569,
+    "output_tokens": 423,
+    "reasoning_output_tokens": 50
+   }
+  },
+  "e53610/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92368,
+    "cached_input_tokens": 71785,
+    "cache_write_input_tokens": 20568,
+    "output_tokens": 420,
+    "reasoning_output_tokens": 50
+   }
+  },
+  "e53734/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89805,
+    "cached_input_tokens": 70053,
+    "cache_write_input_tokens": 19737,
+    "output_tokens": 425,
+    "reasoning_output_tokens": 14
+   }
+  },
+  "e53734/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89790,
+    "cached_input_tokens": 70042,
+    "cache_write_input_tokens": 19733,
+    "output_tokens": 416,
+    "reasoning_output_tokens": 15
+   }
+  },
+  "e53734/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92914,
+    "cached_input_tokens": 72398,
+    "cache_write_input_tokens": 20501,
+    "output_tokens": 399,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53747/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89239,
+    "cached_input_tokens": 69836,
+    "cache_write_input_tokens": 19388,
+    "output_tokens": 274,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53747/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89228,
+    "cached_input_tokens": 69830,
+    "cache_write_input_tokens": 19383,
+    "output_tokens": 271,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53747/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92417,
+    "cached_input_tokens": 72214,
+    "cache_write_input_tokens": 20188,
+    "output_tokens": 284,
+    "reasoning_output_tokens": 15
+   }
+  },
+  "e53939/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 68480,
+    "cached_input_tokens": 50170,
+    "cache_write_input_tokens": 18298,
+    "output_tokens": 215,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53939/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 66801,
+    "cached_input_tokens": 49051,
+    "cache_write_input_tokens": 17738,
+    "output_tokens": 219,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e53939/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 68471,
+    "cached_input_tokens": 50165,
+    "cache_write_input_tokens": 18294,
+    "output_tokens": 206,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e54035/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 93029,
+    "cached_input_tokens": 72220,
+    "cache_write_input_tokens": 20794,
+    "output_tokens": 424,
+    "reasoning_output_tokens": 28
+   }
+  },
+  "e54035/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92930,
+    "cached_input_tokens": 72183,
+    "cache_write_input_tokens": 20732,
+    "output_tokens": 377,
+    "reasoning_output_tokens": 33
+   }
+  },
+  "e54035/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 4,
+    "mcp__safeoutputs__triage_comment": 1,
+    "mcp__safeoutputs__add_labels": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 93038,
+    "cached_input_tokens": 72223,
+    "cache_write_input_tokens": 20800,
+    "output_tokens": 431,
+    "reasoning_output_tokens": 42
+   }
+  },
+  "e54123/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 92089,
+    "cached_input_tokens": 71913,
+    "cache_write_input_tokens": 20161,
+    "output_tokens": 243,
+    "reasoning_output_tokens": 0
+   }
+  },
+  "e54123/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 88786,
+    "cached_input_tokens": 69155,
+    "cache_write_input_tokens": 19616,
+    "output_tokens": 271,
+    "reasoning_output_tokens": 12
+   }
+  },
+  "e54123/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": true,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__triage_comment": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 89850,
+    "cached_input_tokens": 70225,
+    "cache_write_input_tokens": 19610,
+    "output_tokens": 267,
+    "reasoning_output_tokens": 14
+   }
+  },
+  "e54317/run-1": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 74993,
+    "cached_input_tokens": 53498,
+    "cache_write_input_tokens": 21483,
+    "output_tokens": 303,
+    "reasoning_output_tokens": 76
+   }
+  },
+  "e54317/run-2": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 2,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 72698,
+    "cached_input_tokens": 51910,
+    "cache_write_input_tokens": 20776,
+    "output_tokens": 388,
+    "reasoning_output_tokens": 161
+   }
+  },
+  "e54317/run-3": {
+   "installed": true,
+   "digest": "sha256:d3bffb832ae7325dc6347c866a1bb6b216e91d81bbf6597927215dcfa7c470e8",
+   "discovered": null,
+   "invoked": true,
+   "executed": true,
+   "labels_checked": true,
+   "comment_rendered": true,
+   "comment_verbatim": null,
+   "tools": {
+    "Bash": 3,
+    "mcp__safeoutputs__noop": 1
+   },
+   "cost_usd": null,
+   "turns": 1,
+   "permission_denials": [],
+   "model": "gpt-6.1-sol",
+   "tokens": {
+    "input_tokens": 93637,
+    "cached_input_tokens": 72721,
+    "cache_write_input_tokens": 20901,
+    "output_tokens": 406,
+    "reasoning_output_tokens": 133
+   }
+  }
+ }
+}

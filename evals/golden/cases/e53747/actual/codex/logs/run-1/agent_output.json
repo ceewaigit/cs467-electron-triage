@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/BrowserWindow","rationale":"The feature request concerns native window creation and reducing memory allocated for Electron windows on Windows.","confidence":"HIGH"}]}],"errors":[]}

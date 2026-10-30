@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/pdf-viewer","rationale":"The report concerns saving modified PDFs from the built-in PDF viewer failing with showSaveFilePicker NotAllowedError.","confidence":"HIGH"}]}],"errors":[]}

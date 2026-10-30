@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/BrowserWindow","rationale":"Requests a Windows native window creation optimization to reduce memory use for Electron windows.","confidence":"HIGH"}]}],"errors":[]}

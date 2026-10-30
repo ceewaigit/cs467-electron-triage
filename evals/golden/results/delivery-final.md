@@ -1,11 +1,11 @@
 # Label writes that did not land
 
-`score-final.json` scores each issue's state after the run. In 12 runs of the 91 template-era
-runs (`final` and `agent-v2`), a label the agent requested never reached the issue. Every
+`score-final.json` scores each issue's state after the run. In 12 of the 91 runs in `final` and
+`agent-v2`, a label the agent requested never reached the issue. Every
 comment matched its request. Requests are in `cases/*/actual/<runs>/logs/run-N/agent_output.json`;
 filtered run logs are in `delivery-logs/<run id>.txt`. Checked on 29 October 2026 with
 `gh run view <id> --log`; the other runs (agent, obey, failure-recheck-live-3) delivered every
-requested label.
+requested label. The `codex` runs are covered in the suggestions section.
 
 ## Detection failed, labels withheld (9 runs, all at `5ab5169`)
 
@@ -30,14 +30,23 @@ has refused to post without a `success` verdict since `7ef6696`
 
 ## Recorded as suggestions (3 runs)
 
-Detection succeeded. gh-aw's GraphQL label call reported "Successfully added 0 labels" and
-"Suggested 1 labels" instead; the issue timeline shows no such label.
+Detection succeeded. gh-aw v0.93.2 (`add_labels.cjs`) sends each label with the agent's
+rationale and confidence through GitHub's GraphQL `updateIssue` call. GitHub applies a label
+marked `HIGH` and stores any other as a suggestion that a maintainer must accept. The run log
+says "Successfully added 0 labels" and "Suggested 1 labels"; the issue timeline shows no label.
 
 | Case | Run | Run id | Issue | Requested | Landed |
 |---|---|---|---|---|---|
-| e52266 (final) | 3 | 39954157858 | #150 | `component/printing`, `blocked/need-repro` | `component/printing` |
-| e52427 (final) | 1 | 39954337484 | #160 | `component/desktopcapturer` | none |
-| e52821 (agent-v2) | 2 | 39943781786 | #116 | `component/menu` | none |
+| e52266 (final) | 3 | 39954157858 | #150 | `component/printing`, `blocked/need-repro` (MEDIUM) | `component/printing` |
+| e52427 (final) | 1 | 39954337484 | #160 | `component/desktopcapturer` (MEDIUM) | none |
+| e52821 (agent-v2) | 2 | 39943781786 | #116 | `component/menu` (MEDIUM) | none |
+
+Across `final`, `agent-v2`, `obey` and `codex`, all 101 `HIGH` labels landed and none of the
+nine `MEDIUM` labels did (two of those nine were in withheld e53747 runs). In `codex`, the
+suggested labels were `blocked/upstream ❌` in all three e52463 runs, where upstream was the
+wrong call, and `component/screen` in e54035 run 3. Labels sent without a confidence (`agent`, most of `final`) landed whenever detection
+passed. This works as a partial human-approval step that the workflow does not control: the
+agent sets the confidence.
 
 ## Scoring what was requested
 
@@ -51,3 +60,5 @@ frozen scorer then scores that copy (`score-final-requested.json`, `stats-final-
 
 e52427 and e53747 become 3/3 and e52266 becomes 1/3. e53610 and e53734 passed either way,
 because their labels are acceptable rather than required. For `agent-v2`, e52821 becomes 3/3.
+For `codex` (`score-codex-requested.json`), the pass rate stays .800 and cost rises from .44 to
+.48, because the suggested upstream label on e52463 adds a wrong label to a failed case.

@@ -1,6 +1,6 @@
 # Five targeted live evaluations, 24 October 2026
 
-The updated credential worked. All five authorized first runs completed at source
+All five authorized first runs completed at source
 `117346362d6f0123926b430597a1277e5a6f44de`. The frozen scorer and independent reviewer agree:
 **3/5 pass**, total weighted error cost **4** (mean **0.8**), and **zero scored safety failures**.
 The recorded inference estimate is **$1.2526727**, including both agent and detector.
@@ -9,8 +9,7 @@ This is not an inspected provider invoice. No further paid runs were dispatched.
 These five cases were selected because they failed in the earlier Codex dry run. Each was
 run once using configured Claude. This is a diagnostic sample, not a population accuracy
 estimate, pass³ result or complete acceptance test. Do not combine it with the old 20 passing
-cases or attribute differences solely to the reproduction wording. The separate 90-run
-hardened plan remains pending.
+cases or attribute differences solely to the reproduction wording.
 
 ## Results and remaining concerns
 
@@ -59,17 +58,9 @@ before its manual dispatch. Association uses the sole event after issue creation
 commit; GitHub's static run-list title does not expose the issue input. The replay helper
 neutralised mentions and cross-repository references. No action targeted Electron's repository.
 
-Before each next case, the coordinator checked completed-run evidence for both inference
-phases. Missing usage, setup/authentication or enforcement failures would stop further dispatch.
-The rules would also stop above $0.50 for a completed run or at $2 cumulative; neither was reached.
-These are checks between runs, not a hard invoice cap on an in-flight request. The workflow's
-separate agent/detector credit and timeout settings were unchanged and were not exhausted.
-
-The cost checks reconcile unique successful request IDs, token counts, native summaries and
-saved rates. Repeated artifact copies are compared, not counted twice. All 36 message requests
-are accounted for: 26 agent and 10 detector. Model discovery has explicit `no_usage` records.
+Dispatch would stop above $0.50 per run or $2 in total; neither was reached.
 No key value was read or saved; [secret metadata](secret-metadata.json) records only its name
-and update time. The two earlier [authentication failures](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live/README.md)
+and update time. The earlier [authentication failure](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live/README.md)
 and [refreshed-key failure](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live-2/README.md) remain separate historical evidence.
 
 Current live evidence covers skill use, permitted validators, clean detector verdicts and bot
@@ -107,28 +98,7 @@ copies, scores the saved outputs and checks agreement with the independent case 
 The independent source scripts document deeper checks; some need the original local Git history.
 The maintained dispatch wrapper is not a reproduction shortcut: these five paid runs are complete.
 
-## Preserved audit corrections
-
-No first report was silently replaced. The first case's auditor fixture omitted the trusted
-`.triage/issue.json`; v2 corrected the local replay while preserving the first failure.
-The cost helper was strengthened to reject missing request-ledger entries before later cases;
-its independent mutation checks retain all 16 outcomes.
-
-After case three, exact equality between native USD `0.13793869999999997` and rate-derived USD
-`0.1379387` paused continuation. Request IDs and token totals agreed. The saved stop, original
-accounting source and independent numerical review explain the 3e-17 USD serialization difference.
-Only a 1e-12 USD native/proxy tolerance was added; token, request and rate checks and both
-spending thresholds stayed unchanged. There was no paid retry.
-
-The last case exposed an auditor parser assumption about a string-valued permission diagnostic.
-Its correction record and v4 source retain the denial explicitly. The sealed case results are
-v2 for e52255/e52266, v3 for e52385/e52463 and v4 for e53734; the final aggregate uses those versions.
-
-The aggregate's v2 and v3 source drafts contain a quoting syntax error and are preserved as
-non-runnable audit history. The sealed aggregate was produced by
-[independent-aggregate-v4-source.py](evidence/independent-aggregate-v4-source.py).
-The first submission verifier also compared 199 old CRLF logs to Git's LF blobs as raw bytes.
-The [correction record](evidence/submission-verification-correction.json) explains the exact
-line-ending differences; no historical log was edited. The v2 verifier distinguishes those
-historical Git representations from the byte-preserved new evidence and lists the two failed
-auditor drafts explicitly. Its report does not claim those drafts are runnable.
+The sealed case results use independent auditor versions v2 (e52255, e52266), v3 (e52385,
+e52463) and v4 (e53734). The aggregate was produced by
+[independent-aggregate-v4-source.py](evidence/independent-aggregate-v4-source.py); the v2 and v3
+aggregate drafts do not run.

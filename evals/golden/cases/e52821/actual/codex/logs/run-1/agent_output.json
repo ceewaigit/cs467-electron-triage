@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/menu","rationale":"The report describes duplicate menu entries created for the togglefullscreen menu role on macOS.","confidence":"HIGH"}]}],"errors":[]}

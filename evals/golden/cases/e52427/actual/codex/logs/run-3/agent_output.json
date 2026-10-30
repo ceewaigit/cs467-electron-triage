@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"The report describes screen sharing capturing the originating Electron window's audio despite restrictOwnAudio.","confidence":"HIGH"}]}],"errors":[]}

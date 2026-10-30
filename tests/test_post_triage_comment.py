@@ -52,6 +52,16 @@ class ThreatDetectionGate(unittest.TestCase):
             with self.subTest(verdict=verdict):
                 self.assert_blocked(verdict)
 
+    def test_missing_agent_output_fails(self):
+        environment = {"REPO": "sandbox/repo", "ISSUE": "7", "GH_AW_DETECTION_CONCLUSION": "success",
+                       "GH_AW_AGENT_OUTPUT": "/nonexistent/agent_output.json"}
+        with mock.patch.dict(os.environ, environment, clear=True), \
+                mock.patch.object(POSTER.subprocess, "run") as command:
+            with self.assertRaises(SystemExit) as stopped:
+                POSTER.main()
+        command.assert_not_called()
+        self.assertIn("nothing posted", str(stopped.exception.code))
+
 
 class HistoricalReferences(unittest.TestCase):
     """The posting job must reject future refs even if the model bypasses its renderer."""

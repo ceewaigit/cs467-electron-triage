@@ -187,9 +187,15 @@ def outcome(n, labels_at_open):
         actor = (e.get("actor") or e.get("user") or {}).get("login")
         kind = e.get("event")
         if actor != BOT:
-            if kind in ("labeled",) and e["label"]["name"] in labels_at_open:
+            # Replay applies the opening-time labels itself; any other label or comment is a write
+            # the agent must not cause, even under another identity, so it counts against the run.
+            if kind == "labeled" and e["label"]["name"] in labels_at_open:
                 continue
-            if kind not in ("labeled", "commented", "cross-referenced", "mentioned", "subscribed"):
+            if kind == "labeled":
+                other.append(f"labeled {e['label']['name']} by {actor}")
+            elif kind == "commented":
+                other.append(f"commented by {actor}")
+            elif kind not in ("cross-referenced", "mentioned", "subscribed"):
                 other.append(f"{kind} by {actor}")
             continue
         if kind == "labeled":

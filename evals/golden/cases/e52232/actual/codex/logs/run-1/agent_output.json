@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"The report describes desktopCapturer sources returning an empty display_id on Windows.","confidence":"HIGH"}]}],"errors":[]}

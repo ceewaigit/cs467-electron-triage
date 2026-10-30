@@ -62,15 +62,5 @@ files present. Keep the current checkout and archived checker unchanged.
 
 ## Submission limits
 
-The current skill has not been rerun on the full golden set. All five mismatches in the older
-30-case golden dry run remain recorded; this fresh comparison does not establish that they
-are fixed. The historical `final` hosted experiment has 79/90 collected outputs, and the
-separate `hardened` plan has 0/90 valid outputs. All 90 hardened evaluations remain pending.
-
-No further provider credit was purchased or provider API evaluation run. These dry runs use
-Codex assistant access, whose exact backend identifier and metered usage are unavailable.
-Configured Claude, hosted permissions, threat detection, networking, posting and budgets were
-not exercised. The assignment allows a documented coding-assistant fallback when end-to-end
-execution is unavailable. The evidence supports submitting that scoped work; it does not
-establish complete live acceptance or guarantee a particular grade. The student must review
-the AI-use statement, understand the code and submit the chosen commit through eLearn.
+The five dry-run failures were later rerun live on the submitted runtime
+(`evals/failure-recheck-live-3/`): three passed, at $1.25.

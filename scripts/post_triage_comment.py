@@ -65,7 +65,10 @@ def main():
     if not re.fullmatch(r"\d{1,7}", issue):
         sys.exit(f"invalid issue number {issue!r}")
     output_path = pathlib.Path(os.environ["GH_AW_AGENT_OUTPUT"])
-    items = json.loads(output_path.read_text()).get("items", []) if output_path.exists() else []
+    # This job runs only when the agent requested a comment, so a missing output is an error.
+    if not output_path.exists():
+        sys.exit(f"agent output {output_path} is missing: nothing posted")
+    items = json.loads(output_path.read_text()).get("items", [])
     calls = [item for item in items if item.get("type") == "triage_comment"]
     if not calls:
         print("no triage_comment requested")

@@ -50,7 +50,7 @@ dataset explicitly, for example `score.py --runs final` or `skill_check.py --run
   `cases/*/expected.json` and `evals/tools/score.py` were fixed in commit `4baa2cb`.
   Record disagreements in `DESIGN.md` or a separate audit; do not adjust the target after
   observing results. Add new regression tests outside the frozen golden cases.
-- Do not widen the agent's power. Do not add agent permissions beyond `read`, a `github`
+- Do not widen the agent's power. Keep agent permissions at `read`; do not add a `github`
   tool, more `bash` commands, top-level `jobs:`, or a safe output other than `add-labels` and
   the `triage-comment` job. Never add `add-comment`, `close-issue`, `update-issue`,
   `remove-labels`, `create-pull-request`, `merge-pull-request` or `GH_AW_GITHUB_TOKEN`.

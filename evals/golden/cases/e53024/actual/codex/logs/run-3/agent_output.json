@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/tray","rationale":"The report concerns tray icons missing when launched with an external Electron executable.","confidence":"HIGH"}]}],"errors":[]}

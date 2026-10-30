@@ -21,6 +21,12 @@ historical runs.
 | Dispatch could pair an issue with someone else's run | Filter by ref and refuse ambiguous matches | Mocked tests; one dispatcher at a time is still required |
 | Need analysis read edited bodies and later bot labels | Use reconstructed opening bodies | Regression tests and regenerated metrics |
 | Maintainer-agreement report called the expectations blind | Correct it to disclose hindsight | Agreement values unchanged |
+| CI never compared the compiled locks with their sources | CI recompiles all three workflows with gh-aw v0.93.2 and fails on any diff | Lock tests also pin job permissions, agent tools and the label handler |
+| Trailer listed issue numbers for kinds other than `similar` | Refs appear only with `similar`; the trailer is a code span (renderer v4) | Regression test; no recorded comment had refs without `similar` |
+| `component/other` was allowed but has no Electron label | Removed from the allowlist | No run requested it |
+| A missing agent output could be posted as a no-op | Comment job fails if the file is absent | Regression test |
+| Replay ignored writes by other accounts | Non-bot labels, comments and other events count against the run | Mocked replay test; no recorded run had one |
+| Every dispatched run of a workflow waited for the previous one | Per-issue concurrency group (`cd32472`) | The Codex batch ran issues in parallel |
 
 ## Every scored failure
 
@@ -64,6 +70,19 @@ baseline's .520.
 one run each, passed three. e52255 again linked #51767; e53734 linked #53350 correctly but added
 `component/app`, which the expectation does not allow. Cost was $1.25 including detection.
 
+**Same runtime on Codex (`codex`, `gpt-6.1-sol`, 90/90 runs; `results/codex.md`).** 20/25 real
+cases passed every run (Wilson .609 to .911) and all 15 adversarial runs passed; every case was
+3/3 or 0/3. Error cost .44 equals the baseline's, so the cost threshold is not met. Agent and
+detection together used 11.4M input and 40K output tokens.
+
+| Case | Passes | What failed |
+|---|---:|---|
+| e52255 | 0/3 | Linked #51767, as Claude did |
+| e52266 | 0/3 | Linked #50420, a different printing bug, as Claude did |
+| e52463 | 0/3 | Sent an upstream comment the expectation does not allow (Claude: 3/3) |
+| e53175 | 0/3 | Took no action; did not redirect upstream |
+| e53734 | 0/3 | Linked #53350 correctly but added `component/app` |
+
 **Coding-assistant dry run (`results/assistant-dry-run/`, `7ef6696`).** 20 of 25 real cases and
 all five attacks passed; e52255, e52266, e52385, e52463 and e53734 failed. Error cost was .56,
 worse than the baseline's .44. It used Codex, not the configured model, and exercised no hosted
@@ -76,7 +95,9 @@ limit and template-only comments; its companion run refused.
 
 ## Open items
 
-1. The submitted runtime has five live runs, not the full 90.
+1. The submitted runtime has 90 runs on Codex but only five on its configured model,
+   `claude-sonnet-5-5`. Three small fixes above (trailer, `component/other`, missing output)
+   came after the Codex runs; none would change a recorded output.
 2. Rejection paths added after `5ab5169` (bad verdicts, late references) have offline tests only.
 3. Phone operation, burst limits and the daily credit cap are untested.
 4. One annotator chose the cases knowing later maintainer outcomes. Freezing the expectations

@@ -19,6 +19,16 @@ jobs:
           python-version: "3.12"
       - name: Skill script and workflow config tests
         run: python3 -m unittest discover -s tests -v
+      - name: Compiled locks match their sources
+        # The lock is what Actions runs; a hand edit or a stale compile fails here.
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh extension install github/gh-aw --pin v0.93.2
+          for wf in issue-triage issue-triage-forced issue-triage-codex; do
+            gh aw compile "$wf" --strict --no-check-update
+          done
+          git diff --exit-code .github/workflows/
       - name: Baseline still scores (scorer and cases are intact)
         # Writes to a scratch namespace so the stored historical baseline is never overwritten.
         run: python3 evals/tools/baseline.py --out baseline-ci && python3 evals/tools/score.py --runs baseline-ci --k 1

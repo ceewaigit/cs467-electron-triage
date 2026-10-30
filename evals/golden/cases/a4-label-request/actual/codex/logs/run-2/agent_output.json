@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/notifications","rationale":"The report describes Notification click events failing on Windows when the app starts hidden.","confidence":"HIGH"}]}],"errors":[]}

@@ -28,11 +28,9 @@ A second assistant reviews the annotations before execution. Neither annotator r
 candidate policy or this experiment's proposed actions. AI authorship and any context exposure
 are disclosed in their records.
 
-Required repository documentation exposed prior aggregate results to both annotators. The
-coordinator also told the author that the separate known-regression check passed, and told
-the reviewer that it had completed. Neither saw its input, policy or proposed actions. This
-limited context exposure is recorded in the annotation provenance and review; the annotation
-process was independent of the fresh decisions, but was not completely blind to project history.
+Both annotators could see prior aggregate results in the repository docs, and knew the
+known-regression check had run. Neither saw its input, policy or proposed actions. This is
+recorded in the annotation provenance and review.
 
 Each version handles all 30 cases twice, for 120 first decisions. Twelve fresh assistant
 sessions receive anonymous policy names, ten cases each, and the same case order for each
@@ -112,8 +110,8 @@ All 120 first decisions were sealed before scoring. The candidate did not meet t
 adoption criteria. Both versions made all required and forbidden reproduction decisions correctly
 on the fresh cases; neither missed a required request or made an unwanted one. The two ambiguous
 historical installer cases remain separately identified as optional, not forced into either target.
-The submitted runtime remains unchanged, and no commit or push has been made. The independent
-blind checker reproduced the result and recommended retaining the original.
+The independent blind checker reproduced the result and recommended retaining the original.
+The owner later adopted the candidate on a narrower criterion ([ADOPTION.md](ADOPTION.md)).
 
 | Measure | Original, pass 1 | Candidate, pass 1 | Original, pass 2 | Candidate, pass 2 |
 |---|---:|---:|---:|---:|
@@ -157,30 +155,20 @@ All other actions tied. No unsupported reference, repeated/reporter reference, l
 security-combination violation was observed. The [score report](evidence/score.json) records every
 trial, change and decision gate. Original expectations, source policies and first decisions were
 not revised after execution. These cohorts must not be compared directly with the earlier
-20/25 or 23/24 results, which used different inputs. No conventional rule baseline was run here.
+20/25 results, which used different inputs. No conventional rule baseline was run here.
 
 The separate known regression passed its original expectation: the candidate proposed both
 `blocked/need-repro` and `need-repro`, with valid BrowserWindow/fullscreen labels and no reference.
-Its first decision and transcript are preserved. A subsequent collector review added checks
-for protocol/policy hashes, every displayed-context event and malformed proposals. The executed
-collector is retained as `known-regression/collection-source.py`; recollecting a disposable copy
-with the strengthened collector produced the exact same result. No decision was repeated or
-changed. [collector-verification.json](known-regression/collector-verification.json) records this
-check, and the 103-test suite covers the added validation paths.
+Its first decision and transcript are preserved. Recollecting it with a stricter collector gave
+the same result ([collector-verification.json](known-regression/collector-verification.json));
+the executed collector is `known-regression/collection-source.py`.
 
 ## Independent audit and disposition
 
-The [blind review](evidence/blind-review.md) independently computed results before reading the
-parent report. It verified 132 frozen files, all 3,143 pre-existing file hashes and 120
-reconstructed contexts. Every first proposal, transcript and export matched its recorded hashes.
-It replayed 268 helper calls and 147 export validations, including the separate known case,
-and matched their outputs and exit codes. Its summaries, all 120 scored rows, eight changed
-decisions and 23 adoption gates agree with the saved report. No evidence-integrity or output
-constraint violation was found.
+The [blind review](evidence/blind-review.md) recomputed the results independently; all 120
+scored rows, eight changed decisions and 23 adoption gates match the saved report.
 
 The known regression is corrected in this one candidate trial, but the fresh comparison does
 not establish a reproduction improvement: both versions already satisfy the reproduction
-expectations. The candidate therefore remains a local experiment. The original skill, golden
-evaluation, previous comparison and all original results are unchanged. The user required an
-improvement before commit/push, so neither action was taken. No extra cases, changed expectations
-or repeated decisions were introduced to obtain a favourable result.
+expectations. The owner later adopted the candidate on a narrower criterion ([ADOPTION.md](ADOPTION.md)).
+No extra cases, changed expectations or repeated decisions were introduced to obtain a favourable result.

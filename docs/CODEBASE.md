@@ -5,17 +5,6 @@ issue and suggest first-pass triage. It does not contain Electron's source or bu
 Python handles deterministic checks, data preparation and evaluation; the model decides what
 the report means. GitHub Actions controls which decisions can become repository writes.
 
-The updated credential completed the [five-case live recheck](../evals/failure-recheck-live-3/README.md):
-3/5 pass the frozen rubric, with a combined agent/detector estimate of $1.2526727. The two
-earlier authentication failures and [free diagnostic](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-offline/README.md)
-remain separate historical records. The 90-run plan remains pending. The
-[offline reproduction guide](../evals/golden/README.md#reproduce-the-analysis-offline) checks
-the current scripts and saved evidence without calling GitHub or the model provider.
-The [coding-assistant fallback](../evals/golden/results/assistant-dry-run/README.md) records
-one proposed decision per golden case for source `7ef6696`. The current reproduction instruction
-was tested separately; its [adoption record](../evals/reproduction-check/ADOPTION.md) explains
-the change, paired comparison and limits. The earlier fallback is historical evidence.
-
 ## Follow one issue
 
 ```mermaid
@@ -65,7 +54,8 @@ detector's separate tracking-issue channel while leaving threat detection enable
 missing-tool and missing-data flags explicitly limit reporting behavior; they are not evidence
 that an attacker used those channels in a recorded run.
 
-The configured shell commands are the three skill scripts. Historical logs also show default
+The configured shell commands are the three skill scripts; the compiler adds 13 read-only
+commands (`cat`, `grep`, …). Historical logs also show default
 agent file-reading tools; a shell allowlist is not a statement that the agent has no other
 read access. Issue text, retrieved excerpts and tool responses remain untrusted. Allowed
 labels and templates limit what can be posted, but a permitted suggestion can still be wrong.
@@ -130,11 +120,10 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/failure-recheck-live-3/collect_artifacts.py`, `check_trigger.py` | Read GitHub and save complete run artifacts or verify the automatic issue-event run skipped; neither dispatches inference |
 | `evals/failure-recheck-live-3/check_cost.py` | Offline checkpoint: reconcile agent and detector request ledgers, tokens and saved rates; stop on incomplete evidence or spending thresholds; no in-flight dollar cap |
 | `evals/failure-recheck-live-3/summarize.py` | Offline frozen scoring, independent-score and cost reconciliation; refuses to overwrite its saved result |
-| `evals/failure-recheck-live-3/evidence/*source.py`, `check_cost-before-float-tolerance.py` | Archived audits and accounting code; the attempt README identifies authoritative versions, two non-runnable aggregate drafts, and fixture/parser/numeric/line-ending corrections |
 
-The copies under each experiment's `evidence/frozen/`, `selection/pre-review-drafts/`
-and `known-regression/collection-source.py`
-are archived execution sources. Keep them unchanged when editing maintained code. Follow each
+The copies under each experiment's `evidence/frozen/` and
+`known-regression/collection-source.py` are archived execution sources. Keep them unchanged
+when editing maintained code. Follow each
 experiment's README for reconstruction or rescoring in a disposable copy. Its historical
 decision describes the protocol at experiment close; the later owner decision is in `ADOPTION.md`.
 
@@ -158,8 +147,9 @@ control experiments, described in the evaluation guide.
 | `tests/test_offline_dry_run.py` | Changed snapshots and alternate check inputs are rejected, the first proposal is preserved, and helper subprocesses do not inherit API credentials |
 | `tests/test_reproduction_experiment.py` | Reproduction-specific decision criteria, frozen input integrity and strict validation of the separate known-case collector |
 | `tests/test_requested_view.py` | The requested-label view reads both label forms and leaves comments unchanged |
-| `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token |
+| `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token, and fails if a compiled lock differs from its source |
 | `.github/workflows/issue-triage-forced.md` and `.lock.yml` | Source and compiled forced-actions control |
+| `.github/workflows/issue-triage-codex.md` and `.lock.yml` | Dispatch-only copy on the Codex engine for the cross-engine evaluation; its shell is open because Codex cannot restrict commands |
 | `.github/aw/actions-lock.json` | Action-version resolution used by the workflow compiler |
 | `.github/CODEOWNERS` | Requests owner review for protected areas; required review also needs repository settings |
 | `AGENTS.md` and `CONTRIBUTING.md` | Repository editing rules and contributor AI policy |
@@ -195,24 +185,13 @@ Collection normally preserves existing records. `--force` can refresh a record w
 existing success or failure category; it refuses a category change before touching the JSON
 or logs. A changed outcome needs fresh sandbox issues and a separate experiment namespace.
 
-The stored `agent`, `agent-v2`, `final`, `obey`, `baseline` and `baseline-v2` variants represent
-different experiments. `final` contains 79 of the planned 90 outputs; eleven executions failed
+The stored `agent`, `agent-v2`, `final`, `obey`, `codex`, `baseline` and `baseline-v2` variants
+represent different experiments. `final` contains 79 of the planned 90 outputs; eleven executions failed
 because provider credit ran out and are documented separately.
 
-The audited `hardened` candidate is `5af79d55215dda9e0610278c42c71a4365edb25d`, with 0 of
-90 planned valid outputs. The earlier preflight at `401cbfa0b776b1f2b36d032b48946aa81d9c7c0e`
-failed before a valid model decision. Their recorded runtime-source hashes are identical.
-The candidate and preflight manifests are in `evals/golden/replay/`, and the provider error
-is in `evals/golden/results/credit-check-2026-10-24.json`. The unused `hardened` namespace
-keeps any future evaluation separate from the historical evidence. Offline tests cover the
-current repairs; full acceptance remains unassessed, and paid replay is deferred.
-
-Renderer version 3 is newer than both candidate manifests. It removes the reproduction
-template's assertion that a label has already been added, because label and comment jobs
-can finish independently. The five-case live recheck at `1173463` exercises the current
-renderer, skill and constrained output path; the earlier candidate manifests remain unchanged.
-Its new manifest records the evaluated runtime, and its README maps every saved outcome,
-cost checkpoint and independent review. Five ordinary cases do not complete acceptance testing.
+The live recheck at `1173463` and the 90 `codex` runs (`results/codex.md`) exercise the runtime
+before three small fixes (renderer v4 trailer, `component/other`, missing-output check); none
+of them would change a recorded output.
 
 ## Follow the coding-assistant fallback
 
