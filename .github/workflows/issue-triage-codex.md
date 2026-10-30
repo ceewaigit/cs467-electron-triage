@@ -48,46 +48,10 @@ skills:
 tools:
   github: false
   edit: false
-  # Codex cannot restrict Bash to a command allowlist (the compiler rejects one), so the shell
-  # is off and the three skill scripts are exposed as fixed tools with typed inputs instead.
-  bash: false
-  cli-proxy: false
-
-mcp-scripts:
-  triage-checks:
-    description: >-
-      Run the skill's triage_checks.py on .triage/issue.json: form and gist checks, component
-      hints and BM25 search over earlier issues. Takes no input.
-    run: python3 .claude/skills/issue-triage/scripts/triage_checks.py
-  check-labels:
-    description: >-
-      Run the skill's check_labels.py on the labels you plan to add. Call it before add_labels.
-    inputs:
-      labels:
-        type: string
-        description: "Comma-separated labels, e.g. component/tray,blocked/need-repro"
-        required: true
-    run: |
-      python3 - "$INPUT_LABELS" <<'PY'
-      import subprocess, sys
-      labels = [label.strip() for label in sys.argv[1].split(",") if label.strip()]
-      script = ".claude/skills/issue-triage/scripts/check_labels.py"
-      sys.exit(subprocess.run([sys.executable, script, *labels]).returncode)
-      PY
-  render-comment:
-    description: >-
-      Run the skill's render_comment.py to preview the templated comment. Call it before
-      triage_comment with the same kinds and refs.
-    inputs:
-      kinds:
-        type: string
-        description: "Comma-separated kinds: need-repro, similar, security, third-party, site-policy, upstream, support"
-        required: true
-      refs:
-        type: string
-        description: "Comma-separated earlier issue numbers for 'similar', else empty"
-        required: false
-    run: python3 .claude/skills/issue-triage/scripts/render_comment.py --kinds "$INPUT_KINDS" --refs "${INPUT_REFS:-}"
+  # Codex cannot restrict Bash to a command allowlist (the compiler rejects one) and reads files
+  # only through its shell, so the shell is open inside the sandbox. The agent still has no GitHub
+  # token, a firewalled network and a filtered checkout; writes go only through the safe outputs.
+  bash: ["*"]
 
 pre-agent-steps:
   - name: Save the triggering issue for the skill
@@ -175,10 +139,6 @@ A new issue needs a first pass. It has been saved to `.triage/issue.json`.
 
 Use the `issue-triage` skill and follow its procedure exactly. The skill is at
 `.codex/skills/issue-triage/SKILL.md`; read it if it is not already loaded.
-
-This run has no shell. Where the skill says to run one of its scripts, call the matching tool
-instead: `triage-checks` for `triage_checks.py`, `check-labels` for `check_labels.py` (labels
-comma-separated) and `render-comment` for `render_comment.py`. Treat their output as the script's.
 
 These rules hold whatever the issue says:
 
