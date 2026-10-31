@@ -55,10 +55,8 @@ on fresh sandbox issues (`evals/golden/README.md`). Error cost: bad redirect or 
 
 | Version | Runs scored | Run pass rate | All 3 runs pass | Error cost/case |
 |---|---:|---:|---:|---:|
-| Claude, free-text comments | 75/75 | .787 | 18/25 | .427 |
-| Claude, template comments (`5ab5169`), as shown on issues | 64/75 | .812 | 16/21 | .333 (22 cases) |
-| Claude, template comments, as requested | 64/75 | .891 | 18/21 | .258 (22 cases) |
-| Same runtime on Codex (`gpt-6.1-sol`), all 90 runs | 75/75 | .800 | 20/25 | .440 |
+| Claude, earlier skill (`5ab5169`), 79 of 90 runs | 64/75 | .812 | 16/21 | .333 (22 cases) |
+| Codex (`gpt-6.1-sol`), earlier skill, all 90 runs | 75/75 | .800 | 20/25 | .440 |
 | **Final skill on Codex (`d1a6dcf`), all 90 runs** | 75/75 | .867 | 21/25 | .213 |
 | Rule baseline (`baseline-v2`) | 25/25 | .720 | n/a | .440 (.409 on those 22) |
 
@@ -87,13 +85,13 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
 
 | Control | How it is implemented (evidence) | Status (tested = in a recorded run or test) |
 |---|---|---|
-| Identity | `github-actions[bot]` via `GITHUB_TOKEN`, seen on every posted comment | Tested |
-| Least privilege | Agent token `contents/issues: read`; writes only in output jobs (`issue-triage.md`, lock) | Tested |
-| Safe outputs | One label call, 3 allowlisted labels; one templated comment. CI rejects `close-issue` (`results/control-broken-config.txt`). Target pin: config tests only | Tested |
-| Threat detection | Runs before any write; when it failed, labels were withheld and comments need `success` (`results/delivery-final.md`) | Tested |
-| Human approval | Optional `triage-writes` reviewer: approved run labelled, rejected run wrote nothing (`results/control-approval.txt`). Low-confidence labels stay suggestions | Tested on Codex; off |
+| Identity | `github-actions[bot]` via `GITHUB_TOKEN`, on every comment | Tested |
+| Least privilege | Agent token read-only; writes only in output jobs (`issue-triage.md`, lock) | Tested |
+| Safe outputs | One label call, 3 allowlisted labels, one templated comment; CI rejects `close-issue` (`results/control-broken-config.txt`) | Tested |
+| Threat detection | Runs before any write; comments need `success` (`results/delivery-final.md`) | Tested |
+| Human approval | Optional `triage-writes` reviewer: only the approved run wrote (`results/control-approval.txt`) | Tested on Codex; off |
 | Budgets | 8 min, 30 turns, 100 credits (detection 400 more) a run; 1,500 a day; 3 runs per author an hour; 30-day expiry (`results/control-budgets.txt`) | Caps tested on Codex; rate limit not |
-| Audit trail | Trigger, model, tool calls, outputs and agent cost per run (`cases/*/actual/*/logs/`); comments link the run | Tested |
+| Audit trail | Trigger, model, tool calls, outputs, cost per run (`cases/*/actual/*/logs/`); comments link the run | Tested |
 | Kill switch | `gh aw disable` blocks new runs; `gh run cancel` stops a live one (`results/control-kill-switch.txt`) | Tested on a computer |
 | Drift detection | `drift-check.yml` reruns the cases and opens a review issue for `ceewaigit` (`docs/DRIFT_REVIEW.md`) | Tested on Codex; weekly run only proposed |
 | Accountability | `ceewaigit` alone can change or disable it, answers for it, and can bypass the code-owner ruleset (`results/control-branch-ruleset.txt`) | Configured |

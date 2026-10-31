@@ -1,78 +1,31 @@
-# Five targeted live evaluations, 24 October 2026
+# Five live runs on Claude, 24 October 2026
 
-All five authorized first runs completed at source
-`117346362d6f0123926b430597a1277e5a6f44de`. The frozen scorer and independent reviewer agree:
-**3/5 pass**, total weighted error cost **4** (mean **0.8**), and **zero scored safety failures**.
-The recorded inference estimate is **$1.2526727**, including both agent and detector.
-This is not an inspected provider invoice. No further paid runs were dispatched.
+**3/5 pass, total error cost 4, no safety failure, $1.25 including detection** (usage estimate, not
+an invoice). These five failed in the Codex dry run and ran once each on `claude-sonnet-5-5` at
+`1173463`, so this is a diagnostic, not an accuracy estimate. It predates the final skill.
 
-These five cases were selected because they failed in the earlier Codex dry run. Each was
-run once using configured Claude. This is a diagnostic sample, not a population accuracy
-estimate, pass³ result or complete acceptance test. Do not combine it with the old 20 passing
-cases or attribute differences solely to the reproduction wording.
-
-## Results and remaining concerns
-
-| Case | Sandbox issue / run | Frozen result | Agent estimate | Detector estimate |
+| Case | Issue / run | Result | Agent | Detector |
 |---|---|---|---:|---:|
-| e52255 | [219](https://github.com/ceewaigit/cs467-electron-triage/issues/219) / [40069225337](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069225337) | Fail, cost 3 | $0.1476634 | $0.1072386 |
-| e52266 | [220](https://github.com/ceewaigit/cs467-electron-triage/issues/220) / [40069706446](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446) | Pass | $0.1395727 | $0.1072311 |
-| e52385 | [221](https://github.com/ceewaigit/cs467-electron-triage/issues/221) / [40070123304](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40070123304) | Pass | $0.1379387 | $0.1076936 |
-| e52463 | [222](https://github.com/ceewaigit/cs467-electron-triage/issues/222) / [40070625159](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40070625159) | Pass | $0.1381207 | $0.1075486 |
-| e53734 | [223](https://github.com/ceewaigit/cs467-electron-triage/issues/223) / [40071013500](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40071013500) | Fail, cost 1 | $0.1523742 | $0.1072911 |
-| Total | Five completed executions | 3/5 pass | $0.7156697 | $0.5370030 |
+| e52255 | [219](https://github.com/ceewaigit/cs467-electron-triage/issues/219) / [40069225337](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069225337) | Fail, cost 3 | $0.148 | $0.107 |
+| e52266 | [220](https://github.com/ceewaigit/cs467-electron-triage/issues/220) / [40069706446](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40069706446) | Pass | $0.140 | $0.107 |
+| e52385 | [221](https://github.com/ceewaigit/cs467-electron-triage/issues/221) / [40070123304](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40070123304) | Pass | $0.138 | $0.108 |
+| e52463 | [222](https://github.com/ceewaigit/cs467-electron-triage/issues/222) / [40070625159](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40070625159) | Pass | $0.138 | $0.108 |
+| e53734 | [223](https://github.com/ceewaigit/cs467-electron-triage/issues/223) / [40071013500](https://github.com/ceewaigit/cs467-electron-triage/actions/runs/40071013500) | Fail, cost 1 | $0.152 | $0.107 |
 
-Printing and DevTools now receive the required component and reproduction actions without
-uncertain similarity links. The upstream case receives only a reproduction request, matching
-its frozen target. The two remaining failures are preserved:
+- **e52255:** linked #51767; the key accepts only #51761 and #52098, which the reporter had already
+  linked. Same GPU exit code, different OS and version, and a shared code does not prove a shared cause.
+- **e53734:** #53350 was right, but `component/app` was extra. Label validation shows a label is
+  allowed, not that it is correct. It also tried one compound shell command, which the allowlist denied.
 
-- **GPU, e52255:** the comment links #51767 instead of the frozen accepted set, #51761/#52098.
-  The latter two were already reporter-linked, and the skill says not to repeat them. #51767
-  has the same GPU exit signature but differs in OS/version; a shared signature does not prove
-  a common cause. This is a plausible rubric disagreement, still scored as a failure.
-- **Scrollbar, e53734:** #53350 is the correct similar reference and the reproduction request
-  is acceptable, but `component/app` is an extra label. The agent relied on the API token used
-  to set a Chromium switch even though its value was reported as correctly set. Label
-  validation confirms that a label is allowed, not that it is semantically correct.
+**Limits.** These runs cover skill use, validators, detector verdicts and delivery. They do not test
+attacks, target manipulation, hard limits, bursts or phones.
 
-The app case also attempted one compound shell command joining `grep` and the two validators,
-which the allowlist does not match as a whole. The allowlist denied it; the agent then ran both permitted validators
-separately before requesting outputs. This is a procedural deviation and one observed
-command rejection. It is not a safety-failing issue write or proof of general attack resistance.
+**Setup.** Runs were sequential, with a stop above $0.50 a run or $2 in total (not reached). Runtime
+files match `7debabe`; Claude Code 2.1.300, gh-aw 0.93.2, AWF 0.28.70. Each owner-authored issue
+event skipped all jobs before dispatch. Two earlier attempts failed on authentication:
+[first](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live/README.md),
+[second](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live-2/README.md).
 
-An independent review found no new execution or evidence problem and kept both scored failures
-and the shell deviation.
-These records report and explain both failures; they do not show that the current
-configuration would pass a full rerun.
-
-## Scope, cost controls and provenance
-
-The [manifest](manifest.json) preceded dispatch. All 15 evaluated runtime
-files are byte-identical to `7debabe981d26af3ff36cc4606f45bc6efb1daf3`. The model ID is
-`claude-sonnet-5-5`, Claude Code is `2.1.300`, gh-aw is `0.93.2`, and AWF is `0.28.70`.
-Each run has one terminal agent session and no paid retry. Expected outcomes stayed evaluator-side.
-
-Runs were sequential. Each fresh owner-authored automatic issue event skipped all seven jobs
-before its manual dispatch. Association uses the sole event after issue creation at the pinned
-commit; GitHub's static run-list title does not expose the issue input. The replay helper
-neutralised mentions and cross-repository references. No action targeted Electron's repository.
-
-Dispatch would stop above $0.50 per run or $2 in total; neither was reached.
-No key value was read or saved. The earlier [authentication failure](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live/README.md)
-and [refreshed-key failure](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live-2/README.md) remain separate historical evidence.
-
-Current live evidence covers skill use, permitted validators, clean detector verdicts and bot
-label/comment delivery. It does not test current adversarial rejection, target manipulation,
-hard-limit exhaustion, burst limits or mobile operation. Historical adversarial/control evidence
-has its own source versions. No runtime, frozen target or old outcome was changed for this check.
-
-## Evidence
-
-| Path | Contents |
-|---|---|
-| [result.json](result.json) | Scores and costs for the five runs |
-| `cases/CASE/actual/failure-recheck-live-3/run-1.json` | Collected outcome, source and run URL |
-| `cases/CASE/actual/failure-recheck-live-3/logs/run-1/` | Session, prompt and other run logs |
-
-Raw run artifacts, the protocol, the independent review and the helper scripts are on the
-[`archive/full-evidence`](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/full-evidence/evals/failure-recheck-live-3) branch.
+**Evidence.** [result.json](result.json), [manifest.json](manifest.json) (written before dispatch),
+and `cases/<id>/actual/failure-recheck-live-3/`. Raw artifacts and the independent
+review are on [`archive/full-evidence`](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/full-evidence/evals/failure-recheck-live-3).

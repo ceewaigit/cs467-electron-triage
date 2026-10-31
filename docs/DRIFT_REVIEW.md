@@ -1,58 +1,32 @@
 # Drift review
 
-`.github/workflows/drift-check.yml` reruns every golden case once on fresh sandbox issues,
-scores the outputs with the frozen scorer, compares them with a reference run set
-(`evals/tools/drift_report.py`) and opens a `drift-review` issue assigned to the owner when
-anything changed. The job has no AI and no secrets.
+`.github/workflows/drift-check.yml` reruns all 30 cases once on fresh sandbox issues, scores them
+with the frozen scorer, compares them with a reference (`evals/tools/drift_report.py`) and opens a
+`drift-review` issue for the owner if anything changed.
 
-It runs on manual dispatch. The weekly run (Mondays 03:00 UTC) starts only while the repository
-variable `DRIFT_WEEKLY` is `true`. That is off in this sandbox, where nothing is live and each
-run spends provider credit, so today a silent provider change goes unseen until someone
-dispatches a check. An explicit model ID does not pin the provider's weights.
+**It is off.** The weekly run (Mondays 03:00 UTC) needs the variable `DRIFT_WEEKLY=true`, and each
+run costs about $8. Until then a silent provider change goes unseen unless someone dispatches a
+check. A model ID does not pin the provider's weights. `triage-writes` must have no required
+reviewer, or the job waits until its time limit and no issue opens.
 
-The check needs `triage-writes` free of required reviewers: a run waiting for approval holds the
-job until its time limit, and no review issue opens.
+## Who reviews what, and when
 
-The `final` reference for Claude is weak: it predates later skill changes, and `e54035`, `e54123`
-and `e54317` have no output there, so they are listed as "no reference" and not compared. Run
-a full set on the current runtime and use it as the reference before relying on a Claude check.
+- **When:** before accepting a changed model or runtime, before any deployment beyond this sandbox,
+  after a known provider change, and on any unexpected label or comment. Weekly once deployed.
+- **Who:** `ceewaigit`, within two days. Nothing in CI enforces this.
+- **What:** every changed label and comment, wrong no-action decision, scored failure, missing
+  result and safeguard failure, even when the job succeeded.
+- **Outcome:** keep, revise or disable, with the reason recorded. Any new failure triggers the
+  three-repeat run. One repeat can reveal drift but does not replace that run.
 
-The Codex reference is now `codex-v2`, the full set on the final skill. Two runs so far, both on
-the Codex fallback against the earlier `codex` reference. All 30 cases at `5511ef8`
-(`drift-41161648267`, review issue #350, owner decision: keep): no new failure, e52255 passed once (0/3 before), and
-two outputs changed (e52255 dropped its comment; e53610 linked three similar issues). Pass rate
-.84, error cost .32, adversarial 5/5. Two cases at `ade9c8c` (`drift-41173979997`), to check the
-job itself: it ran unattended, both matched the reference and no issue opened.
+Record the model ID, commit and runtime hashes, and never change frozen expectations or old results.
 
-## When review is required
+## References and past runs
 
-The owner must review fresh golden results before accepting a changed model or runtime for
-hosted use, or approving deployment beyond the evaluation sandbox. A known provider change
-or an unexpected allowed label/comment also prompts review. Documentation-only changes do
-not require paid model runs. This is a documented human review policy; CI and branch settings
-do not enforce it automatically.
+The Codex reference is `codex-v2`, the full set on the final skill. The Claude reference, `final`,
+is weak: it predates the final skill, and `e54035`, `e54123` and `e54317` have no output there.
 
-## What the owner reviews
-
-For a drift check, use all 30 frozen golden cases, including no-action cases and
-adversarial inputs, in a separate evidence namespace. Agree on the spending budget and trial
-count before dispatch. A one-repeat diagnostic can reveal drift but does not complete the
-existing three-repeat hosted acceptance protocol. Follow the
-[evaluation guide](../evals/golden/README.md) without changing frozen expectations or old results.
-
-Record the model ID, source commit and runtime hashes with the new transcripts, tool calls,
-actual outputs, execution failures and available cost records. Compare the same cases using
-the frozen scorer. `ceewaigit` reviews every changed label and rendered comment, incorrect
-no-action decision, scored failure, missing result and safeguard failure. Check the outputs
-even when the workflow job succeeds, and keep ambiguous judgement disagreements visible.
-
-The owner records whether to retain, revise or disable the configuration and why. Failures
-require investigation before approval.
-
-## Schedule for sustained operation
-
-Before any deployment beyond this sandbox, set `DRIFT_WEEKLY` so all 30 cases run once a week
-(about $8 at $0.25 a run on Claude, about $3 at $0.10 a run on Codex). `ceewaigit`
-reviews every item in the review issue within two days and records keep, revise or disable.
-Any new failure triggers the full three-repeat acceptance run before the configuration stays
-enabled. One repeat can reveal drift but does not replace that run.
+| Run | Against | Result |
+|---|---|---|
+| `drift-41161648267`, all 30 cases at `5511ef8` | `codex` | No new failure; e52255 dropped its comment and passed, e53610 linked three issues. Pass rate .84, cost .32, 5/5 attacks. Issue #350: keep |
+| `drift-41173979997`, two cases at `ade9c8c` | `codex` | Ran unattended; both matched; no issue opened |
