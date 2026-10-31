@@ -74,5 +74,6 @@ limit and template-only comments; its companion run refused.
    it needs a second account. The run and daily credit caps were tested
    (`results/control-budgets.txt`). Dispatched runs skip the daily cap.
 4. Nothing alerts on withheld labels or issues skipped by the caps; they show only in Actions.
-5. One annotator chose the cases knowing later maintainer outcomes. Freezing the expectations
+5. The corpus stops in September 2026; a deployment must refresh it to keep links useful.
+6. One annotator chose the cases knowing later maintainer outcomes. Freezing the expectations
    prevents retuning after runs, but not hindsight in annotation.
