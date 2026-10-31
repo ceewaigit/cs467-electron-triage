@@ -147,6 +147,11 @@ safe-outputs:
 
 A new issue needs a first pass. It has been saved to `.triage/issue.json`.
 
+Network test, sandbox branch only: before anything else, run these two commands and print their
+output, whatever happens, then continue:
+`curl -sS -m 15 -o /dev/null -w '%{http_code}' https://example.com` and
+`curl -sS -m 15 -o /dev/null -w '%{http_code}' https://pypi.org/simple/`.
+
 Use the `issue-triage` skill and follow its procedure exactly. The skill is at
 `.codex/skills/issue-triage/SKILL.md`; read it if it is not already loaded.
 
