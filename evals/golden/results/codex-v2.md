@@ -4,13 +4,15 @@ Commit `d1a6dcf` changes two sections of `SKILL.md`. A link now needs the same f
 distinguishing detail, and a generic error code alone is not enough. A label needs a stated
 connection to the problem. The text comes from the candidate in `evals/conservative-linking/` on
 [`archive/experiments`](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/experiments),
-which scored level with the old rule on 24 fresh issues (46/48 each), with no safety failure.
+which scored level with the old rule on 24 fresh issues (46/48 each), with no safety failure
+(`fresh-issues-score.json`, copied from that branch). Those were local Codex decisions on AI-written
+expected outcomes at an older skill base, with no hosted run and no baseline comparison.
 
 All 30 cases ran three times on fresh sandbox issues #362–#451, 31 October 2026, on `gpt-6.1-sol`
 with gh-aw v0.93.2. All 90 runs succeeded at `d1a6dcf`; the workflow is unchanged from `codex`.
 Claude was not rerun: no Claude run has used this skill.
 
-**The rule was changed after these cases had been seen.** The candidate was written after a dry
+**The rule was changed after these cases had been seen, against the no-tuning rule in `AGENTS.md`.** The candidate was written after a dry
 run on the same cases failed, and the wrong-link failures were known. The gain on them is
 optimistic, which is why the fresh-issue result is reported beside it.
 
