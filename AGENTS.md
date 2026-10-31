@@ -80,3 +80,4 @@ dataset explicitly, for example `score.py --runs final` or `skill_check.py --run
 - `blocked/upstream ❌` indicates a possible Chromium or Node.js cause.
 - `blocked/need-info ❌` and `needs-template` are applied by replay to represent Electron's
   opening-time bot actions; the agent cannot add them.
+
