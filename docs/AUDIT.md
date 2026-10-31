@@ -23,14 +23,14 @@ historical runs.
 | Maintainer-agreement report called the expectations blind | Correct it to disclose hindsight | Agreement values unchanged |
 | CI never compared the compiled locks with their sources | CI recompiles all three workflows with gh-aw v0.93.2 and fails on any diff | Lock tests also pin job permissions, agent tools and the label handler |
 | Trailer listed issue numbers for kinds other than `similar` | Refs appear only with `similar`; the trailer is a code span (renderer v4) | Regression test; no recorded comment had refs without `similar` |
-| `component/other` was allowed but has no Electron label | Removed from the allowlist | No run requested it |
+| `component/other` was allowed but names no component | Removed from the allowlist | No run requested it |
 | A missing agent output could be posted as a no-op | Comment job fails if the file is absent | Regression test |
 | Replay ignored writes by other accounts | Non-bot labels, comments and other events count against the run | Mocked replay test; no recorded run had one |
 | Every dispatched run of a workflow waited for the previous one | Per-issue concurrency group (`cd32472`) | The Codex batch ran issues in parallel |
-| Withheld or suggested writes raised no alert | `triage-watchdog.yml` compares requested and delivered writes after each run and opens an alert issue (`5511ef8`) | Unit tests; alerts #328 and #331 on two known cases, a clean pass on a third, a reported rejection |
-| Runs dispatched by the drift check never trigger the watchdog (GitHub sends no `workflow_run` for them) | `drift-check.yml` runs the same check on each run | Found in the first drift run (0 of 30 triggered it); the check, run by hand on those 30, opened #353 and #354 |
-| No maintainer approval before a write | Run start and write jobs wait in the `triage-writes` environment (`5511ef8`) | `results/control-approval.txt`: approved run labelled, rejected run wrote nothing |
-| Changes to main needed no review | Ruleset: code-owner review, green `test` check, no force-push or deletion; admins may bypass | `results/control-branch-ruleset.txt`: test PR #347 blocked |
+| Failed runs, cap skips and withheld writes raised no alert | `triage-watchdog.yml` checks each finished run and alerts the owner (`5511ef8`, corrected in `ade9c8c`) | Unit tests; replay of eight recorded runs of each kind; live evidence in `results/control-watchdog.txt` |
+| Runs dispatched by the drift check never trigger the watchdog (GitHub sends no `workflow_run` for them) | `drift-check.yml` runs the same check on each run | Found in the first drift run (0 of 30 triggered it); ran in Actions in `drift-41173979997` |
+| No way to hold writes for a maintainer | Optional reviewer on the `triage-writes` environment (`5511ef8`), off by default | `results/control-approval.txt`: approved run labelled, rejected run wrote nothing |
+| Changes to main needed no review | Ruleset: code-owner review, green `test` check, no force-push or deletion | `results/control-branch-ruleset.txt`: test PR #347 blocked. The sole owner is an admin, cannot approve their own PR and pushed directly under the bypass |
 | Model drift had no check | `drift-check.yml` and `evals/tools/drift_report.py` (`5511ef8`) | One Codex run, review issue #350 |
 
 ## Every scored failure

@@ -41,14 +41,18 @@ flowchart TD
 5. The skill calls `check_labels.py` for proposed labels and `render_comment.py` for proposed
    comment kinds. A kind is a fixed category such as `need-repro`, `similar` or `security`.
    The model supplies categories and reference numbers; template code supplies the wording.
-6. GitHub Agentic Workflows collects the safe-output requests and runs threat detection.
+6. GitHub Agentic Workflows collects the safe-output requests and runs threat detection. If
+   the `triage-writes` environment has a required reviewer, the run waits for approval at its
+   start, before its write jobs and at its conclusion; by default it has none.
    The built-in label job permits one call with at most three existing allowed labels on the
    run's issue. The separate comment job has `issues: write`; the agent itself has read-only
    repository permissions. `post_triage_comment.py` requires a successful detection verdict,
    validates the request through the renderer, and posts at most one template comment to the
    issue supplied by workflow context. `noop` records a reason and makes no issue write.
+7. When the run finishes, `triage-watchdog.yml` runs `check_triage_run.py`. It alerts the owner
+   to a failed run or a lost write and lists issues the daily credit cap skipped.
 
-The workflow also disables automatic issue creation for failure, incomplete, missing-tool
+The workflow also disables gh-aw's automatic issue creation for failure, incomplete, missing-tool
 and missing-data reports. `safe-outputs.threat-detection.report-as-issue: false` disables the
 detector's separate tracking-issue channel while leaving threat detection enabled. The
 missing-tool and missing-data flags explicitly limit reporting behavior; they are not evidence

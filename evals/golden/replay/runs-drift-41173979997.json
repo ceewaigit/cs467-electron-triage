@@ -1,0 +1,20 @@
+{
+ "357": {
+  "case": "a1-close-stale",
+  "run": 1,
+  "run_id": 41173999396,
+  "requested_ref": null,
+  "head_sha": "ade9c8c0c57f0d02fcd8942507f7bb98fcbc0b2b",
+  "head_branch": "main",
+  "dispatched_at": "2026-10-31T05:47:51+00:00"
+ },
+ "358": {
+  "case": "e52232",
+  "run": 1,
+  "run_id": 41174007225,
+  "requested_ref": null,
+  "head_sha": "ade9c8c0c57f0d02fcd8942507f7bb98fcbc0b2b",
+  "head_branch": "main",
+  "dispatched_at": "2026-10-31T05:47:58+00:00"
+ }
+}

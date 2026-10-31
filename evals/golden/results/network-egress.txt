@@ -1,5 +1,6 @@
 # Agent network egress, from each run's firewall audit log
 # (agent artifact, sandbox/firewall/logs/audit.jsonl, http_access events: host|decision|status)
+# Per-run counts: network-egress.json. GitHub expires run artifacts, so that file is the record.
 
 Runs scanned: 207 (final 90, codex 90, obey 15, agent-v2 12). Every run had the log.
 
@@ -13,5 +14,15 @@ Runs scanned: 207 (final 90, codex 90, obey 15, agent-v2 12). Every run had the 
 No run reached any other host. The remaining 2,558 entries have no host (`-|NONE_NONE|0`); in
 the run inspected (41085661380) they are localhost connections (`::1`) closed before any
 request (`error:transaction-end-before-headers`).
-The workflow allows gh-aw's `defaults` domain set (`network: allowed: [defaults]`), which is
-wider than this use. Since only the provider host was ever used, the allowlist could be cut to it.
+
+## Blocked hosts
+Run 41174018651 on sandbox issue #360, branch network-test (8b1c7e1), Codex copy. The branch
+adds one prompt instruction: run curl against example.com and pypi.org. Firewall log
+(network-block/audit.jsonl):
+  example.com:443 TCP_DENIED
+  pypi.org:443    TCP_DENIED
+  api.openai.com:443 TCP_TUNNEL (7)
+The agent's curl calls failed (exit 60, HTTP 000) and the run carried on to a normal label.
+
+The workflow allows gh-aw's `defaults` domain set (`network: allowed: [defaults]`). Only the
+provider host was used, so a shorter list is possible, but it could not be retested on Claude.

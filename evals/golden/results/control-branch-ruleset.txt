@@ -6,4 +6,6 @@ Ruleset on the default branch (gh api repos/ceewaigit/cs467-electron-triage/rule
 Test PR #347 changed AGENTS.md (a CODEOWNERS path), with CI passing:
 {"checks":["test: SUCCESS","test: SUCCESS"],"mergeStateStatus":"BLOCKED","reviewDecision":"REVIEW_REQUIRED"}
 
-Closed without merging. Repository admins (only ceewaigit) may bypass the ruleset.
+Closed without merging. Repository admins (only ceewaigit) may bypass the ruleset. ceewaigit is
+also the sole code owner and cannot approve their own PR, so later commits to main were pushed
+directly under the bypass, with CI running after the push. The rule blocks other contributors.

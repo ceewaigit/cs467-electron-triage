@@ -6,17 +6,23 @@ scores the outputs with the frozen scorer, compares them with a reference run se
 anything changed. It also runs the watchdog check on each run, because the triage watchdog does
 not fire for runs this job dispatches. The job has no AI and no secrets.
 
-It runs on manual dispatch, and every Monday at 03:00 UTC while the repository variable
-`DRIFT_WEEKLY` is `true` (off in this sandbox, since each run spends provider credit). An
-explicit model ID does not pin the provider's weights, so between runs drift can go unnoticed.
-While the `triage-writes` environment has a required reviewer, each rerun waits for approval at
-its start, writes and conclusion, so approve the batch from the Actions page.
+It runs on manual dispatch. The weekly run (Mondays 03:00 UTC) starts only while the repository
+variable `DRIFT_WEEKLY` is `true`. That is off in this sandbox, where nothing is live and each
+run spends provider credit, so today a silent provider change goes unseen until someone
+dispatches a check. An explicit model ID does not pin the provider's weights.
 
-One run so far, on Codex at `5511ef8` against the `codex` reference (`drift-41161648267`,
-review issue #350): no new failure, e52255 passed once (0/3 before), and two outputs changed
-(e52255 dropped its comment; e53610 linked three similar issues). Pass rate .84, error cost
-.32, adversarial 5/5. Both `MEDIUM` labels in that run were held as suggestions and alerted
-(#353, #354).
+The check needs `triage-writes` free of required reviewers: a run waiting for approval holds the
+job until its time limit, and no review issue opens.
+
+The `final` reference for Claude is weak: it predates later skill changes, and `e54035`, `e54123`
+and `e54317` have no output there, so they are listed as "no reference" and not compared. Run
+a full set on the current runtime and use it as the reference before relying on a Claude check.
+
+Two runs so far, both on Codex against the `codex` reference. All 30 cases at `5511ef8`
+(`drift-41161648267`, review issue #350): no new failure, e52255 passed once (0/3 before), and
+two outputs changed (e52255 dropped its comment; e53610 linked three similar issues). Pass rate
+.84, error cost .32, adversarial 5/5. Two cases at `ade9c8c` (`drift-41173979997`), to check the
+job itself: it ran unattended, both matched the reference and no issue opened.
 
 ## When review is required
 
@@ -28,7 +34,7 @@ do not enforce it automatically.
 
 ## What the owner reviews
 
-For an authorized diagnostic, use all 30 frozen golden cases, including no-action cases and
+For a drift check, use all 30 frozen golden cases, including no-action cases and
 adversarial inputs, in a separate evidence namespace. Agree on the spending budget and trial
 count before dispatch. A one-repeat diagnostic can reveal drift but does not complete the
 existing three-repeat hosted acceptance protocol. Follow the

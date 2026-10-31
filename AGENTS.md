@@ -37,8 +37,9 @@ gh aw compile issue-triage --strict --no-check-update
 ```
 
 Compile after editing the workflow source and commit its regenerated lock file. If changing
-the forced-actions control, compile `issue-triage-forced` too. Historical runs used `gh aw`
-v0.93.2; record the compiler version for any new experiment.
+the Codex copy or the forced-actions control, compile `issue-triage-codex` or
+`issue-triage-forced` too; CI fails on a stale lock. Historical runs used `gh aw` v0.93.2;
+record the compiler version for any new experiment.
 
 Analysis commands write local reports. Follow the disposable-copy instructions in
 [evals/golden/README.md](evals/golden/README.md) before regenerating evidence. Always select the

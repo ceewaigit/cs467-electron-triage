@@ -1,0 +1,16 @@
+{
+ "labels_added": [],
+ "comment": null,
+ "other_writes": [
+  "cross-referenced by github-actions[bot]"
+ ],
+ "issue": 359,
+ "run_id": 41174007628,
+ "conclusion": "failure",
+ "requested_ref": "budget-test",
+ "head_sha": "bc6d14e72c6d015ff6e0e130c3eddc5d63bcbd80",
+ "head_branch": "budget-test",
+ "run_url": "https://github.com/ceewaigit/cs467-electron-triage/actions/runs/41174007628",
+ "scored": false,
+ "exclusion_reason": "Unsuccessful workflow execution; no valid triage result."
+}

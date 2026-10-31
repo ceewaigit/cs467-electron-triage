@@ -11,9 +11,9 @@ add allowed labels, request an Electron Fiddle reproduction, link a similar earl
 or suggest a more suitable reporting channel. Comments use fixed templates. The agent has no
 output for closing, editing, assigning or deleting issues, removing labels, or merging code.
 
-While the `triage-writes` environment has a required reviewer, the owner approves each run
-before it starts and again before its labels and comment are written. Comments link to their
-workflow run and are posted as `github-actions[bot]`. Maintainers remain responsible for
+There is no approval step before each permitted label or comment by default. If a reviewer is
+added to the `triage-writes` environment, every run waits for approval at its start, its writes
+and its conclusion. Comments link to their workflow run and are posted as `github-actions[bot]`. Maintainers remain responsible for
 correcting mistakes and deciding whether to close an issue or accept a contribution.
 If a suggestion is wrong, explain the problem in a comment for a maintainer to review.
 
@@ -39,8 +39,8 @@ include a regression test. Keep such tests separate from the frozen golden cases
 
 1. Run `python3 -m unittest discover -s tests -v`.
 2. After a workflow change, run `gh aw compile issue-triage --strict --no-check-update` and
-   commit the regenerated `.lock.yml`. Compile `issue-triage-forced` as well if its source
-   changed. Record the compiler version used.
+   commit the regenerated `.lock.yml`. Compile `issue-triage-codex` and `issue-triage-forced` as
+   well if their sources changed; CI fails on a stale lock. Record the compiler version used.
 3. If triage decisions or runtime controls change, follow the
    [evaluation guide](evals/golden/README.md). Compare a new run with the relevant historical
    experiment and disclose failed or missing runs. Offline tests are not a live replay.
