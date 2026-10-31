@@ -54,6 +54,25 @@ class DriftReport(unittest.TestCase):
             review = drift_report.compare("new", "ref")
         self.assertFalse(any(review.values()))
 
+    def test_case_the_reference_never_scored_is_listed_without_a_change(self):
+        output = {"labels_added": ["component/gpu"], "comment": None}
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(drift_report, "ROOT", pathlib.Path(directory)):
+            self.build(pathlib.Path(directory), {"a": scored(0, 0)}, {"a": scored(1, 1)},
+                       {("a", "new", "run-1"): output})
+            review = drift_report.compare("new", "ref")
+        self.assertEqual(len(review["no reference"]), 1)
+        self.assertEqual(review["changed output"], [])
+
+    def test_partial_rerun_ignores_other_cases(self):
+        same = {"labels_added": [], "comment": None}
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(drift_report, "ROOT", pathlib.Path(directory)):
+            self.build(pathlib.Path(directory), {"a": scored(3, 3), "b": scored(3, 3)}, {"a": scored(1, 1)},
+                       {("a", "ref", "run-1"): same, ("a", "new", "run-1"): same})
+            review = drift_report.compare("new", "ref", ["a"])
+        self.assertFalse(any(review.values()))
+
 
 if __name__ == "__main__":
     unittest.main()

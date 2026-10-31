@@ -85,8 +85,9 @@ pre-agent-steps:
     run: python3 scripts/prepare_agent_context.py
 
 safe-outputs:
-  # Every write job runs in the triage-writes environment. While it has required reviewers
-  # (Settings > Environments), a maintainer approves each run's label and comment jobs first.
+  # Every job from the run's start to its end runs in the triage-writes environment. It has no
+  # required reviewers by default. Adding one (Settings > Environments) holds every run for
+  # approval at its start, its writes and its conclusion: a brake for rollout or an incident.
   environment: triage-writes
   # Pin the label output to the issue this run is about. "triggering" (the default) has no issue
   # under workflow_dispatch, and "*" would let the agent pick any issue in the repository.
@@ -135,7 +136,7 @@ safe-outputs:
             AS_OF: ${{ inputs.as_of || github.event.issue.created_at }}
             RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           run: python3 scripts/post_triage_comment.py
-  # A failed run shows in Actions; it must not open an issue in the project's tracker.
+  # gh-aw must not open its own issue for a failed run; triage-watchdog raises one alert instead.
   report-failure-as-issue: false
   # report_incomplete stays as a signal in the run log; by default gh-aw would also open an
   # "[incomplete]" tracking issue.

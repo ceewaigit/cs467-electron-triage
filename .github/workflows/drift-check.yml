@@ -2,6 +2,8 @@
 # score the outputs with the frozen scorer, compare them with a reference run set, and open a
 # review issue for the owner when anything changed. This job has no AI and no secrets; the
 # triage workflow it dispatches is the one that calls the model and spends provider credit.
+# It needs `triage-writes` free of required reviewers: a run waiting for approval holds `collect`
+# until the job's time limit, and no review issue opens.
 name: Drift check
 on:
   workflow_dispatch:
@@ -13,6 +15,10 @@ on:
         default: issue-triage.lock.yml
       reference:
         description: "Run set to compare with (default: final for Claude, codex for Codex)"
+        required: false
+        type: string
+      cases:
+        description: "Comma-separated case ids, to check the job itself cheaply (default: all 30)"
         required: false
         type: string
   schedule:
@@ -34,6 +40,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       WORKFLOW: ${{ inputs.workflow || 'issue-triage.lock.yml' }}
       VARIANT: drift-${{ github.run_id }}
+      CASES: ${{ inputs.cases }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -44,7 +51,7 @@ jobs:
       - name: Replay every golden case once
         run: |
           for step in file dispatch collect; do
-            python3 evals/tools/replay.py "$step" --variant "$VARIANT" --workflow "$WORKFLOW" --k 1
+            python3 evals/tools/replay.py "$step" --variant "$VARIANT" --workflow "$WORKFLOW" --k 1 ${CASES:+--cases "$CASES"}
           done
       - name: Score and compare with the reference
         id: compare
@@ -55,7 +62,7 @@ jobs:
             REFERENCE=final; [ "$WORKFLOW" = issue-triage-codex.lock.yml ] && REFERENCE=codex
           fi
           python3 evals/tools/score.py --runs "$VARIANT" --k 1
-          python3 evals/tools/drift_report.py --runs "$VARIANT" --reference "$REFERENCE" | tee drift.json
+          python3 evals/tools/drift_report.py --runs "$VARIANT" --reference "$REFERENCE" ${CASES:+--cases "$CASES"} | tee drift.json
           echo "needs_review=$(python3 -c 'import json; print(str(json.load(open("drift.json"))["needs_review"]).lower())')" >> "$GITHUB_OUTPUT"
           cat "evals/golden/results/drift-$VARIANT.md" >> "$GITHUB_STEP_SUMMARY"
       - name: Keep the outputs, logs and report
@@ -79,6 +86,7 @@ jobs:
       - name: Check that each run's writes landed
         # GitHub does not fire workflow_run for runs this job's token dispatched, so the triage
         # watchdog never sees them; the same check runs here once per run and alerts the owner.
+        if: always() && steps.compare.outcome != 'skipped'
         env:
           REPO: ${{ github.repository }}
           ALERT_ASSIGNEE: ${{ github.repository_owner }}
