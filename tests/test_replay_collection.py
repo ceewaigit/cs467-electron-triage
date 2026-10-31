@@ -226,6 +226,31 @@ class OutcomeTests(unittest.TestCase):
         self.assertEqual(result["labels_added"], ["component/gpu"])
         self.assertEqual(result["other_writes"], ["labeled component/menu by owner", "commented by owner"])
 
+    def test_opening_labels_applied_by_the_bot_in_ci_are_not_agent_writes(self):
+        timeline = [
+            {"event": "labeled", "actor": {"login": replay.BOT}, "label": {"name": "platform/macOS"}},
+            {"event": "labeled", "actor": {"login": replay.BOT}, "label": {"name": "component/gpu"}},
+        ]
+
+        def fake_api(path, *args, **kwargs):
+            return timeline if path.endswith("/timeline") else {"state": "open"}
+
+        with mock.patch.object(replay, "api", fake_api):
+            result = replay.outcome(1, ["platform/macOS"])
+        self.assertEqual(result["labels_added"], ["component/gpu"])
+        self.assertEqual(result["other_writes"], [])
+
+
+class VariantNames(unittest.TestCase):
+    def test_new_variants_need_a_workflow_and_a_plain_name(self):
+        self.assertEqual(replay.variant_name("drift-20261101"), "drift-20261101")
+        for bad in ("../final", "Drift", "drift_1", ""):
+            with self.subTest(name=bad), self.assertRaises(Exception):
+                replay.variant_name(bad)
+        with mock.patch("sys.argv", ["replay.py", "collect", "--variant", "drift-x"]), \
+                mock.patch("sys.stderr"), self.assertRaises(SystemExit):
+            replay.main()
+
 
 if __name__ == "__main__":
     unittest.main()

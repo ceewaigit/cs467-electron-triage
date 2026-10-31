@@ -1,0 +1,78 @@
+# Drift detection (docs/DRIFT_REVIEW.md): rerun every golden case once on fresh sandbox issues,
+# score the outputs with the frozen scorer, compare them with a reference run set, and open a
+# review issue for the owner when anything changed. This job has no AI and no secrets; the
+# triage workflow it dispatches is the one that calls the model and spends provider credit.
+name: Drift check
+on:
+  workflow_dispatch:
+    inputs:
+      workflow:
+        description: Triage workflow to rerun
+        type: choice
+        options: [issue-triage.lock.yml, issue-triage-codex.lock.yml]
+        default: issue-triage.lock.yml
+      reference:
+        description: "Run set to compare with (default: final for Claude, codex for Codex)"
+        required: false
+        type: string
+  schedule:
+    - cron: "0 3 * * 1"  # Mondays 03:00 UTC
+permissions:
+  actions: write   # dispatch the triage workflow, read its runs and artifacts
+  contents: read
+  issues: write    # file sandbox issues and the review issue
+concurrency:
+  group: drift-check
+jobs:
+  rerun:
+    # The weekly run costs about $3-8 in provider credit, so it runs only while the repository
+    # variable DRIFT_WEEKLY is "true"; a manual dispatch always runs.
+    if: github.event_name == 'workflow_dispatch' || vars.DRIFT_WEEKLY == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      GH_TOKEN: ${{ github.token }}
+      WORKFLOW: ${{ inputs.workflow || 'issue-triage.lock.yml' }}
+      VARIANT: drift-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+      - name: Replay every golden case once
+        run: |
+          for step in file dispatch collect; do
+            python3 evals/tools/replay.py "$step" --variant "$VARIANT" --workflow "$WORKFLOW" --k 1
+          done
+      - name: Score and compare with the reference
+        id: compare
+        env:
+          REFERENCE: ${{ inputs.reference }}
+        run: |
+          if [ -z "$REFERENCE" ]; then
+            REFERENCE=final; [ "$WORKFLOW" = issue-triage-codex.lock.yml ] && REFERENCE=codex
+          fi
+          python3 evals/tools/score.py --runs "$VARIANT" --k 1
+          python3 evals/tools/drift_report.py --runs "$VARIANT" --reference "$REFERENCE" | tee drift.json
+          echo "needs_review=$(python3 -c 'import json; print(str(json.load(open("drift.json"))["needs_review"]).lower())')" >> "$GITHUB_OUTPUT"
+          cat "evals/golden/results/drift-$VARIANT.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep the outputs, logs and report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: ${{ env.VARIANT }}
+          path: |
+            evals/golden/replay/*-${{ env.VARIANT }}.json
+            evals/golden/cases/*/actual/${{ env.VARIANT }}/
+            evals/golden/results/*-${{ env.VARIANT }}.*
+      - name: Ask the owner to review
+        if: steps.compare.outputs.needs_review == 'true'
+        run: |
+          gh api -X POST "repos/${{ github.repository }}/issues" \
+            -f title="Drift check $VARIANT: owner review needed" \
+            -f body="$(cat "evals/golden/results/drift-$VARIANT.md")
+
+          Outputs and logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            -f "labels[]=drift-review" -f "assignees[]=${{ github.repository_owner }}"

@@ -173,7 +173,7 @@ class WorkflowConfig(unittest.TestCase):
     """
     SAFE_OUTPUT_KEYS = {"add-labels", "jobs", "report-failure-as-issue", "allowed-github-references",
                         "allowed-domains", "report-incomplete", "report-missing-tool",
-                        "report-missing-data", "threat-detection"}
+                        "report-missing-data", "threat-detection", "environment"}
     TARGET = "${{ github.event.issue.number || inputs.issue_number }}"
     LOCK_JOBS = {"pre_activation", "activation", "agent", "detection", "safe_outputs", "conclusion",
                  "triage_comment"}
@@ -290,6 +290,12 @@ class LockConfig(unittest.TestCase):
             block = re.search(r"^    permissions:\n((?:      .*\n)*)", body, re.M)
             granted = {line.strip() for line in block.group(1).splitlines()} if block else set()
             self.assertEqual(granted, self.JOB_PERMISSIONS[job], job)
+
+    def test_writing_jobs_and_the_run_start_wait_for_approval(self):
+        # Required reviewers on this environment are the human-approval gate (DESIGN.md).
+        gated = {job for job, body in self.jobs.items() if re.search(r"^    environment: triage-writes$", body, re.M)}
+        writers = {job for job, perms in self.JOB_PERMISSIONS.items() if any("write" in p for p in perms)}
+        self.assertEqual(gated, writers | {"pre_activation"})
 
     def test_agent_tools_and_turns(self):
         command = self.jobs["agent"]

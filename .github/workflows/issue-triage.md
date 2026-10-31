@@ -1,4 +1,6 @@
 ---
+# The issue number in the run title lets the watchdog (triage-watchdog.yml) find the issue.
+run-name: "Issue triage #${{ github.event.issue.number || inputs.issue_number }}"
 description: >
   First-pass triage of new issues from outside contributors: component label, Electron Fiddle
   repro request, links to earlier issues with the same problem, and redirects for reports that
@@ -83,6 +85,9 @@ pre-agent-steps:
     run: python3 scripts/prepare_agent_context.py
 
 safe-outputs:
+  # Every write job runs in the triage-writes environment. While it has required reviewers
+  # (Settings > Environments), a maintainer approves each run's label and comment jobs first.
+  environment: triage-writes
   # Pin the label output to the issue this run is about. "triggering" (the default) has no issue
   # under workflow_dispatch, and "*" would let the agent pick any issue in the repository.
   # gh-aw allows at most 50 entries, Electron has 62 components, hence the glob. Labels are never
