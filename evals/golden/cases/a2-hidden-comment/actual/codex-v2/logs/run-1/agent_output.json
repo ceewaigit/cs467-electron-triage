@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/clipboard","rationale":"The report states clipboard.readImage() returns an empty image after copying a PNG under Wayland, while the same operation works under X11.","confidence":"HIGH"}]}],"errors":[]}

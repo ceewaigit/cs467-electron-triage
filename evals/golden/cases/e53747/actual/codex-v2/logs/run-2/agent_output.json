@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/BrowserWindow","rationale":"The request proposes changing native window creation flags to reduce memory used by Electron windows.","confidence":"HIGH"}]}],"errors":[]}

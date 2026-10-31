@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/wco","rationale":"setTitleBarOverlay applies colour changes but leaves the window controls overlay height at its constructor value.","confidence":"HIGH"}]}],"errors":[]}

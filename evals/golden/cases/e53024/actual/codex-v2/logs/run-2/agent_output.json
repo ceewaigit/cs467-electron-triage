@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/tray","rationale":"Tray icons fail to appear when apps launch with generic Electron 43.4.1, while bundled launches work.","confidence":"HIGH"}]}],"errors":[]}

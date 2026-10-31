@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/BrowserWindow","rationale":"The feature request proposes changing Windows window creation to use WS_EX_NOREDIRECTIONBITMAP to reduce per-window memory usage.","confidence":"HIGH"}]}],"errors":[]}

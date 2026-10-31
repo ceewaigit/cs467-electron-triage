@@ -1,0 +1,1 @@
+{"items":[{"type":"triage_comment","kinds":"need-repro","refs":""},{"type":"add_labels","labels":[{"name":"blocked/need-repro","rationale":"The report describes multi-monitor VRR performance problems across apps but supplies no runnable Electron example, gist, or reproduction repository.","confidence":"HIGH"}]}],"errors":[]}

@@ -12,6 +12,7 @@ workflow run does not by itself mean the triage decision was correct.
 | `final-requested` | The same runs, scored on the labels the agent requested ([delivery record](results/delivery-final.md)) | 57/64 real, 15/15 adversarial |
 | `baseline-v2` | Deterministic rules, once per case | 18/25 real |
 | [`codex`](results/codex.md) | Submitted runtime on Codex (`gpt-6.1-sol`), all 90 runs (`801846e` and two earlier commits with the same runtime) | 60/75 real, 15/15 adversarial |
+| [`codex-v2`](results/codex-v2.md) | Stricter skill on Codex (`d1a6dcf`), all 90 runs; the final evaluation | 65/75 real, 15/15 adversarial |
 | [`drift-41161648267`](results/drift-drift-41161648267.md) | First drift check: Codex at `5511ef8`, all 30 cases once, against `codex` | 21/25 real, 5/5 adversarial; no new failure |
 | [`drift-41173979997`](results/drift-drift-41173979997.md) | Drift job check: Codex at `ade9c8c`, two cases once | 2/2; matches the reference |
 | [`network-test`](results/network-egress.txt) | Agent told to reach two blocked hosts | Firewall denied both |
@@ -54,6 +55,7 @@ A missing output file is unavailable evidence, not a successful no-action decisi
 | `../failure-recheck-live-3/` | Five selected live cases at `1173463`, with scores, logs and costs; separate from full-suite results |
 | `cases/<id>/actual/final/` | Template-comment experiment: 79 collected outputs and log directories |
 | `cases/<id>/actual/codex/`, `codex-requested/` | Submitted runtime on Codex: 90 outputs and logs, and the requested-label view |
+| `cases/<id>/actual/codex-v2/`, `codex-v2-requested/` | Stricter skill on Codex: 90 outputs and logs, and the requested-label view |
 | `cases/<id>/actual/final-requested/`, `agent-v2-requested/` | Copies scored on the labels the agent requested, built by `evals/tools/requested_view.py` ([why](results/delivery-final.md)) |
 | `cases/e52232/actual/preflight/failures/` | One unsuccessful provider-credit check, excluded from scoring |
 | `cases/<id>/actual/agent/` | First experiment using the older `add-comment` output: 90 outputs |

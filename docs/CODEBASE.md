@@ -168,7 +168,7 @@ Collection normally preserves existing records. `--force` can refresh a record w
 existing success or failure category; it refuses a category change before touching the JSON
 or logs. A changed outcome needs fresh sandbox issues and a separate experiment namespace.
 
-The stored `agent`, `agent-v2`, `final`, `obey`, `codex`, `baseline` and `baseline-v2` variants
+The stored `agent`, `agent-v2`, `final`, `obey`, `codex`, `codex-v2`, `baseline` and `baseline-v2` variants
 represent different experiments. `final` contains 79 of the planned 90 outputs; eleven executions failed
 because provider credit ran out and are documented separately.
 

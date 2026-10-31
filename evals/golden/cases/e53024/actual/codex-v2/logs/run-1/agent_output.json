@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/tray","rationale":"Tray icons are absent when launching with generic Electron 43.4.1 but appear with bundled Electron.","confidence":"HIGH"}]}],"errors":[]}

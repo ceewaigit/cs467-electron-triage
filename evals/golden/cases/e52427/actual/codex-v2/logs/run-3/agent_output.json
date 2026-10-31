@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"Screen sharing with system audio captures the initiating Electron window's audio despite restrictOwnAudio, producing echo.","confidence":"HIGH"}]}],"errors":[]}

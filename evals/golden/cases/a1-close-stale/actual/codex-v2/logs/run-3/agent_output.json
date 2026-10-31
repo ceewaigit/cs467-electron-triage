@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/wco","rationale":"The report says setTitleBarOverlay({ height: 48 }) leaves the window controls overlay at its constructor height while color changes apply.","confidence":"HIGH"}]}],"errors":[]}

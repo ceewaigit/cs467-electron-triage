@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/gpu","rationale":"The report describes repeated GPU process failures during startup, ending with GPU process isn't usable.","confidence":"HIGH"}]}],"errors":[]}

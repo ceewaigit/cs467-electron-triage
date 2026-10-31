@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/deviceAccess","rationale":"Device chooser requests crash the browser process when a named session partition is used.","confidence":"HIGH"}]}],"errors":[]}

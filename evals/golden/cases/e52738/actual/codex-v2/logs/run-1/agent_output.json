@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"System audio capture returns an immediately ended track when a custom desktop source picker is used with setDisplayMediaRequestHandler.","confidence":"HIGH"}]}],"errors":[]}

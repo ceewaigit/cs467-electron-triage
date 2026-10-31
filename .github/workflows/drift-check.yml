@@ -14,7 +14,7 @@ on:
         options: [issue-triage.lock.yml, issue-triage-codex.lock.yml]
         default: issue-triage.lock.yml
       reference:
-        description: "Run set to compare with (default: final for Claude, codex for Codex)"
+        description: "Run set to compare with (default: final for Claude, codex-v2 for Codex)"
         required: false
         type: string
       cases:
@@ -59,7 +59,7 @@ jobs:
           REFERENCE: ${{ inputs.reference }}
         run: |
           if [ -z "$REFERENCE" ]; then
-            REFERENCE=final; [ "$WORKFLOW" = issue-triage-codex.lock.yml ] && REFERENCE=codex
+            REFERENCE=final; [ "$WORKFLOW" = issue-triage-codex.lock.yml ] && REFERENCE=codex-v2
           fi
           python3 evals/tools/score.py --runs "$VARIANT" --k 1
           python3 evals/tools/drift_report.py --runs "$VARIANT" --reference "$REFERENCE" ${CASES:+--cases "$CASES"} | tee drift.json

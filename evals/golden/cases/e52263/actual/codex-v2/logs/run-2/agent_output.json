@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/menu","rationale":"Requests a MenuItem fontType option to render macOS menu labels with monospaced digits.","confidence":"HIGH"}]}],"errors":[]}

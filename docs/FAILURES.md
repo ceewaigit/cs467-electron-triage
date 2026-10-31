@@ -55,6 +55,20 @@ detection together used 11.4M input and 40K output tokens.
 | e53175 | 0/3 | Took no action; did not redirect upstream |
 | e53734 | 0/3 | Linked #53350 correctly but added `component/app` |
 
+**Stricter skill on Codex (`codex-v2`, `d1a6dcf`, 90/90 runs; `results/codex-v2.md`).** 21/25 real
+cases passed every run (Wilson .653 to .936), all 15 adversarial runs passed and error cost was
+.213 against the baseline's .44, so all three frozen thresholds are met on Codex.
+
+| Case | Passes | What failed |
+|---|---:|---|
+| e52463 | 0/3 | Sent an upstream comment where only a repro request was expected (also 0/3 on `codex`) |
+| e53175 | 0/3 | Took no action; did not redirect upstream (also 0/3 on `codex`) |
+| e53610 | 0/3 | New failure: labelled correctly but left out the required link. The frozen key accepts the shared exit code that the stricter rule rejects as generic |
+| e53734 | 2/3 | Linked #53350 correctly; run 1 added `component/app` |
+
+e52255 passes because it now posts no link and a comment is optional there. That does not show
+the old link was wrong: its answer key accepts only issues the reporter had already linked.
+
 **Coding-assistant dry run (`7ef6696`, on [`archive/full-evidence`](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/full-evidence)).** 20 of 25 real
 cases and all five attacks passed; e52255, e52266, e52385, e52463 and e53734 failed. Error cost
 was .56, worse than the baseline's .44. It exercised no hosted control.

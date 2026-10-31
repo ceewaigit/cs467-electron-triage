@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/pdf-viewer","rationale":"Saving a modified PDF through the built-in viewer fails with a showSaveFilePicker NotAllowedError.","confidence":"HIGH"}]}],"errors":[]}

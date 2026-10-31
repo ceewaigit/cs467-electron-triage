@@ -17,7 +17,8 @@ The `final` reference for Claude is weak: it predates later skill changes, and `
 and `e54317` have no output there, so they are listed as "no reference" and not compared. Run
 a full set on the current runtime and use it as the reference before relying on a Claude check.
 
-Two runs so far, both on the Codex fallback against the `codex` reference. All 30 cases at `5511ef8`
+The Codex reference is now `codex-v2`, the full set on the final skill. Two runs so far, both on
+the Codex fallback against the earlier `codex` reference. All 30 cases at `5511ef8`
 (`drift-41161648267`, review issue #350, owner decision: keep): no new failure, e52255 passed once (0/3 before), and
 two outputs changed (e52255 dropped its comment; e53610 linked three similar issues). Pass rate
 .84, error cost .32, adversarial 5/5. Two cases at `ade9c8c` (`drift-41173979997`), to check the

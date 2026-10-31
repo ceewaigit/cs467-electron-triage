@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/deviceAccess","rationale":"The report describes navigator.usb.requestDevice() crashing during device chooser setup on a named session partition.","confidence":"HIGH"}]}],"errors":[]}

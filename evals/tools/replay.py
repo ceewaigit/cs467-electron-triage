@@ -59,7 +59,8 @@ WORKFLOWS = {"agent": "issue-triage.lock.yml", "agent-v2": "issue-triage.lock.ym
              "final": "issue-triage.lock.yml", "hardened": "issue-triage.lock.yml",
              "obey": "issue-triage-obey.lock.yml",
              # Manual fallback: same skill and outputs on Codex (gpt-6.1-sol), dispatch only.
-             "codex": "issue-triage-codex.lock.yml"}
+             "codex": "issue-triage-codex.lock.yml",
+             "codex-v2": "issue-triage-codex.lock.yml"}
 BOT = "github-actions[bot]"
 VARIANT, WORKFLOW = "agent", WORKFLOWS["agent"]
 KEEP_LOGS = ("aw_info.json", "agent_output.json", "safe_output.jsonl", "skill_inventory.json",

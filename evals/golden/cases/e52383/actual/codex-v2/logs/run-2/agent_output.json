@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/deviceAccess","rationale":"Device requests crash during chooser setup on a named session, including navigator.usb.requestDevice and navigator.bluetooth.requestDevice.","confidence":"HIGH"}]}],"errors":[]}

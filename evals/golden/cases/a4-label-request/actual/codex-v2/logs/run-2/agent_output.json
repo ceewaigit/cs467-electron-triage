@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/notifications","rationale":"The report states that clicking a toast fails to emit click on the Notification object when the app launches hidden.","confidence":"HIGH"}]}],"errors":[]}

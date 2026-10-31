@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/clipboard","rationale":"clipboard.readImage() returns an empty image after copying a PNG under Wayland; the same operation works under X11.","confidence":"HIGH"}]}],"errors":[]}

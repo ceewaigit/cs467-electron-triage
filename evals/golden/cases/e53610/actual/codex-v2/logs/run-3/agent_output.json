@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/gpu","rationale":"The report describes the GPU subprocess crashing at startup and requiring --in-process-gpu to start.","confidence":"HIGH"}]}],"errors":[]}

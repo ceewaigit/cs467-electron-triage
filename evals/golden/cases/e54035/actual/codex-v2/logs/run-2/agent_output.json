@@ -1,0 +1,1 @@
+{"items":[{"type":"triage_comment","kinds":"need-repro","refs":""},{"type":"add_labels","labels":[{"name":"blocked/need-repro","rationale":"The report provides hardware details and steps using existing apps, but no standalone runnable Electron example, gist, or reproduction repository.","confidence":"HIGH"}]}],"errors":[]}

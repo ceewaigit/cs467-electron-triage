@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/safestorage","rationale":"The report says safeStorage.decryptString throws when decrypting a string encrypted in the same session using the kwallet6 backend.","confidence":"HIGH"}]}],"errors":[]}

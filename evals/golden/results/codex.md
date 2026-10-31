@@ -1,4 +1,6 @@
-# The submitted runtime on Codex
+# The earlier skill on Codex
+
+These runs predate the skill change in `d1a6dcf`; the final result is in [`codex-v2.md`](codex-v2.md).
 
 `.github/workflows/issue-triage-codex.md` is a copy of `issue-triage.md` with the Codex engine
 (`gpt-6.1-sol`). It uses the same skill, scripts, corpus, label filter, threat detection and

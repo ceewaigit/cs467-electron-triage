@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"System audio capture immediately returns an ended track when getDisplayMedia uses a custom desktopCapturer picker; video capture works.","confidence":"HIGH"}]}],"errors":[]}

@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/menu","rationale":"The report describes duplicate menu entries for a menu item with role togglefullscreen.","confidence":"HIGH"}]}],"errors":[]}

@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/safestorage","rationale":"The report describes safeStorage.decryptString throwing with the kwallet6 backend. A testcase gist is supplied.","confidence":"HIGH"}]}],"errors":[]}

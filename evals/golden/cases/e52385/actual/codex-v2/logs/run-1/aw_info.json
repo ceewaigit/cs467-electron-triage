@@ -1,0 +1,53 @@
+{
+  "engine_id": "codex",
+  "engine_name": "Codex",
+  "model": "gpt-6.1-sol",
+  "version": "0.163.0",
+  "agent_version": "0.163.0",
+  "workflow_name": "Issue triage (Codex copy)",
+  "workflow_id": "ceewaigit/cs467-electron-triage/.github/workflows/issue-triage-codex.lock.yml@refs/heads/skill-v2",
+  "workflow_call_id": "41188661307-1:ceewaigit/cs467-electron-triage/.github/workflows/issue-triage-codex.lock.yml@refs/heads/skill-v2",
+  "caller_workflow_ref": "ceewaigit/cs467-electron-triage/.github/workflows/issue-triage-codex.lock.yml@refs/heads/skill-v2",
+  "experimental": false,
+  "supports_tools_allowlist": true,
+  "cache_memory": false,
+  "run_id": 41188661307,
+  "run_number": 165,
+  "run_attempt": "1",
+  "repository": "ceewaigit/cs467-electron-triage",
+  "ref": "refs/heads/skill-v2",
+  "sha": "d1a6dcf4218a44c44a42964a10dae1c35ea64538",
+  "actor": "ceewaigit",
+  "event_name": "workflow_dispatch",
+  "target_repo": "",
+  "staged": false,
+  "dry_run": false,
+  "allowed_domains": [
+    "defaults"
+  ],
+  "firewall_enabled": true,
+  "awf_version": "v0.28.70",
+  "awmg_version": "",
+  "agent_runtime": "",
+  "steps": {
+    "firewall": "squid"
+  },
+  "created_at": "2026-10-31T09:26:11.822Z",
+  "cli_version": "v0.93.2",
+  "skills": [
+    ".claude/skills/issue-triage"
+  ],
+  "workflow_ref": "ceewaigit/cs467-electron-triage/.github/workflows/issue-triage-codex.lock.yml@refs/heads/skill-v2",
+  "server_url": "https://github.com",
+  "model_config": {
+    "routing": {
+      "enabled": false
+    },
+    "models": {
+      "allowed": [],
+      "blocked": []
+    },
+    "max_ai_credits_source": "frontmatter",
+    "max_ai_credits": 100
+  }
+}
