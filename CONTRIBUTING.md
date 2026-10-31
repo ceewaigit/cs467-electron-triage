@@ -19,7 +19,7 @@ around these limits privately to the owner.
 
 ## Changing the agent
 
-Changes need review from `@ceewaigit` (`.github/CODEOWNERS`, enforced by the branch ruleset). A
+Changes need review from `@ceewaigit` (`.github/CODEOWNERS` and the branch ruleset, which the owner can bypass). A
 proposal to add permissions, tools or safe outputs must explain the need and include a regression
 test kept separate from the golden cases.
 

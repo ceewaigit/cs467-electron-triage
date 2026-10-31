@@ -49,9 +49,10 @@ approving every run would undo the coverage gain. A reviewer on `triage-writes` 
 
 ## What the tests revealed
 
-Commit `4baa2cb` froze the rubric, scorer and expected outcomes before the skill existed. 25 real
-issues (17 curated, 8 random, six needing no action) and five attacks were each scheduled three times
-on fresh sandbox issues (`evals/golden/README.md`). Error cost: bad redirect or link 3, else 1.
+`results/` paths are under `evals/golden/`. Commit `4baa2cb` froze the rubric, scorer and expected
+outcomes before the skill existed. 25 real issues (17 curated, 8 random, six needing no action) and
+five attacks were each scheduled three times on fresh sandbox issues (`evals/golden/README.md`).
+Error cost: bad redirect or link 3, else 1.
 
 | Version | Runs scored | Run pass rate | All 3 runs pass | Error cost/case |
 |---|---:|---:|---:|---:|
@@ -90,7 +91,7 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
 | Safe outputs | One label call, 3 allowlisted labels, one templated comment; CI rejects `close-issue` (`results/control-broken-config.txt`) | Tested |
 | Threat detection | Runs before any write; comments need `success` (`results/delivery-final.md`) | Tested |
 | Human approval | Optional `triage-writes` reviewer: only the approved run wrote (`results/control-approval.txt`) | Tested on Codex; off |
-| Budgets | 8 min, 30 turns, 100 credits (detection 400 more) a run; 1,500 a day; 3 runs per author an hour; 30-day expiry (`results/control-budgets.txt`) | Caps tested on Codex; rate limit not |
+| Budgets | 8-min agent step, 30 turns, 100 credits (detection 400 more) a run; 1,500 a day; 3 runs per author an hour; 30-day expiry (`results/control-budgets.txt`) | Caps tested on Codex; rate limit not |
 | Audit trail | Trigger, model, tool calls, outputs, cost per run (`cases/*/actual/*/logs/`); comments link the run | Tested |
 | Kill switch | `gh aw disable` blocks new runs; `gh run cancel` stops a live one (`results/control-kill-switch.txt`) | Tested on a computer |
 | Drift detection | `drift-check.yml` reruns the cases and opens a review issue for `ceewaigit` (`docs/DRIFT_REVIEW.md`) | Tested on Codex; weekly run only proposed |
@@ -105,8 +106,9 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
    `ceewaigit` decides within two days; a new failure triggers the three-repeat run. When: before any
    model or runtime change, and weekly once `DRIFT_WEEKLY` is set. It is off here.
 3. **300 issues in a week.** About 43 a day at $0.25 each ($75). The 1,500 daily credit cap covers
-   about 60 issues; on a burst day later issues are skipped, not queued, and a maintainer must
-   redispatch them from Actions (dispatched runs skip the cap). An author gets 3 runs an hour.
+   about 60 issues at an assumed 25 credits a Claude run (Codex measured 8.81, so about 170); on a
+   burst day later issues are skipped, not queued, and a maintainer must redispatch them from Actions
+   (dispatched runs skip the cap). An author gets 3 runs an hour.
 4. **A tool returns malicious instructions.** Tested as `a5-poisoned-corpus`, planted in an earlier
    issue search returns (3/3). The only MCP server is `safeoutputs`. At worst: a wrong allowlisted
    label or template on its own issue.
@@ -118,6 +120,8 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
 - `claude-sonnet-5-5` has not run the final skill or lock: a full rerun (about $23) would also give
   drift a current Claude reference. Approval, budget and network tests ran on Codex only. Withheld
   labels raise no alert.
+- Claude sets before `7ef6696` had `expected.json` and later corpus rows on disk. Their 196 session
+  logs show no read of them, and search was already date-filtered; `codex-v2` had neither on disk.
 - Replays used dispatch, so the outsider trigger and the admin-exempt rate limit are untested.
 - One annotator chose cases knowing outcomes, and hints followed reading inputs; maintainer agreement
   (κ) is .83 for repro requests, .44 for components. The repro rule failed six tests (archived).
@@ -129,8 +133,8 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
 | Model | Live: `claude-sonnet-5-5`, pinned by ID in the lock; provider weights are not pinned. Manual fallback: `gpt-6.1-sol` |
 | Runtime | gh-aw v0.93.2, Claude Code 2.1.300, AWF v0.28.70, images pinned by digest; threat-detect v0.5.2 on `claude-sonnet-5-5` |
 | Instructions | Workflow body, `.claude/skills/issue-triage/SKILL.md`, AGENTS.md via CLAUDE.md |
-| Tools and MCP | Bash: three skill scripts, 13 read-only commands; Read, Glob, Grep, LS, Skill, Task, TodoWrite; Edit in `/tmp` (lock); MCP `safeoutputs` only |
-| Permissions | Agent read-only; `triage_comment` `issues: write`; gh-aw output jobs issues/PR write; drift check `issues: write`, `actions: write` |
+| Tools and MCP | Bash: three skill scripts, 13 read-only commands; `safeoutputs`; Read, Glob, Grep, LS, Skill, Task, TodoWrite, NotebookRead, ExitPlanMode, KillBash, BashOutput; Edit in `/tmp` (lock); MCP `safeoutputs` only |
+| Permissions | Agent read-only; `triage_comment` `issues: write`; gh-aw output jobs issues write and PR write (generated, unused: no PR output exists); drift check `issues: write`, `actions: write` |
 | Data | Opening issue text; frozen corpus and labels in `data/`, with synthetic attack row #900001 for `a5` (remove before deployment) |
 | Logs and evals | Run artifacts in `evals/golden/cases/*/actual/`; scores in `evals/golden/results/` |
 | Responsible human | `ceewaigit` (configuration, outputs, disabling) |

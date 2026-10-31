@@ -31,7 +31,7 @@ concurrency:
   group: drift-check
 jobs:
   rerun:
-    # The weekly run costs about $3-8 in provider credit, so it runs only while the repository
+    # The weekly run costs about $8 in provider credit, so it runs only while the repository
     # variable DRIFT_WEEKLY is "true"; a manual dispatch always runs.
     if: github.event_name == 'workflow_dispatch' || vars.DRIFT_WEEKLY == 'true'
     runs-on: ubuntu-latest
