@@ -1,0 +1,24 @@
+# Approval gate test, 2026-10-31, commit 5a368e7, Codex copy (gpt-6.1-sol), case e52232
+
+Environment `triage-writes`, required reviewer ceewaigit
+(gh api repos/ceewaigit/cs467-electron-triage/environments/triage-writes):
+  {"name":"triage-writes","rules":[{"reviewers":["ceewaigit"],"type":"required_reviewers"}]}
+
+Each run waited three times: at pre_activation (before any model call), at safe_outputs
+(labels; triage_comment waits there too when a comment is requested) and at conclusion.
+
+| Run | Issue | Start | Writes | Jobs | Issue afterwards |
+|---|---|---|---|---|---|
+| 41163685939 | #355 | approved | approved | safe_outputs success, run success | `component/desktopcapturer` added |
+| 41163696998 | #356 | approved | rejected | safe_outputs failure, run failure | no label, no comment |
+
+The agent requested `component/desktopcapturer` (no comment) in both runs
+(cases/e52232/actual/approval-test/). Approvals recorded by GitHub
+(gh api .../actions/runs/<id>/approvals): approved x3 on the first run; approved, rejected,
+approved on the second.
+
+Triage watchdog (workflow_run): run 41164141855 found the label on #355; run 41164134260
+reported the rejection on #356 and opened no alert.
+
+The reviewer stays configured, so every run in this sandbox now waits for ceewaigit. To turn
+the gate off: Settings > Environments > triage-writes > remove the required reviewer.

@@ -11,7 +11,8 @@ add allowed labels, request an Electron Fiddle reproduction, link a similar earl
 or suggest a more suitable reporting channel. Comments use fixed templates. The agent has no
 output for closing, editing, assigning or deleting issues, removing labels, or merging code.
 
-There is no approval step before each permitted label or comment. Comments link to their
+While the `triage-writes` environment has a required reviewer, the owner approves each run
+before it starts and again before its labels and comment are written. Comments link to their
 workflow run and are posted as `github-actions[bot]`. Maintainers remain responsible for
 correcting mistakes and deciding whether to close an issue or accept a contribution.
 If a suggestion is wrong, explain the problem in a comment for a maintainer to review.

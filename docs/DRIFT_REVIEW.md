@@ -1,11 +1,22 @@
-# Manual review of model drift
+# Drift review
 
-This evaluation sandbox has no scheduled provider-drift monitor.
+`.github/workflows/drift-check.yml` reruns every golden case once on fresh sandbox issues,
+scores the outputs with the frozen scorer, compares them with a reference run set
+(`evals/tools/drift_report.py`) and opens a `drift-review` issue assigned to the owner when
+anything changed. It also runs the watchdog check on each run, because the triage watchdog does
+not fire for runs this job dispatches. The job has no AI and no secrets.
 
-CI runs offline script, configuration and baseline checks. It cannot detect changes to the
-provider's model behaviour. An explicit model ID does not verify unchanged provider weights,
-and no automatic provider-change alert is configured. Drift can remain undetected until the
-next authorized hosted rerun, including between unscheduled sandbox runs.
+It runs on manual dispatch, and every Monday at 03:00 UTC while the repository variable
+`DRIFT_WEEKLY` is `true` (off in this sandbox, since each run spends provider credit). An
+explicit model ID does not pin the provider's weights, so between runs drift can go unnoticed.
+While the `triage-writes` environment has a required reviewer, each rerun waits for approval at
+its start, writes and conclusion, so approve the batch from the Actions page.
+
+One run so far, on Codex at `5511ef8` against the `codex` reference (`drift-41161648267`,
+review issue #350): no new failure, e52255 passed once (0/3 before), and two outputs changed
+(e52255 dropped its comment; e53610 linked three similar issues). Pass rate .84, error cost
+.32, adversarial 5/5. Both `MEDIUM` labels in that run were held as suggestions and alerted
+(#353, #354).
 
 ## When review is required
 
@@ -32,12 +43,10 @@ even when the workflow job succeeds, and keep ambiguous judgement disagreements 
 The owner records whether to retain, revise or disable the configuration and why. Failures
 require investigation before approval.
 
-## Proposed schedule for sustained operation
+## Schedule for sustained operation
 
-Not implemented. Before any deployment beyond this sandbox, run all 30 golden cases once a week
-(one repeat each, about $8 at the measured $0.25 per run). This is a diagnostic: `ceewaigit`
-reviews every changed output within two days. Any new failure triggers the full three-repeat
-acceptance run before the configuration stays enabled. This is the proposal DESIGN.md answers
-question 2 with.
-
-This is a policy, not an automated check.
+Before any deployment beyond this sandbox, set `DRIFT_WEEKLY` so all 30 cases run once a week
+(about $3 on Codex at the measured $0.10 a run, about $8 on Claude at $0.25). `ceewaigit`
+reviews every item in the review issue within two days and records keep, revise or disable.
+Any new failure triggers the full three-repeat acceptance run before the configuration stays
+enabled. One repeat can reveal drift but does not replace that run.

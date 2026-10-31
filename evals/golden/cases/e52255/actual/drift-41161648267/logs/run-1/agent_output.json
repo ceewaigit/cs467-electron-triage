@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/gpu","rationale":"The report describes GPU process startup failures across multiple Electron applications.","confidence":"HIGH"}]}],"errors":[]}

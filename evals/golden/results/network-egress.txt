@@ -1,0 +1,17 @@
+# Agent network egress, from each run's firewall audit log
+# (agent artifact, sandbox/firewall/logs/audit.jsonl, http_access events: host|decision|status)
+
+Runs scanned: 207 (final 90, codex 90, obey 15, agent-v2 12). Every run had the log.
+
+| Run set | Engine | Runs | Hosts reached |
+|---|---|---|---|
+| final | Claude | 90 | api.anthropic.com:443 (592 tunnels, 1 denied retry in run 39954405209) |
+| codex | Codex | 90 | api.openai.com:443 (611 tunnels) |
+| obey | Claude | 15 | api.anthropic.com:443 (87 tunnels) |
+| agent-v2 | Claude | 12 | api.anthropic.com:443 (84 tunnels) |
+
+No run reached any other host. The remaining 2,558 entries have no host (`-|NONE_NONE|0`); in
+the run inspected (41085661380) they are localhost connections (`::1`) closed before any
+request (`error:transaction-end-before-headers`).
+The workflow allows gh-aw's `defaults` domain set (`network: allowed: [defaults]`), which is
+wider than this use. Since only the provider host was ever used, the allowlist could be cut to it.

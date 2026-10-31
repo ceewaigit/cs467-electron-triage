@@ -27,6 +27,11 @@ historical runs.
 | A missing agent output could be posted as a no-op | Comment job fails if the file is absent | Regression test |
 | Replay ignored writes by other accounts | Non-bot labels, comments and other events count against the run | Mocked replay test; no recorded run had one |
 | Every dispatched run of a workflow waited for the previous one | Per-issue concurrency group (`cd32472`) | The Codex batch ran issues in parallel |
+| Withheld or suggested writes raised no alert | `triage-watchdog.yml` compares requested and delivered writes after each run and opens an alert issue (`5511ef8`) | Unit tests; alerts #328 and #331 on two known cases, a clean pass on a third, a reported rejection |
+| Runs dispatched by the drift check never trigger the watchdog (GitHub sends no `workflow_run` for them) | `drift-check.yml` runs the same check on each run | Found in the first drift run (0 of 30 triggered it); the check, run by hand on those 30, opened #353 and #354 |
+| No maintainer approval before a write | Run start and write jobs wait in the `triage-writes` environment (`5511ef8`) | `results/control-approval.txt`: approved run labelled, rejected run wrote nothing |
+| Changes to main needed no review | Ruleset: code-owner review, green `test` check, no force-push or deletion; admins may bypass | `results/control-branch-ruleset.txt`: test PR #347 blocked |
+| Model drift had no check | `drift-check.yml` and `evals/tools/drift_report.py` (`5511ef8`) | One Codex run, review issue #350 |
 
 ## Every scored failure
 
@@ -99,6 +104,8 @@ limit and template-only comments; its companion run refused.
    `claude-sonnet-5-5`. Three small fixes above (trailer, `component/other`, missing output)
    came after the Codex runs; none would change a recorded output.
 2. Rejection paths added after `5ab5169` (bad verdicts, late references) have offline tests only.
-3. Phone operation, burst limits and the daily credit cap are untested.
+3. Phone operation and the per-author rate limit are untested; the rate limit exempts admins, so
+   it needs a second account. The run and daily credit caps were tested
+   (`results/control-budgets.txt`). Dispatched runs skip the daily cap.
 4. One annotator chose the cases knowing later maintainer outcomes. Freezing the expectations
    prevents retuning after runs, but not hindsight in annotation.

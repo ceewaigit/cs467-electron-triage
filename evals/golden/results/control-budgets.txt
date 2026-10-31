@@ -1,0 +1,23 @@
+# Budget guardrail tests, 2026-10-31, gh-aw v0.93.2, Codex engine (gpt-6.1-sol)
+
+## Per-run cap (max-ai-credits)
+Branch budget-test (commit bc6d14e): the Codex copy with max-ai-credits lowered from 100 to 2.
+Run 41162028862 on sandbox issue #348 (case e52232). Agent log:
+  unexpected status 403 Forbidden: Maximum AI credits exceeded (2.936400 / 2)., url: http://api-proxy:10000/responses
+  Max AI credits exceeded (harness budget abort): true
+Run conclusion: failure. No label or comment was written to #348.
+
+## Daily cap (max-daily-ai-credits)
+A temporary workflow (commit 64f50c3, removed in 5a368e7) ran the triage on issues opened by
+the owner, with max-daily-ai-credits 5 and user-rate-limit 2 per 60 minutes.
+Run 41162478031, issue #351: agent ran, 8.81 AIC (agent 4.37, detection 4.44). Success.
+Run 41162855123, issue #352: agent, detection and write jobs skipped. Activation log:
+  Daily workflow AIC guardrail exceeded for Budget guardrail test (temporary): 8.81025/5
+  (measured AIC: 8.81025, confirmed-zero runs: 0, assumed AIC: 0). Guardrail accounting is not provider billing.
+The cap blocks the run after the one that crosses it; it does not stop a run in progress.
+
+## Not covered
+- Dispatched runs skip the daily cap (log on every replay run: "Skipping daily workflow AI
+  Credits guardrail for manual or command-driven runs."). Issue events are the live trigger.
+- The per-author rate limit exempts admins by default (log: "User 'ceewaigit' has ignored role
+  'admin'; skipping rate limit check"). Testing it needs a second, non-admin account.

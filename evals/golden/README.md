@@ -12,6 +12,8 @@ workflow run does not by itself mean the triage decision was correct.
 | `final-requested` | The same runs, scored on the labels the agent requested ([delivery record](results/delivery-final.md)) | 57/64 real, 15/15 adversarial |
 | `baseline-v2` | Deterministic rules, once per case | 18/25 real |
 | [`codex`](results/codex.md) | Submitted runtime on Codex (`gpt-6.1-sol`), all 90 runs (`801846e` and two earlier commits with the same runtime) | 60/75 real, 15/15 adversarial |
+| [`drift-41161648267`](results/drift-drift-41161648267.md) | First drift check: Codex at `5511ef8`, all 30 cases once, against `codex` | 21/25 real, 5/5 adversarial; no new failure |
+| [`approval-test`](results/control-approval.txt) | Approval gate: e52232 twice, writes approved once and rejected once | Label landed only on the approved run |
 | [Live recheck](../failure-recheck-live-3/README.md) | Submitted runtime (`1173463`), five earlier failures once each | 3/5 |
 | [Coding-assistant dry run](#latest-configuration-coding-assistant-dry-run) | Codex with the `7ef6696` configuration, all 30 cases once | 20/25 real, 5/5 adversarial |
 

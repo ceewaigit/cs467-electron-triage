@@ -29,6 +29,11 @@ class PlainWorkflows(unittest.TestCase):
         text = (ROOT / ".github/workflows/drift-check.yml").read_text()
         self.assertIn("if: github.event_name == 'workflow_dispatch' || vars.DRIFT_WEEKLY == 'true'", text)
 
+    def test_drift_runs_get_the_watchdog_check(self):
+        # Runs dispatched with GITHUB_TOKEN do not trigger the watchdog's workflow_run event.
+        text = (ROOT / ".github/workflows/drift-check.yml").read_text()
+        self.assertIn("python3 scripts/check_triage_run.py", text)
+
 
 if __name__ == "__main__":
     unittest.main()

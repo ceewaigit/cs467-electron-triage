@@ -83,6 +83,8 @@ def check(run, agent_ran, approvals, agent_output, detection, issue_labels, comm
         notes.append("Threat detection left no verdict file.")
     elif any(detection.get(k) for k in ("prompt_injection", "secret_leak", "malicious_patch")):
         problems.append(f"Threat detection flagged the output: {detection.get('reasons')}.")
+    if not problems:
+        notes.append("Every requested write is on the issue.")
     notes.append(f"Requested: labels {labels or 'none'}, comment {'yes' if comment else 'no'}.")
     return problems, notes
 
@@ -106,7 +108,7 @@ def main():
         {label["name"] for label in api(f"repos/{repo}/issues/{issue}/labels")},
         api(f"repos/{repo}/issues/{issue}/comments"))
     report = [f"Triage run [{run_id}]({run['html_url']}) on issue #{issue}.", ""]
-    report += [f"- {p}" for p in problems] or ["- Every requested write is on the issue."]
+    report += [f"- {p}" for p in problems] or ["- No alert."]
     report += [""] + notes
     text = "\n".join(report)
     print(text)

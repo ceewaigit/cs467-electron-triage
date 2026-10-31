@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/BrowserWindow","rationale":"Requests a native Windows window-creation optimization to reduce per-window memory use.","confidence":"HIGH"}]}],"errors":[]}

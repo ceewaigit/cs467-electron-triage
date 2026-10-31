@@ -76,3 +76,15 @@ jobs:
 
           Outputs and logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             -f "labels[]=drift-review" -f "assignees[]=${{ github.repository_owner }}"
+      - name: Check that each run's writes landed
+        # GitHub does not fire workflow_run for runs this job's token dispatched, so the triage
+        # watchdog never sees them; the same check runs here once per run and alerts the owner.
+        env:
+          REPO: ${{ github.repository }}
+          ALERT_ASSIGNEE: ${{ github.repository_owner }}
+        run: |
+          status=0
+          for RUN_ID in $(python3 -c 'import json, sys; [print(r["run_id"]) for r in json.load(open(sys.argv[1])).values()]' "evals/golden/replay/runs-$VARIANT.json"); do
+            RUN_ID=$RUN_ID python3 scripts/check_triage_run.py || status=1
+          done
+          exit $status

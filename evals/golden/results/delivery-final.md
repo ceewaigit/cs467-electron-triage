@@ -41,8 +41,9 @@ says "Successfully added 0 labels" and "Suggested 1 labels"; the issue timeline 
 | e52427 (final) | 1 | 39954337484 | #160 | `component/desktopcapturer` (MEDIUM) | none |
 | e52821 (agent-v2) | 2 | 39943781786 | #116 | `component/menu` (MEDIUM) | none |
 
-Across `final`, `agent-v2`, `obey` and `codex`, all 101 `HIGH` labels landed and none of the
-nine `MEDIUM` labels did (two of those nine were in withheld e53747 runs). In `codex`, the
+Across `final`, `agent-v2`, `obey`, `codex` and the drift check `drift-41161648267`, all 125
+`HIGH` labels landed and none of the 11 `MEDIUM` labels did (two were in withheld e53747 runs;
+the drift check's two, e52463 upstream and e54035 screen, raised watchdog alerts #353 and #354). In `codex`, the
 suggested labels were `blocked/upstream ❌` in all three e52463 runs, where upstream was the
 wrong call, and `component/screen` in e54035 run 3. Labels sent without a confidence (`agent`, most of `final`) landed whenever detection
 passed. This works as a partial human-approval step that the workflow does not control: the

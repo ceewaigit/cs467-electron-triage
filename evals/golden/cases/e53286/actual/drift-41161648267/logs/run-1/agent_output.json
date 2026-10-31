@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/pdf-viewer","rationale":"The report describes a file-picker error when saving changes from Electron’s built-in PDF viewer.","confidence":"HIGH"}]}],"errors":[]}

@@ -18,6 +18,8 @@ Read [docs/CODEBASE.md](docs/CODEBASE.md) for the execution flow and every Pytho
 | `scripts/prepare_issue.py` | Save the triggering issue as `.triage/issue.json` before the agent runs |
 | `scripts/prepare_agent_context.py` | Remove grading material and future corpus rows from the disposable Actions checkout |
 | `scripts/post_triage_comment.py` | Validate a safe-output request, render templates and post the comment |
+| `scripts/check_triage_run.py` | Watchdog: alert the owner when a run's requested writes are not on its issue |
+| `.github/workflows/triage-watchdog.yml`, `drift-check.yml` | Missing-write alerts and the golden drift rerun; no AI, no secrets |
 | `data/` | Frozen search corpus and Electron label snapshot |
 | `evals/golden/` | Frozen rubric, 30 cases, expected outcomes, actual outputs and reports |
 | `evals/tools/`, `evals/need/` | Evaluation utilities and analysis of the need for automation |

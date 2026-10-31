@@ -74,6 +74,7 @@ are agent-only costs; do not present them as total workflow spending.
 | `.claude/skills/issue-triage/scripts/check_labels.py` | Proposed label arguments and the allowlist | Prints validation results and returns failure for rejected labels |
 | `.claude/skills/issue-triage/scripts/render_comment.py` | `--kinds`, optional `--refs`, corpus | Prints a fixed comment or rejects invalid combinations/references; no posting |
 | `scripts/post_triage_comment.py` | Agent-output JSON, detection verdict and workflow target | Validates the first requested comment and posts it through `gh api` if accepted |
+| `scripts/check_triage_run.py` | A finished triage run: jobs, approvals, agent output, detection verdict, the issue's labels and comments | Writes a step summary; opens a `triage-alert` issue assigned to the owner when requested writes are missing |
 
 `triage_checks.py` uses BM25, a word-based relevance score, to retrieve five candidate issues.
 It weights title terms more heavily and removes issue-form boilerplate before matching.
@@ -97,6 +98,7 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 |---|---|
 | `evals/tools/fetch_issues.py` | Reads Electron's GitHub history and writes raw API pages plus opening-state rows in `evals/data/`; needs authenticated `gh` |
 | `evals/tools/build_cases.py` | Rebuilds real-case `input.json` files from those rows; historical setup utility that must not be run over the frozen cases |
+| `evals/tools/drift_report.py` | Compares `results/score-<runs>.json` with a reference run set; writes `results/drift-<runs>.md` and prints whether owner review is needed |
 | `evals/tools/replay.py` | `labels` creates sandbox labels; `file` creates neutralised sandbox issues; `dispatch` starts workflows at an optional `--ref`; `collect` saves successful outputs and separates unsuccessful executions; `--variant` selects the evidence namespace |
 | `evals/tools/offline_dry_run.py` | Displays prepared instructions/input, records calls to the three skill scripts, checks snapshot hashes and seals the assistant's first proposed actions; calls no provider or GitHub API |
 | `evals/golden/results/assistant-dry-run/prepare.py` | Reconstructs case workspaces from the recorded local Git commit and verifies runtime/input hashes; needs a new destination and invokes no assistant |
@@ -150,10 +152,12 @@ control experiments, described in the evaluation guide.
 | `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token, and fails if a compiled lock differs from its source |
 | `.github/workflows/issue-triage-forced.md` and `.lock.yml` | Source and compiled forced-actions control |
 | `.github/workflows/issue-triage-codex.md` and `.lock.yml` | Dispatch-only copy on the Codex engine for the cross-engine evaluation; its shell is open because Codex cannot restrict commands |
+| `.github/workflows/triage-watchdog.yml` | Runs `check_triage_run.py` after every run of either triage workflow; no AI or secrets |
+| `.github/workflows/drift-check.yml` | Replays all 30 cases once, scores them, runs `drift_report.py` against a reference run set, checks each run's writes and opens a `drift-review` issue when anything changed; dispatch, or weekly while `DRIFT_WEEKLY` is `true` |
 | `.github/aw/actions-lock.json` | Action-version resolution used by the workflow compiler |
 | `.github/CODEOWNERS` | Requests owner review for protected areas; required review also needs repository settings |
 | `AGENTS.md` and `CONTRIBUTING.md` | Repository editing rules and contributor AI policy |
-| `docs/DRIFT_REVIEW.md` | Manual owner review of model/runtime changes and deployment; no scheduled paid monitoring or automatic model-drift detection |
+| `docs/DRIFT_REVIEW.md` | The drift check, the owner's review of its issues, and the weekly schedule |
 
 Read the relevant test beside the implementation. Mocked `gh` calls show what the script
 would request, without contacting GitHub. Compilation and source checks inspect configuration;

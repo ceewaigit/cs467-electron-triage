@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/desktopcapturer","rationale":"The report concerns screen capture with system audio failing to exclude the capturing Electron window's audio.","confidence":"HIGH"}]}],"errors":[]}

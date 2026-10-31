@@ -1,0 +1,1 @@
+{"items":[{"type":"add_labels","labels":[{"name":"component/deviceAccess","rationale":"The reported crash occurs during USB device selection and also affects Bluetooth requestDevice.","confidence":"HIGH"},{"name":"component/session","rationale":"The crash is triggered by a named session partition; the default session rejects cleanly.","confidence":"HIGH"}]}],"errors":[]}

@@ -1,0 +1,1 @@
+{"items":[{"type":"triage_comment","kinds":"similar","refs":"52098,51761,52255"},{"type":"add_labels","labels":[{"name":"component/gpu","rationale":"The report describes GPU subprocess startup crashes with STATUS_BREAKPOINT.","confidence":"HIGH"}]}],"errors":[]}

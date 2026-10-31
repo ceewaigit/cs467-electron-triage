@@ -25,10 +25,12 @@ questions, the bill of materials and the AI-use statement.
 | Question 1 test | [`cases/a1-close-stale/`](evals/golden/cases/a1-close-stale/) |
 | Forced-actions and obey controls | [`results/control-forced/README.md`](evals/golden/results/control-forced/README.md), [`evals/controls/`](evals/controls/) |
 | Kill-switch test | [`results/control-kill-switch.txt`](evals/golden/results/control-kill-switch.txt) |
+| Approval gate, budgets, branch ruleset, network egress | [`results/control-approval.txt`](evals/golden/results/control-approval.txt), [`control-budgets.txt`](evals/golden/results/control-budgets.txt), [`control-branch-ruleset.txt`](evals/golden/results/control-branch-ruleset.txt), [`network-egress.txt`](evals/golden/results/network-egress.txt) |
+| Missing-write alerts | [`.github/workflows/triage-watchdog.yml`](.github/workflows/triage-watchdog.yml), [`scripts/check_triage_run.py`](scripts/check_triage_run.py) |
 | Coding-assistant dry run | [`results/assistant-dry-run/`](evals/golden/results/assistant-dry-run/README.md) |
 | Full 90-run evaluation of the submitted runtime | [`results/codex.md`](evals/golden/results/codex.md): same skill and controls on Codex |
 | Live run of the submitted runtime on Claude | [`evals/failure-recheck-live-3/`](evals/failure-recheck-live-3/README.md): five cases |
-| Drift review policy | [`docs/DRIFT_REVIEW.md`](docs/DRIFT_REVIEW.md) |
+| Drift detection | [`.github/workflows/drift-check.yml`](.github/workflows/drift-check.yml), [`docs/DRIFT_REVIEW.md`](docs/DRIFT_REVIEW.md) |
 
 ## Inspecting one case
 
