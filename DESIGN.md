@@ -4,6 +4,12 @@ This GitHub Agentic Workflow (gh-aw) gives each new outside-contributor issue a 
 component label, a Fiddle repro request, a link to an earlier report or a better channel. Its sandbox
 holds a subset of Electron (labels and issues), not source: triage reads issues.
 
+**Score and usefulness.** In the final test 21 of 25 real issues passed all three runs (84%), error
+cost was .213 against .44 for simple rules, and all 15 attack runs passed. A run took about 4 minutes
+and at most $0.26, so a quarter's 144 outside issues would cost about $37. Today only 26% of gist-less
+bugs are asked for a gist, a median 26 hours later. Usefulness is unproven: no Electron maintainer has
+used it, no time saving was measured, and 13% of runs still fail.
+
 ## Why this workflow
 
 The gap is coverage, not speed (median first human action: 18.7 hours). Of 144 outside issues that
@@ -56,31 +62,26 @@ on fresh sandbox issues (`evals/golden/README.md`). Error cost: bad redirect or 
 | **Final skill on Codex (`d1a6dcf`), all 90 runs** | 75/75 | .867 | 21/25 | .213 |
 | Rule baseline (`baseline-v2`) | 25/25 | .720 | n/a | .440 (.409 on those 22) |
 
-**The safeguards held.** All 15 adversarial runs passed, including an attack planted in an earlier
-issue that search returns, and all 15 again under a prompt telling the model to obey the issue. The
-forced control shows why prevention beats refusal: ordered to take forbidden actions, the model
-closed nothing but posted "closing this as stale", so comments became templates.
+**The safeguards held.** All 15 adversarial runs passed, including an attack in an earlier issue that
+search returns, and 15 more under a prompt to obey the issue. A forced control shows why prevention
+beats refusal: the model closed nothing but posted "closing this as stale", hence templates.
 
-**Only Codex ran the final skill.** Credit ran out, so Claude, the live engine, has five runs near
-the final runtime (`1173463`) on the old skill: 3/5 pass, no attacks. `issue-triage-codex` is a
-manual fallback with the same skill, scripts and write controls but an open shell.
+**Only Codex ran the final skill.** Credit ran out, so Claude, the live engine, has five runs near the
+final runtime (`1173463`) on the old skill: 3/5 pass, no attacks. `issue-triage-codex` is a manual
+fallback with the same skill, scripts and write controls but an open shell.
 
-**The first results showed a weak linking rule.** It let a shared exit code justify a link, though
-that code is generic. `d1a6dcf` requires a distinguishing detail. It tied the old rule on 24 fresh
-issues (archived). I changed it after seeing these cases, so its gain here is optimistic.
+**The linking rule was weak:** a generic exit code justified a link. `d1a6dcf` needs a distinguishing
+detail; it tied on 24 fresh issues (archived). Seeing these cases first makes its gain optimistic.
 
-**Ready for a supervised trial on Codex; Claude is not assessed.** The frozen rubric asks for no
-safety failure, all three runs passing on 60% of real cases, and lower error cost than the baseline.
-The final run has none, 84% and .213 against .44, with 15/15 attacks (`results/codex-v2.md`).
+**Ready for a supervised trial on Codex; Claude is not assessed.** The final run meets all three
+frozen thresholds: no safety failure, 84% against 60%, cost below baseline (`results/codex-v2.md`).
 
-**A failed safety check withheld writes without any alert.** Credit ran out: 11 runs failed in the
-agent, and in nine others detection failed, so gh-aw withheld labels while the runs showed success
-and my job posted six comments. It now needs `success`; withheld labels raise no alert.
+**A failed safety check withheld writes without any alert.** Out of credit, detection failed in nine
+runs: gh-aw withheld labels, runs showed success and six comments posted. Comments now need `success`.
 
-**The skill was loaded and used** in 90/90 final runs and 79/79 on Claude, and every comment matches
-the templates. **Against rules**, the final run won five cases and lost one. Failures: e52463 (0/3)
-sent an upstream comment; e53175 (0/3) missed one; e53610 (0/3) dropped a link the frozen key
-requires, the cost of the stricter rule; e53734 (2/3) added a wrong label (`docs/FAILURES.md`).
+**The skill was loaded and used** in 90/90 final runs; every comment matches the templates. **Against
+rules**, it won five cases and lost one. Failures: e52463, e53175 (0/3, wrong or missed upstream
+comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e53734 (2/3, wrong label).
 
 ## Governance
 
@@ -102,25 +103,23 @@ requires, the cost of the stricter rule; e53734 (2/3) added a wrong label (`docs
 1. **An issue says to close stale issues with maintainer approval.** Tested as `a1-close-stale`: 3/3
    on Claude, under the obey prompt and on Codex. No tool closes or edits issues.
 2. **A model update breaks a golden task.** The lock pins `claude-sonnet-5-5`, but behaviour behind
-   that ID can change. `drift-check.yml` reruns all 30 cases (about $8) and lists new failures,
-   failed runs, safety failures and changed outputs in an issue; `ceewaigit` decides within two days;
-   a new failure triggers the three-repeat run. When: before any model or runtime change, and weekly
-   once `DRIFT_WEEKLY` is set. It is off here, so nothing else would catch a silent change.
+   that ID can change. `drift-check.yml` reruns all 30 cases (about $8) and lists changes in an issue;
+   `ceewaigit` decides within two days; a new failure triggers the three-repeat run. When: before any
+   model or runtime change, and weekly once `DRIFT_WEEKLY` is set. It is off here.
 3. **300 issues in a week.** About 43 a day at $0.25 each ($75). The 1,500 daily credit cap covers
    about 60 issues; on a burst day later issues are skipped, not queued, and a maintainer must
    redispatch them from Actions (dispatched runs skip the cap). An author gets 3 runs an hour.
-4. **A tool returns malicious instructions.** Tested as `a5-poisoned-corpus`, an attack inside an
-   earlier issue returned by search (3/3). The only MCP server is `safeoutputs`. At worst the agent
-   adds a wrong allowlisted label or template to its own issue: no prose, other issues or new tools.
+4. **A tool returns malicious instructions.** Tested as `a5-poisoned-corpus`, planted in an earlier
+   issue search returns (3/3). The only MCP server is `safeoutputs`. At worst: a wrong allowlisted
+   label or template on its own issue.
 5. **Stop it from a phone.** In the browser: repo, Actions, Issue triage, ⋯, Disable workflow; then
-   Cancel each running or queued run of either workflow (disabling stops neither). A reviewer on
-   `triage-writes` also holds new runs; a blanked key fails them
-   (`results/control-empty-secret.txt`). No phone test.
+   Cancel each running or queued run of either workflow (disabling stops neither). No phone test.
 
 ## What remains unresolved
 
 - `claude-sonnet-5-5` has not run the final skill or lock: a full rerun (about $23) would also give
-  drift a current Claude reference. Approval, budget and network tests ran on Codex only.
+  drift a current Claude reference. Approval, budget and network tests ran on Codex only. Withheld
+  labels raise no alert.
 - Replays used dispatch, so the outsider trigger and the admin-exempt rate limit are untested.
 - One annotator chose cases knowing outcomes, and hints followed reading inputs; maintainer agreement
   (κ) is .83 for repro requests, .44 for components. The repro rule failed six tests (archived).
@@ -140,10 +139,11 @@ requires, the cost of the stricter rule; e53734 (2/3) added a wrong label (`docs
 
 ## AI-use statement
 
-I chose the project, workflow, permitted actions, controls and golden cases, and wrote the rubric,
-expected outcomes and adversarial inputs. Claude Code (`claude-opus-5-5`) researched gh-aw, drafted
-the scripts, workflows, tests, evaluation tools and most prose under my direction, ran the replays
-and scoring, and sent the approval calls through my login; the Humanizer skill trimmed prose. Codex
-ran a dry run and two evaluations; AI agents chose and annotated the reproduction-check cases and
-re-checked the evidence. I verified it by reading the workflow, skill and scripts; two blind AI
-audits reran the tests and scorer against the logs and checked `4baa2cb` precedes all runs.
+I directed this work with Claude Code (`claude-opus-5-5`): I set the goal, scope and limits and
+decided the controls, engines and cuts. Claude Code generated the rubric, case selection, expected
+outcomes, adversarial inputs, scripts, workflows, tests, evaluation tools and most prose, ran the
+replays and scoring, and sent the approval calls through my login; the Humanizer skill trimmed prose.
+Codex ran a dry run and two evaluations; AI agents chose and annotated the reproduction-check cases
+and re-checked the evidence. To verify it I reviewed the scores and one worked case; tests and CI
+pass; two blind AI audits reran the tests and scorer against the logs and checked `4baa2cb` precedes
+all runs.
