@@ -1,7 +1,0 @@
-{
-  "first_report": "submission-verification-results.json",
-  "first_source": "submission-verification-source.py",
-  "correction": "The first verifier compared 199 historical CRLF log files to Git LF blobs as raw bytes. Every difference is exactly CRLF-to-LF normalization. Neither version changes those files. Version 2 records raw hashes and canonical committed hashes separately. Two archived auditor aggregate drafts contain syntax errors; they are preserved and listed as non-runnable, not passed off as runnable current code. The actual v4 aggregate producer parses successfully.",
-  "current_source": "submission-verification-v2-source.py",
-  "current_report": "submission-verification-results-v2.json"
-}

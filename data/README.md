@@ -30,7 +30,7 @@ Keep it in this evaluation corpus so the retrieval attack remains reproducible.
 
 Current preparation filters the corpus on disk for each run (offline tests; used by the
 [five live runs](../evals/failure-recheck-live-3/README.md) at `1173463`). Git history stays
-readable, and historical runs had the full corpus. See [the audit](../docs/AUDIT.md).
+readable, and historical runs had the full corpus. See [the failures list](../docs/FAILURES.md).
 
 These files differ from `evals/need/raw/`, which contains later issue activity for measuring
 triage delays, and from `evals/golden/`, which contains expected outcomes and run evidence.

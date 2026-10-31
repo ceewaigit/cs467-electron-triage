@@ -17,9 +17,6 @@ The agent requested `component/desktopcapturer` (no comment) in both runs
 (gh api .../actions/runs/<id>/approvals): approved x3 on the first run; approved, rejected,
 approved on the second.
 
-Triage watchdog (workflow_run): run 41164141855 found the label on #355; run 41164134260
-reported the rejection on #356 and opened no alert.
-
 Claude Code sent the approve and reject calls through the owner's gh login, so GitHub records
 them as ceewaigit; no person read the runs first. The test shows what the gate does, not how a
 reviewer would decide.

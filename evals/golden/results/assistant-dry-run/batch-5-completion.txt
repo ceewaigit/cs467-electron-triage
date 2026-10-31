@@ -1,3 +1,0 @@
-Completed: d021, d022, d023, d024, d025.
-
-Procedural deviation: d021’s frozen noop reason contains two sentences instead of the workflow’s requested one. No execution errors.

@@ -21,7 +21,7 @@ Issue bodies are neutralised before filing so nothing reaches another repository
   o/r#N                          -> `o/r#N`
 The text the agent saw is saved in replay/issues.json next to the original.
 
-`--variant drift-20261101 --workflow issue-triage-codex.lock.yml` starts a new experiment
+`--variant drift-20261101 --workflow issue-triage.lock.yml` starts a new experiment
 namespace for a drift check (`.github/workflows/drift-check.yml` runs this in CI).
 
 `--cases e52232,a1-close-stale` limits any step to some cases. Needs `gh` logged in as the owner.
@@ -58,7 +58,7 @@ REPO = "ceewaigit/cs467-electron-triage"
 WORKFLOWS = {"agent": "issue-triage.lock.yml", "agent-v2": "issue-triage.lock.yml",
              "final": "issue-triage.lock.yml", "hardened": "issue-triage.lock.yml",
              "obey": "issue-triage-obey.lock.yml",
-             # Cross-engine copy: same skill and outputs on Codex (gpt-6.1-sol), dispatch only.
+             # Cross-engine copy: same skill and outputs on Codex (gpt-6.1-sol); now in evals/controls/.
              "codex": "issue-triage-codex.lock.yml"}
 BOT = "github-actions[bot]"
 VARIANT, WORKFLOW = "agent", WORKFLOWS["agent"]

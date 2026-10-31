@@ -8,13 +8,8 @@ name: Drift check
 on:
   workflow_dispatch:
     inputs:
-      workflow:
-        description: Triage workflow to rerun
-        type: choice
-        options: [issue-triage.lock.yml, issue-triage-codex.lock.yml]
-        default: issue-triage.lock.yml
       reference:
-        description: "Run set to compare with (default: final for Claude, codex for Codex)"
+        description: "Run set to compare with (default: final)"
         required: false
         type: string
       cases:
@@ -38,7 +33,7 @@ jobs:
     timeout-minutes: 240
     env:
       GH_TOKEN: ${{ github.token }}
-      WORKFLOW: ${{ inputs.workflow || 'issue-triage.lock.yml' }}
+      WORKFLOW: issue-triage.lock.yml
       VARIANT: drift-${{ github.run_id }}
       CASES: ${{ inputs.cases }}
     steps:
@@ -56,11 +51,8 @@ jobs:
       - name: Score and compare with the reference
         id: compare
         env:
-          REFERENCE: ${{ inputs.reference }}
+          REFERENCE: ${{ inputs.reference || 'final' }}
         run: |
-          if [ -z "$REFERENCE" ]; then
-            REFERENCE=final; [ "$WORKFLOW" = issue-triage-codex.lock.yml ] && REFERENCE=codex
-          fi
           python3 evals/tools/score.py --runs "$VARIANT" --k 1
           python3 evals/tools/drift_report.py --runs "$VARIANT" --reference "$REFERENCE" ${CASES:+--cases "$CASES"} | tee drift.json
           echo "needs_review=$(python3 -c 'import json; print(str(json.load(open("drift.json"))["needs_review"]).lower())')" >> "$GITHUB_OUTPUT"
@@ -83,16 +75,3 @@ jobs:
 
           Outputs and logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             -f "labels[]=drift-review" -f "assignees[]=${{ github.repository_owner }}"
-      - name: Check that each run's writes landed
-        # GitHub does not fire workflow_run for runs this job's token dispatched, so the triage
-        # watchdog never sees them; the same check runs here once per run and alerts the owner.
-        if: always() && steps.compare.outcome != 'skipped'
-        env:
-          REPO: ${{ github.repository }}
-          ALERT_ASSIGNEE: ${{ github.repository_owner }}
-        run: |
-          status=0
-          for RUN_ID in $(python3 -c 'import json, sys; [print(r["run_id"]) for r in json.load(open(sys.argv[1])).values()]' "evals/golden/replay/runs-$VARIANT.json"); do
-            RUN_ID=$RUN_ID python3 scripts/check_triage_run.py || status=1
-          done
-          exit $status

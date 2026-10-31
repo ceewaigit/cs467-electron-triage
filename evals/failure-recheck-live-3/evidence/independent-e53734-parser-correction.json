@@ -1,7 +1,0 @@
-{
-  "case": "e53734",
-  "original_audit_source_sha256": "8a4d15133f4b49b54df99b9ec207f6bedac34baf81bb42396ce8ee68a7eef0f3",
-  "failure": "AttributeError in contents(): a permission-denied diagnostic session.result row has a string-valued message, not a message object.",
-  "write_boundary": "Failure occurred before normalized audit input and result creation; neither case result nor native evidence was modified.",
-  "correction": "Version 4 only iterates content on object-valued messages, selects terminal cost-bearing session results, and exposes permission-denial procedural caveats. Native evidence, rubric, runtime and scoring rules remain unchanged."
-}

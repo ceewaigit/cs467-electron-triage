@@ -25,9 +25,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh extension install github/gh-aw --pin v0.93.2
-          for wf in issue-triage issue-triage-forced issue-triage-codex; do
-            gh aw compile "$wf" --strict --no-check-update
-          done
+          gh aw compile issue-triage --strict --no-check-update
           git diff --exit-code .github/workflows/
       - name: Baseline still scores (scorer and cases are intact)
         # Writes to a scratch namespace so the stored historical baseline is never overwritten.

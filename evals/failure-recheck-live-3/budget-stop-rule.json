@@ -1,9 +1,0 @@
-{
-  "recorded_at_utc": "2026-10-24T06:10:36.525160+00:00",
-  "phase": "before any issue creation or dispatch in this attempt",
-  "maximum_completed_run_estimate_before_continuing_usd": 0.5,
-  "cumulative_pause_threshold_usd": 2.0,
-  "maximum_workflow_dispatches": 5,
-  "enforcement": "Coordinator checks agent and detector evidence between sequential runs; not a provider invoice cap. Stop on missing costs or execution/setup/enforcement failure.",
-  "no_retries_for_correctness": true
-}

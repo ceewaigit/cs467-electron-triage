@@ -69,7 +69,7 @@ baseline (.44), so that threshold is not met. Four failures match Claude's; e524
 **A failed safety check withheld writes without any alert.** Provider credit ran out mid-batch: 11
 runs failed in the agent (not scored, so the thresholds are "not assessed"), and in nine others
 detection failed, so gh-aw withheld labels while the runs showed success and my comment job posted
-six comments. It now needs `success`, and `triage-watchdog` alerts on failed runs and lost writes.
+six comments. It now needs `success`. Withheld labels still raise no alert.
 
 **The skill was loaded and used** in 79/79 runs (installed, discovered, invoked, run); label
 validation ran in 78. All 25 posted comments match the templates. **Compared with rules**, the
@@ -88,13 +88,13 @@ agent's requests won five, lost two. Failures (as requested; free-text):
 | Identity | `github-actions[bot]` via `GITHUB_TOKEN`, seen on every posted comment | Tested |
 | Least privilege | Agent token `contents/issues: read`; writes only in output jobs (`issue-triage.md`, lock) | Tested |
 | Safe outputs | One label call, 3 allowlisted labels; one templated comment. CI rejects `close-issue` (`results/control-broken-config.txt`). Target pin: config tests only | Tested |
-| Threat detection | Runs before any write; when it failed, labels were withheld; comments need `success`; the watchdog alerts (`results/control-watchdog.txt`) | Tested |
+| Threat detection | Runs before any write; when it failed, labels were withheld and comments need `success` (`results/delivery-final.md`) | Tested |
 | Human approval | Optional `triage-writes` reviewer: approved run labelled, rejected run wrote nothing (`results/control-approval.txt`). Below `HIGH`: suggestions only | Tested on Codex; off |
 | Budgets | 8 min, 30 turns, 100 credits (detection 400 more) a run; 1,500 a day; 3 runs per author an hour; 30-day expiry (`results/control-budgets.txt`) | Caps tested on Codex; rate limit not |
 | Audit trail | Trigger, model, tool calls, outputs and agent cost per run (`cases/*/actual/*/logs/`); comments link the run | Tested |
 | Kill switch | `gh aw disable` blocks new runs; `gh run cancel` stops a live one (`results/control-kill-switch.txt`) | Tested on a computer |
 | Drift detection | `drift-check.yml` reruns the cases and opens a review issue for `ceewaigit` (`docs/DRIFT_REVIEW.md`) | Tested on Codex; weekly run only proposed |
-| Accountability | `ceewaigit` is responsible and gets every alert; that sole owner can bypass the code-owner ruleset (`results/control-branch-ruleset.txt`) | Configured |
+| Accountability | `ceewaigit` is responsible and reviews drift issues; that sole owner can bypass the code-owner ruleset (`results/control-branch-ruleset.txt`) | Configured |
 
 ## Five questions
 
@@ -106,9 +106,9 @@ agent's requests won five, lost two. Failures (as requested; free-text):
    and a new failure triggers the three-repeat run. When: before any model or runtime change, and
    weekly once `DRIFT_WEEKLY` is set. It is off here, so nothing else would catch a silent change.
 3. **300 issues in a week.** About 43 a day at about $0.25 each ($75). The 1,500 daily credit cap
-   covers about 60 issues; on a burst day later issues are skipped, not queued. The watchdog lists
-   them for a manual sweep (unit-tested only); dispatched runs skip the cap. Issues run in parallel.
-   An author gets 3 runs an hour; more are dropped unlisted. The approval brake needs 900 approvals.
+   covers about 60 issues; on a burst day later issues are skipped, not queued, and show only in
+   Actions, where a maintainer can redispatch them (dispatched runs skip the cap). Issues run in
+   parallel. An author gets 3 runs an hour. The approval brake would need 900 approvals.
 4. **A tool returns malicious instructions.** Tested as `a5-poisoned-corpus`, an attack inside an
    earlier issue returned by search (3/3). The only MCP server is `safeoutputs`. At worst the agent
    adds a wrong allowlisted label or template to its own issue: no prose, other issues or new tools.
@@ -123,7 +123,7 @@ agent's requests won five, lost two. Failures (as requested; free-text):
 - Replays used dispatch, so the outsider trigger and the admin-exempt rate limit are untested.
 - The corpus stops in September 2026; a deployment must refresh it to keep links useful.
 - One annotator chose cases knowing outcomes, and hints followed reading inputs; maintainer κ is .83
-  for repro requests, .44 for components. The repro rule failed six adoption tests.
+  for repro requests, .44 for components. The repro rule failed six adoption tests (archived).
 
 ## Agent bill of materials
 
@@ -133,9 +133,9 @@ agent's requests won five, lost two. Failures (as requested; free-text):
 | Runtime | gh-aw v0.93.2, Claude Code 2.1.300, AWF v0.28.70, images pinned by digest; threat-detect v0.5.2 on `claude-sonnet-5-5` |
 | Instructions | Workflow body, `.claude/skills/issue-triage/SKILL.md`, AGENTS.md via CLAUDE.md |
 | Tools and MCP | Bash: three skill scripts, 13 read-only commands; Read, Glob, Grep, LS, Skill, Task, TodoWrite; Edit in `/tmp` (lock); MCP `safeoutputs` only |
-| Permissions | Agent read-only; `triage_comment` `issues: write`; gh-aw output jobs issues/PR write; watchdog and drift check `issues: write`, drift `actions: write` |
+| Permissions | Agent read-only; `triage_comment` `issues: write`; gh-aw output jobs issues/PR write; drift check `issues: write`, `actions: write` |
 | Data | Opening issue text; frozen corpus and labels in `data/`, with synthetic attack row #900001 for `a5` (remove before deployment) |
-| Other workflows | Dispatch-only: `issue-triage-forced` (control), `issue-triage-codex` (open shell). No AI: `checks.yml`, `triage-watchdog.yml`, `drift-check.yml` |
+| Other workflows | No AI: `checks.yml`, `drift-check.yml`. The Codex and control copies are inert records in `evals/controls/` |
 | Logs and evals | Run artifacts in `evals/golden/cases/*/actual/`; scores in `evals/golden/results/` |
 | Responsible human | `ceewaigit` (configuration, outputs, disabling) |
 

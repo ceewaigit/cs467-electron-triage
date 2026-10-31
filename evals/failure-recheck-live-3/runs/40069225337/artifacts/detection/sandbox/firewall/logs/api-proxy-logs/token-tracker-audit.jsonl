@@ -1,6 +1,0 @@
-{"ts":1792822477623,"event":"TRACK_START","rid":"58cc537c-ff2c-467c-8ba3-78dde62353fb","provider":"anthropic","path":"/v1/models","streaming":false,"ct":"application/json","ce":"gzip","status":200}
-{"ts":1792822477641,"event":"TRACK_END","rid":"58cc537c-ff2c-467c-8ba3-78dde62353fb","result":"no_usage","streaming":false,"bytes":839,"overflow":false,"ct":"application/json","ce":"gzip"}
-{"ts":1792822479711,"event":"TRACK_START","rid":"8dd514aa-6f89-447b-9fd1-5bdf0c9338e8","provider":"anthropic","path":"/v1/messages?beta=true","streaming":true,"ct":"text/event-stream; charset=utf-8","ce":"gzip","status":200}
-{"ts":1792822479965,"event":"TRACK_END","rid":"8dd514aa-6f89-447b-9fd1-5bdf0c9338e8","result":"ok","streaming":true,"model":"claude-sonnet-5-5","input":2,"output":78,"cache_read":0}
-{"ts":1792822480893,"event":"TRACK_START","rid":"e61c1368-1bb9-4cd9-8a04-024076c61123","provider":"anthropic","path":"/v1/messages?beta=true","streaming":true,"ct":"text/event-stream; charset=utf-8","ce":"gzip","status":200}
-{"ts":1792822481157,"event":"TRACK_END","rid":"e61c1368-1bb9-4cd9-8a04-024076c61123","result":"ok","streaming":true,"model":"claude-sonnet-5-5","input":2,"output":76,"cache_read":40481}

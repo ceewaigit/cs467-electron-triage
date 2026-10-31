@@ -49,8 +49,6 @@ flowchart TD
    repository permissions. `post_triage_comment.py` requires a successful detection verdict,
    validates the request through the renderer, and posts at most one template comment to the
    issue supplied by workflow context. `noop` records a reason and makes no issue write.
-7. When the run finishes, `triage-watchdog.yml` runs `check_triage_run.py`. It alerts the owner
-   to a failed run or a lost write and lists issues the daily credit cap skipped.
 
 The workflow also disables gh-aw's automatic issue creation for failure, incomplete, missing-tool
 and missing-data reports. `safe-outputs.threat-detection.report-as-issue: false` disables the
@@ -78,7 +76,6 @@ are agent-only costs; do not present them as total workflow spending.
 | `.claude/skills/issue-triage/scripts/check_labels.py` | Proposed label arguments and the allowlist | Prints validation results and returns failure for rejected labels |
 | `.claude/skills/issue-triage/scripts/render_comment.py` | `--kinds`, optional `--refs`, corpus | Prints a fixed comment or rejects invalid combinations/references; no posting |
 | `scripts/post_triage_comment.py` | Agent-output JSON, detection verdict and workflow target | Validates the first requested comment and posts it through `gh api` if accepted |
-| `scripts/check_triage_run.py` | A finished triage run: jobs, approvals, agent output, detection verdict, the issue's labels and comments | Writes a step summary; opens a `triage-alert` issue assigned to the owner when requested writes are missing |
 
 `triage_checks.py` uses BM25, a word-based relevance score, to retrieve five candidate issues.
 It weights title terms more heavily and removes issue-form boilerplate before matching.
@@ -104,39 +101,21 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 | `evals/tools/build_cases.py` | Rebuilds real-case `input.json` files from those rows; historical setup utility that must not be run over the frozen cases |
 | `evals/tools/drift_report.py` | Compares `results/score-<runs>.json` with a reference run set; writes `results/drift-<runs>.md` and prints whether owner review is needed |
 | `evals/tools/replay.py` | `labels` creates sandbox labels; `file` creates neutralised sandbox issues; `dispatch` starts workflows at an optional `--ref`; `collect` saves successful outputs and separates unsuccessful executions; `--variant` selects the evidence namespace |
-| `evals/tools/offline_dry_run.py` | Displays prepared instructions/input, records calls to the three skill scripts, checks snapshot hashes and seals the assistant's first proposed actions; calls no provider or GitHub API |
-| `evals/golden/results/assistant-dry-run/prepare.py` | Reconstructs case workspaces from the recorded local Git commit and verifies runtime/input hashes; needs a new destination and invokes no assistant |
-| `evals/golden/results/assistant-dry-run/collect.py` | Exports sealed local sessions into scorer-compatible proposed outcomes, readable transcripts and procedure checks; refuses to overwrite existing dry-run evidence |
 | `evals/tools/baseline.py` | Runs fixed rules over the deterministic report and writes one local output per case; `--out` selects a new destination |
 | `evals/tools/score.py` | Frozen scorer: reads expected and actual outputs, writes `results/score-<runs>.json`, and reports pass rates, error costs and safety failures |
 | `evals/tools/requested_view.py` | Copies a run set into `<runs>-requested/` with the labels the agent requested, so the frozen scorer can score decisions apart from label delivery |
 | `evals/tools/skill_check.py` | Reads each run's inventory/session evidence, checks skill use and validation order, and writes `results/skill-check-<runs>.json` with costs and tools |
 | `evals/tools/stats.py` | Reads score reports, checks planned-run coverage and reports case-level statistics; keeps incomplete evidence from becoming a full acceptance claim |
-| `evals/tools/confusion.py` | Counts correct, missed and unwanted actions on real cases; rewrites `results/confusion.md` |
 | `evals/tools/agreement.py` | Compares frozen expectations with maintainers' later actions; optionally extracts those actions from saved raw data and writes the agreement report |
-| `evals/tools/hint_holdout.py` | Checks component keywords on non-golden Q3 issues with maintainer component labels; reads a supplied raw-data directory and prints counts |
 | `evals/need/analyze_issues.py` | Reads saved Q3 issue histories and opening-state records; writes `issues_table.csv` and `issue_metrics.json` |
 | `evals/need/analyze_extra.py` | Reads those histories and the issue table; writes `extra_metrics.json` for reproduction requests, an AI-authorship proxy and duplicate-link delay |
+| Other archives | The reproduction check, the coding-assistant dry run and raw recheck logs are on [`archive/full-evidence`](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/full-evidence) |
 | Archived experiments | `conservative-linking`, `judgment-check` and `failure-recheck-offline` (with the two failed live attempts) are on the [`archive/experiments` branch](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/experiments/evals) |
-| `evals/reproduction-check/select_cases.py` | Selects new Q2 opening inputs while excluding all earlier cases; records the seed, eligible IDs and exclusions |
-| `evals/reproduction-check/experiment.py` | Separate comparison wrappers: prepare frozen workspaces, reconstruct them, export sealed decisions and score paired results; no model or network calls |
-| `evals/reproduction-check/known_regression.py` | Prepares and collects the separate known failure; never includes it in fresh-case metrics |
-| `evals/reproduction-check/evidence/independent-check-source.py` | Independently reconstructs contexts, replays helpers and scores evidence; exclusive output creation protects the saved first audit |
-| `evals/failure-recheck-live-3/run.py` | Wraps the sandbox replay helper for one explicit case at k=1; `file` creates an issue, `dispatch` can incur provider cost, and `collect` reads and saves GitHub results |
-| `evals/failure-recheck-live-3/collect_artifacts.py`, `check_trigger.py` | Read GitHub and save complete run artifacts or verify the automatic issue-event run skipped; neither dispatches inference |
-| `evals/failure-recheck-live-3/check_cost.py` | Offline checkpoint: reconcile agent and detector request ledgers, tokens and saved rates; stop on incomplete evidence or spending thresholds; no in-flight dollar cap |
-| `evals/failure-recheck-live-3/summarize.py` | Offline frozen scoring, independent-score and cost reconciliation; refuses to overwrite its saved result |
-
-The copies under each experiment's `evidence/frozen/` and
-`known-regression/collection-source.py` are archived execution sources. Keep them unchanged
-when editing maintained code. Follow each
-experiment's README for reconstruction or rescoring in a disposable copy. Its historical
-decision describes the protocol at experiment close; the later owner decision is in `ADOPTION.md`.
 
 `evals/controls/broken_config.sh` is the only shell helper. It changes temporary workflow
 copies to check that broad permissions and forbidden outputs fail compilation or configuration
-tests. The obeying and forced-actions Markdown workflows in the same directory are deliberate
-control experiments, described in the evaluation guide.
+tests. The obeying, forced-actions and Codex workflows in the same directory are inert records
+of control experiments, described in the evaluation guide.
 
 ## Tests and configuration files
 
@@ -150,14 +129,9 @@ control experiments, described in the evaluation guide.
 | `tests/test_need_analysis.py` | Opening-time form and gist measurements, including edited-body cases |
 | `tests/test_skill_evidence.py` | Versioned script markers count as evidence without inventing a successful check |
 | `tests/test_replay_collection.py` | Successful no-action runs remain scorable; failures stay separate; forced refresh preserves evidence categories; dispatch filters refs and rejects ambiguous matches |
-| `tests/test_offline_dry_run.py` | Changed snapshots and alternate check inputs are rejected, the first proposal is preserved, and helper subprocesses do not inherit API credentials |
-| `tests/test_reproduction_experiment.py` | Reproduction-specific decision criteria, frozen input integrity and strict validation of the separate known-case collector |
 | `tests/test_requested_view.py` | The requested-label view reads both label forms and leaves comments unchanged |
 | `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token, and fails if a compiled lock differs from its source |
-| `.github/workflows/issue-triage-forced.md` and `.lock.yml` | Source and compiled forced-actions control |
-| `.github/workflows/issue-triage-codex.md` and `.lock.yml` | Dispatch-only copy on the Codex engine for the cross-engine evaluation; its shell is open because Codex cannot restrict commands |
-| `.github/workflows/triage-watchdog.yml` | Runs `check_triage_run.py` after every run of either triage workflow; no AI or secrets |
-| `.github/workflows/drift-check.yml` | Replays all 30 cases once, scores them, runs `drift_report.py` against a reference run set, checks each run's writes and opens a `drift-review` issue when anything changed; dispatch, or weekly while `DRIFT_WEEKLY` is `true` |
+| `.github/workflows/drift-check.yml` | Replays all 30 cases once, scores them, runs `drift_report.py` against a reference run set and opens a `drift-review` issue when anything changed; dispatch, or weekly while `DRIFT_WEEKLY` is `true` |
 | `.github/aw/actions-lock.json` | Action-version resolution used by the workflow compiler |
 | `.github/CODEOWNERS` | Requests owner review for protected areas; required review also needs repository settings |
 | `AGENTS.md` and `CONTRIBUTING.md` | Repository editing rules and contributor AI policy |
@@ -200,44 +174,6 @@ because provider credit ran out and are documented separately.
 The live recheck at `1173463` and the 90 `codex` runs (`results/codex.md`) exercise the runtime
 before three small fixes (renderer v4 trailer, `component/other`, missing-output check); none
 of them would change a recorded output.
-
-## Follow the coding-assistant fallback
-
-The fallback uses runtime source `7ef6696a5f7f56112db829287c2d776e40411a57`, including the
-version 3 template. Its manifest records 15 runtime hashes. Each prepared case contains one
-normalised opening input and a corpus filtered to earlier issues; expected outcomes and Git
-history are absent. Six Codex subagents, each starting without the parent chat history,
-handled five cases apiece. The configured Claude model was not executed, and the exact
-inherited Codex backend model ID was not exposed.
-
-`prepare.py` rebuilds the workspaces from local Git history and checks them against the
-recorded runtime and per-case context hashes. It requires a destination that does not exist
-and does not invoke an assistant. The saved reconstruction check covers all 30 workspaces.
-
-`offline_dry_run.py start` displays the instructions and input and records that text.
-`run` executes one of the three unchanged skill helpers, recording its arguments, exit code,
-stdout and stderr. `finish` seals the first proposed `add_labels`, `triage_comment` or `noop`
-request. It cannot replace that decision or publish it to GitHub. Snapshot hashes are checked
-before each command. The recorder controls these local operations, not the assistant's full
-tool environment.
-
-After every proposal was sealed, `collect.py` exported the transcripts and converted the
-proposals to the frozen scorer's schema. In `actual/assistant-dry-run/run-1.json`, fields named
-`labels_added` and `comment` mean proposed actions; `writes_executed` is false. The sibling
-`logs/run-1/` holds the context, issue, proposal and transcripts. Source hashes, batch prompts,
-sealed-proposal hashes and procedure checks are in `results/assistant-dry-run/`.
-
-The single-trial result was 20/25 real cases and 5/5 adversarial cases. Weighted error cost
-was 0.56 against 0.44 for the stored `baseline-v2`, so it did not improve on that criterion.
-All cases ran the checks and validated the labels/comments they proposed. The synthetic
-reference attempted in `a5-poisoned-corpus` was rejected before the final decision. `e54317`
-has a two-sentence noop reason despite the workflow's one-sentence requirement.
-
-These records test local procedures and proposed decisions. They do not test hosted threat
-detection, GitHub permissions, network restrictions, budgets or posting. They also supply one
-trial per case, so the three-repeat hosted acceptance protocol remains unassessed. The full
-[fallback report](../evals/golden/results/assistant-dry-run/README.md) explains reproduction
-and the remaining limits.
 
 ## Explain the submission
 

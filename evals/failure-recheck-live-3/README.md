@@ -40,15 +40,14 @@ which the allowlist does not match as a whole. The allowlist denied it; the agen
 separately before requesting outputs. This is a procedural deviation and one observed
 command rejection. It is not a safety-failing issue write or proof of general attack resistance.
 
-The [independent review](evidence/independent-final-review.md) finds no new execution or
-evidence-integrity blocker. It retains both scored failures and the shell deviation.
+An independent review found no new execution or evidence problem and kept both scored failures
+and the shell deviation.
 These records report and explain both failures; they do not show that the current
 configuration would pass a full rerun.
 
 ## Scope, cost controls and provenance
 
-The [manifest](manifest.json), [protocol](PROTOCOL.md), [spending rules](budget-stop-rule.json)
-and [pre-execution seal](pre-execution-seal.json) preceded dispatch. All 15 evaluated runtime
+The [manifest](manifest.json) preceded dispatch. All 15 evaluated runtime
 files are byte-identical to `7debabe981d26af3ff36cc4606f45bc6efb1daf3`. The model ID is
 `claude-sonnet-5-5`, Claude Code is `2.1.300`, gh-aw is `0.93.2`, and AWF is `0.28.70`.
 Each run has one terminal agent session and no paid retry. Expected outcomes stayed evaluator-side.
@@ -59,8 +58,7 @@ commit; GitHub's static run-list title does not expose the issue input. The repl
 neutralised mentions and cross-repository references. No action targeted Electron's repository.
 
 Dispatch would stop above $0.50 per run or $2 in total; neither was reached.
-No key value was read or saved; [secret metadata](secret-metadata.json) records only its name
-and update time. The earlier [authentication failure](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live/README.md)
+No key value was read or saved. The earlier [authentication failure](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live/README.md)
 and [refreshed-key failure](https://github.com/ceewaigit/cs467-electron-triage/blob/archive/experiments/evals/failure-recheck-live-2/README.md) remain separate historical evidence.
 
 Current live evidence covers skill use, permitted validators, clean detector verdicts and bot
@@ -68,37 +66,13 @@ label/comment delivery. It does not test current adversarial rejection, target m
 hard-limit exhaustion, burst limits or mobile operation. Historical adversarial/control evidence
 has its own source versions. No runtime, frozen target or old outcome was changed for this check.
 
-## Find and reproduce the evidence
+## Evidence
 
-| Path | Contents or purpose |
+| Path | Contents |
 |---|---|
-| [result.json](result.json) | Coordinator scores and costs, reconciled against sealed independent results |
-| [Independent aggregate](evidence/independent-aggregate-results.json) | Frozen scores, phase costs and 625 preservation/sequence checks |
-| `evidence/independent-CASE-report.md` | Readable independent case assessments |
-| `cases/CASE/actual/failure-recheck-live-3/run-1.json` | Native collector outcome, source and run URL |
-| `cases/CASE/actual/failure-recheck-live-3/logs/run-1/` | Native session, prompt and other replay logs |
-| `runs/RUN_ID/` | Completed run/jobs metadata, seven complete artifact bundles, workflow log, raw issue and paginated timeline |
-| `evidence/coordinator-cost-CASE.json` | Separate phase estimates and cumulative spending decisions |
-| [unit-tests.txt](evidence/unit-tests.txt) | All 103 offline tests at the time passed |
-| [run.py](run.py) | Explicit case/stage wrapper; `file` writes a sandbox issue, `dispatch` can spend credit, `collect` reads GitHub |
-| [collect_artifacts.py](collect_artifacts.py), [check_trigger.py](check_trigger.py) | Read GitHub and save complete run evidence or verify the skipped automatic event |
-| [check_cost.py](check_cost.py) | Offline usage reconciliation and spending checkpoint; never dispatches |
-| [summarize.py](summarize.py) | Offline frozen scoring and independent-score/cost agreement; refuses to replace its result |
-| `evidence/*source.py` | Archived independent reproductions; version suffixes preserve audit corrections |
+| [result.json](result.json) | Scores and costs for the five runs |
+| `cases/CASE/actual/failure-recheck-live-3/run-1.json` | Collected outcome, source and run URL |
+| `cases/CASE/actual/failure-recheck-live-3/logs/run-1/` | Session, prompt and other run logs |
 
-For a safe offline score reproduction, copy the repository to a disposable directory, retaining
-its saved evidence. In that copy only, remove `evals/failure-recheck-live-3/result.json` and run:
-
-```bash
-python3 evals/failure-recheck-live-3/summarize.py
-```
-
-This calls neither GitHub nor a model. It verifies the frozen scorer and five input/expected
-copies, scores the saved outputs and checks agreement with the independent case records.
-The independent source scripts document deeper checks; some need the original local Git history.
-The maintained dispatch wrapper is not a reproduction shortcut: these five paid runs are complete.
-
-The sealed case results use independent auditor versions v2 (e52255, e52266), v3 (e52385,
-e52463) and v4 (e53734). The aggregate was produced by
-[independent-aggregate-v4-source.py](evidence/independent-aggregate-v4-source.py); the v2 and v3
-aggregate drafts do not run.
+Raw run artifacts, the protocol, the independent review and the helper scripts are on the
+[`archive/full-evidence`](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/full-evidence/evals/failure-recheck-live-3) branch.

@@ -1,8 +1,0 @@
-{
-  "scope": "Offline reproduction in a disposable evidence/scorer copy; no GitHub or provider calls.",
-  "exit_code": 0,
-  "byte_identical_result": true,
-  "result_sha256": "099514f95f0c1ced422cc01ed328d3ac309f7fc8c0752c9e6887363eb5fec2eb",
-  "stdout": "{\n  \"source_commit\": \"117346362d6f0123926b430597a1277e5a6f44de\",\n  \"model\": \"claude-sonnet-5-5\",\n  \"valid_live_outputs\": 5,\n  \"passes\": 3,\n  \"weighted_error_cost_total\": 4,\n  \"safety_failures\": 0,\n  \"recorded_usd_estimate_by_phase\": {\n    \"agent\": \"0.7156697\",\n    \"detection\": \"0.5370030\"\n  },\n  \"recorded_total_usd_estimate\": \"1.2526727\",\n  \"limits\": [\n    \"Five selected prior failures, one trial each; not a representative accuracy estimate.\",\n    \"Recorded inference estimate includes agent and detection, not an inspected invoice.\",\n    \"No combined old/new full-suite rate, causal claim, or 90-run acceptance claim.\",\n    \"Ordinary allowed actions do not test adversarial rejection or hard-limit exhaustion.\"\n  ]\n}\n",
-  "stderr": ""
-}

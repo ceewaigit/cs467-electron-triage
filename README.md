@@ -23,12 +23,10 @@ questions, the bill of materials and the AI-use statement.
 | Expectations recorded before running | Commit `4baa2cb`, which predates the skill and workflow |
 | Scores and skill-use checks | [`evals/golden/results/`](evals/golden/results/): `score-final.json`, `skill-check-final.json`, `stats-final.md`; `-codex` for the Codex run |
 | Question 1 test | [`cases/a1-close-stale/`](evals/golden/cases/a1-close-stale/) |
-| Forced-actions and obey controls | [`results/control-forced/README.md`](evals/golden/results/control-forced/README.md), [`evals/controls/`](evals/controls/) |
+| Forced-actions and obey controls | [`results/control-forced/README.md`](evals/golden/results/control-forced/README.md), [`evals/controls/`](evals/controls/) (inert copies, not active workflows) |
 | Kill-switch test | [`results/control-kill-switch.txt`](evals/golden/results/control-kill-switch.txt) |
 | Approval brake, budgets, branch ruleset, network | [`results/control-approval.txt`](evals/golden/results/control-approval.txt), [`control-budgets.txt`](evals/golden/results/control-budgets.txt), [`control-branch-ruleset.txt`](evals/golden/results/control-branch-ruleset.txt), [`network-egress.txt`](evals/golden/results/network-egress.txt) |
-| Alerts on failed runs and lost writes | [`.github/workflows/triage-watchdog.yml`](.github/workflows/triage-watchdog.yml), [`scripts/check_triage_run.py`](scripts/check_triage_run.py), [`results/control-watchdog.txt`](evals/golden/results/control-watchdog.txt) |
-| Coding-assistant dry run | [`results/assistant-dry-run/`](evals/golden/results/assistant-dry-run/README.md) |
-| Full 90-run evaluation of the submitted runtime | [`results/codex.md`](evals/golden/results/codex.md): same skill and controls on Codex |
+| Full 90-run evaluation of the submitted runtime | [`results/codex.md`](evals/golden/results/codex.md): same skill and controls on Codex; workflow copy in [`evals/controls/`](evals/controls/) |
 | Live run of the submitted runtime on Claude | [`evals/failure-recheck-live-3/`](evals/failure-recheck-live-3/README.md): five cases |
 | Drift detection | [`.github/workflows/drift-check.yml`](.github/workflows/drift-check.yml), [`docs/DRIFT_REVIEW.md`](docs/DRIFT_REVIEW.md) |
 
@@ -55,15 +53,15 @@ the workflow needs `gh aw` v0.93.2: `gh aw compile issue-triage --strict --no-ch
 
 ## Other folders
 
-The folders below hold follow-up evidence that DESIGN.md cites. Two rejected skill changes, an
-offline recheck and two live attempts that failed authentication are kept on the
-[`archive/experiments` branch](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/experiments/evals).
+Side experiments are not part of this commit. The reproduction check, the coding-assistant dry
+run and raw logs from the live recheck are on the [`archive/full-evidence` branch](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/full-evidence); two
+rejected skill changes and earlier failed attempts are on
+[`archive/experiments`](https://github.com/ceewaigit/cs467-electron-triage/tree/archive/experiments/evals).
 
 | Path | What it is |
 |---|---|
 | `evals/failure-recheck-live-3/` | Live run of the submitted runtime on five earlier failures |
-| `evals/reproduction-check/` | Test of the repro-instruction change now in the skill; it failed its pre-registered gates and was adopted on a later criterion ([adoption record](evals/reproduction-check/ADOPTION.md)) |
 | `evals/data/`, `data/` | Opening-time issue records, and the frozen search corpus and label snapshot |
 | `evals/tools/` | Replay, collection, scoring and statistics scripts |
-| `docs/CODEBASE.md`, `docs/AUDIT.md` | Walkthrough of the code; audit of fixes and remaining limits |
+| `docs/CODEBASE.md`, `docs/FAILURES.md` | Walkthrough of the code; every scored failure and open item |
 | `tests/` | Offline tests for scripts, configuration and evaluation tools |
