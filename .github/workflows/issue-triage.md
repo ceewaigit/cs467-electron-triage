@@ -56,7 +56,7 @@ max-ai-credits: 100
 max-daily-ai-credits: 1500
 
 network:
-  allowed: [defaults]
+  allowed: []
 
 skills:
   - .claude/skills/issue-triage
