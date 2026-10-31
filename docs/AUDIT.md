@@ -106,6 +106,7 @@ limit and template-only comments; its companion run refused.
 2. Rejection paths added after `5ab5169` (bad verdicts, late references) have offline tests only.
 3. Phone operation and the per-author rate limit are untested; the rate limit exempts admins, so
    it needs a second account. The run and daily credit caps were tested
-   (`results/control-budgets.txt`). Dispatched runs skip the daily cap.
+   (`results/control-budgets.txt`). Dispatched runs skip the daily cap. A rate-limited issue stops
+   at pre_activation, so the watchdog does not list it for the sweep.
 4. One annotator chose the cases knowing later maintainer outcomes. Freezing the expectations
    prevents retuning after runs, but not hindsight in annotation.
