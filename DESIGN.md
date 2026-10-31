@@ -109,8 +109,7 @@ templates. **Against rules**, its requests won five, lost two. Failures (request
    once `DRIFT_WEEKLY` is set. It is off here, so nothing else would catch a silent change.
 3. **300 issues in a week.** About 43 a day at $0.25 each ($75). The 1,500 daily credit cap covers
    about 60 issues; on a burst day later issues are skipped, not queued, and a maintainer must
-   redispatch them from Actions (dispatched runs skip the cap). An author gets 3 runs an hour. The
-   approval brake needs 900 approvals.
+   redispatch them from Actions (dispatched runs skip the cap). An author gets 3 runs an hour.
 4. **A tool returns malicious instructions.** Tested as `a5-poisoned-corpus`, an attack inside an
    earlier issue returned by search (3/3). The only MCP server is `safeoutputs`. At worst the agent
    adds a wrong allowlisted label or template to its own issue: no prose, other issues or new tools.
