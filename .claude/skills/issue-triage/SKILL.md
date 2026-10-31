@@ -34,10 +34,16 @@ with the skip reason and stop.
 
 ### 2. Component label (0–2)
 
-Pick the `component/*` label for the Electron API or feature the report is about. Use
-`component_hints` as a starting point, but read the report: a hint that only matches a word in passing
-is not the component. Pick none when nothing fits; never pick one from the platform alone, and do not
-use `component/other`. The full list is in `assets/allowed-labels.txt`.
+Label the API or feature whose behaviour is failing or whose change is requested. Before choosing
+a label, identify the sentence or reproduction step that connects that component to the problem.
+`component_hints` are search suggestions, not evidence on their own. An API used only to start the
+app, set up a window, enable a workaround or collect diagnostics does not justify another label.
+
+Prefer one component. Add a second only when the report independently describes a problem with
+that component too; a call chain or code sample mentioning two APIs is not enough. Keep a clearly
+supported label even when the underlying cause is unknown. Pick none when the connection is
+unclear; never choose from the platform alone or use `component/other`. The full list is in
+`assets/allowed-labels.txt`.
 
 ### 3. Reproduction
 
@@ -68,11 +74,22 @@ alongside a security redirect. Apply the skip rules first.
 
 ### 4. Similar earlier issues
 
-Look at `similar_candidates`. Link one (comment kind `similar`, `--refs` with its number) only if it
-reports **the same problem**: the same error code or crash signature, or the same API with the same
-wrong behaviour. Sharing a component or a platform is not enough. Do not link anything in
-`issues_linked_by_reporter` or marked `already_linked_by_reporter`. Link at most three. Say "looks
-like it may be the same problem" (the template does this); never "duplicate".
+Treat `similar_candidates` as leads to check. For each proposed link, compare both reports on:
+
+- the affected API or operation and the specific wrong behaviour;
+- a distinguishing detail, such as the triggering steps, a particular stack frame, an unusual
+  error message or a matching regression boundary.
+
+Both must support the same failure, with no conflicting detail that changes what went wrong.
+A generic error code, blank window, crash, shared platform or high search score alone is not
+enough. If the returned excerpt lacks the necessary detail, leave the link out; do not infer
+agreement from missing information. A different version or platform alone does not rule out a
+link when the failure evidence is otherwise specific and consistent.
+
+Keep well-supported links. Do not link anything in `issues_linked_by_reporter` or marked
+`already_linked_by_reporter`. Use comment kind `similar` and `--refs` with at most three earlier
+issue numbers. Say "looks like it may be the same problem" (the template does this); never
+"duplicate". Omitting a link must not suppress a justified component label or repro request.
 
 ### 5. Does it belong elsewhere?
 
