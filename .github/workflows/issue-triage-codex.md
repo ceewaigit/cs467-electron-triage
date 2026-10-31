@@ -42,7 +42,7 @@ engine:
 
 timeout-minutes: 8
 max-turns: 30
-max-ai-credits: 100
+max-ai-credits: 2  # budget test only: real value 100
 max-daily-ai-credits: 1500
 
 network:
