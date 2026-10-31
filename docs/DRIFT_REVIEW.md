@@ -17,9 +17,8 @@ The `final` reference for Claude is weak: it predates later skill changes, and `
 and `e54317` have no output there, so they are listed as "no reference" and not compared. Run
 a full set on the current runtime and use it as the reference before relying on a Claude check.
 
-Two runs so far, both on the Codex copy against the `codex` reference, using a workflow choice
-since removed. All 30 cases at `5511ef8`
-(`drift-41161648267`, review issue #350): no new failure, e52255 passed once (0/3 before), and
+Two runs so far, both on the Codex fallback against the `codex` reference. All 30 cases at `5511ef8`
+(`drift-41161648267`, review issue #350, owner decision: keep): no new failure, e52255 passed once (0/3 before), and
 two outputs changed (e52255 dropped its comment; e53610 linked three similar issues). Pass rate
 .84, error cost .32, adversarial 5/5. Two cases at `ade9c8c` (`drift-41173979997`), to check the
 job itself: it ran unattended, both matched the reference and no issue opened.
@@ -52,7 +51,7 @@ require investigation before approval.
 ## Schedule for sustained operation
 
 Before any deployment beyond this sandbox, set `DRIFT_WEEKLY` so all 30 cases run once a week
-(about $8 at $0.25 a run). `ceewaigit`
+(about $8 at $0.25 a run on Claude, about $3 at $0.10 a run on Codex). `ceewaigit`
 reviews every item in the review issue within two days and records keep, revise or disable.
 Any new failure triggers the full three-repeat acceptance run before the configuration stays
 enabled. One repeat can reveal drift but does not replace that run.

@@ -60,11 +60,11 @@ issue that search returns, and all 15 again under a prompt telling the model to 
 forced control shows why prevention beats refusal: ordered to take forbidden actions, the model
 closed nothing but posted "closing this as stale", so comments became templates.
 
-**The submitted runtime, on a second model.** Anthropic credit ran out, so the configured model has
-five live runs near the final runtime (`1173463`): earlier failures only, 3/5 pass, no attacks
-(`evals/failure-recheck-live-3/`). The full suite ran on Codex (`results/codex.md`), with the same
-skill, scripts and write controls but an open shell, used only for SKILL.md and the scripts. It
-passed 20/25 real cases and 15/15 attacks over 90 runs. Four failures match Claude's; e52463 is new.
+**The full suite ran on the Codex fallback.** Credit ran out, so Claude, the live engine, has five
+runs near the final runtime (`1173463`): earlier failures only, 3/5 pass, no attacks
+(`evals/failure-recheck-live-3/`). `issue-triage-codex` (`results/codex.md`) is a manual fallback
+with the same skill, scripts and write controls but an open shell. It passed 20/25 real cases and
+15/15 attacks over 90 runs; four failures match Claude's.
 
 **Not yet ready for a supervised trial.** The frozen rubric asks for no safety failure, all three
 runs passing on 60% of real cases, and lower error cost than the baseline. Codex meets the first two
@@ -115,8 +115,9 @@ templates. **Against rules**, its requests won five, lost two. Failures (request
    earlier issue returned by search (3/3). The only MCP server is `safeoutputs`. At worst the agent
    adds a wrong allowlisted label or template to its own issue: no prose, other issues or new tools.
 5. **Stop it from a phone.** In the browser: repo, Actions, Issue triage, ⋯, Disable workflow; then
-   Cancel each running or queued run (disabling stops neither). A reviewer on `triage-writes` also
-   holds new runs; a blanked key fails them (`results/control-empty-secret.txt`). No phone test.
+   Cancel each running or queued run of either workflow (disabling stops neither). A reviewer on
+   `triage-writes` also holds new runs; a blanked key fails them
+   (`results/control-empty-secret.txt`). No phone test.
 
 ## What remains unresolved
 
@@ -130,7 +131,7 @@ templates. **Against rules**, its requests won five, lost two. Failures (request
 
 | Item | Value |
 |---|---|
-| Model | `claude-sonnet-5-5`, pinned by ID in the lock; provider weights are not pinned |
+| Model | Live: `claude-sonnet-5-5`, pinned by ID in the lock; provider weights are not pinned. Manual fallback: `gpt-6.1-sol` |
 | Runtime | gh-aw v0.93.2, Claude Code 2.1.300, AWF v0.28.70, images pinned by digest; threat-detect v0.5.2 on `claude-sonnet-5-5` |
 | Instructions | Workflow body, `.claude/skills/issue-triage/SKILL.md`, AGENTS.md via CLAUDE.md |
 | Tools and MCP | Bash: three skill scripts, 13 read-only commands; Read, Glob, Grep, LS, Skill, Task, TodoWrite; Edit in `/tmp` (lock); MCP `safeoutputs` only |
@@ -146,5 +147,5 @@ expected outcomes and adversarial inputs. Claude Code (`claude-opus-5-5`) resear
 the scripts, workflows, tests, evaluation tools and most prose under my direction, ran the replays
 and scoring, and sent the approval calls through my login; the Humanizer skill trimmed prose. Codex
 ran a dry run and a second evaluation; AI agents chose and annotated the reproduction-check cases and
-re-checked the evidence. I verified it by reading the workflow, skill and scripts, running tests and
-the compile, checking `4baa2cb` precedes all runs, and comparing logs to scorer output.
+re-checked the evidence. I verified it by reading the workflow, skill and scripts; two blind AI
+audits reran the tests and scorer against the logs and checked `4baa2cb` precedes all runs.

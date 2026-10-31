@@ -14,6 +14,7 @@ Read [docs/CODEBASE.md](docs/CODEBASE.md) for the execution flow and every Pytho
 |---|---|
 | `.github/workflows/issue-triage.md` | Workflow source: triggers, permissions, tools, outputs and budgets |
 | `.github/workflows/issue-triage.lock.yml` | Generated workflow; never edit by hand |
+| `.github/workflows/issue-triage-codex.md` | Manual Codex fallback; dispatch only, open shell |
 | `.claude/skills/issue-triage/` | Skill procedure, three scripts, label allowlist and component hints |
 | `scripts/prepare_issue.py` | Save the triggering issue as `.triage/issue.json` before the agent runs |
 | `scripts/prepare_agent_context.py` | Remove grading material and future corpus rows from the disposable Actions checkout |
@@ -36,8 +37,9 @@ gh aw compile issue-triage --strict --no-check-update
 ```
 
 Compile after editing the workflow source and commit its regenerated lock file; CI fails on a
-stale lock. Historical runs used `gh aw` v0.93.2; record the compiler version for any new
-experiment. The workflows in `evals/controls/` are inert records of what ran; do not edit them.
+stale lock. If changing the Codex fallback, compile `issue-triage-codex` too. Historical runs used
+`gh aw` v0.93.2; record the compiler version for any new experiment. The workflows in
+`evals/controls/` are inert records of what ran; do not edit them.
 
 Analysis commands write local reports. Follow the disposable-copy instructions in
 [evals/golden/README.md](evals/golden/README.md) before regenerating evidence. Always select the

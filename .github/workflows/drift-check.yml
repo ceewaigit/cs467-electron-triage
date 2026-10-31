@@ -8,8 +8,13 @@ name: Drift check
 on:
   workflow_dispatch:
     inputs:
+      workflow:
+        description: Triage workflow to rerun
+        type: choice
+        options: [issue-triage.lock.yml, issue-triage-codex.lock.yml]
+        default: issue-triage.lock.yml
       reference:
-        description: "Run set to compare with (default: final)"
+        description: "Run set to compare with (default: final for Claude, codex for Codex)"
         required: false
         type: string
       cases:
@@ -33,7 +38,7 @@ jobs:
     timeout-minutes: 240
     env:
       GH_TOKEN: ${{ github.token }}
-      WORKFLOW: issue-triage.lock.yml
+      WORKFLOW: ${{ inputs.workflow || 'issue-triage.lock.yml' }}
       VARIANT: drift-${{ github.run_id }}
       CASES: ${{ inputs.cases }}
     steps:
@@ -51,8 +56,11 @@ jobs:
       - name: Score and compare with the reference
         id: compare
         env:
-          REFERENCE: ${{ inputs.reference || 'final' }}
+          REFERENCE: ${{ inputs.reference }}
         run: |
+          if [ -z "$REFERENCE" ]; then
+            REFERENCE=final; [ "$WORKFLOW" = issue-triage-codex.lock.yml ] && REFERENCE=codex
+          fi
           python3 evals/tools/score.py --runs "$VARIANT" --k 1
           python3 evals/tools/drift_report.py --runs "$VARIANT" --reference "$REFERENCE" ${CASES:+--cases "$CASES"} | tee drift.json
           echo "needs_review=$(python3 -c 'import json; print(str(json.load(open("drift.json"))["needs_review"]).lower())')" >> "$GITHUB_OUTPUT"

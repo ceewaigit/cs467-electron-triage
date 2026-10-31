@@ -1,11 +1,10 @@
 ---
-# Its own name keeps it apart from the live workflow in Actions and in the watchdog.
+# Its own name keeps it apart from the live workflow in Actions.
 name: "Issue triage (Codex copy)"
-# The issue number in the run title lets the watchdog (triage-watchdog.yml) find the issue.
 run-name: "Issue triage #${{ inputs.issue_number }}"
 description: >
-  Cross-engine evaluation copy of issue-triage: the same skill, safe outputs and comment job,
-  run on OpenAI's Codex engine. Dispatch only; never triggered by new issues.
+  Manual fallback for issue-triage: the same skill, safe outputs and comment job on OpenAI's
+  Codex engine, for when the Claude workflow cannot run. Dispatch only; new issues never start it.
 
 on:
   # Evaluation replays only. GitHub lets only users with write access dispatch a workflow.
@@ -125,7 +124,7 @@ safe-outputs:
             AS_OF: ${{ inputs.as_of }}
             RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           run: python3 scripts/post_triage_comment.py
-  # gh-aw must not open its own issue for a failed run; triage-watchdog raises one alert instead.
+  # gh-aw must not open a public issue for a failed run; failures stay in the Actions tab.
   report-failure-as-issue: false
   # report_incomplete stays as a signal in the run log; by default gh-aw would also open an
   # "[incomplete]" tracking issue.

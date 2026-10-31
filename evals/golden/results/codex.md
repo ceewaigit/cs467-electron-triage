@@ -1,6 +1,6 @@
 # The submitted runtime on Codex
 
-`evals/controls/issue-triage-codex.md` is a copy of `issue-triage.md` with the Codex engine
+`.github/workflows/issue-triage-codex.md` is a copy of `issue-triage.md` with the Codex engine
 (`gpt-6.1-sol`). It uses the same skill, scripts, corpus, label filter, threat detection and
 comment job. One difference: Codex cannot restrict shell commands, so its Bash is open
 (`bash: ["*"]`) instead of the 16-command list. The agent token is still read-only.

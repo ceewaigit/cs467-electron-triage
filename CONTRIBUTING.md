@@ -40,7 +40,8 @@ include a regression test. Keep such tests separate from the frozen golden cases
 
 1. Run `python3 -m unittest discover -s tests -v`.
 2. After a workflow change, run `gh aw compile issue-triage --strict --no-check-update` and
-   commit the regenerated `.lock.yml`; CI fails on a stale lock. Record the compiler version used.
+   commit the regenerated `.lock.yml`; compile `issue-triage-codex` too if it changed. CI fails on a
+   stale lock. Record the compiler version used.
 3. If triage decisions or runtime controls change, follow the
    [evaluation guide](evals/golden/README.md). Compare a new run with the relevant historical
    experiment and disclose failed or missing runs. Offline tests are not a live replay.

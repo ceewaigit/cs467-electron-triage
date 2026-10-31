@@ -255,8 +255,8 @@ it in your sandbox, dispatch it on a disposable issue and compare with
 [the control report](results/control-forced/README.md). It asks for forbidden behaviour on
 purpose, so it belongs only in the sandbox.
 
-The Codex copy is in `evals/controls/issue-triage-codex.md`. It is kept as a record of what ran
-and is not an active workflow, because its shell is open.
+The Codex fallback is `.github/workflows/issue-triage-codex.md`. It runs only on manual dispatch,
+because its shell is open.
 
 For the kill-switch test, disable `issue-triage`, confirm that a new dispatch is rejected and
 that an opened issue starts no agent run, and cancel runs already in progress. Disabling a

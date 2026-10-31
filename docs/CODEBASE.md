@@ -114,8 +114,8 @@ local reports. Use the disposable-copy recipe in [the evaluation guide](../evals
 
 `evals/controls/broken_config.sh` is the only shell helper. It changes temporary workflow
 copies to check that broad permissions and forbidden outputs fail compilation or configuration
-tests. The obeying, forced-actions and Codex workflows in the same directory are inert records
-of control experiments, described in the evaluation guide.
+tests. The obeying and forced-actions workflows in the same directory are inert records of control
+experiments, described in the evaluation guide.
 
 ## Tests and configuration files
 
@@ -131,6 +131,7 @@ of control experiments, described in the evaluation guide.
 | `tests/test_replay_collection.py` | Successful no-action runs remain scorable; failures stay separate; forced refresh preserves evidence categories; dispatch filters refs and rejects ambiguous matches |
 | `tests/test_requested_view.py` | The requested-label view reads both label forms and leaves comments unchanged |
 | `.github/workflows/checks.yml` | Runs offline checks and the deterministic baseline in CI with a read-only token, and fails if a compiled lock differs from its source |
+| `.github/workflows/issue-triage-codex.md` and `.lock.yml` | Manual fallback on the Codex engine, also used for the 90-run evaluation; dispatch only, and its shell is open because Codex cannot restrict commands |
 | `.github/workflows/drift-check.yml` | Replays all 30 cases once, scores them, runs `drift_report.py` against a reference run set and opens a `drift-review` issue when anything changed; dispatch, or weekly while `DRIFT_WEEKLY` is `true` |
 | `.github/aw/actions-lock.json` | Action-version resolution used by the workflow compiler |
 | `.github/CODEOWNERS` | Requests owner review for protected areas; required review also needs repository settings |
