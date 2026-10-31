@@ -71,8 +71,8 @@ template forced control showed the label filter, one-call limit and template-onl
 
 1. Claude has not run the final skill: five runs on the earlier skill, 90 on Codex.
 2. The final rule was changed after these cases had been seen, so its gain is optimistic.
-3. Phone steps and the per-author rate limit are untested; admins are exempt, so it needs a second
-   account. Run and daily credit caps were tested; dispatched runs skip the daily cap.
+3. A real-phone cancel and the per-author rate limit are untested; the limit exempts admins, so it
+   needs a second account. Run and daily credit caps were tested; dispatched runs skip the daily cap.
 4. Nothing alerts on withheld labels or capped issues; they show only in Actions.
 5. Rejection paths added after `5ab5169` (bad verdicts, late references) have offline tests only.
 6. The corpus stops in September 2026; a deployment must refresh it.

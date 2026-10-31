@@ -93,7 +93,7 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
 | Human approval | Optional `triage-writes` reviewer: only the approved run wrote (`results/control-approval.txt`) | Tested on Codex; off |
 | Budgets | 8-min agent step, 30 turns, 100 credits (detection 400 more) a run; 1,500 a day; 3 runs per author an hour; 30-day expiry (`issue-triage.md`, `results/control-budgets.txt`) | Caps tested on Codex; rate limit not |
 | Audit trail | Trigger, model, tool calls, outputs, cost per run (`cases/*/actual/*/logs/`); comments link the run | Tested |
-| Kill switch | `gh aw disable issue-triage` blocks new runs; `gh run cancel` stops a live one (`results/control-kill-switch.txt`) | Tested on a computer |
+| Kill switch | Disabling `issue-triage` blocks new runs; cancelling stops a live one (`results/control-kill-switch.txt`) | Tested: disable on a phone, cancel in a desktop browser |
 | Drift detection | `drift-check.yml` reruns the cases and opens a review issue for `ceewaigit` (`docs/DRIFT_REVIEW.md`) | Tested on Codex; weekly run only proposed |
 | Accountability | `ceewaigit` alone can change or disable it, answers for it, and can bypass the code-owner ruleset (`.github/CODEOWNERS`, `results/control-branch-ruleset.txt`) | Configured |
 
@@ -112,7 +112,7 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
    issue search returns (3/3). The only MCP server is `safeoutputs`. At worst: a wrong allowlisted
    label or template on its own issue.
 5. **Stop it from a phone.** In the browser: repo, Actions, Issue triage, ⋯, Disable workflow; then
-   Cancel each running or queued run of either workflow (disabling stops neither). No phone test.
+   Cancel each live run: disabling stops neither. Disable ran on a phone, cancel in a desktop browser.
 
 ## What remains unresolved
 
@@ -143,7 +143,7 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
 I directed this work with Claude Code (`claude-opus-5-5`): I set the goal, scope and limits and
 decided the controls, engines and cuts. Claude Code generated the rubric, case selection, expected
 outcomes, adversarial inputs, scripts, workflows, tests, evaluation tools and most prose, ran the
-replays and scoring, and sent the approval calls through my login; the Humanizer skill trimmed prose.
+replays and scoring, and sent approval and cancel calls through my login; Humanizer trimmed prose.
 Codex ran a dry run and two evaluations; AI agents chose and annotated the reproduction-check cases
 and re-checked the evidence. To verify it I reviewed the scores and one worked case; tests and CI
 pass; blind AI audits, not stored here, reran the tests and scorer against the logs and checked

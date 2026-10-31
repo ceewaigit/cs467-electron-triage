@@ -29,3 +29,17 @@ $ gh run cancel 39950334071
 ✓ Request to cancel workflow 39950334071 submitted.
 conclusion=cancelled | pre_activation=success, activation=success, agent=cancelled, detection=success, conclusion=success, safe_outputs=cancelled
 issue #121 after: {"comments":0,"labels":[],"state":"open"}
+
+# Browser test, 2026-10-31 (the steps in DESIGN Q5), commit eec7692
+Phone: the owner disabled Issue triage in a phone browser (control-kill-switch-phone.png, 8:38 pm
+SGT). gh workflow list showed disabled_manually at 12:40:10Z. The workflow was then re-enabled with gh.
+Desktop browser: Claude Code clicked through the owner's signed-in Chrome. The window stayed at
+desktop width (390 and 500 px requests had no effect), so only the disable has a phone-layout record.
+12:48:49Z  Issue triage disabled (⋯, Disable workflow, then confirm)
+12:49:03Z  issue #452 opened; 79 s later no new run (latest still 41188373611) and no labels or comments
+12:51:01Z  Issue triage (Codex copy) run 41202919922 started on #452, author_association=NONE
+12:51:41Z  agent job started; Cancel workflow clicked after the job showed in progress
+12:52:15Z  agent cancelled; detection success (Codex); safe_outputs and triage_comment cancelled
+12:53:27Z  run conclusion=cancelled; the conclusion job failed at "Handle agent failure"; cause not traced
+12:54:54Z  Issue triage active again (Enable workflow); #452 closed with 0 labels, 0 comments
+Not tested: Cancel workflow on a real phone, or a queued run.
