@@ -140,11 +140,11 @@ comment); e53610 (0/3, dropped a required link: the stricter rule's cost); e5373
 
 ## AI-use statement
 
-I directed this work with Claude Code (`claude-opus-5-5`): I set the goal, scope and limits and
-decided the controls, engines and cuts. Claude Code generated the rubric, case selection, expected
-outcomes, adversarial inputs, scripts, workflows, tests, evaluation tools and most prose, ran the
-replays and scoring, and sent approval and cancel calls through my login; Humanizer trimmed prose.
-Codex ran a dry run and two evaluations; AI agents chose and annotated the reproduction-check cases
-and re-checked the evidence. To verify it I reviewed the scores and one worked case; tests and CI
-pass; blind AI audits, not stored here, reran the tests and scorer against the logs and checked
-`4baa2cb` precedes all runs.
+I wrote no part directly: I directed the work with Claude Code (`claude-opus-5-5`), setting the goal,
+scope and limits and deciding the controls, engines and cuts. Claude Code generated the rubric, case
+selection, expected outcomes (the frozen files' `student` author labels are wrong), adversarial
+inputs, scripts, workflows, tests, evaluation tools and prose, ran the replays and scoring, and sent
+approval and cancel calls through my login; Humanizer trimmed prose. Codex ran a dry run and two
+evaluations; AI agents chose and annotated the reproduction-check cases and re-checked the evidence.
+To verify it I reviewed the scores and one worked case; tests and CI pass; blind AI audits, not
+stored here, reran the tests and scorer against the logs and checked `4baa2cb` precedes all runs.
